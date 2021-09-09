@@ -1,6 +1,6 @@
 ## Welcome to [Technical Spot](https://techimodi.blogspot.com/)
 
-[View Our Tools](https://asbrothers1466.github.io/tools/)
+[View Our Tools](https://techimodi.github.io/tools/)
 
 ```markdown
 Use markdown to preview code
