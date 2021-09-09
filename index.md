@@ -27,7 +27,7 @@ top: 0;
 left: 0;
 height: 100%;
 width: 100%;
-z-index: 99999999;
+z-index: 9999999999999;
 }
 .bg-left {
   position: absolute;
