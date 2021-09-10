@@ -1,5 +1,5 @@
 <style>
-#skip-to-content, .page-header{
+#skip-to-content, .page-header, .site-footer{
 display: none;
 }
 </style>
