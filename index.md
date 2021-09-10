@@ -1,21 +1,14 @@
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>complete responsive app landing page website design tutorial</title>
-
-    <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <!-- custom css file link  -->
 <style>
 #skip-to-content, .page-header, #content{
 display: none;
 }
 </style>
-    <style>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
-
 :root{
     --purple:#814096;
     --pink:#F83292;
@@ -549,19 +542,6 @@ header label{
     text-align: center;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* media queries  */
 
 @media (max-width:1200px){
@@ -664,9 +644,6 @@ header label{
 
 </head>
 <body>
-    
-<!-- header section starts  -->
-
 <header>
 
     <a href="#" class="logo"><span>best</span>App</a>
@@ -685,10 +662,6 @@ header label{
 
 </header>
 
-<!-- header section ends -->
-
-<!-- home section starts  -->
-
 <section class="home" id="home">
 
     <div class="content">
@@ -702,10 +675,6 @@ header label{
     </div>
 
 </section>
-
-<!-- home section ends -->
-
-<!-- features section starts  -->
 
 <section class="features" id="features">
 
@@ -738,10 +707,6 @@ header label{
 
 </section>
 
-<!-- features section ends -->
-
-<!-- about section starts  -->
-
 <section class="about" id="about">
 
     <h1 class="heading"> about the app </h1>
@@ -766,10 +731,6 @@ header label{
 
 </section>
 
-<!-- about section ends -->
-
-<!-- newsletter  -->
-
 <div class="newsletter">
 
     <h3>Subscribe For New Features</h3>
@@ -780,8 +741,6 @@ header label{
     </form>
 
 </div>
-
-<!-- review section starts  -->
 
 <section class="review" id="review">
 
@@ -847,10 +806,6 @@ header label{
 
 </section>
 
-<!-- review section ends -->
-
-<!-- pricing section starts  -->
-
 <section class="pricing" id="pricing">
 
     <h1 class="heading"> Our Pricing Plans </h1>
@@ -897,10 +852,6 @@ header label{
 
 </section>
 
-<!-- pricing section ends -->
-
-<!-- contact section starts  -->
-
 <section class="contact" id="contact">
 
     <div class="image">
@@ -936,10 +887,6 @@ header label{
     </form>
 
 </section>
-
-<!-- contact section edns -->
-
-<!-- footer section starts  -->
 
 <div class="footer">
 
@@ -991,4 +938,3 @@ header label{
 </div>
 
 </body>
-</html>
