@@ -670,7 +670,7 @@ header label{
 
 <header>
 
-    <a href="#" class="logo"><span>best</span>App</a>
+    <a href="#" class="logo"><span>TECHNICAL</span>SPOT</a>
 
     <input type="checkbox" id="menu-bar">
     <label for="menu-bar" class="fas fa-bars"></label>
@@ -987,7 +987,7 @@ header label{
 
     </div>
 
-    <h1 class="credit"> &copy; copyright @ 2021 by mr. web designer </h1>
+    <h1 class="credit"> &copy; copyright @ 2021 TECHNICAL SPOT </h1>
 
 </div>
 
