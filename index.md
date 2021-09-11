@@ -51,6 +51,7 @@ body{
         -moz-animation: rotate 2s infinite;
         animation-direction: alternate;
         animation-timing-function: linear;
+        box-shadow: 1px 1px 6px #000;
     }
     @keyframes rotate {
         0%{}
