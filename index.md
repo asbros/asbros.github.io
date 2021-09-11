@@ -52,6 +52,7 @@ body{
         animation-direction: alternate;
         animation-timing-function: linear;
         box-shadow: 1px 1px 6px 1px #000;
+        border-radius: 50%;
     }
     @keyframes rotate {
         0%{}
