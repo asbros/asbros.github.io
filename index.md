@@ -688,7 +688,7 @@ header label{
 
 <header>
 
-    <a href="#" class="logo"><img id="assvg" style="width: 27px;height: 27px;" src="https://techimodi.github.io/files/as.svg" /><b> </b><span>TECHNICAL</span>SPOT</a>
+    <img id="assvg" style="width: 27px;height: 27px;" src="https://techimodi.github.io/files/as.svg" /><a href="#" class="logo"><span>TECHNICAL</span>SPOT</a>
 
     <input type="checkbox" id="menu-bar">
     <label for="menu-bar" class="fas fa-bars"></label>
