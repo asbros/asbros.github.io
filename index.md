@@ -670,7 +670,7 @@ header label{
 
 <header>
 
-    <a href="#" class="logo"><span>TECHNICAL</span>SPOT</a>
+    <a href="#" class="logo"><img style="width: 27px;height: 27px;" src="https://techimodi.github.io/files/as.svg" /><span>TECHNICAL</span>SPOT</a>
 
     <input type="checkbox" id="menu-bar">
     <label for="menu-bar" class="fas fa-bars"></label>
