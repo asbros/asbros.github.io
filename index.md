@@ -46,8 +46,8 @@ body{
     z-index: 0;
 }
 #assvg{
-        width: 10px;
-        height: 10px;
+        width: 25px;
+        height: 25px;
         -webkit-animation: rotate 2s infinite;
         animation: rotate 2s infinite;
         -moz-animation: rotate 2s infinite;
