@@ -1,3 +1,4 @@
+## Technical Spot
 <style>
 #skip-to-content, .page-header, .site-footer{
 display: none;
@@ -46,8 +47,8 @@ body{
     z-index: 0;
 }
 #assvg{
-        width: 25px;
-        height: 25px;
+        width: 30px;
+        height: 30px;
         margin: 0;
         padding: 0;
         -webkit-animation: rotate 2s infinite;
