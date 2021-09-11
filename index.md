@@ -45,7 +45,25 @@ body{
     top: 0;
     z-index: 0;
 }
-
+#assvg{
+        -webkit-animation: rotate 2s infinite;
+        animation: rotate 2s infinite;
+        -moz-animation: rotate 2s infinite;
+        animation-direction: alternate;
+        animation-timing-function: linear;
+    }
+    @keyframes rotate {
+        0%{}
+        100%{transform: rotateY(360deg);}
+    }
+    @-webkit-keyframes rotate {
+        0%{}
+        100%{transform: rotateY(360deg);}
+    }
+    @-moz-keyframes rotate {
+        0%{}
+        100%{transform: rotateY(360deg);}
+    }
 section{
     min-height: 100vh;
     padding:0 9%;
@@ -670,7 +688,7 @@ header label{
 
 <header>
 
-    <a href="#" class="logo"><img style="width: 27px;height: 27px;" src="https://techimodi.github.io/files/as.svg" /><span>TECHNICAL</span>SPOT</a>
+    <a href="#" class="logo"><img id="assvg" style="width: 27px;height: 27px;" src="https://techimodi.github.io/files/as.svg" /><span>TECHNICAL</span>SPOT</a>
 
     <input type="checkbox" id="menu-bar">
     <label for="menu-bar" class="fas fa-bars"></label>
