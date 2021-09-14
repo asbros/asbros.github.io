@@ -22,9 +22,16 @@ input[type=submit]{font-weight: bold;font-size: 20px;width: 40px;height: 40px;bo
 .plsnm{color: black;font-size: 15px;background-color: yellow;padding-top: 10px;padding-bottom: 10px;text-align: center;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;}
 .sngdv:hover{transform: scale(1.1);}
 .sngdv:hover .plsnm{background-color: #0088ff;color: #fff;}
-/*#playadd{width: 120px;}
-.addinp{width: 250px;height: 40px;border-radius: 8px;padding: 0px 8px;outline: none;font-weight: normal;}
-.wrap-text{font-size: 10px;}*/
+.snackText {visibility: hidden;user-select: none;min-width: 250px;margin-left: -125px;background-color: rgb(110, 26, 106);color: #fff;text-align: center;border-radius: 2px;padding: 8px;position: fixed;z-index: 1;left: 50%;bottom: 50px;font-size: 17px;}
+.snackText.show {visibility: visible;user-select: none;z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;animation: fadein 0.3s, fadeout 0s 2s;}
+@keyframes fadein {
+      from {bottom: 0;opacity: 0;}
+      to {bottom: 50px;opacity: 1;}
+   }
+@keyframes fadeout {
+      from {bottom: 0px;opacity: 1;}
+      to {bottom: 0;opacity: 0;}
+   }
 </style>
 </head>
 <body onload="hld()">
@@ -101,8 +108,15 @@ input[type=submit]{font-weight: bold;font-size: 20px;width: 40px;height: 40px;bo
 <button id="del" onclick="del()"><i class="fa fa-times"></i></button>
 </div>
 </div>
+<div class="snackText"></div>
 <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/641/web-animations.min.js" type="text/javascript" charset="utf-8"></script>
 <script>
+/*var x = document.querySelector(&quot;.snackText&quot;);
+  x.innerText = &#39;Loaded!&#39;;
+      x.className += &quot; show&quot;;
+      setTimeout(function() {
+         x.className = x.className.replace(&quot;show&quot;, &quot;&quot;);
+      }, 1000);*/
 var song = new Audio;
 var isStopped = true;
 
