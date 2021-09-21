@@ -1,6 +1,6 @@
-function $(selector, container){
+function $(selector){
   const self = {
-    element: document.querySelector(container).querySelector(selector),
+    element: document.querySelector(selector),
     
     html: ()=> {return self.element},
     
@@ -14,12 +14,13 @@ function $(selector, container){
     
     show: ()=> {self.element.style.removeProperty('display')},
     
-    setAttr: (name, value) => {
-      if(value == null)
-        return self.element.getAttribute(name)
-      else
-        self.element.setAttribute(name, value)
+    attr: (names) => {
+      for (const property in names){
+      self.element.setAttribute(property, names[property]);
+        }
     },
+    
+    attrs: ()=>{return self.element.attributes},
     
     removeAttr: (name)=>{self.element.removeAttribute(name)},
     
@@ -31,7 +32,7 @@ function $(selector, container){
         }
     },
     
-    css: (name, value) => {self.element.style.setProperty(name, value);},
+    getAttr: (name)=>{return self.element.getAttribute(name)},
     
     addClass: (clsnm) => {self.element.classList.add(clsnm)},
     
@@ -41,7 +42,26 @@ function $(selector, container){
     
     classes: ()=>{return self.element.classList},
     
-    ready: (redyfn)=>{self.element.addEventListener('load', redyfn)}
+    ready: (redyfn)=>{self.element.addEventListener('load', redyfn)},
+    
+    create: (elem)=>{
+       var ctelem = document.createElement(elem);
+       self.element.appendChild(ctelem); 
+    },
+    
+    css: (style)=>{
+      for (const property in style){
+          self.element.style.setProperty(property, style[property]);
+    }
+    },
+  
+    appendTo: (appender)=>{
+        document.querySelector(appender).appendChild(self.element);
+    },
+    
+    cloneTo: (cont)=>{
+     document.querySelector(cont).innerHTML += self.element.outerHTML;
+    }
     
   }
   return self
