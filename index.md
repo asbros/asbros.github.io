@@ -11,7 +11,7 @@ display: none;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Technical Spot</title>
-    <link rel="manifest" href="/files/manifest.json">
+    <link rel="manifest" href="https://techimodi.github.io/files/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
