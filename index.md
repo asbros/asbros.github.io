@@ -12,8 +12,8 @@ display: none;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 <link rel="preload" href="/lib/fonts/source-code-pro-v14-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/lib/w3schools28.css">
-<link rel="stylesheet" href="/lib/codemirror.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools28.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/codemirror.css">
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -566,8 +566,8 @@ body.darktheme #backtotutcontainer {
 }
 </style>
 
-<script src="/lib/codemirror.js"></script>
-<script src="/lib/codemirror_jsx.js"></script>
+<script src="https://www.w3schools.com/lib/codemirror.js"></script>
+<script src="https://www.w3schools.com/lib/codemirror_jsx.js"></script>
 <script>
 submitTryit()
 
