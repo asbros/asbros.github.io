@@ -20,13 +20,6 @@ visibility: hidden;
 <link rel="stylesheet" href="https://www.w3schools.com/lib/codemirror.css">
 <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' rel='stylesheet'/>
 <style>
-#bdy{
-position: fixed;
-top: 0;
-left: 0;
-height: 100vh;
-width: 100vw;
-}
 </style>
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
