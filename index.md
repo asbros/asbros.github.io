@@ -6,6 +6,8 @@
 width: 0;
 height: 0;
 display: none;
+padding: 0;
+margin: 0;
 }
 </style>
 <meta name="viewport" content="width=device-width">
@@ -17,7 +19,7 @@ display: none;
 <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' rel='stylesheet'/>
 <style>
 body{
-position: absolute;
+position: fixed;
 top: 0;
 left: 0;
 height: 100vh;
