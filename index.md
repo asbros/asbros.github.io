@@ -4,6 +4,17 @@
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
 <meta content='#000' name='theme-color'/>
+<style>
+#skip-to-content, .page-header, .site-footer{
+width: 0;
+height: 0;
+padding: 0;
+margin: 0;
+opacity: 0;
+visibility: hidden;
+display: none;
+}
+</style>
 <style id='page-skin-1' type='text/css'><!--
 body{margin: 0;padding: 0;background-color: #fff;}
 body:fullscreen{background-color: #fff;}
