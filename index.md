@@ -1,4 +1,3 @@
-## Technical Spot
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
@@ -6,6 +5,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 <style>
 #skip-to-content, .page-header, .site-footer{
+width: 0;
+height: 0;
 display: none;
 }
 </style>
@@ -20,6 +21,10 @@ display: none;
 ::selection{
   color: #000;
   background: #fff;
+}
+body{
+height: 100vh;
+width: 100vw;
 }
 nav{
   position: fixed;
