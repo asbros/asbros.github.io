@@ -1,7 +1,7 @@
 {
   "name": "Technical Spot",
   "short_name": "Techimodi",
-  "start_url": ".",
+  "start_url": "https://techimodi.github.io/",
   "display": "standalone",
   "background_color": "#fafafa",
   "theme_color": "#0088ff",
@@ -42,7 +42,7 @@
     {
       "name": "Calculator",
       "description": "Calculator",
-      "url": "/tools/calculator.html",
+      "url": "https://techimodi.github.io/tools/calculator.html",
       "icons": [
         {
           "src": "https://maskable.app/favicon/editor_192.png",
