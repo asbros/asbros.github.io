@@ -1,7 +1,7 @@
 var cacheAll = false;
 var CACHE_NAME = 'webapk-cache';
 var urlsToCache = [
-	'/',
+	'https://techimodi.github.io/',
 	'https://1.bp.blogspot.com/-cnW9B-Esgak/YMn3gbotU3I/AAAAAAAAAn8/lPXEhe07EBU1k6zE3wHwJ7lOwuH4pRQwwCLcBGAsYHQ/s0/Webp.net-resizeimage%2B%25289%2529.png',
 	'https://1.bp.blogspot.com/-OyFreDg95Zg/YNb9z2jAnyI/AAAAAAAAArY/aW0g9I3AQ8cQSdw3NZ6vM5KWMQl4YyH9QCLcBGAsYHQ/s720/Screenshot_2021-06-26-15-42-16-08.jpg',
 ];
