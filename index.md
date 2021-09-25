@@ -18,7 +18,7 @@ margin: 0;
 <link rel="stylesheet" href="https://www.w3schools.com/lib/codemirror.css">
 <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' rel='stylesheet'/>
 <style>
-body{
+#bdy{
 position: fixed;
 top: 0;
 left: 0;
@@ -441,7 +441,7 @@ a.topnav-icons, a.topnav-icons.fa-home, a.topnav-icons.fa-menu {
 </style>
 <![endif]-->
 </head>
-<body>
+<body id="bdy">
 
 <div id='tryitLeaderboard'>
 <!-- TryitLeaderboard -->
