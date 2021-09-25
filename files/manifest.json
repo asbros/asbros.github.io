@@ -1,0 +1,26 @@
+{
+	"author": "AS BROTHERS",
+	"name": "Technical Spot",
+	"short_name": "Techimodi",
+	"description": "Here you will find Some HTML Tools and Premium Apps For Free.",
+	"orientation": "portrait",
+	"start_url": "https://techimodi.blogspot.com/",
+	"scope": "https://techimodi.blogspot.com/",
+	"display": "standalone",
+	"background_color": "#0088ff",
+	"theme_color": "#0088ff",
+	"icons": [
+		{
+			"src": "https://1.bp.blogspot.com/-ixK1DPzh_Qs/YMn3WdMYqmI/AAAAAAAAAn0/ojgA2rOJInYkLjDvpAbkmlXk0odWHL27QCLcBGAsYHQ/s0/Webp.net-resizeimage%2B%25288%2529.png",
+			"sizes": "48x48 72x72 96x96 128x128 192x192 256x256 512x512",
+			"type": "image/png"
+		}
+	],
+	"manifest_version": 3,
+	"version": "0.2",
+	"applications": {
+		"gecko": {
+			"id": "anshukumar72210@gmail.com"
+		}
+	}
+}
