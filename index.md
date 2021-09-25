@@ -14,6 +14,7 @@ display: none;
 <link rel="preload" href="https://www.w3schools.com/lib/fonts/source-code-pro-v14-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools28.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/codemirror.css">
+<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' rel='stylesheet'/>
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
