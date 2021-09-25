@@ -8,9 +8,11 @@ height: 0;
 display: none;
 padding: 0;
 margin: 0;
+opacity: 0;
+visibility: hidden;
 }
 </style>
-<meta name="viewport" content="width=device-width">
+<title>AS Code Editor 2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 <link rel="preload" href="https://www.w3schools.com/lib/fonts/source-code-pro-v14-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
