@@ -15,9 +15,9 @@
     }
   ],
   "name": "AS CODE EDITOR",
-  "short_name": "Code Editor",
-  "start_url": "/",
-  "display": "standalone",
-  "theme_color": "#005050",
-  "background_color": "#afafaf"
+  "short_name": "AS CODE EDITOR",
+  "start_url": "https://ascodeeditor.blogspot.com/",
+  "display": "fullscreen",
+  "theme_color": "#000",
+  "background_color": "#fff"
 }
