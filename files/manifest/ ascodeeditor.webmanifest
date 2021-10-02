@@ -1,7 +1,7 @@
 {
   "background_color": "gray",
   "description": "HTML Code Editor and Previewer",
-  "display": "fullscreen",
+  "display": "standalone",
   "icons": [
     {
           "src": "https://cdn3.iconfinder.com/data/icons/luchesa-vol-9/128/Html-1024.png",
@@ -17,7 +17,7 @@
   "name": "AS CODE EDITOR",
   "short_name": "AS CODE EDITOR",
   "start_url": "https://ascodeeditor.blogspot.com/",
-  "display": "fullscreen",
+  "display": "standalone",
   "theme_color": "#000",
   "background_color": "#fff"
 }
