@@ -1,6 +1,6 @@
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('fox-store').then((cache) => cache.addAll([
+    caches.open('as-store').then((cache) => cache.addAll([
       'https://ascodeeditor.blogspot.com/'
     ])),
   );
