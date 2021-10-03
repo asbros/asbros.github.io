@@ -19,21 +19,5 @@
   "start_url": "https://techimodi.blogspot.com/",
   "display": "standalone",
   "theme_color": "#0088ff",
-  "background_color": "#0088ff",
-  "shortcuts": [
-    {
-      "name": "Open Play Later",
-      "short_name": "Play Later",
-      "description": "View the list of podcasts you saved for later",
-      "url": "https://rtumovies.blogspot.com/",
-      "icons": [{ "src": "https://cdn4.iconfinder.com/data/icons/planner-color/64/popcorn-movie-time-512.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "View Subscriptions",
-      "short_name": "Subscriptions",
-      "description": "View the list of podcasts you listen to",
-      "url": "https://asgana.blogspot.com/",
-      "icons": [{ "src": "https://1.bp.blogspot.com/-RgJWXm0t7q0/XIWTSUvY40I/AAAAAAAAIj0/YMDr1bdHzBsryvSU8CEGeSGNlqPh3axlQCK4BGAYYCw/s1600/music%2Bicons.png", "sizes": "192x192" }]
-    }
-  ]
+  "background_color": "#0088ff"
 }
