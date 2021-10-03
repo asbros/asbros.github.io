@@ -1,7 +1,7 @@
 {
   "background_color": "#0088ff",
   "description": "techimodi",
-  "display": "standalone",
+  "display": "browser",
   "icons": [
     {
           "src": "https://1.bp.blogspot.com/-s0qH_qxpy2g/YMn11KuArAI/AAAAAAAAAm4/eGZiUcd7BqYeTazjLdgIqYpq3RPp6cqzACLcBGAsYHQ/s0/Webp.net-resizeimage.png",
@@ -17,7 +17,7 @@
   "name": "TECHNICAL SPOT",
   "short_name": "TECHNICAL SPOT",
   "start_url": "https://techimodi.blogspot.com/",
-  "display": "standalone",
+  "display": "browser",
   "theme_color": "#0088ff",
   "background_color": "#0088ff"
 }
