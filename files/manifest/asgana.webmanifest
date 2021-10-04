@@ -1,0 +1,23 @@
+{
+  "background_color": "#fff",
+  "description": "song, gana",
+  "display": "standalone",
+  "icons": [
+    {
+          "src": "https://1.bp.blogspot.com/-RgJWXm0t7q0/XIWTSUvY40I/AAAAAAAAIj0/YMDr1bdHzBsryvSU8CEGeSGNlqPh3axlQCK4BGAYYCw/s1600/music%2Bicons.png",
+          "sizes": "16x16",
+          "type": "image/x-icon"
+    },
+    {
+      "src": "https://1.bp.blogspot.com/-RgJWXm0t7q0/XIWTSUvY40I/AAAAAAAAIj0/YMDr1bdHzBsryvSU8CEGeSGNlqPh3axlQCK4BGAYYCw/s1600/music%2Bicons.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "name": "AS GANA",
+  "short_name": "AS GANA",
+  "start_url": "https://asgana.blogspot.com/",
+  "display": "standalone",
+  "theme_color": "#fff",
+  "background_color": "#fff"
+}
