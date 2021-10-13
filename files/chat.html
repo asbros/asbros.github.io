@@ -226,7 +226,6 @@ else{
 }
 }
 }
-//document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
        }
          else{
          }
@@ -238,10 +237,11 @@ else{
 document.body.onload = getall;
 setInterval(getall, 1000);
 document.getElementById("userhello").innerHTML = "Hello, "+username;
+document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 </script>
   </head>
   <body>
-   <h2 id="userhello" style="color: rgb(18, 140, 126);"></h2>
+   <h2 id="userhello" style="color: rgb(18, 140, 126);text-align: center;"></h2>
  <ul id="messages"></ul>
       <div id="message-div">
         <textarea id="message-input" autocomplete="off" placeholder="Type a message"></textarea>
