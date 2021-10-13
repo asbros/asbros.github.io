@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Firebase RealTime Chat</title>
+<style type="text/css">
+#message-form {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #b7b5b9;
+}
+
+input {
+    width: 70%;
+    height: 30px;
+}
+
+button {
+    width: 25%;
+    height: 38px;
+}
+/*body {
+    background-color: #f3f2f3;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+}
+
+#messages{
+    padding-bottom: 30%;
+}
+
+li {
+    list-style-type: none;
+    margin-bottom: 10px;
+    background-color: #6929ca;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    width: 50%;
+}
+
+li span {
+    font-style: italic;
+    font-weight: bolder;
+    color: #b5b0b9;
+}
+
+#chat {
+    width: 80%;
+    margin: auto;
+}
+
+.sent {
+    text-align: right;
+    background-color: #a79cb3;
+    margin-left: 50%;
+}
+
+.sent span {
+    margin-left: 5px;
+    color: #6929ca;
+}*/
+    </style>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-analytics.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyD18eXypYoCeFi-8Y9TGPjmssqUmodMRuU",
+    authDomain: "url-shortener-28f3e.firebaseapp.com",
+    databaseURL: "https://url-shortener-28f3e-default-rtdb.firebaseio.com",
+    projectId: "url-shortener-28f3e",
+    storageBucket: "url-shortener-28f3e.appspot.com",
+    messagingSenderId: "857934422978",
+    appId: "1:857934422978:web:5d0ca409939c9980996c5b",
+    measurementId: "G-NXNVGJF9ZK"
+  };
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  import{getDatabase, ref, get, set, push, child, update, remove, onChildAdded, onChildChanged, onChildRemoved}
+  from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
+  
+const db = getDatabase();
+const username = prompt("Please Tell Us Your Name");
+const timestamp = Date.now();
+const dbref = ref(db);
+const messageInput = document.getElementById("message-input");
+
+/*function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}*/
+
+function sendMessage(e) {
+e.preventDefault();
+
+push(ref(db, "chats/"), {
+   name: username,
+   msg: messageInput.value
+});
+getall();
+      messageInput.value = "";
+}
+    /*set(ref(db, "chats/"+msgid),{
+        name: username,
+        msg: messageInput.value
+    })
+    .then(()=>{
+    })
+    .catch((error)=>{
+        alert("Error: "+error);
+    });*/
+
+document.getElementById("message-form").addEventListener("submit", sendMessage);
+
+function getall(){
+get(child(dbref, "chats")).then((snapshot)=>{
+if(snapshot.exists()){
+document.getElementById("messages").innerHTML = " ";
+ for (const project in snapshot.val()){
+  for (const pd in snapshot.val()[project]){
+document.getElementById("messages").innerHTML += '<li data-id="'+snapshot.val()[project]+'"><span class="name">'+snapshot.val()[project]["name"]+": "+'</span><span class="msg">'+snapshot.val()[project]["msg"]+"</span></li><br>";
+console.log(snapshot.val()[project]);
+//snapshot.val()[project][pd]
+            }
+          }
+document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+       }
+         else{
+         }
+     })
+     .catch((error)=>{
+         alert("Error: "+error);
+     });
+}
+document.body.onload = getall;
+setInterval(getall, 1000);
+</script>
+  </head>
+  <body>
+<header>
+   <h2>Firebase RealTime Chat</h2>
+    </header>
+      <ul id="messages"></ul>
+    <div id="chat">
+      <!-- messages will display here -->
+
+      <!-- form to send message -->
+      <form id="message-form">
+        <input id="message-input" type="text" autocomplete="off" required/>
+        <button id="message-btn" type="submit">Send</button>
+      </form>
+    </div>
+<!--<script type="text/javascript" charset="utf-8">
+    javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
+</script>-->
+  </body>
+</html>
