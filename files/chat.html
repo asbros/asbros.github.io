@@ -4,24 +4,102 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Firebase RealTime Chat</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css"/>
 <style type="text/css">
-#message-form {
-    text-align: center;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #b7b5b9;
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap');
+*{
+  font-family: 'Baloo 2', cursive;
+  user-select: none;
 }
-
-input {
-    width: 70%;
-    height: 30px;
+body{
+  /*background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-attachment: fixed;*/
+  background-color: #ece5dd;
 }
-
-button {
-    width: 25%;
-    height: 38px;
+#messages{
+  position: relative;
+  left: 0;
+  list-style-type: none;
+  padding-bottom: 40px;
+}
+.sndr, .slf{
+  padding: 7px;
+  color: #000;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background-color: #fff;
+  display: block;
+  max-width: 55%;
+  height: auto;
+  text-align: left;
+  box-shadow: 0 0 6px #B2B2B2;
+  line-height: 20px;
+}
+/*.sndr::before{
+    background-color: #fff;
+    content: "\00a0";
+    display: block;
+    height: 16px;
+    position: absolute;
+    top: 11px;
+    left: 30px;
+    transform: rotate( 29deg ) skew( -35deg );
+    -moz-transform: rotate( 29deg ) skew( -35deg );
+    -ms-transform: rotate( 29deg ) skew( -35deg );
+    -o-transform: rotate( 29deg ) skew( -35deg );
+    -webkit-transform: rotate( 29deg ) skew( -35deg );
+    width:  20px;
+    z-index: 1;
+}*/
+.slf{
+  color: #000;
+  background-color: #dcf8c6;
+}
+.sndrnm, .slfnm{
+  font-size: 15px;
+  color: #f00;
+  font-weight: bold;
+}
+.sndrmsg, .slfmsg{
+  font-size: 18px;
+}
+#message-div{
+  background-color: #ece5dd;
+  text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0px;
+  width: 100%;
+  background-color: #ffff0000;
+}
+#message-input{
+  width: calc(100% - 100px);
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  border: 0;
+  position: relative;
+  bottom: -15px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 450;
+  resize: none;
+  margin-left: 10px;
+  padding-top: 10px;
+}
+#message-btn{
+  height: 50px;
+  width: 50px;
+  background-color: #29D;
+  margin-left: 5px;
+  color: #fff;
+  font-size: 28px;
+  border-radius: 50%;
+  border: 0;
+  text-align: center;
+  margin-right: 10px;
 }
 /*body {
     background-color: #f3f2f3;
@@ -88,7 +166,14 @@ li span {
   from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
   
 const db = getDatabase();
-const username = prompt("Please Tell Us Your Name");
+var username;
+if (localStorage.getItem("name")){
+username = localStorage.getItem("name");
+}
+else{
+username = prompt("Please Tell Us Your Name");
+localStorage.setItem("name", username);
+}
 const timestamp = Date.now();
 const dbref = ref(db);
 const messageInput = document.getElementById("message-input");
@@ -105,13 +190,14 @@ for (var i = 0; i < length; i++) {
 
 function sendMessage(e) {
 e.preventDefault();
-
+if (messageInput.value != ""){
 push(ref(db, "chats/"), {
    name: username,
    msg: messageInput.value
 });
 getall();
-      messageInput.value = "";
+messageInput.value = "";
+}
 }
     /*set(ref(db, "chats/"+msgid),{
         name: username,
@@ -122,8 +208,7 @@ getall();
     .catch((error)=>{
         alert("Error: "+error);
     });*/
-
-document.getElementById("message-form").addEventListener("submit", sendMessage);
+document.getElementById("message-btn").addEventListener("click", sendMessage);
 
 function getall(){
 get(child(dbref, "chats")).then((snapshot)=>{
@@ -131,11 +216,16 @@ if(snapshot.exists()){
 document.getElementById("messages").innerHTML = " ";
  for (const project in snapshot.val()){
   for (const pd in snapshot.val()[project]){
-document.getElementById("messages").innerHTML += '<li data-id="'+snapshot.val()[project]+'"><span class="name">'+snapshot.val()[project]["name"]+": "+'</span><span class="msg">'+snapshot.val()[project]["msg"]+"</span></li><br>";
-console.log(snapshot.val()[project]);
-//snapshot.val()[project][pd]
-            }
-          }
+if (username != snapshot.val()[project]["name"]){
+document.getElementById("messages").innerHTML += '<li class="sndr"><span class="sndrnm">'+snapshot.val()[project]["name"]+': '+'</span><span class="sndrmsg">'+snapshot.val()[project]["msg"]+"</span></li>";
+}
+else if (username == snapshot.val()[project]["name"]){
+document.getElementById("messages").innerHTML += '<li class="slf"><span class="slfnm">'+'You: '+'</span><span class="slfmsg">'+snapshot.val()[project]["msg"]+"</span></li>";
+}
+else{
+}
+}
+}
 document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
        }
          else{
@@ -146,23 +236,17 @@ document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: 
      });
 }
 document.body.onload = getall;
-setInterval(getall, 1000);
+//setInterval(getall, 1000);
+document.getElementById("userhello").innerHTML = "Hello, "+username;
 </script>
   </head>
   <body>
-<header>
-   <h2>Firebase RealTime Chat</h2>
-    </header>
-      <ul id="messages"></ul>
-    <div id="chat">
-      <!-- messages will display here -->
-
-      <!-- form to send message -->
-      <form id="message-form">
-        <input id="message-input" type="text" autocomplete="off" required/>
-        <button id="message-btn" type="submit">Send</button>
-      </form>
-    </div>
+   <h2 id="userhello" style="color: rgb(18, 140, 126);"></h2>
+ <ul id="messages"></ul>
+      <div id="message-div">
+        <textarea id="message-input" autocomplete="off" placeholder="Type a message"></textarea>
+        <button id="message-btn"><i class="zmdi zmdi-mail-send" style="margin-left: 5px;margin-top: 10.5px;"></i></button>
+      </div>
 <!--<script type="text/javascript" charset="utf-8">
     javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
 </script>-->
