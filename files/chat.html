@@ -218,10 +218,10 @@ document.getElementById("messages").innerHTML = " ";
  for (const project in snapshot.val()){
   for (const pd in snapshot.val()[project]){
 if (username != snapshot.val()[project]["name"]){
-document.getElementById("messages").innerHTML += '<li class="sndr"><span class="sndrnm">'+snapshot.val()[project]["name"]+': '+'</span><span class="sndrmsg">'+snapshot.val()[project]["msg"]+"</span></li>";
+document.getElementById("messages").innerHTML += '<div class="sndr"><span class="sndrnm">'+snapshot.val()[project]["name"]+': '+'</span><span class="sndrmsg">'+snapshot.val()[project]["msg"]+"</span></div>";
 }
 else if (username == snapshot.val()[project]["name"]){
-document.getElementById("messages").innerHTML += '<li class="slf"><span class="slfnm">'+'You: '+'</span><span class="slfmsg">'+snapshot.val()[project]["msg"]+"</span></li>";
+document.getElementById("messages").innerHTML += '<div class="slf"><span class="slfnm">'+'You: '+'</span><span class="slfmsg">'+snapshot.val()[project]["msg"]+"</span></div>";
 }
 else{
 }
