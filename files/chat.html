@@ -71,7 +71,6 @@ body{
   bottom: 0px;
   width: 100%;
   padding-bottom: 8px;
-  height: 60px;
 }
 #message-input{
   width: calc(100% - 103px);
@@ -225,18 +224,19 @@ else{
 }
 }
 }
-       }
-         else{
-         }
+}
+else{}
      })
      .catch((error)=>{
          alert("Error: "+error);
      });
 }
-document.body.onload = getall;
+document.body.onload = function(){
+getall();
+document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+};
 setInterval(getall, 1000);
 document.getElementById("userhello").innerHTML = "Hello, "+username;
-document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 </script>
   </head>
   <body>
