@@ -177,10 +177,7 @@ else{}
 }
 }
 else{}
-     })
-     .catch((error)=>{
-         alert("Error: "+error);
-     });
+});
 }
 function bdld(){
 getall();
@@ -191,7 +188,7 @@ setInterval(getall, 1000);
 document.getElementById("userhello").innerHTML = "Hello, "+username;
 var nmclrs = ["#ffaa00", "#34B7F1", "#25D366", "#1967D2"];
 for (var i = 0; i < document.getElementsByClassName("msgnm").length; i++){
-document.getElementsByClassName("msgnm")[i].style.color = nmclrs[Math.random()*nmclrs.length];
+document.getElementsByClassName("msgnm")[i].style.color = nmclrs[Math.floor(Math.random()*nmclrs.length)];
 }
 </script>
   </head>
