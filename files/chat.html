@@ -167,10 +167,10 @@ document.getElementById("messages").innerHTML = " ";
  for (const project in snapshot.val()){
   for (const pd in snapshot.val()[project]){
 if (username != snapshot.val()[project]["name"]){
-document.getElementById("messages").innerHTML += '<div class="sndr"><span class="sndrnm">'+snapshot.val()[project]["name"]+': '+'</span><span class="sndrmsg">'+snapshot.val()[project]["msg"]+"</span></div>";
+document.getElementById("messages").innerHTML += '<div class="msg sndr"><span class="sndrnm msgnm">'+snapshot.val()[project]["name"]+': '+'</span><span class="sndrmsg">'+snapshot.val()[project]["msg"]+"</span></div>";
 }
 else if (username == snapshot.val()[project]["name"]){
-document.getElementById("messages").innerHTML += '<div class="slf"><span class="slfnm">'+'You: '+'</span><span class="slfmsg">'+snapshot.val()[project]["msg"]+"</span></div>";
+document.getElementById("messages").innerHTML += '<div class="msg slf"><span class="slfnm msgnm">'+'You: '+'</span><span class="slfmsg">'+snapshot.val()[project]["msg"]+"</span></div>";
 }
 else{}
 }
@@ -189,6 +189,10 @@ document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: 
 document.body.onload = bdld;
 setInterval(getall, 1000);
 document.getElementById("userhello").innerHTML = "Hello, "+username;
+var nmclrs = ["#ffaa00", "#34B7F1", "#25D366", "#1967D2"];
+for (var i = 0; i < document.getElementsByClassName("msgnm").length; i++){
+document.getElementsByClassName("msgnm")[i].style.color = nmclrs[Math.random()*nmclrs.length];
+}
 </script>
   </head>
   <body>
