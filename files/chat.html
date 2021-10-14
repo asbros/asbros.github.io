@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Firebase RealTime Chat</title>
+    <title>AS CHAT</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css"/>
 <style type="text/css">
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap');
@@ -42,22 +42,14 @@ body{
   position: relative;
   left: 15px;
 }
-/*.sndr::before{
-    background-color: #fff;
-    content: "\00a0";
-    display: block;
-    height: 16px;
-    position: absolute;
-    top: 11px;
-    left: 30px;
-    transform: rotate( 29deg ) skew( -35deg );
-    -moz-transform: rotate( 29deg ) skew( -35deg );
-    -ms-transform: rotate( 29deg ) skew( -35deg );
-    -o-transform: rotate( 29deg ) skew( -35deg );
-    -webkit-transform: rotate( 29deg ) skew( -35deg );
-    width:  20px;
-    z-index: 1;
-}*/
+.sndr:before{
+  content: "\A";
+  border-style: solid;
+  border-width: 10px 15px 10px 0;
+  border-color: #0088ff;
+  position: absolute;
+  left: -15px;
+}
 .slf{
   color: #000;
   background-color: #dcf8c6;
