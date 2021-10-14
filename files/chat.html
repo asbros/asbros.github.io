@@ -155,7 +155,8 @@ push(ref(db, "chats/"), {
 getall();
 document.getElementById("send-a").play();
 messageInput.value = "";
-document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+window.scrollBy(0,document.getElementById("messages").scrollHeight);
+//document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 }
 }
 document.getElementById("message-btn").addEventListener("click", sendMessage);
@@ -181,15 +182,12 @@ else{}
 }
 function bdld(){
 getall();
-document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+window.scrollBy(0,document.getElementById("messages").scrollHeight);
+//document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 }
 document.body.onload = bdld;
 setInterval(getall, 1000);
 document.getElementById("userhello").innerHTML = "Hello, "+username;
-var nmclrs = ["#ffaa00", "#34B7F1", "#25D366", "#1967D2"];
-for (var i = 0; i < document.getElementsByClassName("msgnm").length; i++){
-document.getElementsByClassName("msgnm")[i].style.color = nmclrs[Math.floor(Math.random()*nmclrs.length)];
-}
 </script>
   </head>
   <body>
