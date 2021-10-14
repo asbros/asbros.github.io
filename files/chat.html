@@ -168,13 +168,16 @@ li span {
   from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
   
 const db = getDatabase();
-var username;
+var username, nmclr;
+var nmclrs = ["#ffaa00", "#34B7F1", "#25D366", "#1967D2"];
 if (localStorage.getItem("name")){
 username = localStorage.getItem("name");
+nmclr = localStorage.getItem("nmclr");
 }
 else{
 username = prompt("Please Tell Us Your Name");
 localStorage.setItem("name", username);
+localStorage.setItem("nmclr", nmclrs[Math.random()*nmclrs.length]);
 }
 const timestamp = Date.now();
 const dbref = ref(db);
