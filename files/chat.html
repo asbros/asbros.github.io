@@ -182,7 +182,7 @@ else{}
 }
 function bdld(){
 getall();
-document.getElementById("messages").scrollIntoView();
+document.getElementById("messages").scrollIntoView(top=false);
 //document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 }
 document.body.onload = bdld;
