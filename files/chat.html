@@ -198,6 +198,7 @@ push(ref(db, "chats/"), {
    msg: messageInput.value
 });
 getall();
+document.getElementById("send-a").play();
 messageInput.value = "";
 document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 }
@@ -238,6 +239,7 @@ document.getElementById("userhello").innerHTML = "Hello, "+username;
   <body>
    <h2 id="userhello" style="color: rgb(18, 140, 126);text-align: center;"></h2>
  <div id="messages"></div>
+<audio id="send-a" src="https://techimodi.github.io/files/download.mp3" preload="auto"></audio>
       <div id="message-div">
         <textarea id="message-input" autocomplete="off" placeholder="Type a message"></textarea>
         <button id="message-btn"><i class="zmdi zmdi-mail-send" style="margin-left: 5px;margin-top: 10.5px;"></i></button>
