@@ -198,6 +198,7 @@ push(ref(db, "chats/"), {
    msg: messageInput.value
 });
 getall();
+document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 messageInput.value = "";
 }
 }
