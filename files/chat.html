@@ -173,6 +173,8 @@ var nmclrs = ["#ffaa00", "#34B7F1", "#25D366", "#1967D2"];
 if (localStorage.getItem("name")){
 username = localStorage.getItem("name");
 nmclr = localStorage.getItem("nmclr");
+document.getElementsByClassName("slfnm").style.color = nmclr;
+document.getElementsByClassName("sndrnm").style.color = nmclr;
 }
 else{
 username = prompt("Please Tell Us Your Name");
