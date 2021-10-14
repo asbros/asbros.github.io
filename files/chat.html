@@ -182,8 +182,8 @@ else{}
 }
 function bdld(){
 getall();
-document.getElementById("messages").scrollIntoView(top=false);
 //document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+document.getElementById("messages").scrollIntoView(top=false);
 }
 document.body.onload = bdld;
 setInterval(getall, 1000);
