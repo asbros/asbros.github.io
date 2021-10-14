@@ -198,8 +198,8 @@ push(ref(db, "chats/"), {
    msg: messageInput.value
 });
 getall();
-document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 messageInput.value = "";
+document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
 }
 }
 document.getElementById("message-btn").addEventListener("click", sendMessage);
