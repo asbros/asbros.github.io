@@ -103,52 +103,7 @@ body{
   text-align: center;
   margin-right: 10px;
 }
-/*body {
-    background-color: #f3f2f3;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    text-align: center;
-}
-
-#messages{
-    padding-bottom: 30%;
-}
-
-li {
-    list-style-type: none;
-    margin-bottom: 10px;
-    background-color: #6929ca;
-    padding: 5px;
-    border-radius: 10px;
-    color: white;
-    width: 50%;
-}
-
-li span {
-    font-style: italic;
-    font-weight: bolder;
-    color: #b5b0b9;
-}
-
-#chat {
-    width: 80%;
-    margin: auto;
-}
-
-.sent {
-    text-align: right;
-    background-color: #a79cb3;
-    margin-left: 50%;
-}
-
-.sent span {
-    margin-left: 5px;
-    color: #6929ca;
-}*/
-    </style>
+</style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-analytics.js";
@@ -168,18 +123,13 @@ li span {
   from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
   
 const db = getDatabase();
-var username, nmclr;
-var nmclrs = ["#ffaa00", "#34B7F1", "#25D366", "#1967D2"];
+var username;
 if (localStorage.getItem("name")){
 username = localStorage.getItem("name");
-nmclr = localStorage.getItem("nmclr");
-document.getElementsByClassName("slfnm").style.color = nmclr;
-document.getElementsByClassName("sndrnm").style.color = nmclr;
 }
 else{
 username = prompt("Please Tell Us Your Name");
 localStorage.setItem("name", username);
-localStorage.setItem("nmclr", nmclrs[Math.random()*nmclrs.length]);
 }
 const timestamp = Date.now();
 const dbref = ref(db);
