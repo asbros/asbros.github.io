@@ -199,10 +199,7 @@ push(ref(db, "chats/"), {
 });
 getall();
 messageInput.value = "";
-document.getElementById("messages").scroll({
-top: 1000,
-behavior: 'smooth'
-});
+document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 }
 }
 document.getElementById("message-btn").addEventListener("click", sendMessage);
