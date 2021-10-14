@@ -197,15 +197,6 @@ getall();
 messageInput.value = "";
 }
 }
-    /*set(ref(db, "chats/"+msgid),{
-        name: username,
-        msg: messageInput.value
-    })
-    .then(()=>{
-    })
-    .catch((error)=>{
-        alert("Error: "+error);
-    });*/
 document.getElementById("message-btn").addEventListener("click", sendMessage);
 
 function getall(){
@@ -220,8 +211,7 @@ document.getElementById("messages").innerHTML += '<div class="sndr"><span class=
 else if (username == snapshot.val()[project]["name"]){
 document.getElementById("messages").innerHTML += '<div class="slf"><span class="slfnm">'+'You: '+'</span><span class="slfmsg">'+snapshot.val()[project]["msg"]+"</span></div>";
 }
-else{
-}
+else{}
 }
 }
 }
@@ -231,10 +221,11 @@ else{}
          alert("Error: "+error);
      });
 }
-document.body.onload = function(){
+function bdld(){
 getall();
 document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-};
+}
+document.body.onload = bdld;
 setInterval(getall, 1000);
 document.getElementById("userhello").innerHTML = "Hello, "+username;
 </script>
