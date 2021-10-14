@@ -22,7 +22,7 @@ body{
 #messages{
   position: relative;
   left: 0;
-  padding-bottom: 64px;
+  padding-bottom: 100px;
 }
 .sndr, .slf{
   padding: 7px;
@@ -155,7 +155,7 @@ push(ref(db, "chats/"), {
 getall();
 document.getElementById("send-a").play();
 messageInput.value = "";
-window.scrollBy(0,document.getElementById("messages").scrollHeight+200px);
+window.scrollBy(0,document.getElementById("messages").scrollHeight);
 //document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 }
 }
