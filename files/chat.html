@@ -68,7 +68,10 @@ body{
   font-size: 18px;
 }
 #message-div{
-  background-color: #ece5dd;
+  background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-attachment: fixed;
   text-align: center;
   position: fixed;
   left: 0;
@@ -159,8 +162,8 @@ getall();
 document.getElementById("send-a").play();
 messageInput.value = "";
 //document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-}
 scrllm();
+}
 }
 document.getElementById("message-btn").addEventListener("click", sendMessage);
 
