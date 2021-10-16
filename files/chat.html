@@ -149,7 +149,7 @@ for (var i = 0; i < length; i++) {
 }*/
 function scrllm(){
 //window.scrollBy(0,document.getElementById("messages").scrollHeight);
-document.getElementById("messages").scrollTop(1000);
+
 }
 function sendMessage(e) {
 e.preventDefault();
@@ -161,7 +161,6 @@ push(ref(db, "chats/"), {
 getall();
 document.getElementById("send-a").play();
 messageInput.value = "";
-//document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 scrllm();
 }
 }
@@ -186,9 +185,8 @@ else{}
 else{}
 });
 }
-function bdld(){
 getall();
-//document.getElementById("messages").scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+function bdld(){
 scrllm();
 }
 document.body.onload = bdld;
@@ -204,8 +202,8 @@ document.getElementById("userhello").innerHTML = "Hello, "+username;
         <textarea id="message-input" autocomplete="off" placeholder="Type a message"></textarea>
         <button id="message-btn"><i class="zmdi zmdi-mail-send" style="margin-left: 5px;margin-top: 10.5px;"></i></button>
       </div>
-<!--<script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8">
     javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
-</script>-->
+</script>
   </body>
 </html>
