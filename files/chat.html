@@ -149,8 +149,7 @@ for (var i = 0; i < length; i++) {
 }*/
 function scrllm(){
 //window.scrollBy(0,document.getElementById("messages").scrollHeight);
-var msgln = document.getElementsByClassName("msg").length;
-document.getElementsByClassName("msg")[msgln].scrollIntoView();
+document.getElementById("messages").scrollIntoView();
 }
 function sendMessage(e) {
 e.preventDefault();
