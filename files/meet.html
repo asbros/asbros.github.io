@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<button id="start" type="button" style="margin:auto; display:flex;">Start</button><br>
+<button id="start" type="button" onclick="openFullscreen()" style="margin:auto; display:flex;">Start</button><br>
 <div id="jitsi-container">
 </div>
 <script>
@@ -30,5 +30,19 @@ var randomString = Array.apply(null, Array(stringLength)).map(pickRandom).join('
     };
     api = new JitsiMeetExternalAPI(domain, options);
 });
+</script>
+<script>
+/* Get the element you want displayed in fullscreen */ 
+var elem = document.getElementById("jitsi-container");
+/* Function to open fullscreen mode */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
 </script>
 </body>
