@@ -3,7 +3,7 @@
 <script src='https://meet.jit.si/external_api.js'></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body style="margin: 0;padding: 0;">
 <button id="start" type="button" style="margin:auto; display:flex;">Start</button><br>
 <div id="jitsi-container">
 </div>
@@ -29,6 +29,7 @@ var randomString = Array.apply(null, Array(stringLength)).map(pickRandom).join('
         "height": window.innerHeight
     };
     api = new JitsiMeetExternalAPI(domain, options);
+    button.style.display = "none";
 });
 </script>
 </body>
