@@ -21,12 +21,12 @@ button.addEventListener('click', () => {
 
 var randomString = Array.apply(null, Array(stringLength)).map(pickRandom).join('');
 
-    var domain = "https://as-chat.blogspot.com/";
+    var domain = "meet.jit.si";
     var options = {
         "roomName": randomString,
         "parentNode": container,
-        "width": "100vw",
-        "height": "100vh"
+        "width": window.innerWidth,
+        "height": window.innerHeight
     };
     api = new JitsiMeetExternalAPI(domain, options);
 });
