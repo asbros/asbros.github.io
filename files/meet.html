@@ -1,17 +1,17 @@
 <head>
 <title>MEET</title>
+<meta content='width=device-width, user-scalable=no' name='viewport'/>
 <script src='https://meet.jit.si/external_api.js'></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{user-select:none;}
+</style>
 </head>
 <body style="margin: 0;padding: 0;">
-<button id="start" type="button" style="margin:auto; display:flex;">Start</button><br>
 <div id="jitsi-container" style="margin: 0;padding: 0;position: fixed;top: 0;left: 0;">
 </div>
 <script>
-var button = document.querySelector('#start');
 var container = document.querySelector('#jitsi-container');
 var api = null;
-button.addEventListener('click', () => {
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var stringLength = 30;
 
@@ -29,7 +29,5 @@ var randomString = Array.apply(null, Array(stringLength)).map(pickRandom).join('
         "height": window.innerHeight
     };
     api = new JitsiMeetExternalAPI(domain, options);
-    button.style.display = "none";
-});
 </script>
 </body>
