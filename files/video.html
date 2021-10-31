@@ -2,7 +2,7 @@
 <meta content='width=device-width, initial-scale=1' name='viewport'/>
 <form id="search-form" class="search-form relative" action="https://yt1s.com/en37" method="GET">
 <input id="s_input" type="search" name="q" class="search__input" aria-label="Search" placeholder="Search or paste Youtube link here" value="">
-<button id="btn-convert" class="btn-red" type="button">Convert</button>
+<button id="btn-convert" class="btn-red" type="submit">Convert</button>
 </form>
 <div id="search-result"></div>
 <script type="text/javascript" charset="utf-8">
@@ -222,15 +222,14 @@ function ksearchvideo() {
     }
     return false;
 };
-document.body.onload = ksearchvideo;
-   /* $('#search-form').on('keyup keypress', function(e) {
+   $('#search-form').on('keyup keypress', function(e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
             e.preventDefault();
             ksearchvideo();
             return false;
         }
-    });*/
+    });
 
 </script>
 <script type="text/javascript" charset="utf-8">
