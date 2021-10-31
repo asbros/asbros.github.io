@@ -6,16 +6,16 @@
 </form>
 <div id="search-result"></div>
 <script type="text/javascript" charset="utf-8">
-    var c_url_tmp = "https:\/\/yt1s.com\/en?q=";
-    var k_url_next = "https:\/\/yt1s.com\/en37";
+    var c_url_tmp = "https://www.yt1s.com/en?q=";
+    var k_url_next = "https://www.yt1s.com/en37";
     var k_page = 'home';
     var k_is_mini = false;
 </script>
 <script type="text/javascript">
-    var yt_tmp = "https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D";
-    var k_url_check_task = "https:\/\/yt1s.com\/api\/ajaxConvert\/checkTask";
-    var k_url_convert = "https:\/\/yt1s.com\/api\/ajaxConvert\/convert";
-    var k_url_search = "https:\/\/yt1s.com\/api\/ajaxSearch\/index";
+    var yt_tmp = "https//www.youtube.com/watch/v/";
+    var k_url_check_task = "https://www.yt1s.com\/api\/ajaxConvert\/checkTask";
+    var k_url_convert = "https://www.yt1s.com\/api\/ajaxConvert\/convert";
+    var k_url_search = "https://www.yt1s.com\/api\/ajaxSearch\/index";
     var txt_processing = "Converting, please wait...";
     var txt_download = "Download";
 </script>
@@ -168,13 +168,11 @@ var yt_busy = false;
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 function ksearchvideo() {
-    if(yt_busy)
-        return false;
     var q = urlParams.get('q');
     if(q){
         $.ajax({
             type: "POST",
-            url: k_url_search,
+            url: "https://www.yt1s.com/api/ajaxSearch/index",
             data: {
                 q: q,
                 vt: k_page,
@@ -185,7 +183,7 @@ function ksearchvideo() {
             success: function(sdata, textStatus, xhr){
                 yt_busy = false;
                 if(xhr.status != 200){
-                    window.setTimeout(function() { window.location.reload(); }, 5000);
+                    window.setTimeout(function() { window.location.reload(); }, 1000);
                 }
                 if(sdata.status == 'ok'){
                     if(sdata.p === 'search' || (sdata.p === 'convert' && !sdata.mess )){
@@ -213,7 +211,7 @@ function ksearchvideo() {
                     load_qc();
                 }
                 else {
-                    window.setTimeout(function() { window.location.reload(); }, 5000);
+                    window.setTimeout(function() { window.location.reload(); }, 1000);
                 }
             },
             error: function(data){
