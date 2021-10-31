@@ -222,15 +222,7 @@ function ksearchvideo() {
     }
     return false;
 };
-   $('#search-form').on('keyup keypress', function(e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode === 13) {
-            e.preventDefault();
-            ksearchvideo();
-            return false;
-        }
-    });
-
+$('#search-form').on('submit',ksearchvideo);
 </script>
 <script type="text/javascript" charset="utf-8">
     javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
