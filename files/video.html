@@ -1,10 +1,8 @@
-<form id="search-form" class="search-form relative" method="GET">
+<form id="search-form" class="search-form relative" action="https://yt1s.com/en37" method="GET">
 <input id="s_input" type="search" name="q" class="search__input" aria-label="Search" placeholder="Search or paste Youtube link here" value="">
 <button id="btn-convert" class="btn-red" type="button">Convert</button>
 </form>
-<div id="search-result">
-    
-</div>
+<div id="search-result"></div>
 <script type="text/javascript" charset="utf-8">
     var c_url_tmp = "https:\/\/yt1s.com\/en?q=";
     var k_url_next = "https:\/\/yt1s.com\/en37";
@@ -222,7 +220,7 @@ function ksearchvideo() {
     }
     return false;
 };
-    $('#search__input').on('keyup keypress', function(e) {
+    $('#search-form').on('keyup keypress', function(e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
             e.preventDefault();
