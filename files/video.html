@@ -165,10 +165,8 @@ function load_qc() {
     da_load_qc = true;
 };
 var yt_busy = false;
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
 function ksearchvideo() {
-    var q = urlParams.get('q');
+    var q = $("#s_input").value;
     if(q){
         $.ajax({
             type: "POST",
