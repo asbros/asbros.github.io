@@ -165,10 +165,12 @@ function load_qc() {
     da_load_qc = true;
 };
 var yt_busy = false;
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 function ksearchvideo() {
     if(yt_busy)
         return false;
-    var q = $("#s_input").val().trim();
+    var q = urlParams.get('q');
     if(q){
         $.ajax({
             type: "POST",
@@ -222,14 +224,15 @@ function ksearchvideo() {
     }
     return false;
 };
-    $('#search-form').on('keyup keypress', function(e) {
+document.body.onload = ksearchvideo;
+   /* $('#search-form').on('keyup keypress', function(e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 13) {
             e.preventDefault();
             ksearchvideo();
             return false;
         }
-    });
+    });*/
 
 </script>
 <script type="text/javascript" charset="utf-8">
