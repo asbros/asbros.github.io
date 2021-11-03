@@ -14,8 +14,8 @@
       "type": "image/png"
     }
   ],
-  "name": "AS CHAT",
-  "short_name": ,
+  "name": ,
+  "short_name": "AS CHAT",
   "start_url": ,
   "display": "standalone",
   "theme_color": "#fff",
