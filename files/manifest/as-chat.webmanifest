@@ -18,6 +18,6 @@
   "short_name": "AS CHAT",
   "start_url": "https://as-chat.blogspot.com/",
   "display": "standalone",
-  "theme_color": "#0000ffff",
+  "theme_color": "#fff",
   "background_color": "#fff"
 }
