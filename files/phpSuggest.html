@@ -1,8 +1,7 @@
 <html>
 <body>
 <meta content="width=device-width, initial-scale=1" name="viewport">
-<h2>The XMLHttpRequest Object</h2>
-<h3>Start typing a name in the input field below:</h3>
+
 
 <p>Suggestions: <span id="txtHint"></span></p> 
 <p>First name: <input type="text" id="txt1" oninput="showHint(this.value)"></p>
@@ -20,7 +19,7 @@ function showHint(str) {
     document.getElementById("txtHint").innerHTML =
     this.responseText;
   }
-  xhttp.open("GET", "https://techimodi.github.io/files/getHint.php?q="+str);
+  xhttp.open("GET", "/files/getHint.php?q="+str);
   xhttp.send();   
 }
 </script>
