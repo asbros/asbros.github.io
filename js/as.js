@@ -62,7 +62,7 @@ function $(selector){
     
     toggle: ()=>{
      if(!self.element.style.display || self.element.style.display != "none"){
-    self.element.style.setProperty("display", "none"), t;
+    self.element.style.setProperty("display", "none");
         }
         else{
     self.element.style.removeProperty("display");
