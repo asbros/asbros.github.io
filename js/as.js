@@ -17,7 +17,7 @@ var as = {}
   var astools = [
       "<style>.as-tool{height: 100%;width: 100%;margin-top: 5px;word-wrap: break-word;overflow-y: scroll;}.as-run-code-buttons{height: 34px;width: 33%;}#as-resources .as-resources{border: 1px solid #000;background-color: #fff;margin: 10px;}#as-resources .as-resources-head{display: block;color: #f00;padding: 10px;width: 94.2%;background-color: #eee;font-family: cursive;}</style>",
       "<div class='as-tool' id='as-run-code'><textarea style='height: 60%;width: 99%;padding: 5px;' id='as-run-code-textarea' placeholder='Javascript Code here'></textarea><div style='position: fixed;bottom: 0;left: 0;width: 100%;justify-content: space-between;'><button class='as-run-code-buttons' onclick='as.code_clear()'>Clear</button><button class='as-run-code-buttons' onclick='as.code_copy()'>Copy</button><button class='as-run-code-buttons' onclick='as.code_run()'>Run Code</button></div></div>",
-      "<div class='as-tool' style='' id='as-resources'><div id='as-resources-1' class='as-resources'></div><div id='as-resources-2' class='as-resources'><span class='as-resources-head'>Session Storage</span></div><div id='as-resources-3' class='as-resources'><span class='as-resources-head'>Cookie</span></div><div id='as-resources-4' class='as-resources'><span class='as-resources-head'>Script</span></div><div id='as-resources-5' class='as-resources'><span class='as-resources-head'>Stylesheet</span></div><div id='as-resources-6' class='as-resources'><span class='as-resources-head'>Iframe</span></div><div id='as-resources-7' class='as-resources'><span class='as-resources-head'>Image</span></div><br/><br/><br/></div>",
+      "<div class='as-tool' style='' id='as-resources'><div id='as-resources-1' class='as-resources'></div><div id='as-resources-2' class='as-resources'><span class='as-resources-head'>Session Storage</span></div><div id='as-resources-3' class='as-resources'><span class='as-resources-head'>Cookie</span></div><div id='as-resources-4' class='as-resources'><span class='as-resources-head'>Script</span></div><div id='as-resources-5' class='as-resources'><span class='as-resources-head'>Stylesheet</span></div><div id='as-resources-6' class='as-resources'><span class='as-resources-head'>Iframe</span></div><div id='as-resources-7' class='as-resources' style='overflow: scroll;'><span class='as-resources-head'>Image</span></div><br/><br/><br/></div>",
       "<div class='as-tool' id='as-info'>Info</div>",
       "<div class='as-tool' id='as-snippets'>Snippets</div>",
       "<div class='as-tool' id='as-settings'>Settings</div>",
@@ -89,7 +89,7 @@ var as = {}
    document.getElementById("as-resources").style.display = "block";
  }
  as.getAllLocalStorage = function(){
-document.getElementById("as-resources-1").innerHTML = "<span class='as-resources-head'>Local Storage</span>";
+ document.getElementById("as-resources-1").innerHTML = "<span class='as-resources-head'>Local Storage</span>";
   for (let i = 0; i < localStorage.length; i++) {
    const key = localStorage.key(i);
    var b = document.createElement("button");
@@ -113,19 +113,22 @@ document.getElementById("as-resources-1").innerHTML = "<span class='as-resources
  as.getAllCookies = function(){
  document.getElementById("as-resources-3").innerHTML = "<span class='as-resources-head'>Cookie</span>";
   var cookies = document.cookie.split(';'); 
-  for (var i = 1; i <= cookies.length; i++) {
+  for (var i = 0; i < cookies.length; i++) {
+   if(cookies[i]){
    var b = document.createElement("button");
-   b.innerText = decodeURIComponent(cookies[i - 1]);
+   b.innerText = decodeURIComponent(cookies[i]);
    b.setAttribute("style", "display: inline-block;color: #00f;width: auto;margin: 5px;");
    document.getElementById("as-resources-3").appendChild(b);
+   }
   }
   }
  as.getAllScripts = function(){
   document.getElementById("as-resources-4").innerHTML = "<span class='as-resources-head'>Scripts</span>";
    var scripts = document.querySelectorAll("script[src]");
-   for (var i = 0;i < scripts.length;i++){
+  for (var i = 0;i < scripts.length;i++){
   var a = document.createElement("a");
   a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;color: #299;");
+  a.setAttribute("target", "_blank");
   var u = document.querySelectorAll("script[src]")[i].getAttribute("src");
   a.innerText = u;
   a.setAttribute("href", u);
@@ -133,21 +136,44 @@ document.getElementById("as-resources-1").innerHTML = "<span class='as-resources
     }
  }
  as.getAllStylesheets = function(){
+  document.getElementById("as-resources-5").innerHTML = "<span class='as-resources-head'>Stylesheets</span>";
   var stylesheets = document.querySelectorAll("link[rel='stylesheet']");
-   for (var i = 0;i < stylesheets.length;i++){
-   document.getElementById("as-resources-5").innerText += document.querySelectorAll("link[rel='stylesheet']")[i].getAttribute("href");
+  for (var i = 0;i < stylesheets.length;i++){
+  var a = document.createElement("a");
+  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;color: #299;");
+  a.setAttribute("target", "_blank");
+  var u = document.querySelectorAll("link[rel='stylesheet']")[i].getAttribute("href");
+  a.innerText = u;
+  a.setAttribute("href", u);
+  document.getElementById("as-resources-5").appendChild(a);
    }
  }
  as.getAllIframes = function(){
-   var iframes = document.querySelectorAll("iframe[src]");
-   for (var i = 0;i < iframes.length;i++){
-    document.getElementById("as-resources-6").innerText += document.querySelectorAll("iframe[src]")[i].getAttribute("src");
+  document.getElementById("as-resources-6").innerHTML = "<span class='as-resources-head'>Iframes</span>";
+  var iframes = document.querySelectorAll("iframe[src]");
+  for (var i = 0;i < iframes.length;i++){
+  var a = document.createElement("a");
+  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;color: #299;");
+  a.setAttribute("target", "_blank");
+  var u = document.querySelectorAll("iframe[src]")[i].getAttribute("src");
+  a.innerText = u;
+  a.setAttribute("href", u);
+    document.getElementById("as-resources-6").appendChild(a);
    }
  }
  as.getAllImages = function(){
+   document.getElementById("as-resources-7").innerHTML = "<span class='as-resources-head'>Images</span>";
    var images = document.querySelectorAll("img[src]");
    for (var i = 0;i < images.length;i++){
-    document.getElementById("as-resources-7").innerText += document.querySelectorAll("img[src]")[i].getAttribute("src");
+    var b = document.createElement("a");
+    b.setAttribute("target", "_blank");
+    var a = document.createElement("img");
+    var u = document.querySelectorAll("img[src]")[i].getAttribute("src");
+    a.setAttribute("src", u);
+    b.setAttribute("href", u);
+    a.setAttribute("style", "height: 100px;min-width: 49%;display: inline-block;margin: 0;padding: 0;object-fit: cover;");
+    b.appendChild(a);
+    document.getElementById("as-resources-7").appendChild(b);
    }
  }
  as.getAllResources = function(){
@@ -166,9 +192,4 @@ document.getElementById("as-resources-1").innerHTML = "<span class='as-resources
   document.body.innerHTML += style;
  }
  as.init();
- var nscr = document.createElement("script");
- nscr.setAttribute("src", "https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js");
- document.body.appendChild(nscr);
- nscr.addEventListener('load', function(){
-  let draggie = new Draggabilly('#asbtn', {containment: true});
- });
+ javascript:(function () { var script = document.createElement('script'); script.src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js"; document.body.appendChild(script); script.onload = function () {let draggie = new Draggabilly('#asbtn', {containment: true});} })();
