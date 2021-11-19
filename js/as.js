@@ -1,4 +1,4 @@
-var as = {}
+const as = {}
  as.container = function(){
   var cnt = document.createElement("div");
   cnt.setAttribute("id", "as-container");
@@ -15,7 +15,7 @@ var as = {}
   astool.forEach(appendItem);
   cnt.appendChild(cnthd);
   var astools = [
-      "<style>.as-tool{height: 100%;width: 100%;margin-top: 5px;word-wrap: break-word;overflow-y: scroll;}.as-run-code-buttons{height: 34px;width: 33%;}#as-resources .as-resources{border: 1px solid #000;background-color: #fff;margin: 10px;}#as-resources .as-resources-head{display: block;color: #f00;padding: 10px;width: 100%;background-color: #eee;font-family: cursive;}</style>",
+      "<style>.as-tool{height: 100%;width: 100%;margin-top: 5px;word-wrap: break-word;overflow-y: scroll;}.as-run-code-buttons{height: 34px;width: 33%;}#as-resources .as-resources{border: 1px solid #000;background-color: #fff;margin: 10px;}#as-resources .as-resources-head{display: block;color: #f00;padding: 10px;width: 100%;background-color: #eee;font-weight: bold;}</style>",
       "<div class='as-tool' id='as-run-code'><textarea style='height: 60%;width: 99%;padding: 5px;' id='as-run-code-textarea' placeholder='Javascript Code here'></textarea><div style='position: fixed;bottom: 0;left: 0;width: 100%;justify-content: space-between;'><button class='as-run-code-buttons' onclick='as.code_clear()'>Clear</button><button class='as-run-code-buttons' onclick='as.code_copy()'>Copy</button><button class='as-run-code-buttons' onclick='as.code_run()'>Run Code</button></div></div>",
       "<div class='as-tool' style='' id='as-resources'><div id='as-resources-1' class='as-resources'></div><div id='as-resources-2' class='as-resources'><span class='as-resources-head'>Session Storage</span></div><div id='as-resources-3' class='as-resources'><span class='as-resources-head'>Cookie</span></div><div id='as-resources-4' class='as-resources'><span class='as-resources-head'>Script</span></div><div id='as-resources-5' class='as-resources'><span class='as-resources-head'>Stylesheet</span></div><div id='as-resources-6' class='as-resources'><span class='as-resources-head'>Iframe</span></div><div id='as-resources-7' class='as-resources' style='overflow: scroll;'><span class='as-resources-head'>Image</span></div><br/><br/><br/></div>",
       "<div class='as-tool' id='as-info'>Info</div>",
@@ -127,7 +127,7 @@ var as = {}
    var scripts = document.querySelectorAll("script[src]");
   for (var i = 0;i < scripts.length;i++){
   var a = document.createElement("a");
-  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;color: #299;");
+  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;");
   a.setAttribute("target", "_blank");
   var u = document.querySelectorAll("script[src]")[i].getAttribute("src");
   a.innerText = u;
@@ -140,7 +140,7 @@ var as = {}
   var stylesheets = document.querySelectorAll("link[rel='stylesheet']");
   for (var i = 0;i < stylesheets.length;i++){
   var a = document.createElement("a");
-  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;color: #299;");
+  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;");
   a.setAttribute("target", "_blank");
   var u = document.querySelectorAll("link[rel='stylesheet']")[i].getAttribute("href");
   a.innerText = u;
@@ -153,7 +153,7 @@ var as = {}
   var iframes = document.querySelectorAll("iframe[src]");
   for (var i = 0;i < iframes.length;i++){
   var a = document.createElement("a");
-  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;color: #299;");
+  a.setAttribute("style", "display: block;font-size: 14px;margin: 7px;");
   a.setAttribute("target", "_blank");
   var u = document.querySelectorAll("iframe[src]")[i].getAttribute("src");
   a.innerText = u;
