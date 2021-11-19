@@ -190,6 +190,6 @@ const as = {}
  as.init = function(){
   as.container();
   as.button();
-  javascript:(function () { var script = document.createElement('script'); script.src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js"; document.body.appendChild(script); script.onload = function () {let draggie = new Draggabilly('#asbtn', {containment: false});} })();
+  javascript:(function () { var script = document.createElement('script'); script.src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js"; document.documentElement.appendChild(script); script.onload = function () {let draggie = new Draggabilly('#asbtn', {containment: document.documentElement});} })();
  }
  as.init();
