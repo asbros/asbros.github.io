@@ -15,7 +15,7 @@ const as = {}
   astool.forEach(appendItem);
   cnt.appendChild(cnthd);
   var astools = [
-      "<style>*{box-sizing: border-box;}.as-tool{height: 100%;width: 100%;margin-top: 5px;word-wrap: break-word;overflow-y: scroll;}.as-run-code-buttons{height: 34px;width: 33%;}#as-resources .as-resources{border: 1px solid #000;background-color: #fff;margin: 10px;}#as-resources .as-resources-head{display: block;color: #f00;padding: 10px;width: 100%;background-color: #eee;font-weight: bold;}</style>",
+      "<style>*{box-sizing: border-box;}.as-tool{height: 100%;width: 100%;margin-top: 5px;word-wrap: break-word;overflow-y: scroll;}.as-run-code-buttons{height: 34px;width: 33%;}#as-resources .as-resources{border: 1px solid #000;background-color: #fff;margin: 10px;}#as-resources .as-resources-head{display: block;color: #f00;padding: 10px;width: 100%;background-color: #eee;font-weight: bold;}#asbtn.is-pointer-down{background-color: #29a !important;}</style>",
       "<div class='as-tool' id='as-run-code'><textarea style='height: 60%;width: 99%;padding: 5px;' id='as-run-code-textarea' placeholder='Javascript Code here'></textarea><div style='position: fixed;bottom: 0;left: 0;width: 100%;justify-content: space-between;'><button class='as-run-code-buttons' onclick='as.code_clear()'>Clear</button><button class='as-run-code-buttons' onclick='as.code_copy()'>Copy</button><button class='as-run-code-buttons' onclick='as.code_run()'>Run Code</button></div></div>",
       "<div class='as-tool' style='color: #000;' id='as-resources'><div id='as-resources-1' class='as-resources'></div><div id='as-resources-2' class='as-resources'><span class='as-resources-head'>Session Storage</span></div><div id='as-resources-3' class='as-resources'><span class='as-resources-head'>Cookie</span></div><div id='as-resources-4' class='as-resources'><span class='as-resources-head'>Script</span></div><div id='as-resources-5' class='as-resources'><span class='as-resources-head'>Stylesheet</span></div><div id='as-resources-6' class='as-resources'><span class='as-resources-head'>Iframe</span></div><div id='as-resources-7' class='as-resources' style='overflow: scroll;'><span class='as-resources-head'>Image</span></div><br/><br/><br/></div>",
       "<div class='as-tool' id='as-info'>Info</div>",
@@ -37,7 +37,8 @@ const as = {}
     document.getElementsByClassName("as-tool-btn")[i].style.backgroundColor = "";
    }
    document.getElementById(id).style.display = "block";
-   document.getElementById(id+"-btn").style.backgroundColor = "#f00";
+   document.getElementById(id+"-btn").style.backgroundColor = "#0096FF";
+   document.getElementById(id+"-btn").style.color = "#fff";
    if(n == "resources"){
      as.getAllResources();
    }
@@ -95,7 +96,7 @@ const as = {}
    var b = document.createElement("button");
    b.setAttribute("onclick", "as.lsss('ls','"+key+"')");
    b.innerText = key;
-   b.setAttribute("style", "display: inline-block;width: auto;margin: 3px;");
+   b.setAttribute("style", "display: inline-block;width: auto;margin: 3px;border: 0;border: 1px solid #000;");
    document.getElementById("as-resources-1").appendChild(b);
   }
  }
@@ -106,7 +107,7 @@ const as = {}
    var b = document.createElement("button");
    b.setAttribute("onclick", "as.lsss('ss','"+key+"')");
    b.innerText = key;
-   b.setAttribute("style", "display: inline-block;width: auto;margin: 3px;");
+   b.setAttribute("style", "display: inline-block;width: auto;margin: 3px;border: 0;border: 1px solid #000;");
    document.getElementById("as-resources-2").appendChild(b);
   }
  }
@@ -117,7 +118,7 @@ const as = {}
    if(cookies[i]){
    var b = document.createElement("button");
    b.innerText = decodeURIComponent(cookies[i]);
-   b.setAttribute("style", "display: inline-block;width: auto;margin: 3px;");
+   b.setAttribute("style", "display: inline-block;width: auto;margin: 3px;border: 0;border: 1px solid #000;");
    document.getElementById("as-resources-3").appendChild(b);
    }
   }
@@ -127,7 +128,7 @@ const as = {}
    var scripts = document.querySelectorAll("script[src]");
   for (var i = 0;i < scripts.length;i++){
   var a = document.createElement("a");
-  a.setAttribute("style", "display: block;margin: 7px;");
+  a.setAttribute("style", "display: block;margin: 7px;text-decoration: underline;color: #1F51FF;");
   a.setAttribute("target", "_blank");
   var u = document.querySelectorAll("script[src]")[i].getAttribute("src");
   a.innerText = u;
@@ -140,7 +141,7 @@ const as = {}
   var stylesheets = document.querySelectorAll("link[rel='stylesheet']");
   for (var i = 0;i < stylesheets.length;i++){
   var a = document.createElement("a");
-  a.setAttribute("style", "display: block;margin: 7px;");
+  a.setAttribute("style", "display: block;margin: 7px;text-decoration: underline;color: #1F51FF;");
   a.setAttribute("target", "_blank");
   var u = document.querySelectorAll("link[rel='stylesheet']")[i].getAttribute("href");
   a.innerText = u;
@@ -153,7 +154,7 @@ const as = {}
   var iframes = document.querySelectorAll("iframe[src]");
   for (var i = 0;i < iframes.length;i++){
   var a = document.createElement("a");
-  a.setAttribute("style", "display: block;margin: 7px;");
+  a.setAttribute("style", "display: block;margin: 7px;text-decoration: underline;color: #1F51FF;");
   a.setAttribute("target", "_blank");
   var u = document.querySelectorAll("iframe[src]")[i].getAttribute("src");
   a.innerText = u;
@@ -188,8 +189,6 @@ const as = {}
  as.init = function(){
   as.container();
   as.button();
-  var style = "<style>#asbtn.is-pointer-down{background-color: #29a !important;}</style>";
-  document.body.innerHTML += style;
+  javascript:(function () { var script = document.createElement('script'); script.src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js"; document.body.appendChild(script); script.onload = function () {let draggie = new Draggabilly('#asbtn', {containment: true});} })();
  }
  as.init();
- javascript:(function () { var script = document.createElement('script'); script.src="https://unpkg.com/draggabilly@2/dist/draggabilly.pkgd.js"; document.body.appendChild(script); script.onload = function () {let draggie = new Draggabilly('#asbtn', {containment: true});} })();
