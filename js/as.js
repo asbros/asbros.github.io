@@ -2,7 +2,7 @@ const as = {}
  as.container = function(){
   var cnt = document.createElement("div");
   cnt.setAttribute("id", "as-container");
-  cnt.setAttribute("style", "display: none;position: fixed;bottom: 0;left: 0;width: 100%;height: 360px;background-color: #fff;z-index: 99999999999999999999999999999999;transition: display 1s;");
+  cnt.setAttribute("style", "display: none;position: fixed;bottom: 0;left: 0;width: 100%;height: 300px;background-color: #fff;z-index: 99999999999999999999999999999999;transition: display 1s;");
   var astool = ['Run-Code','Resources','Info','Snippets','Settings'];
   var cnthd = document.createElement("div");
   cnthd.setAttribute("style", "white-space: nowrap;overflow-x: scroll;background-color: #ccc;");
