@@ -35,7 +35,7 @@ const as = {}
    for(var i = 0;i < tools.length;i++){
     document.getElementsByClassName("as-tool")[i].style.display = "none";
     document.getElementsByClassName("as-tool-btn")[i].style.backgroundColor = "";
-    document.getElementsByClassName("as-tool-btn')[i].style.color = "";
+    document.getElementsByClassName("as-tool-btn')[i].style.color = "#000";
    }
    document.getElementById(id).style.display = "block";
    document.getElementById(id+"-btn").style.backgroundColor = "#0096FF";
