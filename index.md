@@ -12,6 +12,7 @@ div.container-lg.px-3.my-5.markdown-body h1{margin-top: 0px !important;color: #0
 .header{font-size: 20px;text-align: left;padding: 12px;border: 1px solid #000;}
 #myTable {width: 100%;border: 1px solid #000;border-top: none;font-size: 18px;}
 #myTable div{text-align: left;padding: 12px;border-bottom: 1px solid #ddd;font-family: 'Ubuntu', sans-serif;}
+.header{font-family: 'Amarante', cursive;}
 .header, #myTable div:hover {background-color: #f1f1f1;}
 </style>
 
