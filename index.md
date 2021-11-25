@@ -11,13 +11,14 @@ div.container-lg.px-3.my-5.markdown-body img{width: 60px;height: 60px;}
 div.container-lg.px-3.my-5.markdown-body h1{margin-top: 0px !important;color: #000;font-family: 'Amarante', cursive;}
 div.container-lg.px-3.my-5.markdown-body h1 a{position: relative;bottom: 15px;margin-left: 5px;}
 *{box-sizing: border-box;}
+body{margin: 0;padding: 0;}
 #myInput {background-image: url('https://img.icons8.com/color/48/000000/search--v1.png');background-position: 7px 8px;background-size: 30px;background-repeat: no-repeat;width: 100%;font-size:16px;padding:12px 20px 12px 40px;border: 1px solid #000;margin-bottom: 10px;outline: none;font-family: 'Ubuntu', sans-serif;}
 .header{font-size: 20px;text-align: left;padding: 12px;border: 1px solid #000;}
 #myTable {width: 100%;border: 1px solid #000;border-top: none;font-size: 18px;}
 #myTable a{display: block;text-align: left;padding: 14px;border-bottom: 1px solid #ddd;font-family: 'Ubuntu', sans-serif;}
 .header{font-family: 'Amarante', cursive;}
 .header, #myTable a:hover {background-color: #f1f1f1;}
-#footer-div{height: 40px;width: 100%;background-color: #000;position:absolute;bottom:0px;left:0;color:#fff;text-align:center;padding:8px;font-family: 'Amarante', cursive;}
+#footer-div{height: 40px;width: 100%;background-color: #000;color:#fff;text-align:center;padding:8px;font-family: 'Amarante', cursive;}
 </style>
 
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
