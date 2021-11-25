@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+    <title>Image Editor</title>
+<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'/>
+<meta charset='UTF-8'/>
+<meta content='Online Free Emage Editor' name='description'/>
+<meta content='Image Editor, Free Image Editor, Online Free Image Editor' name='keywords'/>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'/>
+<meta content='#319197' name='theme-color'/>
+<style type='text/css'>
+body{
+margin: 0;
+background-color: #319197;
+user-select: none;
+}
+.canvas{
+position: fixed;
+width: 100vw;
+height: 80%;
+top: 0;
+left: 0;
+object-fit: contain;
+border: 1px solid red;
+z-index: 9;
+}
+#filters{
+position: fixed;
+bottom: 0;
+left: 0;
+color: #000;
+width: 100vw;
+display: flex;
+justify-content: space-around;
+z-index: 999;
+}
+.slides{
+width: 25%;
+border: 1px solid red;
+display: flex;
+justify-content: center;
+}
+.filter{
+height: 50px;
+background-color: transparent;
+color: #fff;
+border: 0;
+outline: 0;
+z-index: 999;
+}
+.filter span{
+font-size: 30px;
+}
+#fstng{
+display: none;
+}
+.rng{
+width: 100%;
+position: fixed;
+bottom: 52px;
+color: #fff;
+left: 0;
+background-color: rgba(255,0,0,0.5);
+}
+.filter:hover{
+color: #e056fd;
+}
+</style>
+</head>
+<body id='body'>
+<input accept='image/*' id='imageInput' style='display: none;' type='file'/>
+<label for='imageInput' id='pkrlb' style='background-color: #539;color: #fff;position: fixed;left: 50%;top: 50%;transform: translate(-50%, -50%);padding: 10px 20px;border-radius: 5px;font-size: 1.25em;'>Edit Image</label>
+<button id='back' onclick='back()' style='position: fixed;top: 10px;left: 10px;color: #fff;font-size: 30px;text-shadow: 0 0 5px #000;background: transparent;z-index: 999;border: 0;display: none;'><i class='material-icons'>arrow_back_ios</i></button>
+<button id='dwld' onclick='dwld()' style='position: fixed;top: 15px;right: 10px;color: #fff;font-size: 30px;text-shadow: 0 0 5px #000;background: transparent;z-index: 999;border: 0;display: none;'><i class='material-icons'>save_alt</i></button>
+<!--<button id="cmpr" style="position: fixed;top: 15px;right: 10px;color: #fff;font-size: 30px;text-shadow: 0 0 5px #000;background: transparent;z-index: 999;border: 0;display: none;"><i class="material-icons">compare</i></button>-->
+<div id='filters' style='display: none;'>
+<div class='slides'>
+<div class='rng' id='rnga' style='display: none;'>
+    Contrast: <input id='contrast' max='100' min='10' oninput='adflt(&#39;contrast&#39;, this.value)' style='width: 200px;' type='range' value='100'/><br/>
+    Saturation: <input id='adflt' max='100' min='0' oninput='adflt(&#39;saturate&#39;, this.value)' style='width: 200px;' type='range' value='50'/><br/>
+    Grayscale: <input id='grayscale' max='100' min='10' oninput='adflt(&#39;grayscale&#39;, this.value)' style='width: 200px;' type='range' value='0'/>
+</div>
+<button class='filter' onclick='plte()'><span class='material-icons'>palette</span></button>
+</div>
+<div class='slides'>
+<div class='rng' id='rngb' style='display: none;'>
+    Brightness: <input id='bt' max='100' min='0' oninput='adflt(&#39;brightness&#39;, this.value)' style='width: 200px;' type='range' value='100'/><br/>
+    Intensity: <input id='ints' max='100' min='0' oninput='int(this.value)' style='width: 200px;' type='range' value='50'/><br/>
+    Vibrance: <input id='vbr' max='100' min='0' oninput='vbr(this.value)' style='width: 200px;' type='range' value='0'/>
+</div><button class='filter' onclick='iso()'><span class='material-icons'>iso</span></button></div>
+<div class='slides'>
+<div class='rng' id='rngc' style='display: none;'>
+    Rotate: <input id='rotate' max='180' min='0' oninput='rotate(this.value)' style='width: 200px;' type='range' value='0'/><br/>
+<b>Crop: </b><br/>
+    Width: <input id='width' max='100' min='1' oninput='crop(&#39;width&#39;, this.value)' style='width: 200px;' type='range' value='100'/><br/>
+    Height: <input id='height' max='100' min='1' oninput='crop(&#39;height&#39;, this.value)' style='width: 200px;' type='range' value='100'/>
+</div>
+<button class='filter' onclick='rngc()'><span class='material-icons'>crop_rotate</span></button></div>
+<div class='slides'>
+<div class='rng' id='rngd' style='display: none;'>
+    Hue: <input id='hue' max='180' min='0' oninput='adflt(&#39;hue-rotate&#39;, this.value)' style='width: 200px;' type='range' value='0'/><br/>
+    Invert: <input id='invert' max='100' min='10' oninput='adflt(&#39;invert&#39;, this.value)' style='width: 200px;' type='range' value='0'/><br/>
+    Sepia: <input id='sepia' max='100' min='10' oninput='adflt(&#39;sepia&#39;, this.value)' style='width: 200px;' type='range' value='0'/><br/>
+</div>
+<button class='filter' onclick='rngd()'><span class='material-icons'>filter_b_and_w</span></button></div>
+<div class='slides'>
+<div class='rng' id='rnge' style='display: none;'>
+</div>
+<button class='filter' onclick='rnge()'><span class='material-icons'>crop_original</span></button></div>
+</div>
+<script charset='utf-8' type='text/javascript'>
+    var imageInput = document.getElementById("imageInput");
+    var image = new Image();
+    var canvas = document.createElement("canvas");
+    canvas.setAttribute("class", "canvas");
+    var ctx = canvas.getContext("2d");
+    imageInput.onchange = async function (e) {
+      const filem = e.target.files[0];
+      const urlm = URL.createObjectURL(filem);
+        localStorage.setItem("name", this.files[0].name);
+        localStorage.setItem("image", urlm);
+        document.getElementById("pkrlb").style.display = "none";
+        initApp();
+        canvas.style.display = "block";
+        document.getElementById("filters").style.display = "flex";
+        document.getElementById("back").style.display = "block";
+        document.getElementById("dwld").style.display = "block";
+        //document.getElementById("cmpr").style.display = "block";
+    }
+    async function initApp() {
+        image.src = localStorage.getItem("image");
+        await new Promise(r => image.onload = r);
+        var ratio = image.height / image.width;
+        canvas.width = Math.min(image.width, innerWidth * devicePixelRatio);
+        canvas.height = canvas.width * ratio;
+        
+        
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        document.getElementById("body").appendChild(canvas);
+    }
+function back(){
+     canvas.style.display = "none";
+     document.getElementById("filters").style.display = "none";
+     document.getElementById("back").style.display = "none";
+     document.getElementById("dwld").style.display = "none";
+     //document.getElementById("cmpr").style.display = "none";
+     localStorage.clear();
+     document.getElementById("pkrlb").style.display = "block";
+ }
+function dwld(){
+    canvas.toBlob(d=>{
+        var lk = document.createElement("a");
+        lk.setAttribute("href", URL.createObjectURL(d));
+        lk.setAttribute("download", 'My Image.jpg')
+        lk.click();
+        lk.remove();
+    });
+}
+function plte(){
+ var x = document.getElementById("rnga");
+ document.getElementById("rngb").style.display = "none";
+ document.getElementById("rngd").style.display = "none";
+ document.getElementById("rngc").style.display = "none";
+ document.getElementById("rnge").style.display = "none";
+ switch (x.style.display){
+     case "none":
+         x.style.display = "block";
+         break;
+     case "block":
+         x.style.display = "none";
+         break;
+ }
+    }
+function iso(){
+    var x = document.getElementById("rngb");
+    document.getElementById("rnga").style.display = "none";
+    document.getElementById("rngd").style.display = "none";
+    document.getElementById("rngc").style.display = "none";
+    document.getElementById("rnge").style.display = "none";
+ switch (x.style.display){
+     case "none":
+         x.style.display = "block";
+         break;
+     case "block":
+         x.style.display = "none";
+         break;
+ }
+}
+function rngc(){
+    var x = document.getElementById("rngc");
+    document.getElementById("rnga").style.display = "none";
+    document.getElementById("rngb").style.display = "none";
+    document.getElementById("rngd").style.display = "none";
+    document.getElementById("rnge").style.display = "none";
+ switch (x.style.display){
+     case "none":
+         x.style.display = "block";
+         break;
+     case "block":
+         x.style.display = "none";
+         break;
+ }
+}
+function rngd(){
+    var x = document.getElementById("rngd");
+    document.getElementById("rnga").style.display = "none";
+    document.getElementById("rngb").style.display = "none";
+    document.getElementById("rngc").style.display = "none";
+    document.getElementById("rnge").style.display = "none";
+ switch (x.style.display){
+     case "none":
+         x.style.display = "block";
+         break;
+     case "block":
+         x.style.display = "none";
+         break;
+ }
+}
+function rnge(){
+    var x = document.getElementById("rnge");
+    document.getElementById("rnga").style.display = "none";
+    document.getElementById("rngb").style.display = "none";
+    document.getElementById("rngc").style.display = "none";
+    document.getElementById("rngd").style.display = "none";
+ switch (x.style.display){
+     case "none":
+         x.style.display = "block";
+         break;
+     case "block":
+         x.style.display = "none";
+         break;
+ }
+}
+function adflt(a, b){
+   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    var flt = 'saturate('+document.getElementById("adflt").value*2+'%)'+' '+'contrast('+document.getElementById("contrast").value*2+'%)'+' '+'grayscale('+document.getElementById("grayscale").value*2+'%)'+' '+'hue-rotate('+document.getElementById("hue").value*2+'deg)'+' '+'invert('+document.getElementById("invert").value*2+'%)'+' '+'sepia('+document.getElementById("sepia").value*2+'%)'+' '+'brightness('+document.getElementById("bt").value+'%)';
+    ctx.filter = flt;
+    ctx.drawImage(canvas, 0, 0);
+    ctx.filter = "none";
+    /*switch (a){
+      case "saturate":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+        break;
+      case "contrast":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+        break;
+      case "grayscale":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+        break;
+      case "hue-rotate":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+        break;
+      case "invert":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+        break;
+      case "sepia":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+        break;
+      case "brightness":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+          break;
+      case "opacity":
+        ctx.filter = flt;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.filter = "none";
+          break;
+    }*/
+}
+function int(bl){
+   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    var flt = 'saturate('+document.getElementById("adflt").value*2+'%)'+' '+'contrast('+document.getElementById("contrast").value*2+'%)'+' '+'grayscale('+document.getElementById("grayscale").value*2+'%)'+' '+'hue-rotate('+document.getElementById("hue").value*2+'deg)'+' '+'invert('+document.getElementById("invert").value*2+'%)'+' '+'sepia('+document.getElementById("sepia").value*2+'%)'+' '+'brightness('+document.getElementById("bt").value+'%)';
+ctx.filter = flt;
+ctx.drawImage(canvas, 0, 0);
+ctx.filter = "none";
+   ctx.globalCompositeOperation = "overlay";
+   ctx.globalAlpha = Math.abs(1 - bl / 50);
+   ctx.fillStyle = bl > 50 ? "white" : "black";
+   ctx.fillRect(0, 0, canvas.width, canvas.height);
+   ctx.globalCompositeOperation = "source-over";
+   ctx.globalAlpha = 1;
+}
+function vbr(cl){
+   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    var flt = 'saturate('+document.getElementById("adflt").value*2+'%)'+' '+'contrast('+document.getElementById("contrast").value*2+'%)'+' '+'grayscale('+document.getElementById("grayscale").value*2+'%)'+' '+'hue-rotate('+document.getElementById("hue").value*2+'deg)'+' '+'invert('+document.getElementById("invert").value*2+'%)'+' '+'sepia('+document.getElementById("sepia").value*2+'%)'+' '+'brightness('+document.getElementById("bt").value+'%)';
+ctx.filter = flt;
+ctx.drawImage(canvas, 0, 0);
+ctx.filter = "none";
+    ctx.globalCompositeOperation = "overlay";
+   ctx.globalAlpha = cl / 100;
+   ctx.drawImage(canvas, 0, 0);
+   ctx.drawImage(canvas, 0, 0);
+   ctx.fillRect(0, 0, canvas.width, canvas.height);
+   ctx.globalCompositeOperation = "source-over";
+   ctx.globalAlpha = 1;
+}
+function rotate(rvl){
+    canvas.style.transform = 'rotate('+rvl*2+'deg)';
+}
+function crop(crp, crvl){
+    switch (crp){
+        case "width":
+canvas.style.transform = 'scale('+crvl/100+', '+document.getElementById("height").value/100+')';
+          break;
+        case "height":
+canvas.style.transform = 'scale('+document.getElementById("width").value/100+', '+crvl/100+')';
+          break;
+    }
+}
+/*var cmpr = document.getElementById("cmpr");
+cmpr.ontouchstart = cmpr.onmousedown = function () {
+    ctx.filter = "none";
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    cmpr.style.color = "#e056fd";
+}
+cmpr.ontouchend = cmpr.onmouseup = function () {
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+   ctx.filter = 'saturate('+document.getElementById('adflt').value*2+'%)';
+    ctx.drawImage(canvas, 0, 0);
+   bt(document.getElementById("bt").value);
+   int(document.getElementById("ints").value);
+   vbr(document.getElementById("vbr").value);
+    cmpr.style.color = "#fff";
+}*/
+/*function bt(vl){
+   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+   ctx.globalCompositeOperation = "soft-light";
+   ctx.globalAlpha = Math.abs(1 - vl / 50);
+   ctx.fillStyle = vl > 50 ? "white" : "black";
+   ctx.fillRect(0, 0, canvas.width, canvas.height);
+   ctx.globalCompositeOperation = "source-over";
+   ctx.globalAlpha = 1;
+}*/
+    </script>
+</body>
+</html>
