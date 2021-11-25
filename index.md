@@ -6,7 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 #skip-to-content, .page-header, .site-footer, h1:nth-child(1){width: 0;height: 0;padding: 0;margin: 0;opacity: 0;visibility: hidden;display: none;}
 div.container-lg.px-3.my-5.markdown-body{padding: 10px 20px !important;margin: 0 !important;height: 60px !important;width: 100%;max-width: 100% !important;}
-div.container-lg.px-3.my-5.markdown-body img{width: 69px;height: 60px;}
+div.container-lg.px-3.my-5.markdown-body img{width: 60px;height: 60px;}
 div.container-lg.px-3.my-5.markdown-body h1{margin-top: 0px !important;color: #000;position: relative;bottom: 7px;font-family: 'Amarante', cursive;}
 *{box-sizing: border-box;}
 #myInput {background-image: url('https://img.icons8.com/color/48/000000/search--v1.png');background-position: 7px 8px;background-size: 30px;background-repeat: no-repeat;width: 100%;font-size:16px;padding:12px 20px 12px 40px;border: 1px solid #000;margin-bottom: 10px;outline: none;font-family: 'Ubuntu', sans-serif;}
