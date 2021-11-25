@@ -8,10 +8,10 @@
 </style>
 </head>
 <body>
+<button onclick="dzip()">Download</button>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.4/jszip.min.js"></script>
 <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.js"></script>
 <script type="text/javascript">
-javascript:(function () {     var script =  document.createElement('script');    script.src="https://as.js.org/as.js";     document.body.appendChild(script);})();
 function dzip(){
  var zip = new JSZip();
   zip.file("hello.txt", "Hello World\n");
