@@ -74,7 +74,8 @@ const tools = [
   }
 ]
 function additem(item, index){
- var html = "<a href='"+item.u+"' target='_blank'>"+index*1+1+". "+item.n+"</a>";
+ var reali = index*1+1;
+ var html = "<a href='"+item.u+"' target='_blank'>"+reali+". "+item.n+"</a>";
 document.getElementById("myTable").innerHTML += html;
 }
 tools.forEach(additem);
