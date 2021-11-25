@@ -10,6 +10,8 @@ visibility: hidden;
 display: none;
 }
 div.container-lg.px-3.my-5.markdown-body{
+padding: 0 !important;
+margin: 0 !important;
 height: 60px !important;
 border: 1px solid #000;
 }
