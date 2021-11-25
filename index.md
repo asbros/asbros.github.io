@@ -1,6 +1,6 @@
 # AS Brothers
 <style>
-#skip-to-content, .page-header, .site-footer{
+#skip-to-content, .page-header, .site-footer, h1:nth-child(1){
 width: 0;
 height: 0;
 padding: 0;
