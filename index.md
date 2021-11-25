@@ -21,7 +21,7 @@ div.container-lg.px-3.my-5.markdown-body h1 a{position: relative;bottom: 15px;ma
 
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
 <div class='header'>Our Projects</div>
-<div id='myTable'></div>
+<div id='myTable'></div><br/><br/><br/>
 
 <script>
 const tools = [
