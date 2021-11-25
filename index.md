@@ -11,9 +11,9 @@ div.container-lg.px-3.my-5.markdown-body h1{margin-top: 0px !important;color: #0
 #myInput {background-image: url('https://www.w3schools.com/css/searchicon.png');background-position: 10px 10px;background-repeat: no-repeat;width: 100%;font-size:16px;padding:12px 20px 12px 40px;border: 1px solid #000;margin-bottom: 10px;outline: none;font-family: 'Ubuntu', sans-serif;}
 .header{font-size: 20px;text-align: left;padding: 12px;border: 1px solid #000;}
 #myTable {width: 100%;border: 1px solid #000;border-top: none;font-size: 18px;}
-#myTable div{text-align: left;padding: 12px;border-bottom: 1px solid #ddd;font-family: 'Ubuntu', sans-serif;}
+#myTable a{text-align: left;padding: 12px;border-bottom: 1px solid #ddd;font-family: 'Ubuntu', sans-serif;}
 .header{font-family: 'Amarante', cursive;}
-.header, #myTable div:hover {background-color: #f1f1f1;}
+.header, #myTable a:hover {background-color: #f1f1f1;}
 </style>
 
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
@@ -36,7 +36,7 @@ const tools = [
   }
 ]
 function additem(item, index){
- var html = "<div><a href='"+item.u+"' target='_blank'>"+item.n+"</a></div>";
+ var html = "<a href='"+item.u+"' target='_blank'>"+item.n+"</a>";
 document.getElementById("myTable").innerHTML += html;
 }
 tools.forEach(additem);
