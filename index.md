@@ -1,6 +1,4 @@
-<script>
-window.location.href = "https://techimodi.blogspot.com/";
-</script>
+<title>AS Brothers</title>
 <style>
 #skip-to-content, .page-header, .site-footer{
 width: 0;
