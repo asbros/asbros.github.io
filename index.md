@@ -45,7 +45,7 @@ function myFunction() {
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
   table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("div");
+  tr = table.getElementsByTagName("a");
   for (i = 0; i < tr.length; i++) {
     td = tr[i];
     if (td) {
