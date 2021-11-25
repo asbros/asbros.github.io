@@ -23,16 +23,16 @@ div.container-lg.px-3.my-5.markdown-body h1{margin-top: 0px !important;color: #0
 <script>
 const tools = [
   {
-   n: '1st Tool',
-   u: 'https://techimodi.blogspot.com/'
+   n: 'Code Editor',
+   u: 'https://asbros.github.io/tool/code-editor.html'
   },
   {
-   n: '2nd Tool',
-   u: 'https://rtugames.blogspot.com/'
+   n: 'Dictionary App',
+   u: 'https://asbros.github.io/tool/dictionary-app.html'
   },
   {
-  n: '3rd tool',
-  u: 'https://techimodi.blogspot.com/'
+  n: 'Jokes Generator',
+  u: 'https://asbros.github.io/tool/jokes-generator.html'
   }
 ]
 function additem(item, index){
