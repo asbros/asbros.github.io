@@ -1,4 +1,5 @@
 # AS BROTHERS
+<meta content='https://img.icons8.com/cute-clipart/64/000000/web.png' property='og:image'/>
 <link rel="shortcut icon" href="https://img.icons8.com/cute-clipart/64/000000/web.png" type="image/vnd.microsoft.icon"/>
 <style>
 #skip-to-content, .page-header, .site-footer, h1:nth-child(1){width: 0;height: 0;padding: 0;margin: 0;opacity: 0;visibility: hidden;display: none;}
