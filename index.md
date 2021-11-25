@@ -8,7 +8,7 @@
 div.container-lg.px-3.my-5.markdown-body{padding: 10px 20px !important;margin: 0 !important;height: 60px !important;width: 100%;max-width: 100% !important;}
 div.container-lg.px-3.my-5.markdown-body h1{margin-top: 0px !important;color: #000;font-family: 'Amarante', cursive;}
 *{box-sizing: border-box;}
-#myInput {background-image: url('https://www.w3schools.com/css/searchicon.png');background-position: 10px 10px;background-repeat: no-repeat;width: 100%;font-size:16px;padding:12px 20px 12px 40px;border: 1px solid #000;margin-bottom: 10px;outline: none;}
+#myInput {background-image: url('https://www.w3schools.com/css/searchicon.png');background-position: 10px 10px;background-repeat: no-repeat;width: 100%;font-size:16px;padding:12px 20px 12px 40px;border: 1px solid #000;margin-bottom: 10px;outline: none;font-family: 'Ubuntu', sans-serif;}
 .header{font-size: 20px;text-align: left;padding: 12px;border: 1px solid #000;}
 #myTable {width: 100%;border: 1px solid #000;border-top: none;font-size: 18px;}
 #myTable div{text-align: left;padding: 12px;border-bottom: 1px solid #ddd;font-family: 'Ubuntu', sans-serif;}
