@@ -18,7 +18,7 @@ body{margin: 0;padding: 0;}
 #myTable a{display: block;text-align: left;padding: 8px;border-bottom: 1px solid #ddd;font-family: 'Ubuntu', sans-serif;}
 .header{font-family: 'Amarante', cursive;}
 .header, #myTable a:hover {background-color: #f1f1f1;}
-#footer-div{height: 40px;width: 100%;background-color: #888;color:#fff;text-align:center;padding:12px 12px;font-family: 'Amarante', cursive;}
+#footer-div{height: 40px;width: 100%;background-color: #333;color:#fff;text-align:center;padding:12px 12px;font-family: 'Amarante', cursive;}
 </style>
 
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
