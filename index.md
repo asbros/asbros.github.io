@@ -8,7 +8,7 @@
 div.container-lg.px-3.my-5.markdown-body{padding: 10px 20px !important;margin: 0 !important;height: 80px !important;width: 100%;max-width: 100% !important;}
 div.container-lg.px-3.my-5.markdown-body img{width: 60px;height: 60px;}
 div.container-lg.px-3.my-5.markdown-body h1{margin-top: 0px !important;color: #000;font-family: 'Amarante', cursive;}
-div.container-lg.px-3.my-5.markdown-body h1 a{position: relative;bottom: 15px;}
+div.container-lg.px-3.my-5.markdown-body h1 a{position: relative;bottom: 15px;margin-left: 5px;}
 *{box-sizing: border-box;}
 #myInput {background-image: url('https://img.icons8.com/color/48/000000/search--v1.png');background-position: 7px 8px;background-size: 30px;background-repeat: no-repeat;width: 100%;font-size:16px;padding:12px 20px 12px 40px;border: 1px solid #000;margin-bottom: 10px;outline: none;font-family: 'Ubuntu', sans-serif;}
 .header{font-size: 20px;text-align: left;padding: 12px;border: 1px solid #000;}
