@@ -1,4 +1,4 @@
-<title>AS Brothers</title>
+# AS Brothers
 <style>
 #skip-to-content, .page-header, .site-footer{
 width: 0;
