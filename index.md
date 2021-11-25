@@ -36,6 +36,38 @@ const tools = [
   {
   n: 'Jokes Generator',
   u: 'https://asbros.github.io/tool/jokes-generator.html'
+  },
+  {
+  n: 'Maths Solver',
+  u: 'https://asbros.github.io/tool/math-solver.html'
+  },
+  {
+  n: 'QR Code Generator',
+  u: 'https://asbros.github.io/tool/qr-generator.html'
+  },
+  {
+  n: 'QR Code Scanner',
+  u: 'https://asbros.github.io/tool/qr-scanner.html'
+  },
+  {
+  n: 'Quiz App',
+  u: 'https://asbros.github.io/tool/quiz-app.html'
+  },
+  {
+  n: '1',
+  u: 'https://asbros.github.io/tool/'
+  },
+  {
+  n: '2',
+  u: 'https://asbros.github.io/tool/'
+  },
+  {
+  n: '3',
+  u: 'https://asbros.github.io/tool/'
+  },
+  {
+  n: '4',
+  u: 'https://asbros.github.io/tool/'
   }
 ]
 function additem(item, index){
