@@ -62,7 +62,7 @@ const tools = [
   },
   {
   n: 'Random Quote Generator',
-  u: 'https://asbros.github.io/tool/quote-generator.html/'
+  u: 'https://asbros.github.io/tool/quote-generator.html'
   },
   {
   n: '3',
