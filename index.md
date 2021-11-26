@@ -57,8 +57,8 @@ const tools = [
   u: 'https://asbros.github.io/tool/quiz-app.html'
   },
   {
-  n: '1',
-  u: 'https://asbros.github.io/tool/'
+  n: 'Weather App',
+  u: 'https://asbros.github.io/tool/weather-app.html'
   },
   {
   n: '2',
