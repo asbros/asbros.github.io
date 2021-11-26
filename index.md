@@ -61,8 +61,8 @@ const tools = [
   u: 'https://asbros.github.io/tool/weather-app.html'
   },
   {
-  n: '2',
-  u: 'https://asbros.github.io/tool/'
+  n: 'Random Quote Generator',
+  u: 'https://asbros.github.io/tool/quote-generator.html/'
   },
   {
   n: '3',
