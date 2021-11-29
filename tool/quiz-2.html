@@ -244,7 +244,7 @@ body{
 <div id="finish-quiz">
 <i class="fas fa-user-graduate"></i>
 <span id="user">Your Scoreboard</span>
-<hr/>
+<div style="border-bottom: 1px solid lightgrey;"></div>
 <span id="correct"></span><br/>
 <span id="incorrect"></span><br/>
 <span id="attempted"></span><br/>
@@ -254,7 +254,6 @@ body{
 <span id="message"></span><br/>
 </div>
 <script>
-javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
 const questions = [
  {
   question: "What does CSS stand for?",
