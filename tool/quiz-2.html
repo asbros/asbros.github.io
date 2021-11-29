@@ -375,6 +375,7 @@ function checkAnswer(n,o,b){
    score++;
   }else{
     b.classList.add("wrong");
+    document.querySelectorAll("#quiz-options button")[questions[quno].correct-1].classList.add("correct");
    }
    for(var i = 0;i < document.querySelectorAll("#quiz-options button").length;i++){
   document.querySelectorAll("#quiz-options button")[i].setAttribute("disabled", "disabled");
