@@ -22,6 +22,7 @@ body{margin: 0;padding: 0;}
 </style>
 <link href='https://asbros.github.io/web-manifest/as-bros.webmanifest' rel='manifest'/>
 <script>
+javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker
