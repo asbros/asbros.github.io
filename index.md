@@ -27,8 +27,8 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker
       .register("https://asbros.github.io/service-worker/as-bros.js")
-      .then(res => alert("service worker registered"))
-      .catch(err => alert("service worker not registered - "+err))
+      .then(res => console.log("service worker registered"))
+      .catch(err => console.log("service worker not registered", err))
   })
 }
 </script>
