@@ -25,10 +25,7 @@ body{margin: 0;padding: 0;}
 javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
-    navigator.serviceWorker
-      .register("https://asbros.github.io/service-worker/as-bros.js")
-      .then(res => console.log("service worker registered"))
-      .catch(err => console.log("service worker not registered", err))
+    navigator.serviceWorker.register("https://asbros.github.io/service-worker/as-bros.js").then(res => console.log("service worker registered")).catch(err => console.log("service worker not registered", err))
   })
 }
 </script>
