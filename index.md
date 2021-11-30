@@ -1,4 +1,5 @@
 # ![AS BROTHERS](https://asbros.github.io/image/icons8-male-user.gif)[AS BROTHERS](https://asbros.github.io/)
+<head>
 <meta content='width=device-width, user-scalable=no' name='viewport'/>
 <meta content='https://img.icons8.com/cute-clipart/64/000000/web.png' property='og:image'/>
 <link rel="shortcut icon" href="https://img.icons8.com/cute-clipart/64/000000/web.png" type="image/vnd.microsoft.icon"/>
@@ -29,6 +30,7 @@ if ("serviceWorker" in navigator) {
 };
 javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
 </script>
+</head>
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
 <div class='header'>Our Projects</div>
 <div id='myTable'></div><br/>
