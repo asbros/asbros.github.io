@@ -20,7 +20,17 @@ body{margin: 0;padding: 0;}
 .header, #myTable a:hover {background-color: #f1f1f1;}
 #footer-div{height: 40px;width: 100%;background-color: #333;color:#fff;text-align:center;padding:12px 12px;font-family: 'Amarante', cursive;}
 </style>
-
+<link href='https://asbros.github.io/web-manifest/as-bros.webmanifest' rel='manifest'/>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker
+      .register("https://asbros.github.io/service-worker/as-bros.js")
+      .then(res => console.log("service worker registered"))
+      .catch(err => console.log("service worker not registered", err))
+  })
+}
+</script>
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
 <div class='header'>Our Projects</div>
 <div id='myTable'></div><br/>
