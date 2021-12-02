@@ -51,7 +51,7 @@
 
         var gui = new dat.GUI();
         gui.brushType = "MarkerBrush";
-        gui.brushWidth = 15;
+        gui.brushWidth = 5;
         gui.brushOpacity = 1;
         gui.inkAmount = 7;
         gui.brushColor = "#ff0000";
@@ -73,7 +73,7 @@
 
         gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush"])
         .onFinishChange(setupBrush);
-        gui.add(gui, "brushWidth", 10, 100).step(5)
+        gui.add(gui, "brushWidth", 1, 100).step(5)
           .onChange(function(value) {
             canvas.freeDrawingBrush.width = value;
           });
