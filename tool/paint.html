@@ -39,7 +39,9 @@
           allowTouchScrolling: false,
           hoverCursor: "pointer",
           selection: false
-        });
+        })
+        .setWidth(window.innerWidth)
+        .setHeight(window.innerHeight);
 
         window.canvas = canvas;
 
