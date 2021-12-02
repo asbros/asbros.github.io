@@ -71,6 +71,8 @@
           navigator.clipboard.writeText(dataURL);
         }
         gui.FullScreen = function(){
+        canvas.setWidth(window.innerWidth)
+        canvas.setHeight(window.innerHeight);
          if (document.body.requestFullscreen) {
            document.body.requestFullscreen();
         } else if (document.body.webkitRequestFullscreen) { /* Safari */
