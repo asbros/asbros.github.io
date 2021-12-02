@@ -78,7 +78,7 @@
           downloadLink.setAttribute('href', url);
           downloadLink.click();
         }
-        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush", "SprayBrush"])
+        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush")
         .onFinishChange(setupBrush);
         gui.add(gui, "brushWidth", 1, 100)
           .onChange(function(value) {
@@ -121,7 +121,7 @@
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/fabric@4.6.0/dist/fabric.min.js"></script>
-    <script src="https://tennisonchan.github.io/fabric-brush/bower_components/fabric-brush/dist/fabric-brush.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fabric-brush@0.0.1/dist/fabric-brush.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
   </body>
 </html>
