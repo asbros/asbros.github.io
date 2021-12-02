@@ -68,7 +68,7 @@
         gui.Clear = function(){
           canvas.clearContext(canvas.contextTop);
         }
-        gui.Copy_Link_Of_Paint = function() {
+        gui.Copy_Painting_Link = function() {
           var dataURL = canvas.contextTop.canvas.toDataURL("image/png");
           navigator.clipboard.writeText(dataURL);
         }
@@ -98,7 +98,7 @@
             canvas.freeDrawingBrush.inkAmount = value;
           });
         gui.add(gui, "Download_Paint");
-        gui.add(gui, "Copy_Link_Of_Paint");
+        gui.add(gui, "Copy_Painting_Link");
         gui.add(gui, "Clear");
       };
     </script>
