@@ -72,7 +72,7 @@
           var dataURL = canvas.contextTop.canvas.toDataURL("image/png");
           navigator.clipboard.writeText(dataURL);
         }
-        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush"])
+        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush", "SprayBrush"])
         .onFinishChange(setupBrush);
         gui.add(gui, "brushWidth", 1, 100)
           .onChange(function(value) {
