@@ -63,14 +63,22 @@
           color: gui.brushColor
         });
 
-        gui.clear = function(){
+        gui.Clear = function(){
           canvas.clearContext(canvas.contextTop);
         }
-        gui.copyLink = function() {
+        gui.CopyLink = function() {
           var dataURL = canvas.contextTop.canvas.toDataURL("image/png");
           navigator.clipboard.writeText(dataURL);
         }
-
+        gui.FullScreen = function(){
+         if (document.body.requestFullscreen) {
+           document.body.requestFullscreen();
+        } else if (document.body.webkitRequestFullscreen) { /* Safari */
+           document.body.webkitRequestFullscreen();
+        } else if (document.body.msRequestFullscreen) { /* IE11 */
+           document.body.msRequestFullscreen();
+        }
+       }
         gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush"])
         .onFinishChange(setupBrush);
         gui.add(gui, "brushWidth", 1, 100)
@@ -89,8 +97,9 @@
           .onChange(function(value) {
             canvas.freeDrawingBrush.inkAmount = value;
           });
-        gui.add(gui, "copyLink");
-        gui.add(gui, "clear");
+        gui.add(gui, "FullScreen");
+        gui.add(gui, "CopyLink");
+        gui.add(gui, "Clear");
       };
     </script>
     <script>
