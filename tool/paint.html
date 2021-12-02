@@ -70,17 +70,6 @@
           var dataURL = canvas.contextTop.canvas.toDataURL("image/png");
           navigator.clipboard.writeText(dataURL);
         }
-        gui.FullScreen = function(){
-        canvas.setWidth(window.innerWidth)
-        canvas.setHeight(window.innerHeight);
-         if (document.body.requestFullscreen) {
-           document.body.requestFullscreen();
-        } else if (document.body.webkitRequestFullscreen) { /* Safari */
-           document.body.webkitRequestFullscreen();
-        } else if (document.body.msRequestFullscreen) { /* IE11 */
-           document.body.msRequestFullscreen();
-        }
-       }
         gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush"])
         .onFinishChange(setupBrush);
         gui.add(gui, "brushWidth", 1, 100)
@@ -99,7 +88,6 @@
           .onChange(function(value) {
             canvas.freeDrawingBrush.inkAmount = value;
           });
-        gui.add(gui, "FullScreen");
         gui.add(gui, "CopyLink");
         gui.add(gui, "Clear");
       };
