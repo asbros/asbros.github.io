@@ -71,7 +71,7 @@
           window.open(dataURL);
         }
 
-        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush", "SprayBrush"])
+        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush"])
         .onFinishChange(setupBrush);
         gui.add(gui, "brushWidth", 10, 100).step(5)
           .onChange(function(value) {
