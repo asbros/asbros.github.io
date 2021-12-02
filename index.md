@@ -43,6 +43,10 @@ const tools = [
    u: 'https://asbros.github.io/tool/code-editor.html'
   },
   {
+   n: 'Paint app',
+   u: 'https://asbros.github.io/tool/paint.html'
+  },
+  {
    n: 'Dictionary App',
    u: 'https://asbros.github.io/tool/dictionary-app.html'
   },
