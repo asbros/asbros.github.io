@@ -68,7 +68,8 @@
         }
         gui.save = function() {
           var dataURL = canvas.contextTop.canvas.toDataURL("image/png");
-          window.open(dataURL, "_blank");
+          sessionStorage.setItem("data", dataURL);
+          window.open(sessionStorage.getItem("data"), "_blank");
         }
 
         gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush"])
