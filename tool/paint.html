@@ -68,9 +68,16 @@
         gui.Clear = function(){
           canvas.clearContext(canvas.contextTop);
         }
-        gui.CopyLink = function() {
+        gui.Copy_Link_Of_Paint = function() {
           var dataURL = canvas.contextTop.canvas.toDataURL("image/png");
           navigator.clipboard.writeText(dataURL);
+        }
+        gui.Download_Paint = function(){
+          let downloadLink = document.createElement('a');
+          downloadLink.setAttribute('download', 'Painting.png');
+          let url = canvas.contextTop.canvas.toDataURL("image/png");
+          downloadLink.setAttribute('href', url);
+          downloadLink.click();
         }
         gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush", "SprayBrush"])
         .onFinishChange(setupBrush);
@@ -90,7 +97,8 @@
           .onChange(function(value) {
             canvas.freeDrawingBrush.inkAmount = value;
           });
-        gui.add(gui, "CopyLink");
+        gui.add(gui, "Download_Paint");
+        gui.add(gui, "Copy_Link_Of_Paint");
         gui.add(gui, "Clear");
       };
     </script>
