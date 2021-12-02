@@ -78,7 +78,7 @@
           downloadLink.setAttribute('href', url);
           downloadLink.click();
         }
-        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush")
+        gui.add(gui, "brushType", ["CrayonBrush", "InkBrush", "MarkerBrush"])
         .onFinishChange(setupBrush);
         gui.add(gui, "brushWidth", 1, 100)
           .onChange(function(value) {
