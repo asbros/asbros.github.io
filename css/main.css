@@ -8,7 +8,7 @@ user-select: none;
 -webkit-user-select: none;
 -ms-user-select: none;
 }
-.as-button, as-button-active, as-button-hover{
+.as-button, .as-button-active, .as-button-hover{
 background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));
 border: 0;
 color: #fff;
