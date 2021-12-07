@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2&display=swap');
-.baloo-600{
+.baloo-font{
 font-family: 'Baloo Thambi 2';
 font-weight:600;
 }
@@ -8,7 +8,7 @@ user-select: none;
 -webkit-user-select: none;
 -ms-user-select: none;
 }
-.as-button{
+.as-button, as-button-active, as-button-hover{
 background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));
 border: 0;
 color: #fff;
@@ -17,17 +17,8 @@ box-shadow: rgba(0,0,0,0.16)0 2px 6.5727px 0, rgba(0,0,0,0.12) 0 2px 11.5727px 0
 padding: 10px 10px;
 font-size: 18px;
 }
-.as-button-hover:hover{
-box-shadow: 0;
+.as-button-active:active, .as-button-hover:hover{
 background-color: #fff;
 color: rgb(43,105,226);
 background-image: none;
-border: 1px solid rgb(43,105,226);
-}
-.as-button-active:active{
-box-shadow: 0;
-background-color: #fff;
-color: rgb(43,105,226);
-background-image: none;
-border: 1px solid rgb(43,105,226);
 }
