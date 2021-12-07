@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8" name = "viewport" content = "width = device-width, initial-scale = 1.0, maximum-scale = 1.0, minimum-scale = 1.0, user-scalable = 0, minimal-ui" />
+		
+		<style type = "text/css">
+
+            * {
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            body{
+                background: #102633;
+	            /*background: url("assets/img/bg.jpg") ;*/ 
+            }
+
+            canvas {
+                touch-action-delay: none;
+                touch-action: none;
+                -ms-touch-action: none;
+            }
+
+            #inputFake {
+				width: 1px; height: 1px; overflow: hidden; border: none; top: -99999px; position: absolute;
+				margin: 0; padding: 0;
+			}
+
+        </style>
+
+        <form method="POST" action="" id="form_hidden">
+			<input type="hidden" id="input_score" name="score" value="" />
+		</form>
+ 
+		<script src="https://connect.facebook.net/en_US/fbinstant.6.3.js"></script>
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/mcinstant.js"></script>
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/matter.js"></script>
+        <script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/date.format.js"></script> 
+        <script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/gamesparks-rt.js"></script>
+        <script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/gamesparks.js"></script>
+        <script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/gamesparks-functions.js"></script>
+        <script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/hmac-sha256.js"></script>
+	    <script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/phaser.min.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/phaser-spine.min.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/lib/phaser-nineslice.min.js" ></script> 
+ 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/Engine.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Align.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Animation.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/ArrayUtil.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Callback.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Camera.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/DateUtils.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Depth.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/ImageUtil.js" ></script> 	
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/MathUtil.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Tick.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/ObjectUtil.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Pool.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Random.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/StringUtil.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Trace.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/Utils.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/utils/ScreenUtils.js" ></script> 
+
+ 	
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/physics/Matter.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/physics/PencilPhysics.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/physics/Shape_Matter.js" ></script> 
+
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/units/IK.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/units/Line.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/units/Rect.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/units/Square.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/units/Vector3D.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/units/SinCount.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/core/Canvas.js" ></script>  
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Connector.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Messages.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Data.js" ></script>  
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Achievements.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Shop.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Players.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/VSBoard.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Levels.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/data/Tracking.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/ComboAnim.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/CountDown.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/ExplosionEngine.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/PauseControl.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/Time.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/Slider.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/Scroller.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/VarControl.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/ShareScreenshot.js" ></script>
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/bar/PowerBar.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/bar/PreloadBar.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/bar/ProgressBar.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/bar/PowerBar_Text.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/bar/StarsBar.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/cursor/Cursor.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/cursor/Finger.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Sprite.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_SpriteSimple.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Text.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Pause.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Stats.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Leaderboard.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_PVP.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Friend.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Achievement.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_BottomNav.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_News.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Pagination.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_Level.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_LevelPage.js" ></script>
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/ButtonGroup.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/ButtonBoolean.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/BuyButton.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/ButtonSimple.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/ButtonSound.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/buttons/Button_SpriteText.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/displayer/ScoreBig.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/displayer/Stars.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/displayer/Level.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/displayer/Notifications.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/displayer/PackageLoader.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/displayer/Displayer_FortuneWheel.js" ></script>
+  
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/gallery/Gallery.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/gallery/Gallery_Emotes.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/gallery/Gallery_BottomNav.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/tutorial/Tutorials.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/BlackCover.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_Settings.js" ></script> 
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_Confirm.js" ></script>
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_BOT.js" ></script> 	
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_Levels.js" ></script> 
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_LevelPages.js" ></script> 
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_Dialog.js" ></script> 
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_Paused.js" ></script> 
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/components/popups/Popup_NoAds.js" ></script> 
+ 		
+
+
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/Ads.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/AnimText.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/Colors.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/Particles.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/SoundEngine.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/SpinePool.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/Sprites.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/Texts.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/library/Load.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/fx/Cloud.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/plug/fx/Snow.js" ></script> 
+ 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/Game.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/LevelLogic.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/Elements.js" ></script> 
+
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Base.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Fan.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Glass.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Heat.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/HeatSpin.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Rotator.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Cannon.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Emoji.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Circle.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Moving.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/elements/Hint.js" ></script>
+
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Popup_Splash.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Background.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Header_Top.js" ></script> 	
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Popup_Settings.js" ></script> 
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Popup_Shop.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Button_Shop.js" ></script>
+		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Popup_Claim.js" ></script>
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Popup_FortuneWheel.js" ></script>
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Popup_Over.js" ></script>
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Popup_Howto.js" ></script>
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Displayer_Coins.js" ></script>
+ 		<script src="https://www.miniclip.com/game-files/emoji-glass/game-files/v2/src/popups/Displayer_Clues.js" ></script>
+	</head>
+	<body>
+		<a href="" id="linkID"></a>
+		<script>
+			window.onload = function() 
+			{ 
+				var mci = new MCInstant.MCInstant({ app_id: 2537077893186022 })
+
+				//import { MCInstant } from "@miniclip/instant";
+
+				//const mci = new MCInstant({ app_id: process.env.APP_ID });
+
+				startEngine( 1242, 2208, true )
+			}
+
+		</script>
+	</body>
+</html>
