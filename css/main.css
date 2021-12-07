@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2&display=swap');
-.baloo-font{
+.baloo-600{
 font-family: 'Baloo Thambi 2';
+font-weight:600;
 }
 .noselect{
 user-select: none;
