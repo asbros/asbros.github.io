@@ -5,8 +5,14 @@
 --yellow: #FFCC1D;
 --white: #ffffff;
 --black: #000000;
--greeen: #116530;
+--greeen: #116530;
 }
+.red{color: var(--red)}
+.blue{color: var(--blue)}
+.yellow{color: var(--yellow)}
+.white{color: var(--white)}
+.black{color: var(--black)}
+.green{color: var(--green)}
 .baloo-font{
 font-family: 'Baloo Thambi 2';
 font-weight:600;
