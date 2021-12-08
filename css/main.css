@@ -1,4 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2&display=swap');
+:root{
+--red: #DD4A48;
+--blue: #rgb(43,105,226);
+--yellow: #FFCC1D;
+--white: #ffffff;
+--black: #000000;
+-greeen: #116530;
+}
 .baloo-font{
 font-family: 'Baloo Thambi 2';
 font-weight:600;
