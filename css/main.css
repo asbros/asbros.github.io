@@ -30,3 +30,6 @@ font-weight:600;}
 .lgg, .lgg-active{background-image: linear-gradient(rgb(37,190,102),rgb(37,175,102));}
 .lgr, .lgr-active{background-image: linear-gradient(rgb(255,45,64),rgb(255,55,55));}
 .lgb-active:active, .lgy-active:active, .lgg-active:active, .lgr-active:active{transform: scale(1.2);}
+.circle{border-radius: 50%;}
+.40{height: 40px !important;width: 40px !important;}
+.50{height: 50px !important;width: 50px !important;}
