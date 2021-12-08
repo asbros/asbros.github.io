@@ -11,12 +11,18 @@
 font-family: 'Baloo Thambi 2';
 font-weight:600;
 }
-.red{background-color: var(--red) !important;}
-.blue{background-color: var(--blue) !important;}
-.yellow{background-color: var(--yellow) !important;}
-.white{background-color: var(--white) !important;}
-.black{background-color: var(--black) !important;}
-.green{background-color: var(--green) !important;}
+.red{color: var(--red) !important;}
+.blue{color: var(--blue) !important;}
+.yellow{color: var(--yellow) !important;}
+.white{color: var(--white) !important;}
+.black{color: var(--black) !important;}
+.green{color: var(--green) !important;}
+.bgred{background-color: var(--red) !important;}
+.bgblue{background-color: var(--blue) !important;}
+.bgyellow{background-color: var(--yellow) !important;}
+.bgwhite{background-color: var(--white) !important;}
+.bgblack{background-color: var(--black) !important;}
+.bggreen{background-color: var(--green) !important;}
 .noselect{
 user-select: none;
 -webkit-user-select: none;
@@ -26,8 +32,8 @@ user-select: none;
 .lowercase{text-transform: lowercase !important;}
 .left{float: left !important;}
 .right{float: right !important;}
-.center{position: absolute;left: 50%;}
-.middle{position: absolute;top: 50%;left: 50%;}
+.center{position: absolute;left: 50%;transform: translate(-50%, 0);}
+.middle{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
 .lgb, .lgy, .lgb-active, .lgy-active{
 background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));
 border: 0;
