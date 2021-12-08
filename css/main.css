@@ -7,16 +7,16 @@
 --black: #000000;
 --greeen: #116530;
 }
-.red{color: var(--red)}
-.blue{color: var(--blue)}
-.yellow{color: var(--yellow)}
-.white{color: var(--white)}
-.black{color: var(--black)}
-.green{color: var(--green)}
 .baloo-font{
 font-family: 'Baloo Thambi 2';
 font-weight:600;
 }
+.red{color: var(--red) !important;}
+.blue{color: var(--blue) !important;}
+.yellow{color: var(--yellow) !important;}
+.white{color: var(--white) !important;}
+.black{color: var(--black) !important;}
+.green{color: var(--green) !important;}
 .noselect{
 user-select: none;
 -webkit-user-select: none;
