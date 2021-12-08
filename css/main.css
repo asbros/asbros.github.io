@@ -36,11 +36,11 @@ border-radius: 7px;
 box-shadow: rgba(0,0,0,0.16)0 2px 6.5727px 0, rgba(0,0,0,0.12) 0 2px 11.5727px 0;
 padding: 7px 10px;
 font-size: 18px;
-transition: all 0.2s;
+transition: all 0.1s;
 }
 .lgy, .lgy-active{
 background-image:linear-gradient(rgb(255,215,64), rgb(240,100,24)) !important;
 }
 .lgb-active:active, .lgy-active:active{
-padding: 10px 12px;
+padding: 12px 14px;
 }
