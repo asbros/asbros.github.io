@@ -7,21 +7,15 @@
 --black: #000000;
 --green: #116530;
 }
-.baloo-font{
-font-family: 'Baloo Thambi 2';
-font-weight:600;
-}
+.baloo-font{font-family: 'Baloo Thambi 2';
+font-weight:600;}
 .red{color: var(--red) !important;}
 .blue{color: var(--blue) !important;}
 .yellow{color: var(--yellow) !important;}
 .white{color: var(--white) !important;}
 .black{color: var(--black) !important;}
 .green{color: var(--green) !important;}
-.noselect{
-user-select: none;
--webkit-user-select: none;
--ms-user-select: none;
-}
+.noselect{user-select: none;-webkit-user-select: none;-ms-user-select: none;}
 .uppercase{text-transform: uppercase !important;}
 .lowercase{text-transform: lowercase !important;}
 .left{float: left !important;}
@@ -30,27 +24,9 @@ user-select: none;
 .center:active{}
 .middle{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
 .middle:active{}
-.lgb, .lgb-active, .lgy, .lgy-active, .lgg, .lgg-active, .lgr, .lgr-active{
-border: 0;
-color: #fff;
-border-radius: 7px;
-box-shadow: rgba(0,0,0,0.16)0 2px 6.5727px 0, rgba(0,0,0,0.12) 0 2px 11.5727px 0;
-padding: 7px 10px;
-font-size: 18px;
-transition: all 0.2s;
-}
-.lgb, .lgb-active{
-background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));
-}
-.lgy, .lgy-active{
-background-image:linear-gradient(rgb(255,215,64), rgb(240,100,24));
-}
-.lgg, .lgg-active{
-background-image: linear-gradient(rgb(37,190,102),rgb(37,175,102));
-}
-.lgr, .lgr-active{
-background-image: linear-gradient(rgb(255,45,64),rgb(255,55,55));
-}
-.lgb-active:active, .lgy-active:active{
-transform: scale(1.2);
-}
+.lgb, .lgb-active, .lgy, .lgy-active, .lgg, .lgg-active, .lgr, .lgr-active{border: 0;color: #fff;border-radius: 7px;box-shadow: rgba(0,0,0,0.16)0 2px 6.5727px 0, rgba(0,0,0,0.12) 0 2px 11.5727px 0;padding: 7px 10px;font-size: 18px;transition: all 0.2s;}
+.lgb, .lgb-active{background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));}
+.lgy, .lgy-active{background-image:linear-gradient(rgb(255,215,64), rgb(240,100,24));}
+.lgg, .lgg-active{background-image: linear-gradient(rgb(37,190,102),rgb(37,175,102));}
+.lgr, .lgr-active{background-image: linear-gradient(rgb(255,45,64),rgb(255,55,55));}
+.lgb-active:active, .lgy-active:active, .lgg-active:active, .lgr-active:active{transform: scale(1.2);}
