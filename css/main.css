@@ -27,8 +27,9 @@ user-select: none;
 .left{float: left !important;}
 .right{float: right !important;}
 .center{position: absolute;left: 50%;transform: translate(-50%, 0);}
-.center:active{transform: scale(1.1) translate(-50%, 0) !important;}
+.center:active{transform: scale(1.2) translate(-50%, 0) !important;}
 .middle{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
+.middle:active{transform: scale(1.2) translate(-50%, -50%) !important;}
 .lgb, .lgy, .lgb-active, .lgy-active{
 background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));
 border: 0;
@@ -43,5 +44,5 @@ transition: all 0.2s;
 background-image:linear-gradient(rgb(255,215,64), rgb(240,100,24)) !important;
 }
 .lgb-active:active, .lgy-active:active{
-transform: scale(1.1);
+transform: scale(1.2);
 }
