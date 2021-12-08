@@ -27,7 +27,7 @@ user-select: none;
 .left{float: left !important;}
 .right{float: right !important;}
 .center{position: absolute;left: 50%;transform: translate(-50%, 0);}
-.center{transform: scale(1.1) translate(-50%, 0) !important;}
+.center:active{transform: scale(1.1) translate(-50%, 0) !important;}
 .middle{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
 .lgb, .lgy, .lgb-active, .lgy-active{
 background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));
