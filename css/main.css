@@ -11,12 +11,12 @@
 font-family: 'Baloo Thambi 2';
 font-weight:600;
 }
-.red{color: var(--red) !important;}
-.blue{color: var(--blue) !important;}
-.yellow{color: var(--yellow) !important;}
-.white{color: var(--white) !important;}
-.black{color: var(--black) !important;}
-.green{color: var(--green) !important;}
+.red{background-color: var(--red) !important;}
+.blue{background-color: var(--blue) !important;}
+.yellow{background-color: var(--yellow) !important;}
+.white{background-color: var(--white) !important;}
+.black{background-color: var(--black) !important;}
+.green{background-color: var(--green) !important;}
 .noselect{
 user-select: none;
 -webkit-user-select: none;
