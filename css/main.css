@@ -24,6 +24,7 @@ user-select: none;
 }
 .left{float: left !important;}
 .right{float: right !important;}
+.center{position: absolute;left: 50%;transform: translate(-50%, 0);}
 .lgb, .lgy, .lgb-active, .lgy-active{
 background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));
 border: 0;
