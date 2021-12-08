@@ -17,12 +17,6 @@ font-weight:600;
 .white{color: var(--white) !important;}
 .black{color: var(--black) !important;}
 .green{color: var(--green) !important;}
-.bgred{background-color: var(--red) !important;}
-.bgblue{background-color: var(--blue) !important;}
-.bgyellow{background-color: var(--yellow) !important;}
-.bgwhite{background-color: var(--white) !important;}
-.bgblack{background-color: var(--black) !important;}
-.bggreen{background-color: var(--green) !important;}
 .noselect{
 user-select: none;
 -webkit-user-select: none;
