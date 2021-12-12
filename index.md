@@ -22,14 +22,6 @@ body{margin: 0;padding: 0;}
 #footer-div{height: 40px;width: 100%;background-color: #333;color:#fff;text-align:center;padding:12px 12px;font-family: 'Amarante', cursive;}
 </style>
 <link href='https://asbros.github.io/web-manifest/asbros.webmanifest' rel='manifest'/>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-    navigator.serviceWorker.register("https://asbros.github.io/service-worker/asbros.js").then(res => console.log("service worker registered")).catch(err => console.log("service worker not registered", err));
-  });
-};
-javascript:(function () {     var script =  document.createElement('script');    script.src="https://cdn.jsdelivr.net/npm/eruda";     document.body.appendChild(script);    script.onload = function () {         eruda.init()     } })();
-</script>
 </head>
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
 <div class='header'>Our Projects</div>
