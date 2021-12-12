@@ -21,7 +21,6 @@ body{margin: 0;padding: 0;}
 .header, #myTable a:hover {background-color: #f1f1f1;}
 #footer-div{height: 40px;width: 100%;background-color: #333;color:#fff;text-align:center;padding:12px 12px;font-family: 'Amarante', cursive;}
 </style>
-<link href='https://asbros.github.io/web-manifest/asbros.webmanifest' rel='manifest'/>
 </head>
 <input id='myInput' onkeyup='myFunction()' placeholder='Search for projects...' title='Type in a name' type='text'/>
 <div class='header'>Our Projects</div>
