@@ -4,14 +4,12 @@
 <p id="demo">Fetch a file to change this text.</p>
 
 <script>
-getText("https://asbros.github.io/php/php.php");
-
-async function getText(file) {
-  let myObject = await fetch(file);
-  let myText = await myObject.text();
-  document.getElementById("demo").innerHTML = myText;
-}
+var req = new XMLHttpRequest(); 
+    req.onload = function() {
+    document.write(this.responseText); 
+ };
+req.open("get", "https://asbros.github.io/php/php.php", true); 
+req.send();
 </script>
-
 </body>
 </html>
