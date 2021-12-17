@@ -1,4 +1,3 @@
-
 const as = {}
  as.container = function(){
   var cnt = document.createElement("div");
