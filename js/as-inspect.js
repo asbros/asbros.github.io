@@ -1,3 +1,4 @@
+
 const as = {}
  as.container = function(){
   var cnt = document.createElement("div");
@@ -349,7 +350,6 @@ const as = {}
   for(var i = 0; i < document.getElementById("as-sources").querySelectorAll("*").length; i++){
    document.getElementById("as-sources").querySelectorAll("*")[i].classList.add("as-not-inspect");
   }
-  document.documentElement.classList.add("as-not-inspect");
  }
  as.inspect = function(n){
   if(n.classList.contains("as-not-inspect") != true){
@@ -364,9 +364,11 @@ const as = {}
   var ns = n.style[i];
   el.setAttribute("style", el.getAttribute("style")+ns+": "+n.style.getPropertyValue(ns)+";");
   }
+  el.innerHTML = n.innerHTML;
   var out = el.outerHTML;
   document.getElementById("as-inspect-output").innerText = out;
   }
+  event.stopPropagation();
  }
  as.inspectStart = function(){
   for(var i = 0; i < document.querySelectorAll("*").length; i++){
@@ -376,7 +378,6 @@ const as = {}
    }
   as.notInspect();
   document.getElementById("as-inspect-startBtn").style.display = "none";
-  document.body.classList.add("as-not-inspect");
   for(var i = 0; i < document.querySelectorAll("*").length; i++){
    if(document.querySelectorAll("*")[i].ontouchstart != undefined){
     document.querySelectorAll("*")[i].addEventListener('touchstart', function(){as.inspect(this);});
