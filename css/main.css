@@ -57,6 +57,9 @@
 
 /* Other css */
 .btn{border: 0 !important;}
+.blur{fliter: blur(5px);-webkit-fliter: blur(5px);}
+.bg-blur{backdrop-filter: blur(10px);-webkit-backdrop-filter: blur(10px);}
+.drop-shadow{filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.5));-webkit-filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.5));}
 .circle{border-radius:50% !important;}
 .padding-10{padding: 10px !important;}
 .padding-17{padding: 17px !important;}
