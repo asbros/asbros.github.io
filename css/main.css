@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-.josefin-font{font-family: 'Josefin Sans';line-height:23px;}
-.sniglet-font{font-family: 'Sniglet';line-height:23px;}
-.poppins-font{font-family: 'Poppins';line-height:23px;}
+.josefin-font{font-family: 'Josefin Sans';line-height:25px;}
+.sniglet-font{font-family: 'Sniglet';line-height:25px;}
+.poppins-font{font-family: 'Poppins';}
 
 /* css variables */
 :root{
@@ -52,12 +52,17 @@
 .f-14{font-size: 14px !important;}
 .s-40{width: 40px !important;height: 40px !important;}
 .s-50{width: 50px !important;height: 50px !important;}
+.s-100{width: 100px !important;height: 100px !important;}
+.s-200{width: 200px !important;height: 200px !important;}
 
 /* Other css */
 .btn{border: 0 !important;}
 .circle{border-radius:50% !important;}
 .padding-10{padding: 10px !important;}
+.padding-17{padding: 17px !important;}
+.margin-5{margin: 5px !important;}
 .margin-10{margin: 10px !important;}
+.radius-5{border-radius: 5px !important;}
 .radius-10{border-radius: 10px !important;}
 .active{transition: all 0.3s;}
 .active:active{transform: scale(0.8) !important;}
