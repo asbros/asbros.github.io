@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-.baloo-font{font-family: 'Josefin Sans';}
+.josefin-font{font-family: 'Josefin Sans';}
 .sniglet-font{font-family: 'Sniglet';}
-.quicksand-font{font-family: 'Poppins';}
+.poppins-font{font-family: 'Poppins';}
 
 /* All font colors here */
 .red{color: #dc3545 !important;}
