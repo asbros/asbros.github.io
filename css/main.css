@@ -15,10 +15,10 @@
 .green{color: #28a745 !important;}
 
 /* All background colors here */
-.bg-blue{background-color: rgb(72,60,215);}
-.bg-yellow{background-color: #ffc107;}
-.bg-green{background-color: #28a745;}
-.bg-red{background-color: #dc3545;}
+.bg-blue{background-color: rgb(72,60,215) !important;}
+.bg-yellow{background-color: #ffc107 !important;}
+.bg-green{background-color: #28a745 !important;}
+.bg-red{background-color: #dc3545 !important;}
 
 /* All linear gradients here */
 .lg-blue{background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));}
