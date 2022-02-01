@@ -20,25 +20,21 @@
 .bg-green{background-color: #28a745;}
 .bg-red{background-color: #dc3545;}
 
-.noselect{user-select: none;-webkit-user-select: none;-ms-user-select: none;}
-.uppercase{text-transform: uppercase !important;}
-.lowercase{text-transform: lowercase !important;}
+/* All linear gradients here */
+.lg-blue{background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));}
+.lg-yellow{background-image:linear-gradient(rgb(255,215,64), rgb(240,100,24));}
+.lg-green{background-image: linear-gradient(rgb(37,190,102),rgb(37,175,102));}
+.lg-red{background-image: linear-gradient(rgb(255,45,64),rgb(255,55,55));}
 
 /* Positions here */
 .left{float: left !important;}
 .right{float: right !important;}
 .center{position: absolute;left: 50%;transform: translate(-50%, 0);}
-.center:active{transform: translate(-50%, 0) !important;}
 .middle{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
-.middle:active{transform: translate(-50%, -50%) !important;}
 
-.note-box{color: #000;padding:7px 10px;background-color: #f8f9fc;border-bottom: 1px solid #e3e6f0;word-wrap: break-word;border: 1px solid #e3e6f0;border-radius: .35rem;font-size: medium;}
-
+.default{border: 0;color: #fff;border-radius: 2px;box-shadow: rgba(0,0,0,0.16)0 2px 6.5727px 0, rgba(0,0,0,0.12) 0 2px 11.5727px 0;padding: 7px 10px;font-size: 18px;transition: all 0.2s;}
 .active:active{transform: scale(0.8);}
-
-/* All linear gradients here */
-.lg-blue, .lg-yellow, .lg-green, .lg-red{border: 0;color: #fff;border-radius: 2px;box-shadow: rgba(0,0,0,0.16)0 2px 6.5727px 0, rgba(0,0,0,0.12) 0 2px 11.5727px 0;padding: 7px 10px;font-size: 18px;transition: all 0.2s;}
-.lg-blue{background-image: linear-gradient(rgb(64,200,241),rgb(43,105,226));}
-.lg-yellow{background-image:linear-gradient(rgb(255,215,64), rgb(240,100,24));}
-.lg-green{background-image: linear-gradient(rgb(37,190,102),rgb(37,175,102));}
-.lg-red{background-image: linear-gradient(rgb(255,45,64),rgb(255,55,55));}
+.note-box{color: #000;padding:7px 10px;background-color: #f8f9fc;border-bottom: 1px solid #e3e6f0;word-wrap: break-word;border: 1px solid #e3e6f0;border-radius: .35rem;font-size: medium;}
+.noselect{user-select: none;-webkit-user-select: none;-ms-user-select: none;}
+.uppercase{text-transform: uppercase !important;}
+.lowercase{text-transform: lowercase !important;}
