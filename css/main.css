@@ -43,6 +43,14 @@
 .right{float: right !important;}
 .center{position: absolute;left: 50%;transform: translate(-50%, 0);}
 .middle{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
+.inline{display:inline !important;}
+.inline-block{display:inline-block !important;}
+.block{display:block !important;}
+.flex{display:flex !important;}
+.justify-center{justify-content:center !important;}
+.absolute{position:absolute !important;}
+.relative{position:relative !important;}
+.fixed{position:fixed !important;}
 
 /* All sizes */
 .f-25{font-size: 25px !important;}
@@ -57,8 +65,7 @@
 
 /* Other css */
 .btn{border: 0 !important;}
-.blur{filter: blur(5px);-webkit-filter: blur(5px);}
-.bg-blur{backdrop-filter: blur(10px);-webkit-backdrop-filter: blur(10px);}
+.blur{filter: blur(7px);-webkit-filter: blur(7px);}
 .drop-shadow{filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.5));-webkit-filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.5));}
 .circle{border-radius:50% !important;}
 .padding-10{padding: 10px !important;}
