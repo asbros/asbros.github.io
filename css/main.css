@@ -66,13 +66,23 @@
 .s-100{width: 100px !important;height: 100px !important;}
 .s-200{width: 200px !important;height: 200px !important;}
 
+/* Alerts */
+.alert-blue,.alert-red,.alert-green,.alert-yellow{padding: 16px;position: relative;border-radius: 4px;}
+.alert-blue{background-color: rgb(207,226,255);color: rgb(8,66,152);border: 1px solid rgb(182,212,254);}
+.alert-red{background-color: rgb(248,215,218);color: rgb(132,32,41);border: 1px solid rgb(245,194,199);}
+.alert-green{background-color: rgb(255,43,5);color: rgb(102,77,3);border: 1px solid rgb(255,236,181);}
+.alert-yellow{background-color: rgb(207,226,255);color: rgb(8,66,152);border: 1px solid rgb(182,212,254);}
+
 /* Other css */
-.btn{border: 0 !important;}
+a,btn{cursor: pointer;}
+.bold{font-weight: bold !important;}
+.btn{border: 0;}
 .blur{filter: blur(7px);-webkit-filter: blur(7px);}
 .drop-shadow{filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.4));-webkit-filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.4));}
 .circle{border-radius:50% !important;}
 .pad-7{padding: 7px !important;}
 .pad-10{padding: 10px !important;}
+.pad-15{padding: 15px !important;}
 .pad-17{padding: 17px !important;}
 .margin-5{margin: 5px !important;}
 .margin-10{margin: 10px !important;}
