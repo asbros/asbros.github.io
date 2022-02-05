@@ -9,12 +9,14 @@
 /* css variables */
 :root{
   --red: #dc3545;
-  --blue: #0088ff;
+  --blue: rgb(84,104,255);
   --white: #ffffff;
   --yellow: #ffc107;
   --black: #000000;
   --green: #28a745;
   --light-blue: rgba(0,0,255,0.07);
+  --dark-pink: rgb(233,30,99);
+  --royal-blue: rgb(80,99,240);
 }
 
 /* All font colors here */
@@ -95,4 +97,4 @@ a,btn{cursor: pointer;}
 .shadow{box-shadow: rgba(45,35,66,0.4) 0px 2px 4px, rgba(45,35,66,0.3) 0px 7px 13px -3px,rgba(54,57,90,0.2) 0px -3px 0px inset;}
 .no-select{user-select: none !important;-webkit-user-select: none !important;-ms-user-select: none !important;}
 .note-box{color: #222;background-color: rgba(0,0,255,0.07);word-wrap:break-word;border: 2px solid #e3e6f0;border-radius: 5px;}
-kbd{-moz-border-radius: 3px;-moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;-webkit-border-radius: 3px;-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;background-color: #f7f7f7;border: 0.5px solid #333;border-radius: 3px;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;color: #eb4034;display: inline-block;font-family: monospace, sans-serif;line-height: 1.4;margin: 3px;padding: 0.1em 0.4em;text-shadow: 0 1px 0 #fff;}
+kbd{-moz-border-radius: 3px;-moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;-webkit-border-radius: 3px;-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;background-color: #f7f7f7;border: 0.5px solid #333;border-radius: 3px;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;color: rgb(233,30,99);display: inline-block;font-family: monospace, sans-serif;line-height: 1.4;margin: 3px;padding: 0.1em 0.4em;text-shadow: 0 1px 0 #fff;}
