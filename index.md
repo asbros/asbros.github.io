@@ -1,8 +1,8 @@
-# ![AS BROTHERS](https://asbros.github.io/image/icons8-male-user.gif)[AS BROTHERS](https://asbros.github.io/)
+# ![AS BROTHERS](https://avatars.githubusercontent.com/u/90209858?v=4)[AS BROTHERS](https://asbros.github.io/)
 <head>
 <meta content='width=device-width, user-scalable=no' name='viewport'/>
-<meta content='https://img.icons8.com/cute-clipart/64/000000/web.png' property='og:image'/>
-<link rel="shortcut icon" href="https://img.icons8.com/cute-clipart/64/000000/web.png" type="image/vnd.microsoft.icon"/>
+<meta content='https://avatars.githubusercontent.com/u/90209858?v=4' property='og:image'/>
+<link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/90209858?v=4" type="image/vnd.microsoft.icon"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Amarante&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
@@ -68,14 +68,6 @@ const tools = [
   {
   n: 'Random Quote Generator',
   u: 'https://asbros.github.io/tool/quote-generator.html'
-  },
-  {
-  n: '3',
-  u: 'https://asbros.github.io/tool/'
-  },
-  {
-  n: '4',
-  u: 'https://asbros.github.io/tool/'
   }
 ]
 function additem(item, index){
