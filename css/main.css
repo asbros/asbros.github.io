@@ -27,6 +27,8 @@
 .black{color: var(--black) !important;}
 .green{color: var(--green) !important;}
 .light-blue{color: var(--light-blue) !important;}
+.royal-blue{color: var(--royal-blue) !important;}
+.dark-pink{color: var(--dark-pink) !important;}
 
 /* All background colors here */
 .bg-red{background-color: var(--red) !important;}
@@ -36,6 +38,8 @@
 .bg-yellow{background-color: var(--yellow) !important;}
 .bg-black{background-color: var(--black) !important;}
 .bg-green{background-color: var(--green) !important;}
+.bg-royal-blue{background-color: var(--royal-blue) !important;}
+.bg-dark-pink{background-color: var(--dark-pink) !important;}
 
 /* All linear gradients here */
 .lg-blue{background-image: radial-gradient(100% 100% at 100% 0%,rgb(90,218,255) 0%, rgb(84,104,255) 100%);}
