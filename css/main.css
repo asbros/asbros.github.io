@@ -97,7 +97,7 @@
 .radius-20{border-radius: 20px !important;}
 
 /* Elements pre styles */
-.btn{border: 0;}
+.btn{border: 0;display: flex;justify-content: center;align-items: center;}
 .note-box{color: #222;background-color: rgba(0,0,255,0.07);word-wrap:break-word;border: 2px solid #e3e6f0;border-radius: 5px;}
 kbd{-moz-border-radius: 3px;-moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;-webkit-border-radius: 3px;-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;background-color: #f7f7f7;border: 0.5px solid #333;border-radius: 3px;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;color: rgb(233,30,99);display: inline-block;font-family: monospace, sans-serif;line-height: 1.4;margin: 3px;padding: 0.1em 0.4em;text-shadow: 0 1px 0 #fff;}
 .input{border:2px solid rgb(120, 170, 255);outline:none;box-sizing:border-box;transition:0.3s;padding:10px;border-radius:3px;}
