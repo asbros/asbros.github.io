@@ -2,9 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-.josefin-font{font-family: 'Josefin Sans';line-height:25px;}
-.sniglet-font{font-family: 'Sniglet';line-height:25px;}
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+.josefin-font{font-family: 'Josefin Sans';}
+.sniglet-font{font-family: 'Sniglet';}
 .poppins-font{font-family: 'Poppins';}
+.Quicksand-font{font-family: 'Quicksand';}
 
 /* css variables */
 :root{
