@@ -1,3 +1,4 @@
+
 /* All fonts here */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
@@ -82,6 +83,17 @@
 .alert-green{background-color: rgb(209,231,221);color: rgb(15,81,50);border: 1px solid rgb(186,219,204);}
 .alert-yellow{background-color: rgb(255,243,205);color: rgb(102,77,3);border: 1px solid rgb(255,236,181);}
 
+/* Input styles */
+.input-blue,.input-red,.input-green,.input-yellow{outline:none;box-sizing:border-box;transition:0.3s;padding:10px;border-radius:3px;}
+.input-blue{border:2px solid rgb(120, 170, 255);}
+.input-red{border:2px solid rgb(120, 170, 255);}
+.input-green{border:2px solid rgb(120, 170, 255);}
+.input-yellow{border:2px solid rgb(120, 170, 255);}
+.input-blue:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+.input-red:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+.input-green:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+.input-yellow:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+
 /* Ripple effect here */
 .ripple{position: relative;overflow: hidden;transform: translate3d(0, 0, 0);}
 .ripple:after{content: "";display: block;position: absolute;width: 100%;height: 100%;top: 0;left: 0;pointer-events: none;background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);background-repeat: no-repeat;background-position: 50%;transform: scale(10, 10);opacity: 0;transition: transform .2s, opacity 1s;}
@@ -102,8 +114,6 @@
 .btn{border: 0;display: flex;justify-content: center;align-items: center;}
 .note-box{color: #222;background-color: rgba(0,0,255,0.07);word-wrap:break-word;border: 2px solid #e3e6f0;border-radius: 5px;}
 kbd{-moz-border-radius: 3px;-moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;-webkit-border-radius: 3px;-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;background-color: #f7f7f7;border: 0.5px solid #333;border-radius: 3px;box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;color: rgb(233,30,99);display: inline-block;font-family: monospace, sans-serif;line-height: 1.4;margin: 3px;padding: 0.1em 0.4em;text-shadow: 0 1px 0 #fff;}
-.input{border:2px solid rgb(120, 170, 255);outline:none;box-sizing:border-box;transition:0.3s;padding:10px;border-radius:3px;}
-.input:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
 
 /* Other css */
 a,btn{cursor: pointer;}
