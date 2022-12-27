@@ -1,4 +1,3 @@
-
 /* All fonts here */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
@@ -86,13 +85,13 @@
 /* Input styles */
 .input-blue,.input-red,.input-green,.input-yellow{outline:none;box-sizing:border-box;transition:0.3s;padding:10px;border-radius:3px;}
 .input-blue{border:2px solid rgb(120, 170, 255);}
-.input-red{border:2px solid rgb(120, 170, 255);}
-.input-green{border:2px solid rgb(120, 170, 255);}
-.input-yellow{border:2px solid rgb(120, 170, 255);}
+.input-red{border:2px solid rgb(247, 126, 136);}
+.input-green{border:2px solid rgb(102, 209, 161);}
+.input-yellow{border:2px solid rgb(242, 214, 121);}
 .input-blue:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
-.input-red:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
-.input-green:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
-.input-yellow:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+.input-red:focus{border:2px solid rgb(247, 126, 136);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+.input-green:focus{border:2px solid rgb(102, 209, 161);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+.input-yellow:focus{border:2px solid rgb(242, 214, 121);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
 
 /* Ripple effect here */
 .ripple{position: relative;overflow: hidden;transform: translate3d(0, 0, 0);}
