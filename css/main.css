@@ -89,9 +89,9 @@
 .input-green{border:2px solid rgb(102, 209, 161);}
 .input-yellow{border:2px solid rgb(242, 214, 121);}
 .input-blue:focus{border:2px solid rgb(134, 183, 254);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
-.input-red:focus{border:2px solid rgb(247, 126, 136);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
-.input-green:focus{border:2px solid rgb(102, 209, 161);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
-.input-yellow:focus{border:2px solid rgb(242, 214, 121);box-shadow:0 0 2px 2px rgb(134, 183, 254);}
+.input-red:focus{border:2px solid rgb(247, 126, 136);box-shadow:0 0 2px 2px rgb(247, 126, 136);}
+.input-green:focus{border:2px solid rgb(102, 209, 161);box-shadow:0 0 2px 2px rgb(102, 209, 161);}
+.input-yellow:focus{border:2px solid rgb(242, 214, 121);box-shadow:0 0 2px 2px rgb(242, 214, 121);}
 
 /* Ripple effect here */
 .ripple{position: relative;overflow: hidden;transform: translate3d(0, 0, 0);}
