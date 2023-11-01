@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html dir='ltr' lang='en-GB' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+ <title>AS MUSIC</title>
+ <meta content='#ab0916' name='theme-color' />
+ <meta charset='UTF-8' />
+ <meta content='width=device-width, user-scalable=no' name='viewport' />
+ <meta content='https://i.imgur.com/p081OXx.png' property='og:image' />
+ <link href='https://i.imgur.com/p081OXx.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
+ <link href='https://i.imgur.com/p081OXx.png' rel='apple-touch-icon' />
+ <link href='https://asbros.github.io/web-manifest/as.webmanifest' rel='manifest' />
+ <link href='https://asbros.github.io/css/main.css' media='all' rel='stylesheet' type='text/css' />
+ <link crossorigin='anonymous' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css' integrity='sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==' referrerpolicy='no-referrer' rel='stylesheet' />
+ <style>
+  @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+ </style>
+ <script src='https://asbros.github.io/popup.js/popup.js'></script>
+ <style type='text/css'>
+  *{margin: 0;user-select: none;text-decoration: none !important;-webkit-tap-highlight-color: transparent;font-family: "Jost", sans-serif;}
+  html, body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+  :root {
+  --pink: #ff74a4;
+  --violet: #9f6ea3;
+  --lightblack: #fff;
+  --white: #48404842;
+  --darkwhite: #cecaca;
+  --pinkshadow: #ffcbdd;
+  --lightbshadow: rgba(0,0,0,0.15);
+  }
+  body{
+  height: 100vh !important;
+  width: 100vw !important;
+  /*display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;*/
+  overflow: hidden;
+  color: #fff;
+  background-image: linear-gradient(#40C9FF,#E81CFF);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(20px);
+  }
+  #main{
+  width: 100%;
+  padding: 0;
+  height: 770px;
+  overflow: hidden;
+  position: relative;
+  margin: auto;
+  box-shadow: 0px 30px 80px rgba(0, 0, 0, 0.3);
+  background: rgba(0,0,0,0.4);
+  }
+  #header, #controls, #time, #image, #st{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  }
+  #header,#time,#st,#controls{
+  /*background-color: rgba(232,232,240, 0.5);
+  backdrop-filter: blur(5px);*/
+  }
+  #header{
+  height: 60px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  }
+  #controls{
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  }
+  #image{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: 20px;
+  margin-bottom: 27px;
+  }
+  #img{
+  width: 256px;
+  height: 256px;
+  border-radius: 15px;
+  object-fit: cover;
+  box-shadow: 0px 6px 12px var(--lightbshadow);
+  }
+  #name{font-size: 30px;line-height: 50px;}
+  #artist{font-size: 16px;line-height: 30px;opacity: 0.8;}
+  #time{
+  padding: 0px 25px;
+  padding-top: 20px;
+  padding-bottom: 5px;
+  }
+  #timer{
+  width: 100%;
+  }
+  #st{
+  margin-top: 0px;
+  font-size: 15px;
+  padding: 0px 27px;
+  }
+  #controls button, #header button, #srch button{
+  background: none;
+  border: 0;
+  }
+  #controls i{
+  font-size: 27px;
+  user-select: none;
+  color: #fff;
+  }
+  #lkd i{
+  color: #f00;
+  }
+  #header i, #srch i{
+  font-size: 20px;
+  user-select: none;
+  color: #fff;
+  }
+  #play i, #pause i{
+  font-size: 54px;
+  }
+  #header button,#srch button, #controls button:not(#play,#pause){
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  }
+  #timer {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: 2px;
+  }
+  #timer::-webkit-slider-runnable-track {
+  height: 7px;
+  background: #ccc;
+  border-radius: 0px;
+  }
+  #timer::-moz-range-track {
+  height: 7px;
+  background: #ccc;
+  border-radius: 0px;
+  }
+  #timer::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 7px;
+  width: 7px;
+  background-color: #fff;
+  border: 2px solid #fff;
+  box-shadow: -407px 0 0 400px #fff;
+  }
+  #timer::-moz-range-thumb {
+  height: 7px;
+  width: 7px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  box-shadow: -407px 0 0 400px #fff;
+  }
+  #srch{
+  position: absolute;
+  top: 120%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(0,0,0,0.8);
+  flex-direction: column;
+  padding: 0px;
+  transition: all 0.2s;
+  backdrop-filter: blur(5px);
+  }
+  #shead{
+  z-index: 6;
+  height: 40px;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: space-between;
+  }
+  #sinp{
+  height: 40px;
+  padding: 0px 10px;
+  font-size: 16px;
+  font-family: Jost;
+  border-radius: 5px;
+  margin-right: 15px;
+  margin-left: 20px;
+  border: 0;
+  color: #fff;
+  background: rgba(227,222,224,0.24);
+  }
+  #sinp:focus{
+  outline: none;
+  }
+  #sres{
+  /*  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;*/
+  overflow-y: scroll;
+  padding: 0;
+  padding-top: 0px;
+  padding-bottom: 20px;
+  z-index: 1;
+  height: 600px;
+  }
+  #slist{
+  position: relative;
+  left: -20px;
+  overflow-y: scroll;
+  }
+  #slist li{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.3);
+  padding: 7px;
+  text-overflow: ellipsis;overflow: hidden;white-space: nowrap;
+  }
+  .simg{
+  height: 50px;
+  width: 50px;
+  border-radius: 7px;
+  margin-right: 10px;
+  margin-left: 5px;
+  }
+  .sname, .sart{
+  width: 225px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 18px;
+  }
+  .sart{opacity: 0.7;font-size: 13px;line-height: 20px;}
+  
+ </style>
+</head>
+
+<body>
+ <div class='no-items section' id='required'></div>
+ <audio id='audio'></audio>
+ <div id='bg'>
+  <div id='main'>
+   <div id='header'>
+    <button class='ripple' id='menu'><i class='fa-solid fa-list'></i></button>
+    <span id='title' style='font-size: 20px;font-weight: 900;'><i class='fa-solid fa-music'></i> AS MUSIC</span>
+    <button class='ripple' id='search'><i class='fa-solid fa-magnifying-glass'></i></button>
+   </div>
+   <div id='image' style='flex-wrap: wrap;'>
+    <img id='img' src='https://nglemployeedirectory.in/images/loading.gif' />
+   </div>
+   <div id='song' style='margin: 25px;margin-top: 15px;text-align: center;'>
+    <div style='text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'><span id='name'>Loading Song...</span></div>
+    <div style='text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'><span id='artist'></span></div>
+   </div>
+   <div id='time'>
+    <input id='timer' type='range' value='0' />
+   </div>
+   <div id='st'>
+    <span id='ct'>0:00</span>
+    <span id='tt'>0:00</span>
+   </div>
+   <div id='controls' style='flex-direction: column;'>
+    <div style='width: 100%;display: flex;justify-content: space-between;align-items: center;'>
+     <button class='ripple' id='lk'><i class='fa-regular fa-heart'></i></button>
+     <button class='ripple' id='lkd' style='display: none'><i class='fa-solid fa-heart' style='color: #e00'></i></button>
+     <button class='ripple' id='prev'><i class='fa-solid fa-backward-step'></i></button>
+     <button id='play'><i class='fa-solid fa-circle-play'></i></button>
+     <button id='pause' style='display: none'><i class='fa-solid fa-circle-pause'></i></button>
+     <button class='ripple' id='next'><i class='fa-solid fa-forward-step'></i></button>
+     <button class='ripple' id='down'><i class='fa-solid fa-arrow-down'></i></button>
+    </div>
+   </div>
+   <div id='srch'>
+    <div id='shead' style='padding: 12px 0px;'>
+     <input id='sinp' placeholder='Type to search...' type='text' />
+     <div>
+      <button class='ripple' id='reload' style='display: none;'><i class='fa-solid fa-refresh'></i></button>
+      <button class='ripple' id='liked' style='display: none;'><i class='fa-regular fa-heart'></i></button>
+      <button class='ripple' id='sclose' style='margin-right: 10px;'><i class='fa-solid fa-close'></i></button>
+     </div>
+    </div>
+    <div id='sres'>
+     <ul id='slist'></ul>
+    </div>
+   </div>
+   <h4 style='text-align: center;opacity:0.7;'>Made with &#10084;&#65039; by AS BROTHERS</h4>
+  </div>
+ </div>
+ <script>
+  var loader = as.loader();
+  const audio = document.getElementById('audio');
+  const menu = document.getElementById('menu');
+  const search = document.getElementById('search');
+  const img = document.getElementById('img');
+  const name = document.getElementById('name');
+  const art = document.getElementById('artist');
+  const time = document.getElementById('timer');
+  const ct = document.getElementById('ct');
+  const tt = document.getElementById('tt');
+  const lk = document.getElementById('lk');
+  const lkd = document.getElementById('lkd');
+  const prev = document.getElementById('prev');
+  const play = document.getElementById('play');
+  const pause = document.getElementById('pause');
+  const next = document.getElementById('next');
+  const down = document.getElementById('down');
+   const reload = document.getElementById('reload');
+   const liked = document.getElementById('liked');
+  
+  var list = [];
+  var queries = ['Kiara Advani','Sidharth Malhotra','Shah Rukh Khan','Arijit Singh','Udit Narayan','Jubin Nautiyal','Lata Mangeshkar','Alka Yagnik','Akshay Kumar','Neha Kakkar','Arijit Singh','Badshah','Atif Aslam','Justin Bieber','Himesh Reshammiya','Lata Mangeshkar','Diljit Dosanjh','Ed Sheeran','Shreya Ghoshal','Sanam Puri','Armaan Malik','Salman Khan','Amitabh Bachchan','Varun Dhawan','Katrina Kaif','Ranbir Kapoor',
+  'Sidhu Moose Wala','emiway bantai','King','dino james','ikka','paradox','mc aquare','sonu nigam','alka yagnik','kumar sanu','udit narayan','shreya ghoshal','Parmish Verma','hardi sandhu','guru randhawa','mika singh','honey singh','AP Dhillon','imran khan','shubh','honey singh','Darshan Raval','Shankar Mahadevan','Sushant Singh Rajput','A. R. Rahman','B Praak','Dhvani Bhanushali','Tulsi Kumar','Javed Ali','Vishal Shekhar','Kailash Kher','Divine','Raftaar','Ajey Nagar','Addy Nagar','Ajay Devgan','Hrithik Roshan','Aamir Khan','Ranveer Singh','Alia Bhatt','Dipika Padukon','Anushka Sharma'];
+   function q(){
+     var cpq = queries[Math.floor(Math.random() * queries.length)];
+   localStorage.setItem("playlist",cpq);
+     return cpq;
+   }
+  
+   function load(r){
+   window.cquery = r;
+   fetch("https://saavn.me/search/songs?query="+r+"&page=1&limit=500")
+  .then((response) => response.json())
+  .then((data) => {
+   if(data.status == "SUCCESS" && data.data.total > 0){
+    list = [];
+    list = data.data.results;
+    set(0);
+   }else{
+      document.window.reload();
+   }
+  })
+  .catch(console.error);
+   }
+   
+   load(q());
+   
+  reload.onclick = function(){
+   load(q());
+   document.getElementById("sclose").click();
+     pause.click();
+   setTimeout(function(){play.click()}, 500);
+   }
+   
+  function stm(t){
+  var mins = Math.floor(t / 60);
+  var secs = Math.floor(t % 60);
+  var formattedTime = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  return formattedTime;
+  }
+  
+  function set(n){
+    document.body.style.backgroundImage = "linear-gradient(#40C9FF,#E81CFF)";
+    img.src = "https://nglemployeedirectory.in/images/loading.gif";
+    var x = list[n];
+    window.cs = n;
+    window.st = x.name;
+    name.innerHTML = x.name;
+    art.innerHTML = x.primaryArtists;
+    tt.innerText = stm(x.duration);
+    if(x.image){
+    var e = x.image.length;
+    img.src = x.image[e-1].link;
+    document.body.style.backgroundImage = "url("+x.image[e-1].link+")";
+    }
+    if(x.downloadUrl){
+    var u = x.downloadUrl.length;
+    audio.src = x.downloadUrl[u-1].link;
+    }
+   var svid = localStorage.getItem("svid");
+  if(svid !== null){
+    if(svid.includes(x.id)){
+   document.getElementById("lk").style.display = "none";
+   document.getElementById("lkd").style.display = "";
+  }else{document.getElementById("lk").style.display = "";
+   document.getElementById("lkd").style.display = "none";
+   } }
+    timer.setAttribute("min",0);
+    timer.setAttribute("max",x.duration);
+  }
+  
+  timer.onchange = function(){
+  audio.currentTime = this.value;
+  var minutes = Math.floor(audio.currentTime / 60);
+  var seconds = Math.floor(audio.currentTime % 60);
+  var formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  ct.innerText = formattedTime;
+  }
+  
+  audio.ontimeupdate = function(){
+  timer.value = audio.currentTime;
+  var minutes = Math.floor(audio.currentTime / 60);
+  var seconds = Math.floor(audio.currentTime % 60);
+  var formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  ct.innerText = formattedTime;
+  }
+  
+  audio.onended = function(){
+    next.click();
+    play.click();
+  }
+  
+  audio.onpause = function(){
+    pause.click();
+  }
+  
+  audio.onplay = function(){
+    play.click();
+  }
+  
+  play.onclick = function(){
+    audio.play();
+    this.style.display = "none";
+    pause.style.display = "";
+  }
+  
+  pause.onclick = function(){
+    audio.pause();
+    this.style.display = "none";
+    play.style.display = "";
+  }
+   
+   lk.onclick = function(){
+    this.style.display = "none";
+    var svid = (localStorage.getItem("svid"));
+    var ldt = list[window.cs];
+    localStorage.setItem("svid",svid+","+(ldt.id));
+   localStorage.setItem(ldt.id,JSON.stringify(ldt));
+    lkd.style.display = "";
+  }
+  
+  lkd.onclick = function(){
+    this.style.display = "none";
+   var svid = localStorage.getItem("svid");
+  if(svid.includes(list[window.cs].id)){
+    var nsvid = svid.replace(list[window.cs].id,"");
+   localStorage.removeItem(list[window.cs].id);
+   localStorage.setItem("svid",nsvid);
+   }
+    lk.style.display = "";
+  }
+  
+  prev.onclick = function(){
+   var plon = true;
+   if(audio.paused == true){
+     plon = false;
+   }
+    if(cs !== 0){
+    set(window.cs-1);
+    }else{
+        set(list.length-1);
+    }
+   if(plon == true){
+     play.click();
+   }
+  }
+  
+  var plon;
+  next.onclick = function(){
+    plon = true;
+   if(audio.paused == true){
+     plon = false;
+   }
+    if(window.cs !== list.length-1){
+    set(window.cs+1);
+    }else{
+        set(0);
+    }
+   if(plon == true){
+     play.click();
+   }
+  }
+  
+  down.onclick = function(){
+   loader.show({
+     title: "Downloading..."
+   });
+    fetch(audio.src)
+    .then((response) => {
+      if (!response.ok) {
+       console.error('Network response was not ok');
+        loader.hide();
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const base64Data = reader.result.split(',')[1]; // Extract the Base64 data
+  
+        // Create an anchor element to trigger the download
+        const a = document.createElement('a');
+        a.href = `data:audio/mp3;base64,${base64Data}`;
+        a.download = `${window.st}.mp3`; // Set the desired filename
+  
+        // Trigger a click event on the anchor to initiate the download
+        a.dispatchEvent(new MouseEvent('click'));
+  
+        // Cleanup
+        URL.revokeObjectURL(a.href);
+      };
+      reader.readAsDataURL(blob);
+      loader.hide();
+    })
+    .catch((error) => {
+      console.error('Error downloading audio:', error);
+   loader.hide();
+    });
+  }
+  
+  search.onclick = function(){
+    document.getElementById("srch").style.top = 0;
+    document.getElementById("sinp").value = "";
+    document.getElementById("slist").innerHTML = "";
+    document.getElementById("sinp").disabled = false;
+   document.getElementById("sinp").style.width = "100%";
+   document.getElementById("reload").style.display = "none";
+   document.getElementById("liked").style.display = "none";
+    document.getElementById("sinp").style.background = "";
+    document.getElementById("sinp").style.fontSize = "18px";
+  }
+  
+  document.getElementById("sclose").onclick = function(){
+    document.getElementById("srch").style.top = "120%";
+    document.getElementById("sinp").blur();
+  }
+  
+  function plylst(i,n,slist,cs){
+       var l = document.createElement("li");
+        l.onclick = function(){document.getElementById("sclose").click();
+          set(n);
+   audio.play();
+        }
+        l.setAttribute("data-n",n);
+        l.setAttribute("data-src",i.downloadUrl[3].link);
+        if(cs == n){
+         l.style.background = "rgba(242,15,15,0.4)";
+        }
+        l.innerHTML = "<img class='simg' src='"+i.image[1].link+"'><div><div class='sname'><span>"+i.name+"</span></div><div class='sart'><span>"+i.primaryArtists+"</span></div></div>";
+        document.getElementById("slist").appendChild(l);
+       
+  }
+   function plysrch(i,n,slist){
+       var l = document.createElement("li");
+        l.onclick = function(){
+          list.unshift(i);
+   document.getElementById("sclose").click();
+    set(0);
+   audio.play();
+        }
+        l.setAttribute("data-n",n);
+        l.setAttribute("data-src",i.downloadUrl[3].link);
+        l.innerHTML = "<img class='simg' src='"+i.image[1].link+"'><div><div class='sname'><span>"+i.name+"</span></div><div class='sart'><span>"+i.primaryArtists+"</span></div></div>";
+        document.getElementById("slist").appendChild(l);
+       
+  }
+  
+  document.getElementById("sinp").oninput = function(){
+   document.getElementById("slist").innerHTML = "<h3 style='text-align: center'>Searching...</h3>";
+   fetch("https://saavn.me/search/songs?query="+this.value.trim()+"&page=1&limit=500")
+  .then((response) => response.json())
+  .then((data) => {
+      document.getElementById("slist").innerHTML = "";
+      if(data.status == "SUCCESS" && data.data.total > 0){
+       var slist = data.data.results;
+       slist.forEach((i,n) => {
+           plysrch(i,n,slist);
+       });
+      }else{
+          document.getElementById("slist").innerHTML = "<h3 style='text-align: center'>No results found !</h3>";
+      }
+  })
+  .catch(console.error);
+  // this.blur();
+  }
+  
+  menu.onclick = function(){
+    document.getElementById("srch").style.top = 0;
+   document.getElementById("slist").innerHTML = "";
+    list.forEach((i,n) => {
+        plylst(i,n,list,window.cs);
+    });
+    document.getElementById("sinp").value = "Current Playlist";
+    document.getElementById("sinp").disabled = true;
+   document.getElementById("reload").style.display = "";
+   document.getElementById("liked").style.display = "";
+   document.getElementById("sinp").style.width = "150px";
+    document.getElementById("sinp").style.background = "none";
+   document.getElementById("sinp").style.fontSize = "20px";
+   
+  }
+   
+   liked.onclick = function(){
+     var svid = localStorage.getItem("svid");
+   if(svid !== null){
+     var amid = svid.replaceAll(/,/g,"");
+    amid = amid.replaceAll(/null/g,"");
+   var nlid = [];
+   var ni;
+    for(var i = 0;i < amid.length;i = i+8){
+     ni = amid.substr(i,8);
+     nlid.push(ni);
+    }
+   var lp = [];
+   nlid.forEach((d) => {
+    var s = JSON.parse(localStorage.getItem(d));
+   lp.push(s);
+    });
+   document.getElementById("slist").innerHTML = "";
+    lp.forEach((i,n) => {
+        plysrch(i,n,lp);
+    });
+   }else{
+     as.toast({
+    title: "No Liked Songs!",
+    timer: 2500,
+    type: "question"
+    });
+   }
+   }
+ </script>
+</body>
+
+</html>
