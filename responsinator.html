@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html dir='ltr' lang='en-GB' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+ <title>AS RESPONSINATOR</title>
+ <meta charset='UTF-8' />
+ <meta content='https://i.imgur.com/KsagcZS.png' property='og:image' />
+ <link href='https://i.imgur.com/KsagcZS.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
+ <link href='https://i.imgur.com/KsagcZS.png' rel='apple-touch-icon' />
+ <link href='https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css' rel='stylesheet' />
+ <style id='page-skin-1' type='text/css'>
+  <!--
+  *{
+  box-sizing: border-box;
+  margin: 0;
+  }
+  body{
+  background-image: url(https://lh3.googleusercontent.com/blogger_img_proxy/ALY8t1vWwO3gARrZqdstptnaF8PZA47i84ZpFYMIqY-ayTJEayTSInUxePC5lRqsvCQoef2Bt2-l-7OB1ImwfrDDQ2DmKFjiCkVea48Kq8psg9bIgWFs=s0-d), linear-gradient(to right, #0088ff,#0098ff);
+  background-blend-mode: multiply;
+  background-repeat: repeat;
+  }
+  #input_container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  margin: auto;
+  height: 150px;
+  background-color: #0088ff;
+  padding: 15px;
+  color: #fff;
+  text-align: center;
+  border: 1px solid #000;
+  box-shadow: 0 0 6px #000;
+  }
+  #input_container.top{
+  position: fixed;
+  margin: 0;
+  top: 10px;
+  left: 10px;
+  }
+  #url{
+  width: 360px;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  }
+  .main_buttons{
+  font-size: 20px;
+  height: 40px;
+  background-color: #52ffa0;
+  }
+  .zmdi{
+  display: inline !important;
+  margin-right: 5px !important;
+  }
+  #iframe{
+  width: 1024px;
+  height: 600px;
+  resize: both;
+  border: none;
+  outline: 1px solid #000;
+  transition: all 1s;
+  }
+  #resize{
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  height: 150px;
+  padding: 10px;
+  width: 200px;
+  background-color: #0088ff;
+  color: #fff;
+  text-align: center;
+  border: 1px solid #000;
+  box-shadow: 0 0 6px #000;
+  display: none;
+  transition: all 0.3s;
+  }
+  #resize.active{
+  display: block;
+  }
+  #frame_size{
+  font-size: 20px;
+  display: block;
+  margin-bottom: 5px;
+  }
+  #resize input{
+  width: 100px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  }
+  
+  -->
+ </style>
+ <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109' />
+ <meta name='google-adsense-platform-domain' content='blogspot.com' />
+
+ <script type="text/javascript" language="javascript">
+  // Supply ads personalization default for EEA readers
+  // See https://www.blogger.com/go/adspersonalization
+  adsbygoogle = window.adsbygoogle || [];
+  if (typeof adsbygoogle.requestNonPersonalizedAds === 'undefined') {
+    adsbygoogle.requestNonPersonalizedAds = 1;
+  }
+ </script>
+
+
+</head>
+
+<body>
+ <center>
+  <div id='input_container'>
+   <span style='color: #fff;font-size: 20px;display: block;margin-bottom: 5px;'>AS Responsinator</span>
+   <input autocomplete='off' id='url' placeholder='Enter your website url...' required='' type='url' value='' /><br />
+   <button class='main_buttons' onclick='check_go()'><i class='zmdi zmdi-devices'></i>Check</button>
+   <button class='main_buttons' id='reload' onclick='document.getElementById("iframe").setAttribute("src", document.getElementById("iframe").getAttribute("src"))' style='display: none;'><i class='zmdi zmdi-refresh-alt'></i>Reload</button>
+  </div>
+  <div style='height: 180px;'></div>
+  <iframe allowfullscreen='true' id='iframe' style='display: none;'></iframe><br /><br /><br /><br />
+ </center>
+ <div id='resize'>
+  <span id='frame_size'></span>
+  Width: <input autocomplete='off' id='width' placeholder='Enter width' required='' type='number' value='' /><br />
+  Height: <input autocomplete='off' id='height' placeholder='Enter height' required='' type='number' value='' /><br />
+  <button class='main_buttons' onclick='resize(document.getElementById("width").value,document.getElementById("height").value)'><i class='zmdi zmdi-arrows'></i>Resize</button>
+ </div>
+ <div class='no-items section' id='required'></div>
+ <script>
+  let params = new URLSearchParams(document.location.search);
+  let web = params.get("url");
+  if(web != null && web != ""){
+  document.getElementById("url").value = web;
+    main();
+  }
+  let w = params.get("w");
+  let h = params.get("h");
+  if(w != "" && w != null){
+  document.getElementById("iframe").style.width = w+"px";
+  }else{
+  document.getElementById("iframe").style.width = "1024px";
+  }
+  if(h != "" && h != null){
+  document.getElementById("iframe").style.height = h+"px";
+  }else{
+  document.getElementById("iframe").style.height = "600px";
+  }
+  function on(){
+  document.getElementById("iframe").style.display = "block";
+  }
+  function go(link){
+  document.getElementById("iframe").setAttribute("src", link);
+  }
+  function resize(w,h){
+  if(w != "" && h != ""){
+  if(document.getElementById("url").checkValidity()){
+  document.getElementById("iframe").style.width = w+"px";
+  document.getElementById("iframe").style.height = h+"px";
+  document.getElementById("iframe").setAttribute("src", document.getElementById("iframe").getAttribute("src"))
+   } else{
+    alert("Please enter a valid url.");
+   }
+  } else{
+    alert("Please enter both - width & height");
+  }
+  }
+  function check_go(){
+  if(document.getElementById("url").checkValidity()){
+  var newurl = "https://asresponsinator.blogspot.com/?url="+document.getElementById("url").value;
+  window.location.href = newurl;
+  }else{
+    alert("Please enter a valid url.");
+  }
+  }
+  function main(){
+  if(document.getElementById("url").checkValidity()){
+  document.getElementById("input_container").classList.add("top");
+  var url = document.getElementById("url").value;
+   on();
+    go(url);
+  document.getElementById("resize").classList.add("active");
+  document.getElementById("reload").style.display = "inline-block";
+  setInterval(check_frame_size, 500);
+    }else{
+    alert("Please enter a valid url.");
+    }
+  }
+  function check_frame_size(){
+  document.getElementById("frame_size").innerHTML = "";
+  document.getElementById("frame_size").innerText = "";
+  document.getElementById("frame_size").innerHTML = document.getElementById("iframe").style.width+" &#215; "+document.getElementById("iframe").style.height;
+  }
+ </script>
+ <!--Il est de votre ressort d\x27informer les visiteurs \xe0 propos des cookies utilis\xe9s et des donn\xe9es collect\xe9es sur votre blog. Blogger met \xe0 votre disposition une notification standard que vous pouvez personnaliser, remplacer ou afficher telle quelle sur votre blog. Rendez-vous sur http://www.blogger.com/go/cookiechoices pour obtenir de plus amples informations.-->
+ <script defer='' src='/js/cookienotice.js'></script>
+ <script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    window.cookieChoices && cookieChoices.showCookieConsentBar && cookieChoices.showCookieConsentBar(
+        (window.cookieOptions && cookieOptions.msg) || 'Ce site utilise des cookies provenant de Google pour fournir ses services et analyser le trafic. Votre adresse\xa0IP et votre user-agent, ainsi que des statistiques relatives aux performances et \xe0 la s\xe9curit\xe9, sont transmis \xe0 Google afin d\x27assurer un service de qualit\xe9, de g\xe9n\xe9rer des statistiques d\x27utilisation, et de d\xe9tecter et de r\xe9soudre les probl\xe8mes d\x27abus.',
+        (window.cookieOptions && cookieOptions.close) || 'OK',
+        (window.cookieOptions && cookieOptions.learn) || 'En savoir plus',
+        (window.cookieOptions && cookieOptions.link) || 'https://www.blogger.com/go/blogspot-cookies');
+  });
+ </script>
+
+ <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3737540651-widgets.js"></script>
+ <script type='text/javascript'>
+  window['__wavt'] = 'AOuZoY6g_o-9znzZuHjeSSD2NibR4I5Qzg:1698860163445';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3973751276223688194','//asresponsinator.blogspot.com/?m\x3d1','3973751276223688194');
+  _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3973751276223688194', 'title': 'AS RESPONSINATOR', 'url': 'https://asresponsinator.blogspot.com/?m\x3d1', 'canonicalUrl': 'https://asresponsinator.blogspot.com/', 'homepageUrl': 'https://asresponsinator.blogspot.com/?m\x3d1', 'searchUrl': 'https://asresponsinator.blogspot.com/search', 'canonicalHomepageUrl': 'https://asresponsinator.blogspot.com/', 'blogspotFaviconUrl': 'https://asresponsinator.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en-GB', 'localeUnderscoreDelimited': 'en_gb', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': true, 'isMobileRequest': true, 'mobileClass': ' mobile', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS RESPONSINATOR - Atom\x22 href\x3d\x22https://asresponsinator.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22AS RESPONSINATOR - RSS\x22 href\x3d\x22https://asresponsinator.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS RESPONSINATOR - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3973751276223688194/posts/default\x22 /\x3e\n', 'meTag': '\x3clink rel\x3d\x22me\x22 href\x3d\x22https://www.blogger.com/profile/14119495659275178860\x22 /\x3e\n', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/24dbc299a9c09ea1', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en_GB\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'index', 'pageName': '', 'pageTitle': 'AS RESPONSINATOR'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard', 'ok': 'Ok', 'postLink': 'Post link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': true, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'AS RESPONSINATOR', 'description': '', 'url': 'https://asresponsinator.blogspot.com/?m\x3d1', 'type': 'feed', 'isSingleItem': false, 'isMultipleItems': true, 'isError': false, 'isPage': false, 'isPost': false, 'isHomepage': true, 'isArchive': false, 'isLabelSearch': false}}, {'name': 'widgets', 'data': []}]);
+ </script>
+</body>
+
+</html>

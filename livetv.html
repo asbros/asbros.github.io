@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html dir='ltr' lang='en-GB' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+ <title>AS LIVE TV</title>
+ <meta content='#dc3545' name='theme-color' />
+ <meta charset='utf-8' />
+ <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+ <meta content='https://i.imgur.com/aFOM5pg.png' property='og:image' />
+ <link href='https://i.imgur.com/aFOM5pg.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
+ <link href='https://i.imgur.com/aFOM5pg.png' rel='apple-touch-icon' />
+ <link href='https://asbros.github.io/web-manifest/as.webmanifest' rel='manifest' />
+ <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
+ <script src='https://asbros.github.io/popup.js/popup.js'></script>
+ <link href='https://cdn.plyr.io/1.8.2/plyr.css' rel='stylesheet' />
+ <script src="//hlsbook.net/wp-content/examples/hls.min.js"></script>
+ <style id='page-skin-1' type='text/css'>
+  <!--
+  @import url('https://fonts.googleapis.com/css2?family=Jost&amp;display=swap');
+  *{font-family:'Jost', sans-serif;user-select:none;}
+  body{padding:0;margin:0;}
+  .mcon{margin:0;padding:0px;}
+  .plrd{position:-webkit-sticky;position:sticky;z-index:9999999;top:0;border:3px solid #dc3545;background:#000;margin-bottom:8px;}
+  #video{width:100%;height:100%;}
+  .chnld{list-style-type:number;padding:7px;}
+  button{padding:10px;background:rgba(153, 153, 153, 0.4);margin-bottom:5px;font-size:17px;border:0;width:100%;text-align:left;}
+  @media only screen and (min-width: 1024px) {
+  .mcon{display:flex;}
+  .plrd{width:calc(100% - 425px);background:#000;height:100%;}
+  #video{height:100%;}
+  .chnld{filter:none !important;-webkit-filter:none !important;width:400px;background:#333;}
+  button{color:#eee;}
+  
+  -->
+ </style>
+ <script>
+  var uri = window.location.toString();
+  if (uri.indexOf("?m=1","?m=1") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?m=1"));window.history.replaceState({}, document.title, clean_uri);}
+  if (uri.indexOf("&m=1","&m=1") > 0) {var clean_uri = uri.substring(0, uri.indexOf("&m=1"));window.history.replaceState({}, document.title, clean_uri);}
+ </script>
+ <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109' />
+ <meta name='google-adsense-platform-domain' content='blogspot.com' />
+
+ <script type="text/javascript" language="javascript">
+  // Supply ads personalization default for EEA readers
+  // See https://www.blogger.com/go/adspersonalization
+  adsbygoogle = window.adsbygoogle || [];
+  if (typeof adsbygoogle.requestNonPersonalizedAds === 'undefined') {
+    adsbygoogle.requestNonPersonalizedAds = 1;
+  }
+ </script>
+
+
+</head>
+
+<body>
+ <div class='pad-10 shadow bg-red relative' style='margin-bottom:10px;display: flex;align-items: center;'>
+  <span class='white josefin-font f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'><i class='fa-brands fa-spotify' style='margin-right:6px;font-size:22px'></i>AS LIVE TV</span>
+  <button class='s-40 active circle btn right' onclick='abt()' style='background:transparent;display: flex;align-items: center;'><svg fill='#fff' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+    <path clip-rule='evenodd' d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z' fill-rule='evenodd'></path>
+   </svg></button>
+ </div>
+ <div class='mcon'>
+  <div class='plrd'>
+   <video autoplay='' controls='' id='video'></video>
+  </div>
+  <div class='chnld'>
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://d2q8p4pe5spbak.cloudfront.net/bpk-tv/9XM/9XM.isml/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>9XM</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://aajtaklive-amd.akamaized.net/hls/live/2014416/aajtak/aajtaklive/live_404p/chunks.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Aaj Tak</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://abplivetv.akamaized.net/hls/live/2043010/hindi/master.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>ABP News</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://prod-sports-north-gm.jiocinema.com/bpk-tv/Colors_Cineplex_Bollywood_voot_MOB/Fallback/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Colors Cineplex Bollywood</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://prod-sports-north-gm.jiocinema.com/bpk-tv/Rishtey_Cineplex_voot_MOB/Fallback/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Rishtey Cineplex</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://prod-sports-north-gm.jiocinema.com/bpk-tv/Colors_HD_voot_MOB/Fallback/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Colors HD</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://prod-sports-north-gm.jiocinema.com/bpk-tv/Colors_Infinity_HD_voot_MOB/Fallback/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Colors Infinity HD</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://prod-sports-north-gm.jiocinema.com/bpk-tv/Colors_Rishtey_voot_MOB/Fallback/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Colors Rishtey</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://livetv.newsx.com/itv/itvnetwork5/playlist.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>India News</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://prod-sports-north-gm.jiocinema.com/bpk-tv/MTV_Beats_HD_voot_MOB/Fallback/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>MTV Beats HD</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://vidcdn.vidgyor.com/news24-origin/liveabr/news24-origin/live_240p/chunks.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>News 24</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://livetv-channels.b-cdn.net/8006/playlist.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>News Nation</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://prod-sports-north-gm.jiocinema.com/bpk-tv/Sonic_Nickelodeon_voot_MOB/Fallback/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Sonic Nickelodeon</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://d26idhjf0y1p2g.cloudfront.net/out/v1/cd66dd25b9774cb29943bab54bbf3e2f/index.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Sanskar TV</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://livetv-channels.b-cdn.net/8076/playlist.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Zee Uttarpradesh Uttrakhand</button><br />
+   <button class='active' onclick='if (Hls.isSupported() ) {var video = document.getElementById(&#39;video&#39;);var hls = new Hls();hls.loadSource (&#39;https://pubads.g.doubleclick.net/ssai/event/HgaB-u6rSpGx3mo4Xu3sLw/master.m3u8&#39;);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED, function(){video.play();});}'>Sony Set HD</button><br />
+  </div>
+ </div>
+ <div class='no-items section' id='required'></div>
+ <script>
+ </script>
+ <script>
+  function abt(){
+    as.popup({
+    title:"Anshul Kumar",
+    closeBtn: false,
+     icon:"https://i.imgur.com/Mh3z5lX.jpg",
+    closeIcon: true
+  });
+  }
+ </script>
+ <!--Il est de votre ressort d\x27informer les visiteurs \xe0 propos des cookies utilis\xe9s et des donn\xe9es collect\xe9es sur votre blog. Blogger met \xe0 votre disposition une notification standard que vous pouvez personnaliser, remplacer ou afficher telle quelle sur votre blog. Rendez-vous sur http://www.blogger.com/go/cookiechoices pour obtenir de plus amples informations.-->
+ <script defer='' src='/js/cookienotice.js'></script>
+ <script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    window.cookieChoices && cookieChoices.showCookieConsentBar && cookieChoices.showCookieConsentBar(
+        (window.cookieOptions && cookieOptions.msg) || 'Ce site utilise des cookies provenant de Google pour fournir ses services et analyser le trafic. Votre adresse\xa0IP et votre user-agent, ainsi que des statistiques relatives aux performances et \xe0 la s\xe9curit\xe9, sont transmis \xe0 Google afin d\x27assurer un service de qualit\xe9, de g\xe9n\xe9rer des statistiques d\x27utilisation, et de d\xe9tecter et de r\xe9soudre les probl\xe8mes d\x27abus.',
+        (window.cookieOptions && cookieOptions.close) || 'OK',
+        (window.cookieOptions && cookieOptions.learn) || 'En savoir plus',
+        (window.cookieOptions && cookieOptions.link) || 'https://www.blogger.com/go/blogspot-cookies');
+  });
+ </script>
+
+ <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3737540651-widgets.js"></script>
+ <script type='text/javascript'>
+  window['__wavt'] = 'AOuZoY7fNk_Op9vy4BMTINHIV1yMXxJqnA:1698860283992';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1327782580047441992','//as-live-tv.blogspot.com/','1327782580047441992');
+  _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1327782580047441992', 'title': 'AS Live TV', 'url': 'https://as-live-tv.blogspot.com/', 'canonicalUrl': 'https://as-live-tv.blogspot.com/', 'homepageUrl': 'https://as-live-tv.blogspot.com/', 'searchUrl': 'https://as-live-tv.blogspot.com/search', 'canonicalHomepageUrl': 'https://as-live-tv.blogspot.com/', 'blogspotFaviconUrl': 'https://as-live-tv.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en-GB', 'localeUnderscoreDelimited': 'en_gb', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS Live TV - Atom\x22 href\x3d\x22https://as-live-tv.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22AS Live TV - RSS\x22 href\x3d\x22https://as-live-tv.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS Live TV - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1327782580047441992/posts/default\x22 /\x3e\n', 'meTag': '\x3clink rel\x3d\x22me\x22 href\x3d\x22https://www.blogger.com/profile/14119495659275178860\x22 /\x3e\n', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/24dbc299a9c09ea1', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en_GB\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'index', 'pageName': '', 'pageTitle': 'AS Live TV'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard', 'ok': 'Ok', 'postLink': 'Post link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': true, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'AS Live TV', 'description': '', 'url': 'https://as-live-tv.blogspot.com/', 'type': 'feed', 'isSingleItem': false, 'isMultipleItems': true, 'isError': false, 'isPage': false, 'isPost': false, 'isHomepage': true, 'isArchive': false, 'isLabelSearch': false}}, {'name': 'widgets', 'data': []}]);
+ </script>
+</body>
+
+</html>
