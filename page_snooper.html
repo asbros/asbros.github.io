@@ -1,0 +1,648 @@
+&lt;!DOCTYPE html&gt;
+&lt;html dir=&#039;ltr&#039; lang=&#039;en-GB&#039; xmlns=&#039;http://www.w3.org/1999/xhtml&#039; xmlns:b=&#039;http://www.google.com/2005/gml/b&#039; xmlns:data=&#039;http://www.google.com/2005/gml/data&#039; xmlns:expr=&#039;http://www.google.com/2005/gml/expr&#039;&gt;
+&lt;head&gt;
+&lt;title&gt;AS GANA&lt;/title&gt;
+&lt;meta content=&#039;#ab0916&#039; name=&#039;theme-color&#039;/&gt;
+&lt;meta charset=&#039;UTF-8&#039;/&gt;
+&lt;meta content=&#039;width=device-width, user-scalable=no&#039; name=&#039;viewport&#039;/&gt;
+&lt;meta content=&#039;https://i.imgur.com/p081OXx.png&#039; property=&#039;og:image&#039;/&gt;
+&lt;link href=&#039;https://i.imgur.com/p081OXx.png&#039; rel=&#039;shortcut icon&#039; type=&#039;image/vnd.microsoft.icon&#039;/&gt;
+&lt;link href=&#039;https://i.imgur.com/p081OXx.png&#039; rel=&#039;apple-touch-icon&#039;/&gt;
+&lt;link href=&#039;https://asbros.github.io/web-manifest/as.webmanifest&#039; rel=&#039;manifest&#039;/&gt;
+&lt;link href=&#039;https://asbros.github.io/css/main.css&#039; media=&#039;all&#039; rel=&#039;stylesheet&#039; type=&#039;text/css&#039;/&gt;
+&lt;link crossorigin=&#039;anonymous&#039; href=&#039;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css&#039; integrity=&#039;sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==&#039; referrerpolicy=&#039;no-referrer&#039; rel=&#039;stylesheet&#039;/&gt;
+&lt;style&gt;
+  @import url(&#039;https://fonts.googleapis.com/css2?family=Jost&amp;display=swap&#039;);
+&lt;/style&gt;
+&lt;script src=&#039;https://asbros.github.io/popup.js/popup.js&#039;&gt;&lt;/script&gt;
+&lt;script&gt;
+var uri = window.location.toString();
+  if (uri.indexOf(&quot;?m=1&quot;,&quot;?m=1&quot;) &gt; 0) {var clean_uri = uri.substring(0, uri.indexOf(&quot;?m=1&quot;));window.history.replaceState({}, document.title, clean_uri);}
+  if (uri.indexOf(&quot;&amp;m=1&quot;,&quot;&amp;m=1&quot;) &gt; 0) {var clean_uri = uri.substring(0, uri.indexOf(&quot;&amp;m=1&quot;));window.history.replaceState({}, document.title, clean_uri);}
+&lt;/script&gt;
+&lt;style id=&#039;page-skin-1&#039; type=&#039;text/css&#039;&gt;&lt;!--
+*{margin: 0;user-select: none;text-decoration: none !important;-webkit-tap-highlight-color: transparent;font-family: &quot;Jost&quot;, sans-serif;}
+html, body{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+:root {
+--pink: #ff74a4;
+--violet: #9f6ea3;
+--lightblack: #fff;
+--white: #48404842;
+--darkwhite: #cecaca;
+--pinkshadow: #ffcbdd;
+--lightbshadow: rgba(0,0,0,0.15);
+}
+body{
+height: 100vh !important;
+width: 100vw !important;
+/*display: flex;
+align-items: center;
+flex-direction: column;
+justify-content: center;*/
+overflow: hidden;
+color: #fff;
+background-image: linear-gradient(#40C9FF,#E81CFF);
+background-size: 100% 100%;
+background-repeat: no-repeat;
+backdrop-filter: blur(20px);
+}
+#main{
+width: 100%;
+padding: 0;
+height: 770px;
+overflow: hidden;
+position: relative;
+margin: auto;
+box-shadow: 0px 30px 80px rgba(0, 0, 0, 0.3);
+background: rgba(0,0,0,0.4);
+}
+#header, #controls, #time, #image, #st{
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+#header,#time,#st,#controls{
+/*background-color: rgba(232,232,240, 0.5);
+backdrop-filter: blur(5px);*/
+}
+#header{
+height: 60px;
+padding-left: 25px;
+padding-right: 25px;
+padding-top: 10px;
+}
+#controls{
+padding-left: 25px;
+padding-right: 25px;
+padding-top: 10px;
+padding-bottom: 20px;
+}
+#image{
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+margin-top: 20px;
+margin-bottom: 27px;
+}
+#img{
+width: 256px;
+height: 256px;
+border-radius: 15px;
+object-fit: cover;
+box-shadow: 0px 6px 12px var(--lightbshadow);
+}
+#name{font-size: 30px;line-height: 50px;}
+#artist{font-size: 16px;line-height: 30px;opacity: 0.8;}
+#time{
+padding: 0px 25px;
+padding-top: 20px;
+padding-bottom: 5px;
+}
+#timer{
+width: 100%;
+}
+#st{
+margin-top: 0px;
+font-size: 15px;
+padding: 0px 27px;
+}
+#controls button, #header button, #srch button{
+background: none;
+border: 0;
+}
+#controls i{
+font-size: 27px;
+user-select: none;
+color: #fff;
+}
+#lkd i{
+color: #f00;
+}
+#header i, #srch i{
+font-size: 20px;
+user-select: none;
+color: #fff;
+}
+#play i, #pause i{
+font-size: 54px;
+}
+#header button,#srch button, #controls button:not(#play,#pause){
+height: 40px;
+width: 40px;
+border-radius: 50%;
+}
+#timer {
+-webkit-appearance: none;
+appearance: none;
+width: 100%;
+cursor: pointer;
+outline: none;
+overflow: hidden;
+border-radius: 2px;
+}
+#timer::-webkit-slider-runnable-track {
+height: 7px;
+background: #ccc;
+border-radius: 0px;
+}
+#timer::-moz-range-track {
+height: 7px;
+background: #ccc;
+border-radius: 0px;
+}
+#timer::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+height: 7px;
+width: 7px;
+background-color: #fff;
+border: 2px solid #fff;
+box-shadow: -407px 0 0 400px #fff;
+}
+#timer::-moz-range-thumb {
+height: 7px;
+width: 7px;
+background-color: #fff;
+border: 1px solid #fff;
+box-shadow: -407px 0 0 400px #fff;
+}
+#srch{
+position: absolute;
+top: 120%;
+left: 0;
+right: 0;
+bottom: 0;
+z-index: 999;
+background: rgba(0,0,0,0.8);
+flex-direction: column;
+padding: 0px;
+transition: all 0.2s;
+backdrop-filter: blur(5px);
+}
+#shead{
+z-index: 6;
+height: 40px;
+background: rgba(0,0,0,0.9);
+display: flex;
+justify-content: space-between;
+}
+#sinp{
+height: 40px;
+padding: 0px 10px;
+font-size: 16px;
+font-family: Jost;
+border-radius: 5px;
+margin-right: 15px;
+margin-left: 20px;
+border: 0;
+color: #fff;
+background: rgba(227,222,224,0.24);
+}
+#sinp:focus{
+outline: none;
+}
+#sres{
+/*  display: flex;
+position: relative;
+justify-content: center;
+align-items: center;
+flex-direction: column;*/
+overflow-y: scroll;
+padding: 0;
+padding-top: 0px;
+padding-bottom: 20px;
+z-index: 1;
+height: 600px;
+}
+#slist{
+position: relative;
+left: -20px;
+overflow-y: scroll;
+}
+#slist li{
+display: flex;
+justify-content: flex-start;
+align-items: center;
+margin-bottom: 10px;
+border-radius: 8px;
+background: rgba(255,255,255,0.3);
+padding: 7px;
+text-overflow: ellipsis;overflow: hidden;white-space: nowrap;
+}
+.simg{
+height: 50px;
+width: 50px;
+border-radius: 7px;
+margin-right: 10px;
+margin-left: 5px;
+}
+.sname, .sart{
+width: 225px;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+font-size: 18px;
+}
+.sart{opacity: 0.7;font-size: 13px;line-height: 20px;}
+
+--&gt;&lt;/style&gt;
+&lt;meta name=&#039;google-adsense-platform-account&#039; content=&#039;ca-host-pub-1556223355139109&#039;/&gt;
+&lt;meta name=&#039;google-adsense-platform-domain&#039; content=&#039;blogspot.com&#039;/&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&#039;no-items section&#039; id=&#039;required&#039;&gt;&lt;/div&gt;
+&lt;audio id=&#039;audio&#039;&gt;&lt;/audio&gt;
+&lt;div id=&#039;bg&#039;&gt;
+&lt;div id=&#039;main&#039;&gt;
+&lt;div id=&#039;header&#039;&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;menu&#039;&gt;&lt;i class=&#039;fa-solid fa-list&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;span id=&#039;title&#039; style=&#039;font-size: 20px;font-weight: 900;&#039;&gt;&lt;i class=&#039;fa-solid fa-music&#039;&gt;&lt;/i&gt; AS GANA&lt;/span&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;search&#039;&gt;&lt;i class=&#039;fa-solid fa-magnifying-glass&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id=&#039;image&#039; style=&#039;flex-wrap: wrap;&#039;&gt;
+&lt;img id=&#039;img&#039; src=&#039;https://nglemployeedirectory.in/images/loading.gif&#039;/&gt;
+&lt;/div&gt;
+&lt;div id=&#039;song&#039; style=&#039;margin: 25px;margin-top: 15px;text-align: center;&#039;&gt;
+&lt;div style=&#039;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;&#039;&gt;&lt;span id=&#039;name&#039;&gt;Loading Song...&lt;/span&gt;&lt;/div&gt;
+&lt;div style=&#039;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;&#039;&gt;&lt;span id=&#039;artist&#039;&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#039;time&#039;&gt;
+&lt;input id=&#039;timer&#039; type=&#039;range&#039; value=&#039;0&#039;/&gt;
+&lt;/div&gt;
+&lt;div id=&#039;st&#039;&gt;
+&lt;span id=&#039;ct&#039;&gt;0:00&lt;/span&gt;
+&lt;span id=&#039;tt&#039;&gt;0:00&lt;/span&gt;
+&lt;/div&gt;
+&lt;div id=&#039;controls&#039; style=&#039;flex-direction: column;&#039;&gt;
+&lt;div style=&#039;width: 100%;display: flex;justify-content: space-between;align-items: center;&#039;&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;lk&#039;&gt;&lt;i class=&#039;fa-regular fa-heart&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;lkd&#039; style=&#039;display: none&#039;&gt;&lt;i class=&#039;fa-solid fa-heart&#039; style=&#039;color: #e00&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;prev&#039;&gt;&lt;i class=&#039;fa-solid fa-backward-step&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button id=&#039;play&#039;&gt;&lt;i class=&#039;fa-solid fa-circle-play&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button id=&#039;pause&#039; style=&#039;display: none&#039;&gt;&lt;i class=&#039;fa-solid fa-circle-pause&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;next&#039;&gt;&lt;i class=&#039;fa-solid fa-forward-step&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;down&#039;&gt;&lt;i class=&#039;fa-solid fa-arrow-down&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#039;srch&#039;&gt;
+&lt;div id=&#039;shead&#039; style=&#039;padding: 12px 0px;&#039;&gt;
+&lt;input id=&#039;sinp&#039; placeholder=&#039;Type to search...&#039; type=&#039;text&#039;/&gt;
+&lt;div&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;reload&#039; style=&#039;display: none;&#039;&gt;&lt;i class=&#039;fa-solid fa-refresh&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;liked&#039; style=&#039;display: none;&#039;&gt;&lt;i class=&#039;fa-regular fa-heart&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;button class=&#039;ripple&#039; id=&#039;sclose&#039; style=&#039;margin-right: 10px;&#039;&gt;&lt;i class=&#039;fa-solid fa-close&#039;&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#039;sres&#039;&gt;
+&lt;ul id=&#039;slist&#039;&gt;&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4 style=&#039;text-align: center;opacity:0.7;&#039;&gt;Made with &amp;#10084;&amp;#65039; by AS BROTHERS&lt;/h4&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+  var loader = as.loader();
+  const audio = document.getElementById(&#039;audio&#039;);
+  const menu = document.getElementById(&#039;menu&#039;);
+  const search = document.getElementById(&#039;search&#039;);
+  const img = document.getElementById(&#039;img&#039;);
+  const name = document.getElementById(&#039;name&#039;);
+  const art = document.getElementById(&#039;artist&#039;);
+  const time = document.getElementById(&#039;timer&#039;);
+  const ct = document.getElementById(&#039;ct&#039;);
+  const tt = document.getElementById(&#039;tt&#039;);
+  const lk = document.getElementById(&#039;lk&#039;);
+  const lkd = document.getElementById(&#039;lkd&#039;);
+  const prev = document.getElementById(&#039;prev&#039;);
+  const play = document.getElementById(&#039;play&#039;);
+  const pause = document.getElementById(&#039;pause&#039;);
+  const next = document.getElementById(&#039;next&#039;);
+  const down = document.getElementById(&#039;down&#039;);
+   const reload = document.getElementById(&#039;reload&#039;);
+   const liked = document.getElementById(&#039;liked&#039;);
+  
+  var list = [];
+  var queries = [&#039;Kiara Advani&#039;,&#039;Sidharth Malhotra&#039;,&#039;Shah Rukh Khan&#039;,&#039;Arijit Singh&#039;,&#039;Udit Narayan&#039;,&#039;Jubin Nautiyal&#039;,&#039;Lata Mangeshkar&#039;,&#039;Alka Yagnik&#039;,&#039;Akshay Kumar&#039;,&#039;Neha Kakkar&#039;,&#039;Arijit Singh&#039;,&#039;Badshah&#039;,&#039;Atif Aslam&#039;,&#039;Justin Bieber&#039;,&#039;Himesh Reshammiya&#039;,&#039;Lata Mangeshkar&#039;,&#039;Diljit Dosanjh&#039;,&#039;Ed Sheeran&#039;,&#039;Shreya Ghoshal&#039;,&#039;Sanam Puri&#039;,&#039;Armaan Malik&#039;,&#039;Salman Khan&#039;,&#039;Amitabh Bachchan&#039;,&#039;Varun Dhawan&#039;,&#039;Katrina Kaif&#039;,&#039;Ranbir Kapoor&#039;,
+&#039;Sidhu Moose Wala&#039;,&#039;emiway bantai&#039;,&#039;King&#039;,&#039;dino james&#039;,&#039;ikka&#039;,&#039;paradox&#039;,&#039;mc aquare&#039;,&#039;sonu nigam&#039;,&#039;alka yagnik&#039;,&#039;kumar sanu&#039;,&#039;udit narayan&#039;,&#039;shreya ghoshal&#039;,&#039;Parmish Verma&#039;,&#039;hardi sandhu&#039;,&#039;guru randhawa&#039;,&#039;mika singh&#039;,&#039;honey singh&#039;,&#039;AP Dhillon&#039;,&#039;imran khan&#039;,&#039;shubh&#039;,&#039;honey singh&#039;,&#039;Darshan Raval&#039;,&#039;Shankar Mahadevan&#039;,&#039;Sushant Singh Rajput&#039;,&#039;A. R. Rahman&#039;,&#039;B Praak&#039;,&#039;Dhvani Bhanushali&#039;,&#039;Tulsi Kumar&#039;,&#039;Javed Ali&#039;,&#039;Vishal Shekhar&#039;,&#039;Kailash Kher&#039;,&#039;Divine&#039;,&#039;Raftaar&#039;,&#039;Ajey Nagar&#039;,&#039;Addy Nagar&#039;,&#039;Ajay Devgan&#039;,&#039;Hrithik Roshan&#039;,&#039;Aamir Khan&#039;,&#039;Ranveer Singh&#039;,&#039;Alia Bhatt&#039;,&#039;Dipika Padukon&#039;,&#039;Anushka Sharma&#039;];
+   function q(){
+     var cpq = queries[Math.floor(Math.random() * queries.length)];
+   localStorage.setItem(&quot;playlist&quot;,cpq);
+     return cpq;
+   }
+  
+   function load(r){
+   window.cquery = r;
+   fetch(&quot;https://saavn.me/search/songs?query=&quot;+r+&quot;&amp;page=1&amp;limit=500&quot;)
+  .then((response) =&gt; response.json())
+  .then((data) =&gt; {
+   if(data.status == &quot;SUCCESS&quot; &amp;&amp; data.data.total &gt; 0){
+    list = [];
+    list = data.data.results;
+    set(0);
+   }else{
+      document.window.reload();
+   }
+  })
+  .catch(console.error);
+   }
+   
+   load(q());
+   
+  reload.onclick = function(){
+   load(q());
+   document.getElementById(&quot;sclose&quot;).click();
+     pause.click();
+   setTimeout(function(){play.click()}, 500);
+   }
+   
+  function stm(t){
+  var mins = Math.floor(t / 60);
+  var secs = Math.floor(t % 60);
+  var formattedTime = `${mins}:${secs &lt; 10 ? &#039;0&#039; : &#039;&#039;}${secs}`;
+  return formattedTime;
+  }
+  
+  function set(n){
+    document.body.style.backgroundImage = &quot;linear-gradient(#40C9FF,#E81CFF)&quot;;
+    img.src = &quot;https://nglemployeedirectory.in/images/loading.gif&quot;;
+    var x = list[n];
+    window.cs = n;
+    window.st = x.name;
+    name.innerHTML = x.name;
+    art.innerHTML = x.primaryArtists;
+    tt.innerText = stm(x.duration);
+    if(x.image){
+    var e = x.image.length;
+    img.src = x.image[e-1].link;
+    document.body.style.backgroundImage = &quot;url(&quot;+x.image[e-1].link+&quot;)&quot;;
+    }
+    if(x.downloadUrl){
+    var u = x.downloadUrl.length;
+    audio.src = x.downloadUrl[u-1].link;
+    }
+   var svid = localStorage.getItem(&quot;svid&quot;);
+  if(svid !== null){
+    if(svid.includes(x.id)){
+   document.getElementById(&quot;lk&quot;).style.display = &quot;none&quot;;
+   document.getElementById(&quot;lkd&quot;).style.display = &quot;&quot;;
+  }else{document.getElementById(&quot;lk&quot;).style.display = &quot;&quot;;
+   document.getElementById(&quot;lkd&quot;).style.display = &quot;none&quot;;
+   } }
+    timer.setAttribute(&quot;min&quot;,0);
+    timer.setAttribute(&quot;max&quot;,x.duration);
+  }
+  
+  timer.onchange = function(){
+  audio.currentTime = this.value;
+  var minutes = Math.floor(audio.currentTime / 60);
+  var seconds = Math.floor(audio.currentTime % 60);
+  var formattedTime = `${minutes}:${seconds &lt; 10 ? &#039;0&#039; : &#039;&#039;}${seconds}`;
+  ct.innerText = formattedTime;
+  }
+  
+  audio.ontimeupdate = function(){
+  timer.value = audio.currentTime;
+  var minutes = Math.floor(audio.currentTime / 60);
+  var seconds = Math.floor(audio.currentTime % 60);
+  var formattedTime = `${minutes}:${seconds &lt; 10 ? &#039;0&#039; : &#039;&#039;}${seconds}`;
+  ct.innerText = formattedTime;
+  }
+  
+  audio.onended = function(){
+    next.click();
+    play.click();
+  }
+  
+  audio.onpause = function(){
+    pause.click();
+  }
+  
+  audio.onplay = function(){
+    play.click();
+  }
+  
+  play.onclick = function(){
+    audio.play();
+    this.style.display = &quot;none&quot;;
+    pause.style.display = &quot;&quot;;
+  }
+  
+  pause.onclick = function(){
+    audio.pause();
+    this.style.display = &quot;none&quot;;
+    play.style.display = &quot;&quot;;
+  }
+   
+   lk.onclick = function(){
+    this.style.display = &quot;none&quot;;
+    var svid = (localStorage.getItem(&quot;svid&quot;));
+    var ldt = list[window.cs];
+    localStorage.setItem(&quot;svid&quot;,svid+&quot;,&quot;+(ldt.id));
+   localStorage.setItem(ldt.id,JSON.stringify(ldt));
+    lkd.style.display = &quot;&quot;;
+  }
+  
+  lkd.onclick = function(){
+    this.style.display = &quot;none&quot;;
+   var svid = localStorage.getItem(&quot;svid&quot;);
+  if(svid.includes(list[window.cs].id)){
+    var nsvid = svid.replace(list[window.cs].id,&quot;&quot;);
+   localStorage.removeItem(list[window.cs].id);
+   localStorage.setItem(&quot;svid&quot;,nsvid);
+   }
+    lk.style.display = &quot;&quot;;
+  }
+  
+  prev.onclick = function(){
+   var plon = true;
+   if(audio.paused == true){
+     plon = false;
+   }
+    if(cs !== 0){
+    set(window.cs-1);
+    }else{
+        set(list.length-1);
+    }
+   if(plon == true){
+     play.click();
+   }
+  }
+  
+  var plon;
+  next.onclick = function(){
+    plon = true;
+   if(audio.paused == true){
+     plon = false;
+   }
+    if(window.cs !== list.length-1){
+    set(window.cs+1);
+    }else{
+        set(0);
+    }
+   if(plon == true){
+     play.click();
+   }
+  }
+  
+  down.onclick = function(){
+   loader.show({
+     title: &quot;Downloading...&quot;
+   });
+    fetch(audio.src)
+    .then((response) =&gt; {
+      if (!response.ok) {
+       console.error(&#039;Network response was not ok&#039;);
+        loader.hide();
+      }
+      return response.blob();
+    })
+    .then((blob) =&gt; {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const base64Data = reader.result.split(&#039;,&#039;)[1]; // Extract the Base64 data
+  
+        // Create an anchor element to trigger the download
+        const a = document.createElement(&#039;a&#039;);
+        a.href = `data:audio/mp3;base64,${base64Data}`;
+        a.download = `${window.st}.mp3`; // Set the desired filename
+  
+        // Trigger a click event on the anchor to initiate the download
+        a.dispatchEvent(new MouseEvent(&#039;click&#039;));
+  
+        // Cleanup
+        URL.revokeObjectURL(a.href);
+      };
+      reader.readAsDataURL(blob);
+      loader.hide();
+    })
+    .catch((error) =&gt; {
+      console.error(&#039;Error downloading audio:&#039;, error);
+   loader.hide();
+    });
+  }
+  
+  search.onclick = function(){
+    document.getElementById(&quot;srch&quot;).style.top = 0;
+    document.getElementById(&quot;sinp&quot;).value = &quot;&quot;;
+    document.getElementById(&quot;slist&quot;).innerHTML = &quot;&quot;;
+    document.getElementById(&quot;sinp&quot;).disabled = false;
+   document.getElementById(&quot;sinp&quot;).style.width = &quot;100%&quot;;
+   document.getElementById(&quot;reload&quot;).style.display = &quot;none&quot;;
+   document.getElementById(&quot;liked&quot;).style.display = &quot;none&quot;;
+    document.getElementById(&quot;sinp&quot;).style.background = &quot;&quot;;
+    document.getElementById(&quot;sinp&quot;).style.fontSize = &quot;18px&quot;;
+  }
+  
+  document.getElementById(&quot;sclose&quot;).onclick = function(){
+    document.getElementById(&quot;srch&quot;).style.top = &quot;120%&quot;;
+    document.getElementById(&quot;sinp&quot;).blur();
+  }
+  
+  function plylst(i,n,slist,cs){
+       var l = document.createElement(&quot;li&quot;);
+        l.onclick = function(){document.getElementById(&quot;sclose&quot;).click();
+          set(n);
+   audio.play();
+        }
+        l.setAttribute(&quot;data-n&quot;,n);
+        l.setAttribute(&quot;data-src&quot;,i.downloadUrl[3].link);
+        if(cs == n){
+         l.style.background = &quot;rgba(242,15,15,0.4)&quot;;
+        }
+        l.innerHTML = &quot;&lt;img class=&#039;simg&#039; src=&#039;&quot;+i.image[1].link+&quot;&#039;&gt;&lt;div&gt;&lt;div class=&#039;sname&#039;&gt;&lt;span&gt;&quot;+i.name+&quot;&lt;/span&gt;&lt;/div&gt;&lt;div class=&#039;sart&#039;&gt;&lt;span&gt;&quot;+i.primaryArtists+&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&quot;;
+        document.getElementById(&quot;slist&quot;).appendChild(l);
+       
+  }
+   function plysrch(i,n,slist){
+       var l = document.createElement(&quot;li&quot;);
+        l.onclick = function(){
+          list.unshift(i);
+   document.getElementById(&quot;sclose&quot;).click();
+    set(0);
+   audio.play();
+        }
+        l.setAttribute(&quot;data-n&quot;,n);
+        l.setAttribute(&quot;data-src&quot;,i.downloadUrl[3].link);
+        l.innerHTML = &quot;&lt;img class=&#039;simg&#039; src=&#039;&quot;+i.image[1].link+&quot;&#039;&gt;&lt;div&gt;&lt;div class=&#039;sname&#039;&gt;&lt;span&gt;&quot;+i.name+&quot;&lt;/span&gt;&lt;/div&gt;&lt;div class=&#039;sart&#039;&gt;&lt;span&gt;&quot;+i.primaryArtists+&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&quot;;
+        document.getElementById(&quot;slist&quot;).appendChild(l);
+       
+  }
+  
+  document.getElementById(&quot;sinp&quot;).oninput = function(){
+   document.getElementById(&quot;slist&quot;).innerHTML = &quot;&lt;h3 style=&#039;text-align: center&#039;&gt;Searching...&lt;/h3&gt;&quot;;
+   fetch(&quot;https://saavn.me/search/songs?query=&quot;+this.value.trim()+&quot;&amp;page=1&amp;limit=500&quot;)
+  .then((response) =&gt; response.json())
+  .then((data) =&gt; {
+      document.getElementById(&quot;slist&quot;).innerHTML = &quot;&quot;;
+      if(data.status == &quot;SUCCESS&quot; &amp;&amp; data.data.total &gt; 0){
+       var slist = data.data.results;
+       slist.forEach((i,n) =&gt; {
+           plysrch(i,n,slist);
+       });
+      }else{
+          document.getElementById(&quot;slist&quot;).innerHTML = &quot;&lt;h3 style=&#039;text-align: center&#039;&gt;No results found !&lt;/h3&gt;&quot;;
+      }
+  })
+  .catch(console.error);
+  // this.blur();
+  }
+  
+  menu.onclick = function(){
+    document.getElementById(&quot;srch&quot;).style.top = 0;
+   document.getElementById(&quot;slist&quot;).innerHTML = &quot;&quot;;
+    list.forEach((i,n) =&gt; {
+        plylst(i,n,list,window.cs);
+    });
+    document.getElementById(&quot;sinp&quot;).value = &quot;Current Playlist&quot;;
+    document.getElementById(&quot;sinp&quot;).disabled = true;
+   document.getElementById(&quot;reload&quot;).style.display = &quot;&quot;;
+   document.getElementById(&quot;liked&quot;).style.display = &quot;&quot;;
+   document.getElementById(&quot;sinp&quot;).style.width = &quot;150px&quot;;
+    document.getElementById(&quot;sinp&quot;).style.background = &quot;none&quot;;
+   document.getElementById(&quot;sinp&quot;).style.fontSize = &quot;20px&quot;;
+   
+  }
+   
+   liked.onclick = function(){
+     var svid = localStorage.getItem(&quot;svid&quot;);
+   if(svid !== null){
+     var amid = svid.replaceAll(/,/g,&quot;&quot;);
+    amid = amid.replaceAll(/null/g,&quot;&quot;);
+   var nlid = [];
+   var ni;
+    for(var i = 0;i &lt; amid.length;i = i+8){
+     ni = amid.substr(i,8);
+     nlid.push(ni);
+    }
+   var lp = [];
+   nlid.forEach((d) =&gt; {
+    var s = JSON.parse(localStorage.getItem(d));
+   lp.push(s);
+    });
+   document.getElementById(&quot;slist&quot;).innerHTML = &quot;&quot;;
+    lp.forEach((i,n) =&gt; {
+        plysrch(i,n,lp);
+    });
+   }else{
+     as.toast({
+    title: &quot;No Liked Songs!&quot;,
+    timer: 2500,
+    type: &quot;question&quot;
+    });
+   }
+   }
+ &lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://www.blogger.com/static/v1/widgets/3737540651-widgets.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&#039;text/javascript&#039;&gt;
+window[&#039;__wavt&#039;] = &#039;AOuZoY4QKNtlQRGBKBADhFxR16pE6vXs_g:1698859131466&#039;;_WidgetManager._Init(&#039;//www.blogger.com/rearrange?blogID\x3d1904623450064224401&#039;,&#039;//asgana.blogspot.com/?m\x3d1&#039;,&#039;1904623450064224401&#039;);
+_WidgetManager._SetDataContext([{&#039;name&#039;: &#039;blog&#039;, &#039;data&#039;: {&#039;blogId&#039;: &#039;1904623450064224401&#039;, &#039;title&#039;: &#039;AS GANA&#039;, &#039;url&#039;: &#039;https://asgana.blogspot.com/?m\x3d1&#039;, &#039;canonicalUrl&#039;: &#039;https://asgana.blogspot.com/&#039;, &#039;homepageUrl&#039;: &#039;https://asgana.blogspot.com/?m\x3d1&#039;, &#039;searchUrl&#039;: &#039;https://asgana.blogspot.com/search&#039;, &#039;canonicalHomepageUrl&#039;: &#039;https://asgana.blogspot.com/&#039;, &#039;blogspotFaviconUrl&#039;: &#039;https://asgana.blogspot.com/favicon.ico&#039;, &#039;bloggerUrl&#039;: &#039;https://www.blogger.com&#039;, &#039;hasCustomDomain&#039;: false, &#039;httpsEnabled&#039;: true, &#039;enabledCommentProfileImages&#039;: true, &#039;gPlusViewType&#039;: &#039;FILTERED_POSTMOD&#039;, &#039;adultContent&#039;: false, &#039;analyticsAccountNumber&#039;: &#039;&#039;, &#039;encoding&#039;: &#039;UTF-8&#039;, &#039;locale&#039;: &#039;en-GB&#039;, &#039;localeUnderscoreDelimited&#039;: &#039;en_gb&#039;, &#039;languageDirection&#039;: &#039;ltr&#039;, &#039;isPrivate&#039;: false, &#039;isMobile&#039;: true, &#039;isMobileRequest&#039;: true, &#039;mobileClass&#039;: &#039; mobile&#039;, &#039;isPrivateBlog&#039;: false, &#039;isDynamicViewsAvailable&#039;: true, &#039;feedLinks&#039;: &#039;\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS GANA - Atom\x22 href\x3d\x22https://asgana.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22AS GANA - RSS\x22 href\x3d\x22https://asgana.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS GANA - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1904623450064224401/posts/default\x22 /\x3e\n&#039;, &#039;meTag&#039;: &#039;&#039;, &#039;adsenseHostId&#039;: &#039;ca-host-pub-1556223355139109&#039;, &#039;adsenseHasAds&#039;: false, &#039;adsenseAutoAds&#039;: false, &#039;boqCommentIframeForm&#039;: true, &#039;loginRedirectParam&#039;: &#039;&#039;, &#039;view&#039;: &#039;&#039;, &#039;dynamicViewsCommentsSrc&#039;: &#039;//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js&#039;, &#039;dynamicViewsScriptSrc&#039;: &#039;//www.blogblog.com/dynamicviews/24dbc299a9c09ea1&#039;, &#039;plusOneApiSrc&#039;: &#039;https://apis.google.com/js/platform.js&#039;, &#039;disableGComments&#039;: true, &#039;interstitialAccepted&#039;: false, &#039;sharing&#039;: {&#039;platforms&#039;: [{&#039;name&#039;: &#039;Get link&#039;, &#039;key&#039;: &#039;link&#039;, &#039;shareMessage&#039;: &#039;Get link&#039;, &#039;target&#039;: &#039;&#039;}, {&#039;name&#039;: &#039;Facebook&#039;, &#039;key&#039;: &#039;facebook&#039;, &#039;shareMessage&#039;: &#039;Share to Facebook&#039;, &#039;target&#039;: &#039;facebook&#039;}, {&#039;name&#039;: &#039;BlogThis!&#039;, &#039;key&#039;: &#039;blogThis&#039;, &#039;shareMessage&#039;: &#039;BlogThis!&#039;, &#039;target&#039;: &#039;blog&#039;}, {&#039;name&#039;: &#039;Twitter&#039;, &#039;key&#039;: &#039;twitter&#039;, &#039;shareMessage&#039;: &#039;Share to Twitter&#039;, &#039;target&#039;: &#039;twitter&#039;}, {&#039;name&#039;: &#039;Pinterest&#039;, &#039;key&#039;: &#039;pinterest&#039;, &#039;shareMessage&#039;: &#039;Share to Pinterest&#039;, &#039;target&#039;: &#039;pinterest&#039;}, {&#039;name&#039;: &#039;Email&#039;, &#039;key&#039;: &#039;email&#039;, &#039;shareMessage&#039;: &#039;Email&#039;, &#039;target&#039;: &#039;email&#039;}], &#039;disableGooglePlus&#039;: true, &#039;googlePlusShareButtonWidth&#039;: 0, &#039;googlePlusBootstrap&#039;: &#039;\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en_GB\x27};\x3c/script\x3e&#039;}, &#039;hasCustomJumpLinkMessage&#039;: false, &#039;jumpLinkMessage&#039;: &#039;Read more&#039;, &#039;pageType&#039;: &#039;index&#039;, &#039;pageName&#039;: &#039;&#039;, &#039;pageTitle&#039;: &#039;AS GANA&#039;, &#039;metaDescription&#039;: &#039;AS GANA brings to you the most comprehensive collection of Hindi, Punjabi, All Bollywood songs \x26 music&#039;}}, {&#039;name&#039;: &#039;features&#039;, &#039;data&#039;: {}}, {&#039;name&#039;: &#039;messages&#039;, &#039;data&#039;: {&#039;edit&#039;: &#039;Edit&#039;, &#039;linkCopiedToClipboard&#039;: &#039;Link copied to clipboard&#039;, &#039;ok&#039;: &#039;Ok&#039;, &#039;postLink&#039;: &#039;Post link&#039;}}, {&#039;name&#039;: &#039;template&#039;, &#039;data&#039;: {&#039;name&#039;: &#039;custom&#039;, &#039;localizedName&#039;: &#039;Custom&#039;, &#039;isResponsive&#039;: true, &#039;isAlternateRendering&#039;: false, &#039;isCustom&#039;: true}}, {&#039;name&#039;: &#039;view&#039;, &#039;data&#039;: {&#039;classic&#039;: {&#039;name&#039;: &#039;classic&#039;, &#039;url&#039;: &#039;?view\x3dclassic&#039;}, &#039;flipcard&#039;: {&#039;name&#039;: &#039;flipcard&#039;, &#039;url&#039;: &#039;?view\x3dflipcard&#039;}, &#039;magazine&#039;: {&#039;name&#039;: &#039;magazine&#039;, &#039;url&#039;: &#039;?view\x3dmagazine&#039;}, &#039;mosaic&#039;: {&#039;name&#039;: &#039;mosaic&#039;, &#039;url&#039;: &#039;?view\x3dmosaic&#039;}, &#039;sidebar&#039;: {&#039;name&#039;: &#039;sidebar&#039;, &#039;url&#039;: &#039;?view\x3dsidebar&#039;}, &#039;snapshot&#039;: {&#039;name&#039;: &#039;snapshot&#039;, &#039;url&#039;: &#039;?view\x3dsnapshot&#039;}, &#039;timeslide&#039;: {&#039;name&#039;: &#039;timeslide&#039;, &#039;url&#039;: &#039;?view\x3dtimeslide&#039;}, &#039;isMobile&#039;: false, &#039;title&#039;: &#039;AS GANA&#039;, &#039;description&#039;: &#039;AS GANA brings to you the most comprehensive collection of Hindi, Punjabi, All Bollywood songs \x26 music&#039;, &#039;url&#039;: &#039;https://asgana.blogspot.com/?m\x3d1&#039;, &#039;type&#039;: &#039;feed&#039;, &#039;isSingleItem&#039;: false, &#039;isMultipleItems&#039;: true, &#039;isError&#039;: false, &#039;isPage&#039;: false, &#039;isPost&#039;: false, &#039;isHomepage&#039;: true, &#039;isArchive&#039;: false, &#039;isLabelSearch&#039;: false}}, {&#039;name&#039;: &#039;widgets&#039;, &#039;data&#039;: []}]);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
