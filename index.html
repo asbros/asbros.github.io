@@ -5,169 +5,181 @@
  <title>AS BROTHERS</title>
  <meta charset='UTF-8' />
  <meta content='width=device-width, user-scalable=no' name='viewport' />
+ <meta content='rebrand.ly/f4njjso' property='og:image' />
+ <link href='rebrand.ly/f4njjso' rel='shortcut icon' type='image/vnd.microsoft.icon' />
+ <link href='rebrand.ly/f4njjso' rel='apple-touch-icon' />
  <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
-  <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
+ <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
  <style type='text/css'>
-    body{margin:0; padding:0;font-family: 'Quicksand';background: #fff;}
-    #projects{
-      width: 100%;
-      overflow: hidden;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .project{
-      min-width: 270px;
-      margin: 20px;
-    }
-    .project img{
-      height: 100px;
-      width: 100px;
-      border-radius: 50%;
-    }
-    .project a{
-      width: 80px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-    }
+  body{margin:0; padding:0;font-family: 'Quicksand';background: #fff;}
+  #projects{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .project{
+    min-width: 270px;
+    margin: 20px;
+  }
+  .project img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+  }
+  .project p{
+    font-size: 22px;
+  }
+  .project a{
+    width: 80px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
  </style>
 </head>
 
 <body>
-<div class="main">
-<div class='pad-10 shadow bg-royal-blue' style='display: flex;align-items: center;'> 
-<span class='white josefin-font f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'>😎 AS BROTHERS</span> 
-<button class='s-40 ripple circle btn right' style='background:transparent;display: flex;align-items: center;'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 26 26" stroke-width="1.5" stroke="#fff" class="w-6 h-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /> </svg> </button>
-</div>
-<div class="bgimg" style="background-image: url('https://i.imgur.com/65PqVHW.jpg'); background-size: cover; background-repeat: no-repeat; height: 400px;background-position: center;display: flex;justify-content: center;align-items: center;">
-<div class="white josefin-font"><h1>AS BROTHERS</h1>
-<hr><p class="white josefin-font">Anshul & Shubham</p></div>
-</div>
-<div style="">
-<h1 style="text-align: center;">Our Projects</h1>
-<div id="projects"></div>
-</div>
-</div>
+ <div class="main">
+  <div class='white pad-10 shadow bg-dark-pink' style='display: flex;align-items: center;height:35px'>
+   <span class='josefin-font f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'>AS BROTHERS</span>
+   <button class='s-40 ripple circle btn right' style='background:transparent;display: flex;align-items: center;'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 26 26" stroke-width="1.5" stroke="#fff" class="w-6 h-6">
+     <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+    </svg> </button>
 
-<script>
-var ps = [
-{
-   name: "AS CODE EDITOR",
-   image: "https://i.imgur.com/bS64QVE.png",
-   about: "",
-   url: "https://ascodeeditor.blogspot.com/"
-},
-{
-   name: "RTU GAMES",
-   image: "https://i.imgur.com/5zw3PCb.png",
-   about: "",
-   url: "https://rtugames.blogspot.com/"
-},
-{
-   name: "RTU TOOLS",
-   image: "https://i.imgur.com/CNN3dBf.png",
-   about: "",
-   url: "https://rtutools.blogspot.com/"
-},
-{
-   name: "AS CHAT",
-   image: "https://i.imgur.com/FjIjYHx.png",
-   about: "",
-   url: "https://as-chat.blogspot.com/"
-},
-{
-   name: "Video Downloader",
-   image: "https://i.imgur.com/rMShNq0.png",
-   about: "",
-   url: "https://asbros.github.io/aiovd"
-},
-{
-   name: "LIVE TV",
-   image: "https://i.imgur.com/aFOM5pg.png",
-   about: "",
-   url: "https://asbros.github.io/livetv"
-},
-{
-   name: "MUSIC",
-   image: "https://i.imgur.com/p081OXx.png",
-   about: "",
-   url: "https://asbros.github.io/music"
-},
-{
-   name: "PAINT",
-   image: "https://canvas.apps.chrome/assets/canvas_192.png",
-   about: "",
-   url: "https://asbros.github.io/paint"
-},
-{
-   name: "POPUP.JS",
-   image: "https://i.imgur.com/aFOM5pg.png",
-   about: "",
-   url: "https://asbros.github.io/popupjs"
-},
-{
-   name: "RESPONSINATOR",
-   image: "https://i.imgur.com/KsagcZS.png",
-   about: "",
-   url: "https://asbros.github.io/responsinator"
-},
-{
-   name: "STORE",
-   image: "https://i.imgur.com/p081OXx.png",
-   about: "",
-   url: "https://asbros.github.io/store"
-},
-{
-   name: "TMAIL",
-   image: "https://i.imgur.com/enYdnzy.png",
-   about: "",
-   url: "https://asbros.github.io/tmail"
-},
-{
-   name: "UTUBE",
-   image: "https://i.imgur.com/TzttUJY.png",
-   about: "",
-   url: "https://asbros.github.io/utube"
-},
-{
-   name: "HTML5 CODE EDITOR",
-   image: "https://i.imgur.com/KsagcZS.png",
-   about: "",
-   url: "https://asbros.github.io/code-editor"
-},
-{
-   name: "Image Editor",
-   image: "https://i.imgur.com/p081OXx.png",
-   about: "",
-   url: "https://asbros.github.io/image-editor"
-}
-];
+  </div>
+  <div class="bgimg" style="background-image: url('https://i.imgur.com/cFVSPVP.jpg'); background-size: cover; background-repeat: no-repeat; background-position:center;height: 400px;display: flex;justify-content: center;align-items: center;">
+   <div class="white josefin-font">
+    <h1>AS BROTHERS</h1>
+    <hr>
+    <h3 class="white josefin-font">Anshul & Shubham</h3>
+   </div>
+  </div>
+  <div class="josefin-font">
+   <h1 style="text-align: center;">Our Projects</h1>
+   <div id="projects"></div>
+  </div>
+ </div>
 
-ps.forEach((p,n) => {
- var cont = document.createElement("div");
- var cent = document.createElement("center");
- var image = document.createElement("img");
- var name = document.createElement("p");
- var about = document.createElement("div");
- var url = document.createElement("a");
- cont.setAttribute("class","project shadow alert-red pad-15");
- image.src = p.image;
- name.innerText = p.name;
- name.setAttribute("class","f-25");
- about.innerText = p.about;
- url.href = p.url;
- url.innerText = "View";
- url.target = "_blank";
- url.setAttribute("class","bg-blue btn white f-16 shadow margin-5 josefin-font");
- cont.appendChild(cent);
- cent.appendChild(image);
- cent.appendChild(name);
- cent.appendChild(about);
- cent.appendChild(url);
- document.querySelector("#projects").appendChild(cont);
-});
-</script>
+ <script>
+  var ps = [
+  {
+     name: "AS CODE EDITOR",
+     image: "https://i.imgur.com/bS64QVE.png",
+     about: "",
+     url: "https://ascodeeditor.blogspot.com/"
+  },
+  {
+     name: "RTU GAMES",
+     image: "https://i.imgur.com/5zw3PCb.png",
+     about: "",
+     url: "https://rtugames.blogspot.com/"
+  },
+  {
+     name: "RTU TOOLS",
+     image: "rebrand.ly/f4njjso",
+     about: "",
+     url: "https://rtutools.blogspot.com/"
+  },
+  {
+     name: "AS CHAT",
+     image: "https://i.imgur.com/FjIjYHx.png",
+     about: "",
+     url: "https://as-chat.blogspot.com/"
+  },
+  {
+     name: "Video Downloader",
+     image: "https://i.imgur.com/rMShNq0.png",
+     about: "",
+     url: "https://asbros.github.io/aiovd"
+  },
+  {
+     name: "LIVE TV",
+     image: "https://i.imgur.com/aFOM5pg.png",
+     about: "",
+     url: "https://asbros.github.io/livetv"
+  },
+  {
+     name: "MUSIC",
+     image: "https://i.imgur.com/p081OXx.png",
+     about: "",
+     url: "https://asbros.github.io/music"
+  },
+  {
+     name: "PAINT",
+     image: "https://canvas.apps.chrome/assets/canvas_192.png",
+     about: "",
+     url: "https://asbros.github.io/paint"
+  },
+  {
+     name: "POPUP.JS",
+     image: "https://i.imgur.com/aFOM5pg.png",
+     about: "",
+     url: "https://asbros.github.io/popupjs"
+  },
+  {
+     name: "RESPONSINATOR",
+     image: "https://i.imgur.com/KsagcZS.png",
+     about: "",
+     url: "https://asbros.github.io/responsinator"
+  },
+  {
+     name: "STORE",
+     image: "https://i.imgur.com/p081OXx.png",
+     about: "",
+     url: "https://asbros.github.io/store"
+  },
+  {
+     name: "TMAIL",
+     image: "https://i.imgur.com/enYdnzy.png",
+     about: "",
+     url: "https://asbros.github.io/tmail"
+  },
+  {
+     name: "UTUBE",
+     image: "https://i.imgur.com/TzttUJY.png",
+     about: "",
+     url: "https://asbros.github.io/utube"
+  },
+  {
+     name: "HTML5 CODE EDITOR",
+     image: "https://i.imgur.com/KsagcZS.png",
+     about: "",
+     url: "https://asbros.github.io/code-editor"
+  },
+  {
+     name: "Image Editor",
+     image: "https://i.imgur.com/p081OXx.png",
+     about: "",
+     url: "https://asbros.github.io/image-editor"
+  }
+  ];
+  
+  ps.forEach((p,n) => {
+   var cont = document.createElement("div");
+   var cent = document.createElement("center");
+   var image = document.createElement("img");
+   var name = document.createElement("p");
+   var about = document.createElement("div");
+   var url = document.createElement("a");
+   cont.setAttribute("class","project shadow alert-red pad-15");
+   image.src = p.image;
+   name.innerText = p.name;
+   name.setAttribute("class","josefin-font");
+   about.innerText = p.about;
+   url.href = p.url;
+   url.innerText = "View";
+   url.target = "_blank";
+   url.setAttribute("class","bg-red btn white f-16 shadow margin-5 josefin-font");
+   cont.appendChild(cent);
+   cent.appendChild(image);
+   cent.appendChild(name);
+   cent.appendChild(about);
+   cent.appendChild(url);
+   document.querySelector("#projects").appendChild(cont);
+  });
+ </script>
 </body>
 
 </html>
