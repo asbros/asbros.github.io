@@ -25,6 +25,13 @@
  #video{height:100%;}
  .chnld{filter:none !important;-webkit-filter:none !important;width:400px;background:#333;}
  button{color:#eee;}
+ @media only screen and (min-width: 1000px) {
+  .mcon{display:flex;}
+  .plrd{width:calc(100% - 425px);background:#000;height:100%;}
+  #video{height:100%;}
+  .chnld{filter:none !important;-webkit-filter:none !important;width:400px;background:#333;}
+  button{color:#eee;}
+ }
 </style>
 </head>
 
@@ -44,12 +51,12 @@
   </div>
  </div>
  <script>
-  var list = [
-  {"name": "Sony Set HD","url": "https://bpprod6linear.akamaized.net/bpk-tv/irdeto_com_Channel_300/output/manifest.mpd","keyId":"019109c38852565088802d20c74aef89" ,"key":"0f859d0242c42d87443c3601a075a43d"
-  },
-  {"name": "Sony Sab","url": "https://bpprod2linear.akamaized.net/bpk-tv/irdeto_com_Channel_126/output/manifest.mpd","keyId":"fcf90127045f5edabc5d94a932f5c6fe" ,"key":"02f7ff4350e10686476024cfc5171ad0"},
-  {"name": "Zee TV","url": "https://bpprod6linear.akamaized.net/bpk-tv/irdeto_com_Channel_182/output/manifest.mpd","keyId": "2342753bf6f15002ac06026a21e903f2" ,"key":"e254ec51270793682f69210a8fe094be"},
-  {"name": "Colors HD","url": "https://bpprod2linear.akamaized.net/bpk-tv/irdeto_com_Channel_299/output/manifest.mpd","keyId": "27f0719986765b7eba6c470d3e94080e" ,"key":"4a588b4a0feb63226815d20b7d332330"}]
+ 
+ var list = [];
+ fetch("https://api.npoint.io/ede7b617d1f60ac64170")
+ .then(response => response.json())
+ .then((data) => {
+   list = data;
   var dlst = document.querySelector("#list");
   list.forEach((c,i) => {
     var btn = document.createElement("button");
@@ -65,6 +72,8 @@
     }
     dlst.appendChild(btn);
   });
+  
+ })
   function play(url,kid,k,t){
   var cat = "dash";
    /*if(t){
@@ -75,14 +84,16 @@
   jwplayer("video").setup({
          'preload': "auto",
          "autostart": true,
-         'stretching': "fill",
+         'stretching': "uniform",
          'width': "100%",
          'aspectratio': "16:9",
          'image': "https://i.imgur.com/aFOM5pg.png",
          'logo': "https://i.imgur.com/aFOM5pg.png",
          file: url,
          type: cat,
-         drm: {"clearkey": {  "keyId":kid,"key":k}}
+         drm: {"clearkey": {  "keyId":kid,"key":k}},
+         abouttext: "US ?",
+         aboutlink: "https://asbros.github.io/"
   });
   }
    function abt(){
