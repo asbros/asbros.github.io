@@ -2,15 +2,14 @@
 <html dir='ltr' lang='en-GB' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 
 <head>
- <title>AS BLOG</title>
+ <title>AS STORE</title>
  <meta charset='UTF-8' />
  <meta content='width=device-width, user-scalable=no' name='viewport' />
  <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
  <script charset='utf-8' src='https://asbros.github.io/popup.js/popup.js' type='text/javascript'></script>
   <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
- <style id='page-skin-1' type='text/css'>
-  <!--
-  *{transition: all 0.2s;}
+ <style type='text/css'>
+  *{transition: all 0.3s;font-family: 'Jost';user-select: none;}
   body{margin:0;padding:0;}
   .app-list-container{
   display: flex;
@@ -18,11 +17,15 @@
   padding-top: 5px;
   padding-bottom: 20px;
   }
+  .app-list{
+   color: #111;
+   font-size: 20px;
+  }
   .app{
   width:146px;
   height:200px;
   display:inline-block;
-  margin: 5px;
+  margin: 10px;
   margin-top:12px;
   margin-bottom:13px;
   }
@@ -35,38 +38,15 @@
   }
   .app-span{
   width:100%;
+  text-align: center;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
   margin-top:5px;
   margin-bottom:10px;
   }
-  .app-span-auth{
-  color:#555;
-  width:100%;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  margin-bottom:10px;
-  margin-left:23px;
-  }
-  .screenshots-container{
-  width: 100%;
-  max-height: 300px;
-  white-space: nowrap;
-  overflow: auto;
-  padding-top:10px;
-  padding-top:10px;
-  background: #eee;
-  }
-  .screenshots-container img{
-  height: 250px;
-  width: 120px;
-  margin-right: 12px;
-  border: 1px solid #999;
-  }
   .footer{
-  background: #3d3d3d;
+  background: #333;
   }
   body.dark{
   background-color: rgb(42,43,46) !important;
@@ -82,31 +62,16 @@
   background-color: #3d3d3d !important;
   color: #fff;
   }
-  .dark .app-span-auth{
-  color: #fff;
+  .dark .app-list{
+   color: #fff;
   }
-  
-  -->
  </style>
- <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109' />
- <meta name='google-adsense-platform-domain' content='blogspot.com' />
-
- <script type="text/javascript" language="javascript">
-  // Supply ads personalization default for EEA readers
-  // See https://www.blogger.com/go/adspersonalization
-  adsbygoogle = window.adsbygoogle || [];
-  if (typeof adsbygoogle.requestNonPersonalizedAds === 'undefined') {
-    adsbygoogle.requestNonPersonalizedAds = 1;
-  }
- </script>
-
-
 </head>
 
 <body class='no-select bg-light-blue'>
  <!-- Header -->
  <div class='pad-15 bg-white flex header' style='align-items:center; position:fixed;top:0;width:100%;'>
-  <span class='josefin-font bold f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'>&#10083;&#65039; AS Brothers Web</span>
+  <span class='bold f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'>&#10083;&#65039; AS Store</span>
   <button class='s-40 circle btn right' id='light' onclick='theme("light")' style='background:transparent;display: flex;align-items: center;display:none;position:fixed;right:60px;'><svg fill='#000' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
     <path clip-rule='evenodd' d='M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z' fill-rule='evenodd'></path>
    </svg>
@@ -120,74 +85,45 @@
    </svg>
   </button>
  </div>
- <div style='border-bottom:1px solid #999;position:fixed;top:57px;width:100%;'></div>
- <br /><br /><br /><br />
+ <div style='border-bottom:1px solid #999;position:fixed;top:60px;width:100%;'></div>
+ <br /><br /><br />
  <!-- All app lists here -->
  <div class='app-list-container'>
-  <div class='app-list'>
-   <!-- <div class='app-span-auth josefin-font f-14 block'><svg fill='currentColor' style='height: 20px;width: 20px;margin-right: 3px;margin-bottom: -5px;' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path clip-rule='evenodd' d='M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z' fill-rule='evenodd'/></svg>AS BROTHERS</div>-->
+  <div class='app-list' style="text-align: center">
+      Loading Apps...
   </div>
  </div>
  <!-- Footer -->
- <div style='border-top:1px solid #999;'></div>
+ <div style='border-top:1px solid #111;'></div>
  <div class='pad-10 footer' style='align-items:center;text-align:center;'>
-  <span class='white josefin-font f-18 footer-credit'>&#169;&#65039; AS BROTHERS &#10083;&#65039; 2022</span>
+  <a style="text-decoration: none;font-size: 21px;" href="https://asbros.github.io/" class='white footer-credit'>AS BROTHERS </a>&#10083;&#65039;
  </div>
  <script>
-  var apps = {};
-  apps.netflix = {
-      name: "Netflix",
-      icon: "https://liteapks.com/wp-content/uploads/2022/04/netflix-150x150.png",
-      details: "Netflix Mod APK is one of the high-quality copyrighted movie applications on Android. Now enjoy everything 100% free.",
-      downLink: "https://cloud.liteapks.com/download/Netflix/Netflix_SV1_mod%20signed.apk",
-      key: "netflix"
-  }
-  
-  apps.spotify = {
-      name: "Spotify",
-      icon: "https://liteapks.com/wp-content/uploads/2022/04/spotify-music-and-podcasts-150x150.png",
-      details: "Enjoy hundreds of millions of high-quality songs through Spotify Premium Mod APK. Create and personalize playlists, popcasts and more.",
-      downLink: "https://cloud.liteapks.com/download/Spotify/v8.8.80.599/Spotify%20v8.8.80.599%20(Premium)%20(Stable).apk",
-      key: "spotify"
-  }
-    
-  function createElem(n){
-    return document.createElement(n);
-  }
-  function openAppInfo(n){
-   var data = apps[n];
-   as.popup({
-     icon: data.icon,
-     title: data.name,
-     text: data.details,
-     closeBtn: false,
-     closeIcon: true,
-     titleSize: 22,
-     buttons: [{
-      html: 'Click here to download apk',type: "success",click: function(){
-  window.open(data.downLink,"_blank");
-       }
-      }]
-   });
-  }
-  for(x in apps){
-   var app = apps[x];
+ var apps;
+ var list = document.querySelector(".app-list");
+ fetch("https://api.npoint.io/5891e8b90caf3c2bdbc6")
+ .then(response => response.json())
+ .then((data) => {
+   apps = data;
+   list.innerHTML = "";
+ apps.forEach((x,n) => {
+   var app = x;
    var adv = createElem("div");
-   adv.setAttribute("class","shadow pad-10 bg-white josefin-font w-200 app radius-5");
+   adv.setAttribute("class","shadow pad-10 bg-white w-200 app radius-5");
    var advd = createElem("div");
    advd.setAttribute("style","display: flex;flex-direction:column;align-items:center;");
    var aimg = createElem("img");
    aimg.setAttribute("class","app-img block");
    aimg.setAttribute("src",app.icon);
    var atle = createElem("div");
-   atle.setAttribute("class","app-span josefin-font f-20 block");
+   atle.setAttribute("class","app-span f-20 block");
    atle.innerText = app.name;
    var adbtn = createElem("button");
-   adbtn.setAttribute("class","btn w-full pad-7 white bg-blue josefin-font f-18 radius-5 app-info");
+   adbtn.setAttribute("class","btn w-full pad-7 white bg-blue f-18 radius-5 app-info");
   
-  adbtn.setAttribute("data-k",app.key);
+  adbtn.setAttribute("data-n",n);
    adbtn.addEventListener("click",function(){
-     openAppInfo(this.getAttribute("data-k"));
+     openAppInfo(this.getAttribute("data-n"));
    });
    var asvg = createElem("svg");
    asvg.setAttribute("style","height: 23px;width: 25px;margin-right: 5px;margin-left: -8px;fill: #fff;");
@@ -202,7 +138,29 @@
    advd.appendChild(atle);
    advd.appendChild(adbtn);
    adv.appendChild(advd);
-   document.querySelector(".app-list").appendChild(adv);
+   list.appendChild(adv);
+  });
+ });
+  
+  function openAppInfo(n){
+   var data = apps[n];
+   as.popup({
+     icon: data.icon,
+     title: data.name,
+     text: data.about,
+     closeBtn: false,
+     closeIcon: true,
+     titleSize: 22,
+     buttons: [{
+      html: 'Download apk',type: "success",click: function(){
+  window.open(data.url,"_blank");
+       }
+      }]
+   });
+  }
+  
+  function createElem(n){
+    return document.createElement(n);
   }
    function setTheme(){
     var theme = localStorage.getItem("theme");
@@ -223,24 +181,6 @@
     setTheme();
    }
     setTheme();
- </script>
- <div class='no-items section' id='required'></div>
- <!--Il est de votre ressort d\x27informer les visiteurs \xe0 propos des cookies utilis\xe9s et des donn\xe9es collect\xe9es sur votre blog. Blogger met \xe0 votre disposition une notification standard que vous pouvez personnaliser, remplacer ou afficher telle quelle sur votre blog. Rendez-vous sur http://www.blogger.com/go/cookiechoices pour obtenir de plus amples informations.-->
- <script defer='' src='/js/cookienotice.js'></script>
- <script>
-  document.addEventListener('DOMContentLoaded', function(event) {
-    window.cookieChoices && cookieChoices.showCookieConsentBar && cookieChoices.showCookieConsentBar(
-        (window.cookieOptions && cookieOptions.msg) || 'Ce site utilise des cookies provenant de Google pour fournir ses services et analyser le trafic. Votre adresse\xa0IP et votre user-agent, ainsi que des statistiques relatives aux performances et \xe0 la s\xe9curit\xe9, sont transmis \xe0 Google afin d\x27assurer un service de qualit\xe9, de g\xe9n\xe9rer des statistiques d\x27utilisation, et de d\xe9tecter et de r\xe9soudre les probl\xe8mes d\x27abus.',
-        (window.cookieOptions && cookieOptions.close) || 'OK',
-        (window.cookieOptions && cookieOptions.learn) || 'En savoir plus',
-        (window.cookieOptions && cookieOptions.link) || 'https://www.blogger.com/go/blogspot-cookies');
-  });
- </script>
-
- <script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/3737540651-widgets.js"></script>
- <script type='text/javascript'>
-  window['__wavt'] = 'AOuZoY4opsCzDp6V-gqOULJus--bYuPGMQ:1698864254275';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d4547588265248179913','//asbros-blog.blogspot.com/','4547588265248179913');
-  _WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '4547588265248179913', 'title': 'AS BLOG', 'url': 'https://asbros-blog.blogspot.com/', 'canonicalUrl': 'https://asbros-blog.blogspot.com/', 'homepageUrl': 'https://asbros-blog.blogspot.com/', 'searchUrl': 'https://asbros-blog.blogspot.com/search', 'canonicalHomepageUrl': 'https://asbros-blog.blogspot.com/', 'blogspotFaviconUrl': 'https://asbros-blog.blogspot.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': false, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en-GB', 'localeUnderscoreDelimited': 'en_gb', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS BLOG - Atom\x22 href\x3d\x22https://asbros-blog.blogspot.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22AS BLOG - RSS\x22 href\x3d\x22https://asbros-blog.blogspot.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22AS BLOG - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/4547588265248179913/posts/default\x22 /\x3e\n', 'meTag': '\x3clink rel\x3d\x22me\x22 href\x3d\x22https://www.blogger.com/profile/14119495659275178860\x22 /\x3e\n', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/24dbc299a9c09ea1', 'plusOneApiSrc': 'https://apis.google.com/js/platform.js', 'disableGComments': true, 'interstitialAccepted': false, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en_GB\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'index', 'pageName': '', 'pageTitle': 'AS BLOG'}}, {'name': 'features', 'data': {}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard', 'ok': 'Ok', 'postLink': 'Post link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': true, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'AS BLOG', 'description': '', 'url': 'https://asbros-blog.blogspot.com/', 'type': 'feed', 'isSingleItem': false, 'isMultipleItems': true, 'isError': false, 'isPage': false, 'isPost': false, 'isHomepage': true, 'isArchive': false, 'isLabelSearch': false}}, {'name': 'widgets', 'data': []}]);
  </script>
 </body>
 
