@@ -135,22 +135,20 @@
  </div>
  <script>
   var apps = {};
-  apps.wss = {
-      name: "WhatsApp Status Saver",
-      icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHp3ixWN89Mw1OBGVn0eASCMXWtha7W1FwuA&usqp=CAU",
-      details: "Amazing app for saving WhatsApp status in your phone.",
-      screenshots: ["https://sketchub.in/storage/project_files/11262/1526903.jpg","https://sketchub.in/storage/project_files/11262/8856612.jpg","https://sketchub.in/storage/project_files/11262/1050551.jpg","https://sketchub.in/storage/project_files/11262/5651843.jpg","https://sketchub.in/storage/project_files/11262/6119832.jpg"],
-      downLink: "linkhere",
-      key: "wss"
+  apps.netflix = {
+      name: "Netflix",
+      icon: "https://liteapks.com/wp-content/uploads/2022/04/netflix-150x150.png",
+      details: "Netflix Mod APK is one of the high-quality copyrighted movie applications on Android. Now enjoy everything 100% free.",
+      downLink: "https://cloud.liteapks.com/download/Netflix/Netflix_SV1_mod%20signed.apk",
+      key: "netflix"
   }
   
-  apps.ytd = {
-      name: "YouTube Video Downloader",
-      icon: "https://sketchub.in/storage/project_files/11313/6515468.png",
-      details: "Amazing app for downloading YouTube videos.",
-      screenshots: ["https://sketchub.in/storage/project_files/11313/7498111.jpg","https://sketchub.in/storage/project_files/11313/2654490.jpg","https://sketchub.in/storage/project_files/11313/9672722.jpg","https://sketchub.in/storage/project_files/11313/6494558.jpg","https://sketchub.in/storage/project_files/11313/6338605.jpg"],
-      downLink: "linkhere",
-      key: "ytd"
+  apps.spotify = {
+      name: "Spotify",
+      icon: "https://liteapks.com/wp-content/uploads/2022/04/spotify-music-and-podcasts-150x150.png",
+      details: "Enjoy hundreds of millions of high-quality songs through Spotify Premium Mod APK. Create and personalize playlists, popcasts and more.",
+      downLink: "https://cloud.liteapks.com/download/Spotify/v8.8.80.599/Spotify%20v8.8.80.599%20(Premium)%20(Stable).apk",
+      key: "spotify"
   }
     
   function createElem(n){
@@ -158,20 +156,12 @@
   }
   function openAppInfo(n){
    var data = apps[n];
-   var sd = createElem("div");
-  sd.setAttribute("class","screenshots-container");
-   for(x of data.screenshots){
-     var i = createElem("img");
-     i.setAttribute("src",x);
-     sd.appendChild(i);
-   }
    as.popup({
      icon: data.icon,
      title: data.name,
      text: data.details,
      closeBtn: false,
      closeIcon: true,
-     html: sd.outerHTML,
      titleSize: 22,
      buttons: [{
       html: 'Click here to download apk',type: "success",click: function(){
