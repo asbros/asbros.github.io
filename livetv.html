@@ -122,12 +122,11 @@
     nm.innerText = c.name;
     div.onclick = function(){
       plrd.style.display = "";
+     if(c.m3u8 !== true){
       play(c.url,c.keyId,c.key);
-    /* if(c.m3u8 !== true){
-      play(c.url);
      }else{
-      play(c.url,"hls")
-     }*/
+      play(c.url,c.keyId,c.key,"hls");
+     }
     }
     div.appendChild(img);
     div.appendChild(nm);
@@ -138,11 +137,11 @@
  
   function play(url,kid,k,t){
   var cat = "dash";
-   /*if(t){
+   if(t == "hls"){
      cat = "hls";
    }else{
      cat = "dash";
-   }*/
+   }
   jwplayer("video").setup({
          'preload': "auto",
          "autostart": true,
