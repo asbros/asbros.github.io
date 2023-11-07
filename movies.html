@@ -93,7 +93,7 @@
    <iframe allowfullscreen id='video'></iframe>
   </div>
   <div id="cntt">
-   <input class="input-blue" type="search" id="search" onkeypress="search(this.value.toUpperCase())" placeholder="Search for movies...">
+   <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" placeholder="Search for movies...">
    <div id="list" class='chnld'>
     Loading Popular Movies...
    </div>
@@ -105,8 +105,6 @@
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
  <script>
-  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
-  
    var dlst = document.querySelector("#list");
    var plrd = document.querySelector("#plrd");
    var video = document.querySelector("#video");
@@ -123,7 +121,7 @@
      nm.innerText = c.title;
      div.onclick = function(){
        plrd.style.display = "";
-       alert(c.id);
+       play(c.id);
        document.body.classList.add('dsktp');
      }
      div.appendChild(nm);
