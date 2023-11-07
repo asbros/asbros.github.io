@@ -18,6 +18,17 @@
  .plrd{position:-webkit-sticky;position:sticky;z-index:9999999;top:0;border:5px solid #dc3545;background:#000;margin-top: 10px;}
  #video{width:100%;height:100%;}
  button{padding:10px;background:rgba(153, 153, 153, 0.4);margin-bottom:5px;font-size:17px;border:0;width:100%;text-align:left;}
+ #search {
+  background-image: url('https://www.w3schools.com/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  margin-top: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  padding: 10px 20px 10px 40px;
+  border: 1px solid #ddd;
+}
  #list{
    display: flex;
    flex-wrap: wrap;
@@ -60,25 +71,17 @@
    text-overflow:ellipsis;
  }
  @media only screen and (min-width: 1000px) {
-  .mcon{display:flex;}
-  .plrd{width:calc(100% - 425px);background:#000;height:100%;}
-  #video{height:100%;}
-  .chnld{filter:none !important;-webkit-filter:none !important;width:400px;background:#333;}
-  button{color:#eee;}
- #list > div{
-   height: 180px;
-   width: 150px;
-   margin-bottom: 10px;
- }
- #list div img{
-   height: 100px;
-   width: 100px;
-   outline: 2px solid #eee;
-   border-radius: 50%;
- }
- #list div div{
-   font-size: 17px;
- }
+  .dsktp .mcon{display:flex;}
+  .dsktp .plrd{width:60%;background:#000;height:100%;}
+  .dsktp #video{height:100%;}
+  .dsktp #cntt{
+      width: 40%;
+      height: 540px;
+      overflow-y: scroll;
+      padding: 10px;
+      background: rgba(0,0,0,0.2);
+  }
+  .dsktp .chnld{filter:none !important;-webkit-filter:none !important;}
  }
 </style>
 </head>
@@ -95,8 +98,11 @@
   <div class='plrd' id="plrd" style="display: none;">
    <video autoplay='' controls='' id='video'></video>
   </div>
+  <div id="cntt">
+   <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" oninput="search(this.value.toUpperCase())" placeholder="Search for tv channels...">
   <div id="list" class='chnld'>
       Loading Live Channels...
+  </div>
   </div>
  </div>
  <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 10px;">
@@ -116,6 +122,7 @@
    dlst.innerHTML = "";
   list.forEach((c,i) => {
     var div = document.createElement("div");
+    div.setAttribute("id",i);
     var img = document.createElement("img");
     img.src = c.img;
     var nm = document.createElement("div");
@@ -127,6 +134,7 @@
      }else{
       play(c.url,c.keyId,c.key,"hls");
      }
+     document.body.classList.add('dsktp');
     }
     div.appendChild(img);
     div.appendChild(nm);
@@ -156,6 +164,16 @@
          abouttext: "US ?",
          aboutlink: "https://asbros.github.io/"
   });
+  }
+  function search(q){
+   for (i = 0; i < list.length; i++) {
+        var a = list[i].name;
+        if (a.toUpperCase().indexOf(q.trim()) > -1) {
+         document.getElementById(i).style.display = "";
+        } else {
+         document.getElementById(i).style.display = "none";
+        }
+    }
   }
  </script>
 </body>
