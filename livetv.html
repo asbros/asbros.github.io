@@ -12,57 +12,116 @@
 <script src='https://asbros.github.io/popup.js/popup.js'></script>
 <script src="//hlsbook.net/wp-content/examples/hls.min.js"></script>
 <style type='text/css'>
- *{font-family:'Jost', sans-serif;user-select:none;}
- body{padding:0;margin:0;}
+ *{font-family:'Jost', sans-serif;user-select:none;transition: all 0.3s;}
+ body{padding:0;margin:0;background: rgb(100,100,100);}
  .mcon{margin:0;padding:0px;}
- .plrd{position:-webkit-sticky;position:sticky;z-index:9999999;top:0;border:3px solid #dc3545;background:#000;margin-bottom:8px;}
+ .plrd{position:-webkit-sticky;position:sticky;z-index:9999999;top:0;border:5px solid #dc3545;background:#000;margin-top: 10px;}
  #video{width:100%;height:100%;}
- .chnld{list-style-type:number;padding:7px;}
  button{padding:10px;background:rgba(153, 153, 153, 0.4);margin-bottom:5px;font-size:17px;border:0;width:100%;text-align:left;}
- @media only screen and (min-width: 1024px) {
- .mcon{display:flex;}
- .plrd{width:calc(100% - 425px);background:#000;height:100%;}
- #video{height:100%;}
- .chnld{filter:none !important;-webkit-filter:none !important;width:400px;background:#333;}
- button{color:#eee;}
+ #list{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-around;
+   margin-top: 20px;
+   color: #000;
+   font-size: 20px;
+ }
+ #list > div{
+   height: 150px;
+   width: 111px;
+   margin-bottom: 10px;
+   background: rgba(255,255,255,0.9);
+   border-radius: 5px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+ }
+ #list > div:hover{
+   background: rgba(0,0,0,0.2);
+ }
+ #list > div:hover img{
+   transform: scale(1.2);
+ }
+ #list div img{
+   height: 80px;
+   width: 80px;
+   margin-bottom: 15px;
+   outline: 2px solid #eee;
+   border-radius: 50%;
+ }
+ #list div div{
+   text-align: center;
+   font-size: 15px;
+   width: 100%;
+   color: #111;
+   white-space:nowrap;
+   overflow:hidden;
+   text-overflow:ellipsis;
+ }
  @media only screen and (min-width: 1000px) {
   .mcon{display:flex;}
   .plrd{width:calc(100% - 425px);background:#000;height:100%;}
   #video{height:100%;}
   .chnld{filter:none !important;-webkit-filter:none !important;width:400px;background:#333;}
   button{color:#eee;}
+ #list > div{
+   height: 180px;
+   width: 150px;
+   margin-bottom: 10px;
+ }
+ #list div img{
+   height: 100px;
+   width: 100px;
+   outline: 2px solid #eee;
+   border-radius: 50%;
+ }
+ #list div div{
+   font-size: 17px;
+ }
  }
 </style>
 </head>
 
-<body>
+<body class="bg-light-blue">
  <script src="https://content.jwplatform.com/libraries/Z79JsmAO.js"></script>
- <div class='pad-10 shadow bg-red relative' style='margin-bottom:10px;display: flex;align-items: center;'>
-  <span class='white josefin-font f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'><i class='fa-brands fa-spotify' style='margin-right:6px;font-size:22px'></i>AS LIVE TV</span>
-  <button class='s-40 active circle btn right' onclick='abt()' style='background:transparent;display: flex;align-items: center;'><svg fill='#fff' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-    <path clip-rule='evenodd' d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z' fill-rule='evenodd'></path>
-   </svg></button>
- </div>
+ <div class="white pad-15 shadow bg-red" style="display: flex;align-items: center;height:38px">
+     <img style="height: 45px;width: 45px;border-radius: 50%;margin-right: 3px;" src="https://i.imgur.com/aFOM5pg.png">
+   <span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Live TV</span>
+   <a href="https://anshul-web.blogspot.com/" target="_blank" style="text-decoration: none;margin-right: 7px"><img style="height: 38px;width: 38px;border-radius: 50%;border: 1px solid #fff;" src="https://i.imgur.com/xlkY3OT.jpg"></a>
+   <a href="https://shubham-web.blogspot.com/" target="_blank" style="text-decoration: none;"><img style="height: 38px;width: 38px;border-radius: 50%;border: 1px solid #fff;" src="https://i.imgur.com/PWYt3DO.jpg"></a>
+  </div>
  <div class='mcon'>
-  <div class='plrd'>
+  <div class='plrd' id="plrd" style="display: none;">
    <video autoplay='' controls='' id='video'></video>
   </div>
   <div id="list" class='chnld'>
+      Loading Live Channels...
   </div>
+ </div>
+ <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 10px;">
+  <a style="text-decoration: none;font-size: 21px;" href="https://asbros.github.io/" class="white">More Apps →</a><br><hr>
+  <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
  <script>
  
+  var dlst = document.querySelector("#list");
+  var plrd = document.querySelector("#plrd");
+  
  var list = [];
  fetch("https://api.npoint.io/ede7b617d1f60ac64170")
  .then(response => response.json())
  .then((data) => {
    list = data;
-  var dlst = document.querySelector("#list");
+   dlst.innerHTML = "";
   list.forEach((c,i) => {
-    var btn = document.createElement("button");
-    btn.setAttribute("class","ripple");
-    btn.innerText = c.name;
-    btn.onclick = function(){
+    var div = document.createElement("div");
+    var img = document.createElement("img");
+    img.src = c.img;
+    var nm = document.createElement("div");
+    nm.innerText = c.name;
+    div.onclick = function(){
+      plrd.style.display = "";
       play(c.url,c.keyId,c.key);
     /* if(c.m3u8 !== true){
       play(c.url);
@@ -70,10 +129,13 @@
       play(c.url,"hls")
      }*/
     }
-    dlst.appendChild(btn);
+    div.appendChild(img);
+    div.appendChild(nm);
+    dlst.appendChild(div);
   });
   
- })
+ });
+ 
   function play(url,kid,k,t){
   var cat = "dash";
    /*if(t){
@@ -96,14 +158,6 @@
          aboutlink: "https://asbros.github.io/"
   });
   }
-   function abt(){
-     as.popup({
-     title:"Anshul Kumar",
-     closeBtn: false,
-      icon:"https://i.imgur.com/Mh3z5lX.jpg",
-     closeIcon: true
-   });
-   }
  </script>
 </body>
 
