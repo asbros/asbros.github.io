@@ -568,7 +568,7 @@
        
   }
   
-  document.getElementById("sinp").oninput = function(){
+  document.getElementById("sinp").keyup = function(){
    document.getElementById("slist").innerHTML = "<h3 style='text-align: center'>Searching...</h3>";
    fetch("https://saavn.me/search/songs?query="+this.value.trim()+"&page=1&limit=500")
   .then((response) => response.json())
