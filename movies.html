@@ -13,19 +13,19 @@
  *{font-family:'Jost', sans-serif;user-select:none;transition: all 0.3s;}
  body{padding:0;margin:0;background: rgb(100,100,100);}
  .mcon{margin:0;padding:5px;}
- .plrd{position:-webkit-sticky;position:sticky;z-index:9999999;top:0;background:#000;margin-top: 10px;}
- #video{width:100%;height:250px;border: 0;}
- button{padding:10px;background:rgba(153, 153, 153, 0.4);margin-bottom:5px;font-size:17px;border:0;width:100%;text-align:left;}
+ .plrd{margin-top: 10px;}
+ #video{width:100%;height:300px;border: 0;background-image: url(https://i.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.webp);background-position: center;}
  #search {
-  background-image: url('https://www.w3schools.com/css/searchicon.png');
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  width: 100%;
-  margin-top: 10px;
+  margin-right: 10px;
   box-sizing: border-box;
   font-size: 16px;
-  padding: 10px 20px 10px 40px;
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ddd;
+ }
+ #stype{
+   font-size: 15px;
+   height: 45px;
  }
  #list{
    display: flex;
@@ -49,7 +49,7 @@
    overflow: hidden;
  }
  #list > div:hover{
-   background-size: 230px;
+   background-size: 200px;
  }
  #list div div{
    text-align: center;
@@ -66,7 +66,8 @@
    text-overflow:ellipsis;
  }
  @media only screen and (min-width: 1000px) {
-  .dsktp .mcon{display:flex;}
+  .dsktp #video{width:100%;height:600px;}
+  /*.dsktp .mcon{display:flex;}
   .dsktp .plrd{width:60%;background:#000;height:100%;}
   .dsktp #video{width:100%;height:500px;}
   .dsktp #cntt{
@@ -77,6 +78,7 @@
       background: rgba(0,0,0,0.2);
   }
   .dsktp .chnld{filter:none !important;-webkit-filter:none !important;}
+  */
  }
 </style>
 </head>
@@ -89,13 +91,24 @@
   <a href="https://shubham-web.blogspot.com/" target="_blank" style="text-decoration: none;"><img style="height: 38px;width: 38px;border-radius: 50%;border: 1px solid #fff;" src="https://i.imgur.com/PWYt3DO.jpg"></a>
  </div>
  <div class='mcon'>
-  <div class='plrd' id="plrd" style="display: none;">
-   <iframe allowfullscreen id='video'></iframe>
+  <div class='plrd josefin-font' id="plrd" style="display: none;">
+   <button onclick="home()" class="btn josefin-font bg-black radius-5 f-18 white shadow" style="padding: 7px 15px;padding-left: 7px;margin-bottom: 10px;">
+       <svg fill="#fff" width="30px" height="30px" viewBox="0 0 32 32" data-name="Layer 2" id="Layer_2" xmlns="http://www.w3.org/2000/svg"><title/><path d="M11.17,10.23a33.37,33.37,0,0,0-3.05,3.13c-.51.62-1.28,1.3-1.21,2.17s.81,1.24,1.35,1.76a16.3,16.3,0,0,1,2.57,3.17c.86,1.36,3,.11,2.16-1.26a21.06,21.06,0,0,0-1.82-2.48A16.16,16.16,0,0,0,10,15.52c-.22-.21-.86-1.14-.68-.49l-.13,1a17.85,17.85,0,0,1,3.72-4c1.19-1.08-.58-2.85-1.77-1.76Z"/><path d="M9.4,17a109.13,109.13,0,0,0,12.53-.1c1.59-.11,1.61-2.61,0-2.5a109.13,109.13,0,0,1-12.53.1c-1.61-.07-1.6,2.43,0,2.5Z"/></svg>Home</button>
+   <iframe allowfullscreen id='video'></iframe><br>
+   <div id="det" class="note-box pad-15">
+    <div id="dname" style="font-size: 22px;font-weight: bold;"></div>
+    <hr>
+    <div id="dover" style="font-size: 17px"></div>
+   </div>
   </div>
   <div id="cntt">
-   <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" placeholder="Search for movies...">
-   <input type="radio" value="m" name="type" id="movie"><label for="movie">Movie</label>
-   <input type="radio" value="s" name="type" id="series"><label for="series">Series</label>
+   <div style="width: 100%;display: flex;justify-content: center;align-items: center;margin-top: 10px;">
+    <select class="alert-blue margin-5" name="stype" id="stype">
+     <option value="movie">Movies</option>
+     <option value="tv">Series</option>
+    </select>
+    <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" placeholder="Search for movies...">
+   </div>
    <div id="list" class='chnld'>
     Loading Popular Movies...
    </div>
@@ -107,10 +120,10 @@
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
  <script>
-  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
     var dlst = document.querySelector("#list");
     var plrd = document.querySelector("#plrd");
     var video = document.querySelector("#video");
+    var cntt = document.querySelector("#cntt");
     
    var list = [];
    function add(data,t){
@@ -129,52 +142,23 @@
        nm.innerText = c.title;
       }
       div.onclick = function(){
-        plrd.style.display = "";
-        play(c.id,t);
+       localStorage.setItem(c.id,JSON.stringify(c));
+       window.location.assign(window.location.href+"?i="+c.id+"&t="+t);
         document.body.classList.add('dsktp');
       }
       div.appendChild(nm);
       dlst.appendChild(div);
     });
    }
-   
-    function play(i,t){
-     var u;
-     switch(t){
-       case "tv":
-       u = "https://2embed.org/series.php?id="+i+"/1/1";
-       break;
-       default:
-       u = "https://2embed.org/e.php?id="+i;
-      }
-     video.src = u;
-    }
-    
-    var mbtn = document.getElementById("movie");
-    var sbtn = document.getElementById("series");
-    
-    function getType(){
-      var typ;
-      if(mbtn.checked){
-        typ = "movie";
-      }else if(sbtn.checked){
-        typ = "tv";
-      }else{
-        mbtn.checked = true;
-        typ = "movie";
-      }
-      return typ;
-    }
     
     function search(q){
-    var t = getType();
+    var t = document.getElementById("stype").value;
     var url = 'https://api.themoviedb.org/3/search/'+t+'?query='+q.trim()+'&api_key=d0b6d12cc20f0c9f7ebba84813da8766';
      
    fetch(url)
    .then(response => response.json())
    .then((data) => {
      add(data.results,t);
-     console.log(data.results)
    });
     }
     
@@ -194,6 +178,38 @@
    .then((data) => {
      add(data.results,"movie");
    });
+   
+   var dname = document.querySelector("#dname");
+   var dover = document.querySelector("#dover");
+   
+   var lq = window.location.search;
+   var up = new URLSearchParams(lq);
+   var id = up.get("i");
+   var type = up.get("t");
+   if(id && type){
+   cntt.style.display = "none";
+   plrd.style.display = "";
+   var u;
+   switch(type){
+       case "tv":
+       u = "https://vidsrc.me/embed/tv?tmdb="+id;
+       break;
+       default:
+       u = "https://2embed.org/e.php?id="+id;
+       //https://multiembed.mov/directstream.php?tmdb=1&video_id=
+   }
+   video.src = u;
+   var det = JSON.parse(localStorage.getItem(id));
+   if(det){
+   dname.innerText = det.title || det.name;
+   dover.innerText = det.overview;
+   }
+   }else{
+   }
+   
+   function home(){
+   window.location.href = "https://asbros.github.io/movies";
+   }
  </script>
 </body>
 
