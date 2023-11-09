@@ -30,7 +30,7 @@
  #list{
    display: flex;
    flex-wrap: wrap;
-   justify-content: space-around;
+   justify-content: space-evenly;
    margin-top: 15px;
    color: #000;
    font-size: 20px;
@@ -106,10 +106,10 @@
      <option value="movie">Movies</option>
      <option value="tv">Series</option>
     </select>
-    <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" onchange="search(this.value.toUpperCase())" placeholder="Search for movies...">
+    <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" onchange="search(this.value.toUpperCase())" placeholder="Search for movies/series...">
    </div>
    <div id="list" class='chnld'>
-    Loading Popular Movies...
+   <!-- Loading Popular Movies... -->
    </div>
    <center><button onclick="auto(window.cp+1)" class="btn jost bg-black radius-5 f-20 white shadow" style="padding: 12px 15px;margin-bottom: 10px;margin-top: 10px;" id="more">Load More</button></center>
   </div>
@@ -126,14 +126,10 @@
     var cntt = document.querySelector("#cntt");
     
    var list = [];
-   function add(data,t,a){
+   function add(data,t){
+    if(data.length > 0){
      list = data;
-    switch(a){
-     case true:
-      break;
-     default:
      dlst.innerHTML = "";
-    }
     list.forEach((c,i) => {
       var div = document.createElement("div");
       div.setAttribute("id",i)
@@ -154,19 +150,43 @@
       div.appendChild(nm);
       dlst.appendChild(div);
     });
+    }else{
+     dlst.innerHTML = `No results found!`;
+     }
+   }
+   
+   function aadd(data,n){
+     list = list.concat(data);
+     dlst.innerHTML = "";
+    list.forEach((c,i) => {
+      var div = document.createElement("div");
+      div.setAttribute("id",i)
+      div.style.backgroundImage = "url(https://www.themoviedb.org/t/p/w220_and_h330_face/"+c.poster_path+")";
+      var nm = document.createElement("div");
+       nm.innerText = c.title;
+      div.onclick = function(){
+       localStorage.setItem(c.id,JSON.stringify(c));
+       window.location.assign(window.location.href+"?i="+c.id+"&t=movie");
+        document.body.classList.add('dsktp');
+      }
+      div.appendChild(nm);
+      dlst.appendChild(div);
+    });
    }
     
     function search(q){
-     if(q !== ""){
+     dlst.innerHTML = `Searching for “${q}”`;
+     if(q){
       document.querySelector("#more").style.display = "none";
     var t = document.getElementById("stype").value;
     var url = 'https://api.themoviedb.org/3/search/'+t+'?query='+q.trim()+'&api_key=d0b6d12cc20f0c9f7ebba84813da8766';
    fetch(url)
    .then(response => response.json())
    .then((data) => {
-     add(data.results,t,false);
+     add(data.results,t);
    });
     }else{
+      list = [];
       auto(1);
       document.querySelector("#more").style.display = "";
     }
@@ -184,11 +204,11 @@
     username = miledap;
     */
  function auto(n){
-  window.cp = 1;
+  window.cp = n;
  fetch("https://api.themoviedb.org/3/discover/movie?air_date.gte=&air_date.lte=&certification=&certification_country=IN&debug=&first_air_date.gte=&first_air_date.lte=&page="+n+"&primary_release_date.gte=&primary_release_date.lte=&region=IN&release_date.gte=&release_date.lte=&show_me=0&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_genres=&with_keywords=&with_networks=&with_origin_country=IN&with_original_language=hi&with_watch_monetization_types=&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400",options)
    .then(response => response.json())
    .then((data) => {
-     add(data.results,"movie",true);
+     aadd(data.results,n);
    });
  }
   auto(1);
