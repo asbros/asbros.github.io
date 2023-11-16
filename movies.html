@@ -133,7 +133,7 @@
     list.forEach((c,i) => {
       var div = document.createElement("div");
       div.setAttribute("id",i)
-      div.style.backgroundImage = "url(https://www.themoviedb.org/t/p/w220_and_h330_face/"+c.poster_path+")";
+      div.style.backgroundImage = "url(https://image.tmdb.org/t/p/w300/"+c.poster_path+")";
       var nm = document.createElement("div");
       switch(t){
        case "tv":
@@ -161,7 +161,7 @@
     list.forEach((c,i) => {
       var div = document.createElement("div");
       div.setAttribute("id",i)
-      div.style.backgroundImage = "url(https://www.themoviedb.org/t/p/w220_and_h330_face/"+c.poster_path+")";
+      div.style.backgroundImage = "url(https://image.tmdb.org/t/p/w300/"+c.poster_path+")";
       var nm = document.createElement("div");
        nm.innerText = c.title;
       div.onclick = function(){
@@ -232,7 +232,7 @@
        default:
        u = "https://theflixhub.com/embed/movie?tmdb="+id;
  //https://2embed.org/e.php?id=
-     //https://multiembed.mov/directstream.php?tmdb=1&video_id=
+  //https://multiembed.mov/directstream.php?tmdb=1&video_id=
    }
    video.src = u;
    var det = JSON.parse(localStorage.getItem(id));
