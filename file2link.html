@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <title>File Uploader</title>
+ <meta charset='UTF-8' />
+ <meta content='width=device-width, user-scalable=no' name='viewport' />
+ <meta content='https://i.imgur.com/oelJRyu.png' property='og:image' />
+ <link href='https://i.imgur.com/oelJRyu.png' />
+ <link href='https://i.imgur.com/oelJRyu.png' />
+ <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
+ <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
+ <script src='https://asbros.github.io/popup.js/popup.js'></script>
+ <style type="text/css">
+  button{
+   border:0;
+  }
+  #upload-main{
+   margin: 0 auto;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+  }
+  #file{
+    display: none;
+  }
+  #txt{
+    display: none;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+  }
+ </style>
+</head>
+
+<body style="margin:0;padding:0;">
+ <div class='pad-10 shadow bg-red relative' style='margin-bottom:15px;display: flex;align-items: center;'>
+  <span class='white jost f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'>File Uploader</span>
+  <button class='s-40 active circle btn right' onclick='abt()' style='background:transparent;display: flex;align-items: center;'><svg fill='#fff' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+    <path clip-rule='evenodd' d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z' fill-rule='evenodd'></path>
+   </svg></button>
+ </div>
+ <div id="upload-main" class="alert-red margin-10">
+  <form id="form"><input type="file" name="file" id="file" value="" /></form>
+  <a class="note-box blue pad-7 jost f-16" id="txt" href="" target="_blank" style="color:#444;text-decoration:none;"></a><br />
+  <button onclick='document.getElementById("file").click();' class="white bg-red shadow active radius-5 f-16 pad-10 josefin-font" id="btn">Upload File</button>
+  <button onclick='navigator.clipboard.writeText(url);as.toast({title: "Copied !",type: "success",timer: 2000});' class="white bg-red shadow active radius-5 f-16 pad-10 josefin-font" id="copy" style="display: none;margin-left:15px;">Copy Link</button>
+ </div>
+ <p class="note-box pad-7 jost f-16 margin-10">Please don't upload your private files §</p>
+ <script type="text/javascript" charset="utf-8">
+  var url;
+    function upload(f){
+    let fd = new FormData();
+    fd.append("file", f);
+    fd.append("token","1MWlOga9F5dSrkZMyMvybBJnp36Vbx1p");
+    let xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", function(){
+    let res = JSON.parse(this.responseText);
+    if(res.status == "ok"){
+        console.log(res);
+      if(true){
+          url = "https://store1.gofile.io/download/"+res.data.fileId+"/"+res.data.fileName;
+        document.getElementById("txt").href = url;
+        document.getElementById("txt").innerText = url;
+        document.getElementById("btn").innerText = "Upload Another File";
+        document.getElementById("btn").removeAttribute("disabled");
+        document.getElementById("copy").style.display = "";
+      }
+    }else{
+      alert("Sorry, try again!");
+    }
+    });
+    xhr.open("POST", "https://store1.gofile.io/uploadFile");
+    xhr.send(fd);
+        document.getElementById("txt").innerText = "Processing...";
+        document.getElementById("txt").style.display = "block";
+        document.getElementById("btn").setAttribute("disabled","true");
+    }
+    document.getElementById("file").addEventListener('input', function(){
+    upload(this.files[0]);
+  document.getElementById("form").reset();
+  });
+ </script>
+</body>
+
+</html>
