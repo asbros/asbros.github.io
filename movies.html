@@ -202,10 +202,12 @@
     /* https://developer.themoviedb.org/reference/discover-movie 
     email = pass = miledap211@eazenity.com;
     username = miledap;
+    
+    https://api.themoviedb.org/3/discover/movie?certification_country=IN&page="+n+"&region=IN&show_me=0&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_genres=action&with_keywords=&with_origin_country=IN&with_original_language=hi
     */
  function auto(n){
   window.cp = n;
- fetch("https://api.themoviedb.org/3/discover/movie?certification_country=IN&page="+n+"&region=IN&show_me=0&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_genres=action&with_keywords=&with_origin_country=IN&with_original_language=hi",options)
+ fetch("https://api.themoviedb.org/3/discover/movie?air_date.gte=&air_date.lte=&certification=&certification_country=IN&debug=&first_air_date.gte=&first_air_date.lte=&page="+n+"&primary_release_date.gte=&primary_release_date.lte=&region=&release_date.gte=&release_date.lte=2024-09-20&show_me=0&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=hi&with_watch_monetization_types=&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400",options)
    .then(response => response.json())
    .then((data) => {
      aadd(data.results,n);
@@ -230,7 +232,7 @@
        u = "https://vidsrc.me/embed/tv?tmdb="+id;
        break;
        default:
-       u = "https://2embed.org/e.php?id="+id;
+       u = "https://vidsrc.to/embed/movie/"+id;
  //https://theflixhub.com/embed/movie?tmdb=
   //https://multiembed.mov/directstream.php?tmdb=1&video_id=
    }
