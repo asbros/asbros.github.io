@@ -73,11 +73,11 @@ input[type="search"]::-webkit-search-cancel-button {
  .wrap{text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 #title{font-size: 30px;line-height: 50px;}
 #artists{font-size: 16px;line-height: 30px;opacity: 0.8;}
-#controls button,#close{
+#controls button,#close,#pvideo{
   background: none;
   border: 0;
   }
-  #controls i,#close i{
+  #controls i,#close i,#pvideo i{
   font-size: 27px;
   user-select: none;
   color: #fff;
@@ -157,7 +157,8 @@ input[type="search"]::-webkit-search-cancel-button {
   <audio id="audio"></audio>
   <div id="player" style="position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;height: calc(100%)">
     <div id="song">
-      <button class='active' id='close' style='margin-bottom: 10px;'><i class="fa-solid fa-chevron-down"></i></button>
+      <div><button class='active' id='pvideo' style='margin-bottom: 10px;float:left;'><i class="fa-solid fa-chevron-down"></i></button>
+      <button class='active' id='close' style='margin-bottom: 10px;float: right;'><i class="fa-solid fa-chevron-down"></i></button></div>
     <img id="image" src="https://nglemployeedirectory.in/images/loading.gif">
     <div class="wrap"><span id="title">Loading Song...</span></div>
     <div class="wrap"><span id="artists"></span></div>
@@ -165,7 +166,7 @@ input[type="search"]::-webkit-search-cancel-button {
       <input id="timer" disabled="true" type="range" min="0" value="0">
       <div>
         <span id="ctime">0:00</span>
-        <span id="ttime">4:00</span>
+        <span id="ttime">0:00</span>
       </div>
     </div>
   <div id="controls" style='width: 100%;display: flex;justify-content: space-between;align-items: center;'>
@@ -212,6 +213,7 @@ var play = $("#play");
 var pause = $("#pause");
 var next = $("#next");
 var down = $("#down");
+var pvideo = $("#pvideo");
 var player = $("#player");
 var play_img = $("#play_img");
 var play_title = $("#play_title");
@@ -260,6 +262,7 @@ var queries = ["bollywood",'haryanvi','punjabi','hindi'];
    var url,param,s_page,p_page,x_page;
   var cList = [];
   var cSong = 0;
+  var videoId;
 function check_page(){
   url = window.location.search;
   param = new URLSearchParams(url);
@@ -489,6 +492,7 @@ function sing(s, fav) {
     }
   }
   play.click();
+  videoId = s.url.substring(9);
 }
 play.onclick = play_play.onclick = function(){
   audio.play();
@@ -652,6 +656,9 @@ down.onclick = function() {
       console.error('Error downloading audio:', error);
       loader.hide();
     });
+}
+pvideo.onclick = function() {
+  window.open("https://asbros.github.io/utube?v="+videoId, "_blank");
 }
 function search(v){
   history.pushState(null,null,"?s="+v);
