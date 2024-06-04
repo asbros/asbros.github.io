@@ -1,6 +1,4 @@
-
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -261,13 +259,35 @@ var queries = ["bollywood",'haryanvi','punjabi','hindi'];
      var cpq = queries[Math.floor(Math.random() * queries.length)];
      return cpq;
    }
-   
-var url = window.location.search;
-var param = new URLSearchParams(url);
-var s_page = param.get("s");
-var p_page = param.get("p");
+   var url,param,s_page,p_page,x_page;
   var cList = [];
   var cSong = 0;
+function check_page(){
+  url = window.location.search;
+  param = new URLSearchParams(url);
+  s_page = param.get("s");
+  p_page = param.get("p");
+  x_page = param.get("x");
+if((!s_page && !p_page) && !x_page){
+  player.style.bottom = '-110%';
+  home_page();
+}else if(s_page){
+  player.style.bottom = '-110%';
+  search_page(s_page);
+}else if(p_page){
+  player.style.bottom = '-110%';
+  playlist_page(p_page);
+}else if(x_page){
+  player_page(x_page);
+}
+}
+check_page();
+  window.addEventListener('popstate', e => {
+    check_page();
+  });
+function $(e){
+  return document.querySelector(e);
+}
 function shuffle(array) { 
   for (let i = array.length - 1; i > 0; i--) { 
     const j = Math.floor(Math.random() * (i + 1)); 
@@ -275,38 +295,12 @@ function shuffle(array) {
   } 
   return array; 
 }
-  window.addEventListener('popstate', e => {
-    check_page();
-   /* if(window.location == "https://asbros.github.io/music" || window.location == "https://asbros.github.io/music#"){
-      alert('home 1')
-      home_page();
-  sinput.value = "";
-    }else if(p_page){
-      alert('playlist 1')
-    playlist_page(p_page);
-    }else if(s_page){
-      alert('search 1')
-    search_page(s_page);
-    }else{
-    }*/
-  });
-function $(e){
-  return document.querySelector(e);
+function stm(t){
+  var mins = Math.floor(t / 60);
+  var secs = Math.floor(t % 60);
+  var formattedTime = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  return formattedTime;
 }
-function check_page(){
-  url = window.location.search;
-  param = new URLSearchParams(url);
-  s_page = param.get("s");
-  p_page = param.get("p");
-if(!s_page && !p_page){
-  home_page();
-}else if(s_page){
-  search_page(s_page);
-}else if(p_page){
-  playlist_page(p_page);
-}
-}
-check_page();
 function home_page(){
   $("#top_playlists").innerHTML = "";
   cList = [];
@@ -321,6 +315,9 @@ function home_page(){
     name.innerText = tp.name;
     div.onclick = function(){
       history.pushState(null,null,"?p="+tp.id);
+  url = window.location.search;
+  param = new URLSearchParams(url);
+  p_page = param.get("p");
       playlist_page(tp.id);
     }
     div.appendChild(img);
@@ -353,7 +350,6 @@ function search_page(s_page){
   cList = [];
   all_songs.innerHTML = "";
   sinput.value = "";
-  searchss.style.display = "none";
   sinput.blur();
   fetch("https://piapi.ggtyler.dev/search?filter=music_songs&q=" + s_page)
   .then(r => r.json())
@@ -364,6 +360,7 @@ function search_page(s_page){
     cList = x.items;
     list(cList);
     sinput.value = s_page;
+  searchss.style.display = "none";
     var cnp = x.nextpage;
     if (cnp != "null") {
       lodmor.style.display = "";
@@ -376,7 +373,7 @@ function search_page(s_page){
             list(cList);
             if (z.nextpage) {
               cnp = z.nextpage;
-            } else { cnp = "" }
+            }else{this.style.display = "none"}
           });
       }
     }
@@ -400,7 +397,7 @@ function playlist_page(p_page){
     loader.hide();
     var cnp = x.nextpage;
     if(cnp != null){
-      lodmor.style.display = "none";
+      lodmor.style.display = "";
       lodmor.onclick = function(){
       var rnp = encodeURIComponent(cnp);
       fetch("https://pipedapi.drgns.space/nextpage/playlists/"+p_page+"?nextpage="+rnp)
@@ -411,17 +408,14 @@ function playlist_page(p_page){
         cList = cList.concat(nList);
         if(z.nextpage){
           cnp = z.nextpage;
-        }else{cnp = ""}
+        }else{this.style.display = "none"}
       });
       }
   }
   });
 }
-function stm(t){
-  var mins = Math.floor(t / 60);
-  var secs = Math.floor(t % 60);
-  var formattedTime = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  return formattedTime;
+function player_page(x_page){
+  player.style.bottom = 0;
 }
 function list(l){
   l.forEach(item);
@@ -434,12 +428,12 @@ function item(i,n) {
   body = document.createElement("div");
   img = document.createElement("img");
   var imgsrc = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
-  /*if(!p_page){
+  if(!p_page){
    imgsrc = i.thumbnail;
   }else{
     imgsrc = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
     img.classList.add("plistimg");
-  }*/
+  }
   img.src = imgsrc;
   time = document.createElement("div");
   time.innerText = stm(i.duration);
@@ -571,11 +565,17 @@ audio.onended = function(){
   play.click();
 }
 play_click.onclick = play_img.onclick = function(){
-    player.style.bottom = 0;
+  history.pushState(null,null,"?x=true");
+  url = window.location.search;
+  param = new URLSearchParams(url);
+  x_page = param.get("x");
+  player_page();
+  //player.style.bottom = 0;
   //location.hash = "player";
 }
 close.onclick = function(){
-    player.style.bottom = '-110%';
+  history.back();
+    //player.style.bottom = '-110%';
 }
 
 sinput.addEventListener("click",function(){
@@ -657,6 +657,11 @@ down.onclick = function() {
 }
 function search(v){
   history.pushState(null,null,"?s="+v);
+  url = window.location.search;
+  param = new URLSearchParams(url);
+  s_page = param.get("s");
+  p_page = param.get("p");
+  x_page = param.get("x");
   search_page(v);
 }
 </script>
