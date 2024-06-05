@@ -13,15 +13,19 @@
 <link href='https://i.imgur.com/p081OXx.png' rel='apple-touch-icon' />
 <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
 <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
-<link crossorigin='anonymous' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css' integrity='sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==' referrerpolicy='no-referrer' rel='stylesheet' />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,1,0" />
 <script src='https://asbros.github.io/popup.js/popup.js'></script>
 <style>
 *{color: #fff;font-family:'Jost', sans-serif;font-weight: 400;font-style: normal;transition: all 0.3s;box-sizing: border-box;user-select: none;}
 body {margin: 0;background: rgb(22,26,29);}
-#top_playlists{overflow-x: scroll;padding: 5px;display: flex;margin: 5px;font-size: 15px;margin-bottom: 20px;}
-.psop{padding: 5px !important;margin: 10px !important;text-align: center;}
-#top_playlists > div{width: 150px;height: 180px;background: rgb(255,255,255,.1);margin: 5px;border-radius: 12px;}
-#top_playlists > div img{width: 150px;border-top-left-radius: 12px;border-top-right-radius: 15px;}
+#top_playlists{display: flex;overflow-x: scroll;margin: 5px;font-size: 15px;margin-bottom: 20px;-ms-overflow-style: none;scrollbar-width: none;}
+#top_playlists::-webkit-scrollbar {
+  display: none;
+}
+.psop{padding: 5px !important;margin: 10px !important;text-align: center;font-size: 20px;}
+#top_playlists > div{width: 140px;height: 16
+40px;background: rgb(255,255,255,0.1);;margin: 8px;border-radius: 10px;}
+#top_playlists > div img{width: 140px;height: 140px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
 #top_playlists > div > div{padding: 8px;display: block;padding-top: 0px;}
 .vid{display: flex;padding: 10px;padding-bottom: 2px;padding-top: 2px;margin: 10px;margin-top: 5px;margin-bottom: 5px;overflow: hidden;word-wrap: break-word;}
 .body{position: relative;}
@@ -31,7 +35,7 @@ body {margin: 0;background: rgb(22,26,29);}
 .foot{flex: 1;padding: 7px;background: rgba(255,255,255,0.1);height: 80px;border-top-right-radius: 8px;border-bottom-right-radius: 8px;padding-left: 10px;}
 .title{font-size: 15px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;}
 .uploader{color: #eee;font-size: 12px;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;}
-#sdiv{margin-left: 10px;margin-right: 10px;width: 100%;}
+#sdiv{margin-left: 10px;margin-right: 5px;width: 100%;}
 #sinput{color: #fff;padding: 12px 20px;border-radius: 25px;border: 0;width: 100%;background: rgba(0,0,0,0.5);font-size: 16px;}
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none;
@@ -43,7 +47,7 @@ input[type="search"]::-webkit-search-cancel-button {
     cursor: pointer;
 }
 #sinput:focus{outline: none;}
-#search{width: 40px;border: none;height: 40px;align-items: center;background: none;padding: 6px;border-radius: 50%;}
+#liked_playlists{border: none;background: none;border-radius: 50%;}
 #searchss{position: fixed;top: 65px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
 #searchss div{background: rgba(0,0,0,0.5);color: #fff;padding: 12px;border-bottom: 0.01px solid #ccc;font-size:15px;}
 #player{
@@ -77,12 +81,12 @@ input[type="search"]::-webkit-search-cancel-button {
   background: none;
   border: 0;
   }
-  #controls i,#close i,#pvideo i{
-  font-size: 27px;
+  #controls span,#close span,#pvideo span,#play_play span,#play_pause span,#play_next span{
+  font-size: 35px;
   user-select: none;
   color: #fff;
   }
-  #play i, #pause i{
+  #play span, #pause span{
   font-size: 54px;
   }
   #time{width: 100%}
@@ -135,9 +139,11 @@ input[type="search"]::-webkit-search-cancel-button {
    }
   }
   @media screen and (min-width: 640px) {
-    #top_playlists{justify-content: center;}
+    #top_playlists{margin-left: 50px;margin-right: 50px;padding-left: 0;padding-right: 0;}
     #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
     .vid{width: 300px;}
+    #player{height: 600px !important;}
+    #player, #playing{width: 420px;left: calc(100% - 420px) !important;}
   }
 </style>
 </head>
@@ -147,7 +153,7 @@ input[type="search"]::-webkit-search-cancel-button {
   <a href="https://asbros.github.io/music"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://i.imgur.com/p081OXx.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Music</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
-  <!--<button id="search"><svg style="margin-right: 5px;" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(241,241,241)" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg></button>-->
+  <button id="liked_playlists" class="active"><span class="material-symbols-outlined" style="font-size: 33px;color: #C51104;">favorite</span></button>
 </div>
 <div id="searchss" style="display: none;"></div>
   <div id="main" style="margin-top:85px;">
@@ -157,8 +163,8 @@ input[type="search"]::-webkit-search-cancel-button {
   <audio id="audio"></audio>
   <div id="player" style="position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;height: calc(100%)">
     <div id="song">
-      <div><button class='active' id='pvideo' style='margin-bottom: 10px;float:left;'><i class="fa-solid fa-chevron-down"></i></button>
-      <button class='active' id='close' style='margin-bottom: 10px;float: right;'><i class="fa-solid fa-chevron-down"></i></button></div>
+      <div style="width: 100%"><button class='active' id='pvideo' style='margin-bottom: 10px;float:left;'><span class="material-symbols-outlined">smart_display</span></button>
+      <button class='active' id='close' style='margin-bottom: 10px;float: right;'><span class="material-symbols-outlined">close</span></button></div>
     <img id="image" src="https://nglemployeedirectory.in/images/loading.gif">
     <div class="wrap"><span id="title">Loading Song...</span></div>
     <div class="wrap"><span id="artists"></span></div>
@@ -170,14 +176,14 @@ input[type="search"]::-webkit-search-cancel-button {
       </div>
     </div>
   <div id="controls" style='width: 100%;display: flex;justify-content: space-between;align-items: center;'>
-  <button class='active' id='like'><i class='fa-regular fa-heart'></i></button>
-  <button class='active' id='liked' style='display: none'><i class='fa-solid fa-heart' style='color: #e00'></i></button>
-  <button class='active' id='prev'><i class='fa-solid fa-backward-step'></i></button>
-  <button id='play'><i class='fa-solid fa-circle-play'></i></button>
-  <button id='load' style="display: none;"><i class="fa-solid fa-spinner"></i></button>
-  <button id='pause' style='display: none'><i class='fa-solid fa-circle-pause'></i></button>
-  <button class='active' id='next'><i class='fa-solid fa-forward-step'></i></button>
-  <button class='active' id='down'><i class='fa-solid fa-arrow-down'></i></button>
+  <button class='active' id='like'><span class="material-symbols-outlined">favorite</span></button>
+  <button class='active' id='liked' style='display: none'><span class="material-symbols-outlined" style="color: #e00">favorite</span></button>
+  <button class='active' id='prev'><span class="material-symbols-outlined">skip_previous</span></button>
+  <button id='play'><span class="material-symbols-outlined">play_circle</span></button>
+  <button id='load' style="display: none;"><span class="material-symbols-outlined">sync</span></button>
+  <button id='pause' style='display: none'><span class="material-symbols-outlined">pause_circle</span></button>
+  <button class='active' id='next'><span class="material-symbols-outlined">skip_next</span></button>
+  <button class='active' id='down'><span class="material-symbols-outlined">arrow_downward</span></button>
 </div>
     </div>
   </div>
@@ -187,9 +193,9 @@ input[type="search"]::-webkit-search-cancel-button {
     <div id="play_title" style="font-size: 16px;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
   </div>
   <div style="display: flex;align-items: center;justify-content: center;">
-    <button id='play_play' style="border:0;font-size:32px; background:none;color:#fff;border-radius:50%;"><i class='fa-solid fa-circle-play'></i></button>
-    <button id='play_pause' style='display:none;border:0;font-size:32px;background:none;color:#fff;border-radius:50%;'><i class='fa-solid fa-circle-pause'></i></button>
-    <button class='active' id='play_next' style="border:0;font-size:27px;background:none;color:#fff;border-radius:50%;padding: 0px 10px;"><i class='fa-solid fa-forward-step'></i></button>
+    <button id='play_play' style="border:0;background:none;color:#fff;border-radius:50%;"><span class="material-symbols-outlined">play_circle</span></button>
+    <button id='play_pause' style='display:none;border:0;background:none;color:#fff;border-radius:50%;'><span class="material-symbols-outlined">pause_circle</span></button>
+    <button class='active' id='play_next' style="border:0;background:none;color:#fff;border-radius:50%;padding: 0px 10px;"><span class="material-symbols-outlined">skip_next</span></button>
   </div>
 </div>
     <div id="load_more" style="display: flex;align-items: center;justify-content: center;margin-top: 5px;margin-bottom: 10px;"><button id="lodmor" style="display: none;padding: 6px 12px;color: #fff;background: #282828;border: none;font-size: 17px;border-radius: 7px;">Load More</button></div>
@@ -198,7 +204,9 @@ input[type="search"]::-webkit-search-cancel-button {
   <hr>
  <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
-  <script>
+<script>
+  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+  
 var all_songs = $("#all_songs");
 var title = $("#title");
 var image = $("#image");
@@ -226,32 +234,48 @@ var playing = $("#playing");
 var searchss = $("#searchss");
 var sinput = $("#sinput");
 var lodmor = $("#lodmor");
+var liked_playlists = $("#liked_playlists");
 
 var topPlaylists = [
   {
-   "name": "Latest Bollywood Songs 2024 - Hindi Songs 2024",
-   "image": "https://i.ibb.co/18csvVd/hqdefault.webp",
-   "id": "PLO7-VO1D0_6NmK47v6tpOcxurcxdW-hZa"
+    "name": "Bollywood Hitlist",
+    "id": "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g",
+   "image": "https://lh3.googleusercontent.com/YZdpsbRWLdPleKHBP4s3mvrpdhzuWAXIY8nSQbZmCDB_9LO-SsRH9csMThHheFcwsvvVM0ROisidL271=w544-h544-s-l90-rj",
+  },
+    {
+      "name": "Bollywood Dance Hitlist",
+      'id': "RDCLAK5uy_kjNBBWqyQ_Cy14B0P4xrcKgd39CRjXXKk",
+      "image": "https://lh3.googleusercontent.com/kEzrAiX9NW35Gx3DTZ8HNQMP4xhbLkXGy3byOjqQSPoEJ8eTch7Doj6E3sL7cWqnr3LT4-Ydid6zzSI=w544-h544-l90-rj"
     },
     {
-      "name": "Top 50 Latest Bollywood Songs 2024 ♫",
-      "image": "https://i.ibb.co/wRyDczn/hqdefault.webp",
-      "id": "PLNCA1T91UH31_SnlMecke_9wsbc-5mamS"
+      "name": "Bollywood Romance Hitlist",
+      'id': "RDCLAK5uy_mypHeJ-B5f7-OgrxJcXeiHSotjIJ_UDhQ",
+      "image": "https://lh3.googleusercontent.com/NTTzJrFnVgJr99EO66j0rlDVAgn3P0LVQlMzsTZactcC67zancg-Nsq5SyCkrZ3W9EtysKM6NcnADXE=w544-h544-l90-rj"
     },
     {
-      "name": "Bollywood Holi Party Non Stop Hits 2024",
-      "image": "https://i.ibb.co/ZHtZw8G/hqdefault-1.webp",
-      "id": "PL9bw4S5ePsEHva4yQOOEkNj1NuqE4kR0H"
+      "name": "Uncut Bollywood",
+      'id': "RDCLAK5uy_krbBs7P2iEb30IODyVbiOXWyhZtAIX9Uk",
+      "image": "https://lh3.googleusercontent.com/mTHw5JfcDJ4y594lt1Eym5F2gWlA1n6Dem3DZH32PIuPYjQzlTmExJhp6BxxJWtqcl4_yJkeHBjs1w=w544-h544-l90-rj"
     },
     {
-      "name": "\uD83D\uDCBF India \uD83C\uDFA7 TOP 50 \uD83D\uDCBF Music Chart \uD83C\uDFA7",
-      "image": "https://i.ibb.co/t8GgN5S/hqdefault-2.webp",
-      "id": "PLJE7RTPonH8ySdebDIfj801UebKwHCfF_"
+      "name": "Haryanvi Hitlist",
+      'id': "RDCLAK5uy_nhLiD_PquxQnzA35YpoaaAUv2ikZuYFgw",
+      "image": "https://lh3.googleusercontent.com/7xUA15i4RUlS3yfDFaiaO-VNUg_fQp50XLom_iOORE5e3cWbk_pq-rBUUx0MzV38phrwj3-XbNo_Qgk=w544-h544-l90-rj"
     },
     {
-      "name": "Best Indian Songs 2024 ♫",
-      "image": "https://i.ibb.co/yNVkLV0/hqdefault-3.webp",
-      "id": "PLZ6V4Rz0ltCP6yVKO390YPqqfjWsgrq_n"
+      "name": "Punjab Fire",
+      'id': "RDCLAK5uy_kuo_NioExeUmw07dFf8BzQ64DFFTlgE7Q",
+      "image": "https://lh3.googleusercontent.com/6ECibr0burWEifvMUc8dcZcZSJ80OXN63aGv9qEpPED40JSfQijctuAiDSEB9VTOpVs-cTnaIIn0sYRR=w544-h544-l90-rj"
+    },
+    {
+      "name": "The Short List",
+      'id': "RDCLAK5uy_kXyXCKQgJzsjFWrCop6_9l2YBN_OKkJfo",
+      "image": "https://lh3.googleusercontent.com/xuSKtIoGPrj90w-VOIbsoaaFSJX-4NjNDyqNADAWMkHTXv0mvzhn2XehSOuXg6yFTSWICpNCzWguw5xQ=w544-h544-l90-rj"
+    },
+    {
+      "name": "Bhojpuri Hitlist",
+      'id': "RDCLAK5uy_nlUHwf0SaQlGN6n_1ZtWhhplysMPwjP2k",
+      "image": "https://lh3.googleusercontent.com/Ln2MJlJACFseZCGUtX3IOYdnNzRGH64TEjS9Dw7rPjSWI5pa7SGyfXzTigRVqPSGKXz29JlIB-5S-A=w544-h544-l90-rj"
     }
   ]
 var queries = ["bollywood",'haryanvi','punjabi','hindi'];
@@ -259,17 +283,19 @@ var queries = ["bollywood",'haryanvi','punjabi','hindi'];
      var cpq = queries[Math.floor(Math.random() * queries.length)];
      return cpq;
    }
-   var url,param,s_page,p_page,x_page;
+   var url,param,s_page,p_page,x_page,l_page;
   var cList = [];
   var cSong = 0;
   var videoId;
 function check_page(){
+  window.scrollTo(0,0);
   url = window.location.search;
   param = new URLSearchParams(url);
   s_page = param.get("s");
   p_page = param.get("p");
   x_page = param.get("x");
-if((!s_page && !p_page) && !x_page){
+  l_page = param.get("liked");
+if((!s_page && !p_page) && (!x_page && !l_page)){
   player.style.bottom = '-110%';
   home_page();
 }else if(s_page){
@@ -280,6 +306,9 @@ if((!s_page && !p_page) && !x_page){
   playlist_page(p_page);
 }else if(x_page){
   player_page(x_page);
+}else if (l_page) {
+  player.style.bottom = '-110%';
+  liked_page();
 }
 }
 check_page();
@@ -302,6 +331,16 @@ function stm(t){
   var formattedTime = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   return formattedTime;
 }
+liked_playlists.onclick = function(){
+  history.pushState(null,null,"?liked=true");
+  url = window.location.search;
+  param = new URLSearchParams(url);
+  s_page = param.get("s");
+  p_page = param.get("p");
+  l_page = param.get("liked");
+  window.scrollTo(0,0);
+  liked_page();
+}
 function home_page(){
   $("#top_playlists").innerHTML = "";
   cList = [];
@@ -316,6 +355,7 @@ function home_page(){
     name.innerText = tp.name;
     div.onclick = function(){
       history.pushState(null,null,"?p="+tp.id);
+  window.scrollTo(0,0);
   url = window.location.search;
   param = new URLSearchParams(url);
   p_page = param.get("p");
@@ -418,6 +458,36 @@ function playlist_page(p_page){
 function player_page(x_page){
   player.style.bottom = 0;
 }
+function liked_page(){
+  lodmor.style.display = "none";
+  cList = [];
+  sinput.value = "";
+  searchss.style.display = "none";
+  all_songs.innerHTML = "";
+  var svdpl = localStorage.getItem("liked");
+    svdpl = JSON.parse(svdpl);
+  var svdsngs = [];
+  if(svdpl){
+    $("#top_playlists").innerHTML = "Liked Songs";
+    svdpl.forEach((s) => {
+      var lasvd = JSON.parse(localStorage.getItem(s));
+      if(lasvd != null){
+      var svdsng = {};
+      svdsng.title = lasvd.n;
+      svdsng.thumbnail = lasvd.i;
+      svdsng.duration = lasvd.d;
+      svdsng.url = "123456789"+lasvd.x;
+      svdsngs.unshift(svdsng);
+    }
+    });
+  }else{
+    $("#top_playlists").innerHTML = "No liked songs";
+  }
+    $("#top_playlists").classList.add('psop');
+    cList = svdsngs;
+    list(cList);
+    document.title = ("Liked Songs");
+}
 function list(l){
   l.forEach(item);
 }
@@ -447,7 +517,9 @@ function item(i,n) {
   title = document.createElement("div");
   title.innerText = i.title;
   chnm = document.createElement("span");
+  if(i.uploaderName){
   chnm.innerText = i.uploaderName;
+  }
   foot.classList.add("foot");
   title.classList.add("title")
   chnm.classList.add("uploader");
@@ -462,6 +534,18 @@ function item(i,n) {
     .then((x) => {
       cSong = n;
       sing(x,imgsrc);
+      videoId = id;
+      sessionStorage.setItem("n",x.title);
+      sessionStorage.setItem("i",x.thumbnailUrl);
+      sessionStorage.setItem("x",id);
+      sessionStorage.setItem("d",x.duration);
+      if(localStorage.getItem(id)){
+        like.style.display = "none";
+        liked.style.display = "";
+      }else{
+        liked.style.display = "none";
+        like.style.display = "";
+      }
     });
   }
   all_songs.appendChild(vid);
@@ -492,7 +576,6 @@ function sing(s, fav) {
     }
   }
   play.click();
-  videoId = s.url.substring(9);
 }
 play.onclick = play_play.onclick = function(){
   audio.play();
@@ -564,7 +647,6 @@ audio.ontimeupdate = function(){
 }
 audio.onended = function(){
   next.click();
-  play.click();
 }
 play_click.onclick = play_img.onclick = function(){
   history.pushState(null,null,"?x=true");
@@ -660,13 +742,39 @@ down.onclick = function() {
 pvideo.onclick = function() {
   window.open("https://asbros.github.io/utube?v="+videoId, "_blank");
 }
+like.onclick = function(){
+  var svdpl = localStorage.getItem("liked");
+    var crnt = {
+      'n': sessionStorage.getItem("n"),
+      'd': sessionStorage.getItem("d"),
+      'x': sessionStorage.getItem("x"),
+      'i': sessionStorage.getItem("i")
+    }
+    localStorage.setItem(sessionStorage.getItem("x"),JSON.stringify(crnt));
+    if(svdpl != null){
+      svdpl = JSON.parse(svdpl)
+    }else{
+      svdpl = [];
+    }
+      svdpl.push(sessionStorage.getItem("x"));
+      localStorage.setItem("liked",JSON.stringify(svdpl));
+      this.style.display = "none";
+      liked.style.display = "";
+}
+liked.onclick = function(){
+  localStorage.removeItem(sessionStorage.getItem("x"));
+      this.style.display = "none";
+      like.style.display = "";
+}
 function search(v){
   history.pushState(null,null,"?s="+v);
+  window.scrollTo(0,0);
   url = window.location.search;
   param = new URLSearchParams(url);
   s_page = param.get("s");
   p_page = param.get("p");
   x_page = param.get("x");
+  l_page = param.get("liked");
   search_page(v);
 }
 </script>
