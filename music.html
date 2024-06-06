@@ -22,11 +22,11 @@ body {margin: 0;background: rgb(22,26,29);}
 #top_playlists::-webkit-scrollbar {
   display: none;
 }
-.psop{padding: 5px !important;margin: 10px !important;text-align: center;font-size: 20px;}
+.psop{padding: 5px !important;margin: 10px !important;}
 #top_playlists > div{width: 140px;height: 16
 40px;background: rgb(255,255,255,0.1);;margin: 8px;border-radius: 10px;}
 #top_playlists > div img{width: 140px;height: 140px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
-#top_playlists > div > div{padding: 8px;display: block;padding-top: 0px;}
+#top_playlists > div > div{padding: 8px;display: block;padding-top: 0px;text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 .vid{display: flex;padding: 10px;padding-bottom: 2px;padding-top: 2px;margin: 10px;margin-top: 5px;margin-bottom: 5px;overflow: hidden;word-wrap: break-word;}
 .body{position: relative;}
 .body img{height: 80px;aspect-ratio: 1/1;filter: brightness(90%);border-top-left-radius: 8px;border-bottom-left-radius: 8px;}
@@ -34,7 +34,7 @@ body {margin: 0;background: rgb(22,26,29);}
 .time{position: absolute;bottom: 10px;right: 5px;background-color: rgba(0,0,0,0.8);color: white;font-size: 12px;border-radius: 7px;padding: 2px 6px;}
 .foot{flex: 1;padding: 7px;background: rgba(255,255,255,0.1);height: 80px;border-top-right-radius: 8px;border-bottom-right-radius: 8px;padding-left: 10px;}
 .title{font-size: 15px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;}
-.uploader{color: #eee;font-size: 12px;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;}
+.uploader{color: #ccc;font-size: 12px;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;margin-top:3px;}
 #sdiv{margin-left: 10px;margin-right: 5px;width: 100%;}
 #sinput{color: #fff;padding: 12px 20px;border-radius: 25px;border: 0;width: 100%;background: rgba(0,0,0,0.5);font-size: 16px;}
 input[type="search"]::-webkit-search-cancel-button {
@@ -77,17 +77,16 @@ input[type="search"]::-webkit-search-cancel-button {
  .wrap{text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 #title{font-size: 30px;line-height: 50px;}
 #artists{font-size: 16px;line-height: 30px;opacity: 0.8;}
-#controls button,#close,#pvideo{
+#controls button,#close{
   background: none;
   border: 0;
   }
-  #controls span,#close span,#pvideo span,#play_play span,#play_pause span,#play_next span{
+  #controls span,#close span,#play_play span,#play_pause span{
   font-size: 35px;
-  user-select: none;
-  color: #fff;
   }
+  #play_next span{font-size: 28px;}
   #play span, #pause span{
-  font-size: 54px;
+  font-size: 62px;
   }
   #time{width: 100%}
 #timer {
@@ -139,11 +138,12 @@ input[type="search"]::-webkit-search-cancel-button {
    }
   }
   @media screen and (min-width: 640px) {
-    #top_playlists{margin-left: 50px;margin-right: 50px;padding-left: 0;padding-right: 0;}
+    #top_playlists{flex-wrap: wrap;margin-left: 50px;margin-right: 50px;padding-left: 0;padding-right: 0;justify-content: center;}
+    #top_playlists > div{}
     #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
     .vid{width: 300px;}
-    #player{height: 600px !important;}
-    #player, #playing{width: 420px;left: calc(100% - 420px) !important;}
+    #playing{width: 360px;left: calc(100% - 380px) !important;}
+    #player{height: 500px !important;width: 380px;left: calc(100% - 380px) !important;}
   }
 </style>
 </head>
@@ -153,7 +153,6 @@ input[type="search"]::-webkit-search-cancel-button {
   <a href="https://asbros.github.io/music"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://i.imgur.com/p081OXx.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Music</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
-  <button id="liked_playlists" class="active"><span class="material-symbols-outlined" style="font-size: 33px;color: #C51104;">favorite</span></button>
 </div>
 <div id="searchss" style="display: none;"></div>
   <div id="main" style="margin-top:85px;">
@@ -163,8 +162,10 @@ input[type="search"]::-webkit-search-cancel-button {
   <audio id="audio"></audio>
   <div id="player" style="position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;height: calc(100%)">
     <div id="song">
-      <div style="width: 100%"><button class='active' id='pvideo' style='margin-bottom: 10px;float:left;'><span class="material-symbols-outlined">smart_display</span></button>
-      <button class='active' id='close' style='margin-bottom: 10px;float: right;'><span class="material-symbols-outlined">close</span></button></div>
+      <div style="width: 100%">
+      <button id="liked_playlists" class="active"><span class="material-symbols-outlined" style="font-size: 33px;color: #C51104;">favorite</span></button>
+      <button class='active' id='close' style='float: right;'><span class="material-symbols-outlined">keyboard_arrow_down</span>
+      </button></div>
     <img id="image" src="https://nglemployeedirectory.in/images/loading.gif">
     <div class="wrap"><span id="title">Loading Song...</span></div>
     <div class="wrap"><span id="artists"></span></div>
@@ -187,7 +188,7 @@ input[type="search"]::-webkit-search-cancel-button {
 </div>
     </div>
   </div>
-  <div id="playing" style="padding: 10px;background: rgba(10,45,25,1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);color: #fff;position: fixed;bottom: -101%;left: 10px;right: 10px;z-index: 9;display: flex;align-items: center;border-radius: 40px;">
+  <div id="playing" style="padding: 7px 10px;background: rgba(42,43,46);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);color: #fff;position: fixed;bottom: -101%;left: 10px;right: 10px;z-index: 9;display: flex;align-items: center;border-radius: 40px;">
   <img id="play_img" style="width: 50px;height: 50px;border-radius: 50%;margin-right: 10px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
     <div id="play_title" style="font-size: 16px;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
@@ -204,7 +205,8 @@ input[type="search"]::-webkit-search-cancel-button {
   <hr>
  <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
-<script>
+ <script>var uri = window.location.toString();
+if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
   javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   
 var all_songs = $("#all_songs");
@@ -221,7 +223,6 @@ var play = $("#play");
 var pause = $("#pause");
 var next = $("#next");
 var down = $("#down");
-var pvideo = $("#pvideo");
 var player = $("#player");
 var play_img = $("#play_img");
 var play_title = $("#play_title");
@@ -278,7 +279,7 @@ var topPlaylists = [
       "image": "https://lh3.googleusercontent.com/Ln2MJlJACFseZCGUtX3IOYdnNzRGH64TEjS9Dw7rPjSWI5pa7SGyfXzTigRVqPSGKXz29JlIB-5S-A=w544-h544-l90-rj"
     }
   ]
-var queries = ["bollywood",'haryanvi','punjabi','hindi'];
+var queries = ["bollywood",'haryanvi','hindi romantic','hindi','hindi remake'];
    function q(){
      var cpq = queries[Math.floor(Math.random() * queries.length)];
      return cpq;
@@ -333,10 +334,12 @@ function stm(t){
 }
 liked_playlists.onclick = function(){
   history.pushState(null,null,"?liked=true");
+  player.style.bottom = "-110%";
   url = window.location.search;
   param = new URLSearchParams(url);
   s_page = param.get("s");
   p_page = param.get("p");
+  x_page = param.get("x");
   l_page = param.get("liked");
   window.scrollTo(0,0);
   liked_page();
@@ -534,23 +537,12 @@ function item(i,n) {
     .then((x) => {
       cSong = n;
       sing(x,imgsrc);
-      videoId = id;
-      sessionStorage.setItem("n",x.title);
-      sessionStorage.setItem("i",x.thumbnailUrl);
-      sessionStorage.setItem("x",id);
-      sessionStorage.setItem("d",x.duration);
-      if(localStorage.getItem(id)){
-        like.style.display = "none";
-        liked.style.display = "";
-      }else{
-        liked.style.display = "none";
-        like.style.display = "";
-      }
     });
   }
   all_songs.appendChild(vid);
 }
 function sing(s, fav) {
+  play_title.innerText = "Loading...";
   audio.pause();
   var urls = s.audioStreams;
   audio.src = urls[urls.length-1].url;
@@ -567,6 +559,17 @@ function sing(s, fav) {
   timer.setAttribute("min", 0);
   timer.setAttribute("max", s.duration);
   $("#player").style.backgroundImage = "url(" + s.thumbnailUrl + ")";
+  sessionStorage.setItem("n",s.title);
+  sessionStorage.setItem("i",s.thumbnailUrl);
+  sessionStorage.setItem("x",videoId);
+  sessionStorage.setItem("d",s.duration);
+      if(localStorage.getItem(videoId)){
+        like.style.display = "none";
+        liked.style.display = "";
+      }else{
+        liked.style.display = "none";
+        like.style.display = "";
+      }
   if (fav) {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -612,7 +615,6 @@ prev.onclick = function(){
     var nxt = cList[cSong];
   }
   var id = nxt.url.substring(9);
-  play_title.innerText = "Loading...";
   play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
   title.innerText = "Loading...";
   image.src = "https://nglemployeedirectory.in/images/loading.gif";
@@ -739,9 +741,6 @@ down.onclick = function() {
       loader.hide();
     });
 }
-pvideo.onclick = function() {
-  window.open("https://asbros.github.io/utube?v="+videoId, "_blank");
-}
 like.onclick = function(){
   var svdpl = localStorage.getItem("liked");
     var crnt = {
@@ -756,7 +755,9 @@ like.onclick = function(){
     }else{
       svdpl = [];
     }
+      if(!svdpl.includes(crnt.x)){
       svdpl.push(sessionStorage.getItem("x"));
+      }
       localStorage.setItem("liked",JSON.stringify(svdpl));
       this.style.display = "none";
       liked.style.display = "";
@@ -776,6 +777,21 @@ function search(v){
   x_page = param.get("x");
   l_page = param.get("liked");
   search_page(v);
+}
+document.documentElement.addEventListener("scroll", myPageScroll);
+function myPageScroll() {
+var myScrollTop = document.documentElement.scrollTop;
+var myScrollHeight = $("#all_songs").clientHeight;
+if(myScrollTop == (myScrollHeight - 1000)){
+  alert("hi");
+}
+/*
+var diff = myScrollHeight - myScrollTop;
+var height = $("#main").clientHeight;
+var offPageHeight = 100;
+if(diff < (height + offPageHeight)){
+  alert("Call Ajax to Refresh");
+}*/
 }
 </script>
 </body>
