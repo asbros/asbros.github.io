@@ -226,7 +226,10 @@
   *{color: #fff;font-family:'Jost', sans-serif;transition: all 0.3s;box-sizing: border-box;user-select: none;}
 body {margin: 0;background: rgb(22,26,29);}
 .vid{margin-bottom: 10px;}
-.body{position: relative;background: rgb(0,0,0)}
+  .vid:hover{background: rgb(0,0,0)}
+  .vid:hover img{filter: brightness(120%)} 
+  .vid a{text-decoration: none;}
+.body{position: relative;}
 .body img{width: 100%;aspect-ratio: 16/9;filter: brightness(90%);}
 .body .shorts{aspect-ratio: 9/16;height: 176px;object-fit: contain;}
 .time{position: absolute;bottom: 14px;right: 8px;background-color: rgba(0,0,0,0.8);color: white;font-size: 12px;border-radius: 7px;padding: 2px 6px;}
@@ -275,12 +278,20 @@ input[type="search"]::-webkit-search-cancel-button {
 #v_extra::-webkit-scrollbar{display: none;}
 #v_lik,#v_dis,#v_share,#v_down{height: 35px;display: flex;align-items: center;justify-content: center;background: #4c4d4d;font-size: 12px;padding-left: 37px;padding-top: 4px;padding-bottom: 7px;padding-right: 15px;position: relative;border-radius: 20px;margin-right: 10px;color: #fff;}
 .proico{position: absolute;top: 6px;left: 8px;}
+@media screen and (min-width: 700px) {
+  #main{display: flex !important;justify-content: center;flex-wrap: wrap}
+  .vid{width: 300px !important;margin: 10px;background: rgb(42,43,46);border-radius: 20px;}
+  .vid img{border-top-left-radius: 20px;border-top-right-radius: 20px;}
+  #video,#v_desc,#more_apps{width: 60%;}
+  body.wdsktp #main{position: absolute;top: 80px;right: 0;width: 40%;background: #000;margin-top: 0 !important;}
+  body.wdsktp .vid{display: flex !important;}
+}
 </style>
 </head>
 
 <body>
   <div class="pad-10" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
-  <a href="https://asbros.github.io/utube"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
+  <a href="https://run.spck.io/index.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Utube</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
   <!--<button id="search"><svg style="margin-right: 5px;" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(241,241,241)" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg></button>-->
@@ -296,8 +307,8 @@ input[type="search"]::-webkit-search-cancel-button {
   <button id="cvideo">Videos</button>
   </div>
 </div>
-  <div id="main" style="margin-top:72px;display: none;"></div>
-  <div id="video" style="margin-top: 72px;display: none;">
+  <div id="main" style="margin-top:80px;display: none;"></div>
+  <div id="video" style="margin-top: 80px;display: none;">
     <video id="v_video" controls preload="" allowfullscreen></video>
     <div id="v_details">
     <div id="v_title"></div>
@@ -315,12 +326,12 @@ input[type="search"]::-webkit-search-cancel-button {
     </div>
     </div>
   </div>
-    <div id="v_desc" style="padding: 20px;display: none;padding-top: 10px;">
-      <div style="font-size: 21px;margin-bottom: 8px;">Description:-</div>
+    <div id="v_desc" style="padding: 20px;display: none;padding-top: 10px;word-break: break-all;">
+      <div style="font-size: 21px;margin-bottom: 8px;word-break: break-all;">Description:-</div>
       <div id="v_dbody" style="font-size: 14px;color: #eee;"></div>
     </div>
     <div id="load_more" style="display: none;align-items: center;justify-content: center;margin-top: 5px;margin-bottom: 10px;"><button id="lodmor" style="padding: 6px 12px;color: #fff;background: #282828;border: none;font-size: 17px;border-radius: 7px;">Load More</button></div>
-  <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 0px;">
+  <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 0px;" id="more_apps">
   <a style="text-decoration: none;font-size: 18px;" href="https://asbros.github.io/" class="white">More Apps →</a><br>
   <hr>
  <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
@@ -365,9 +376,11 @@ function list(l){
   l.forEach(item);
 }
 function item(i) {
-  var vid,body,img,title,foot,chimg,chnm,chtxt;
+  var vid,atag,body,img,title,foot,chimg,chnm,chtxt;
   vid = document.createElement("div");
   vid.classList.add("vid");
+  atag = document.createElement("a");
+  atag.setAttribute("target","_blank");
   body = document.createElement("div");
   img = document.createElement("img");
   img.src = i.thumbnail;
@@ -381,9 +394,9 @@ function item(i) {
   body.appendChild(time);
   }
   if(!g){
-  vid.addEventListener("click", function(){window.location.href = "https://asbros.github.io/utube"+"?v="+i.url.substring(9)});
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?v="+i.url.substring(9));
   }else{
-  vid.addEventListener("click", function(){window.location.href = "https://asbros.github.io/utube"+"?p="+i.url.substring(15)});
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?p="+i.url.substring(15));
   }
     
   foot = document.createElement("div");
@@ -423,8 +436,9 @@ function item(i) {
   foot.appendChild(fdet);
   fdet.appendChild(chnm);
   fdet.appendChild(chtxt);
-  vid.appendChild(body);
-  vid.appendChild(foot);
+  atag.appendChild(body);
+  atag.appendChild(foot);
+  vid.appendChild(atag);
   main.appendChild(vid);
 }
 
@@ -478,6 +492,7 @@ main.style.display = "block";
   .then(x => play(x));
   var video = document.querySelector("#video");
   video.style.display = "block";
+  document.body.classList.add("wdsktp");
   var v_video = document.querySelector("#v_video");
   var v_title = document.querySelector("#v_title");
   var v_text = document.querySelector("#v_text");
@@ -512,8 +527,8 @@ main.style.display = "block";
   v_text.innerHTML = x.views + " views" + " • "+ x.uploadDate.substring(0,10);
   v_chimg.src = x.uploaderAvatar;
   v_chnm.innerHTML = x.uploader;
-  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
-  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
+  v_chimg.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.uploaderUrl.substring(9)});
+  v_chnm.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.uploaderUrl.substring(9)});
   v_chsub.innerText = subFormat(x.uploaderSubscriberCount);
   v_lik.innerHTML += x.likes;
   v_dis.innerHTML += x.dislikes;
@@ -521,6 +536,7 @@ main.style.display = "block";
   document.title = x.title;
   v_dbody.innerHTML = x.description;
   loader.hide();
+  list(x.relatedStreams);
   }
   v_share.addEventListener("click",function(){
     navigator.share({text:document.title,url:window.location.href});
@@ -709,7 +725,6 @@ sinput.addEventListener("click",function(){
 });
 window.onhashchange = function(){
   searchss.style.display = "none";
-  sinput.value = "";
 }
 sinput.addEventListener("input",function(){
   if(this.value != ""){
@@ -741,7 +756,7 @@ sinput.addEventListener("keypress", function(event) {
   }
 });
 function search(v){
-  window.location.href = "https://asbros.github.io/utube"+"?s="+v;
+  window.location.href = "https://run.spck.io/index.html"+"?s="+v;
 }
 </script>
 </body>
