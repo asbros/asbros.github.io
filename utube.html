@@ -233,7 +233,7 @@ body {margin: 0;background: rgb(22,26,29);}
 .body img{width: 100%;aspect-ratio: 16/9;filter: brightness(90%);}
 .body .shorts{aspect-ratio: 9/16;height: 176px;object-fit: contain;}
 .time{position: absolute;bottom: 14px;right: 8px;background-color: rgba(0,0,0,0.8);color: white;font-size: 12px;border-radius: 7px;padding: 2px 6px;}
-.foot{padding: 7px;}
+.foot{padding: 7px;overflow: hidden;}
 .fimg{height: 100%;display: inline;width: 60px;}
 .foot img{height: 40px;width: 40px;border-radius: 50%;float: left;margin-right: 10px;filter: brightness(90%);}
 .det{margin-left: 51px;}
@@ -253,7 +253,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 #sinput:focus{outline: none;}
 #search{width: 40px;border: none;height: 40px;align-items: center;background: none;padding: 6px;border-radius: 50%;}
-#searchss{position: fixed;top: 65px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
+#searchss{position: fixed;top: 75px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
 #searchss div{background: rgba(0,0,0,0.5);color: #fff;padding: 12px;border-bottom: 0.01px solid #ccc;font-size:15px;}
 
 #channel{}
@@ -279,20 +279,27 @@ input[type="search"]::-webkit-search-cancel-button {
 #v_lik,#v_dis,#v_share,#v_down{height: 35px;display: flex;align-items: center;justify-content: center;background: #4c4d4d;font-size: 12px;padding-left: 37px;padding-top: 4px;padding-bottom: 7px;padding-right: 15px;position: relative;border-radius: 20px;margin-right: 10px;color: #fff;}
 .proico{position: absolute;top: 6px;left: 8px;}
 @media screen and (min-width: 700px) {
-  #v_video{border-radius: 20px;}
-  #video,#v_desc{width: 55%;margin-left: 5%;background-image: none;background-color: #000;}
-  body.wdsktp #more_apps{width: 60%;}
   #main{display: flex !important;justify-content: center;flex-wrap: wrap}
   .vid{width: 250px !important;margin: 10px;background: rgb(42,43,46);border-radius: 20px;}
   .vid img{border-top-left-radius: 20px;border-top-right-radius: 20px;}
-  body.wdsktp #main{position: absolute;top: 80px;right: 0;width: 40%;background: #000;margin-top: 0 !important;}
-  body.wdsktp .vid{display: flex !important;}
+ #sinput{width: 400px;float: right}
+ #searchss{position: absolute !important;left: calc(100% - 420px) !important;right: 20px}
+  #v_video{border-radius: 20px;}
+  #video,#v_desc{width: 55%;margin-left: 5%;background: none !important;}
+  .wdsktp #more_apps{width: 60%;}
+  .wdsktp #main{position: absolute;top: 90px;right: 0;width: 40%;margin-top: 0 !important;height: 100%;overflow-y: scroll;}
+  .wdsktp .vid{width: 90% !important;border-radius: 5px;height: 90px}
+  .wdsktp #v_details{background: none !important;}
+  .wdsktp .body img{height: 90px;width: 150px;border-radius: 5px;}
+  .wdsktp .vid a{display: flex;flex-direction: row;}
+  .wdsktp .vid .fimg{display: none}
+  .wdsktp .vid .det{margin: 0px !important; white-space: nowrap;overflow: hidden;text-overflow: ellipsis}
 }
 </style>
 </head>
 
 <body>
-  <div class="pad-10" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
+  <div class="pad-10" id="head" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
   <a href="https://asbros.github.io/utube"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Utube</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
@@ -382,7 +389,6 @@ function item(i) {
   vid = document.createElement("div");
   vid.classList.add("vid");
   atag = document.createElement("a");
-  atag.setAttribute("target","_blank");
   body = document.createElement("div");
   img = document.createElement("img");
   img.src = i.thumbnail;
