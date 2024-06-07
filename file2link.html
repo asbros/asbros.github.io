@@ -59,7 +59,7 @@
     if(res.status == "ok"){
       if(true){
         $("progressBar").style.display = "none";
-        url = "https://store1.gofile.io/download/"+res.data.fileId+"/"+res.data.fileName;
+        url = "https://store1.gofile.io/download/web/"+res.data.fileId+"/"+res.data.fileName;
         $("txt").href = url;
         $("txt").innerText = url;
         $("btn").innerHTML = "Upload Another File";
