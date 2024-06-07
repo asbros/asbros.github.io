@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,7 +96,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 <body>
   <div class="pad-10" id="head" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
-  <a href="https://run.spck.io/index.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
+  <a href="https://asbros.github.io/utube"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Utube</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
   <!--<button id="search"><svg style="margin-right: 5px;" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(241,241,241)" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg></button>-->
@@ -210,7 +211,7 @@ function item(i) {
   time.innerText = convertSeconds(i.lengthSeconds);
   body.appendChild(img);
   body.appendChild(time);
-  atag.setAttribute("href", "https://run.spck.io/index.html"+"?v="+i.videoId);
+  atag.setAttribute("href", "https://asbros.github.io/utube"+"?v="+i.videoId);
   title.innerText = i.title;
   chnm.innerText = i.author;
   chtxt.innerText = i.viewCountText + " views";
@@ -224,9 +225,9 @@ function item(i) {
   body.appendChild(time);
   }
   if(!g){
-  atag.setAttribute("href", "https://run.spck.io/index.html"+"?v="+i.url.substring(9));
+  atag.setAttribute("href", "https://asbros.github.io/utube"+"?v="+i.url.substring(9));
   }else{
-  atag.setAttribute("href", "https://run.spck.io/index.html"+"?p="+i.url.substring(15));
+  atag.setAttribute("href", "https://asbros.github.io/utube"+"?p="+i.url.substring(15));
   }
   if(!g){
   title.innerText = i.title;
@@ -338,8 +339,8 @@ main.style.display = "block";
   v_text.innerHTML = x.viewCount + " views" + " • "+ x.publishedText;
   v_chimg.src = x.authorThumbnails[0].url;
   v_chnm.innerHTML = x.author;
-  v_chimg.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.authorId});
-  v_chnm.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.authorId});
+  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.authorId});
+  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.authorId});
   v_chsub.innerText = x.subCountText;
   v_lik.innerHTML += x.likeCount;
   v_dis.innerHTML += x.dislikeCount;
@@ -624,7 +625,7 @@ sinput.addEventListener("keypress", function(event) {
   }
 });
 function search(v){
-  window.location.href = "https://run.spck.io/index.html"+"?s="+v;
+  window.location.href = "https://asbros.github.io/utube"+"?s="+v;
 }
 </script>
 </body>
