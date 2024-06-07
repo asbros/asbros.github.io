@@ -318,7 +318,7 @@ main.style.display = "block";
 				hls.attachMedia(video);
 				hls.on(Hls.Events.MEDIA_ATTACHED, () => {
 					hls.loadSource(x.hls);
-				}
+				});
   v_text.innerHTML = x.views + " views" + " • "+ x.uploadDate.substring(0,10);
   v_chimg.src = x.uploaderAvatar;
   v_chnm.innerHTML = x.uploader;
