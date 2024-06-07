@@ -34,7 +34,7 @@ body {margin: 0;background: rgb(22,26,29);}
 .title{font-size: 15px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;}
 .name,.txt{color: #eee;font-size: 12px;}
 .name {margin-right: 10px;}
-#sdiv{margin-left: 10px;margin-right: 10px;width: 100%;}
+#sdiv{margin-left: 10px;margin-right: 2px;width: 100%;}
 #sinput{color: #fff;padding: 12px 20px;border-radius: 25px;border: 0;width: 100%;background: rgba(0,0,0,0.5);font-size: 16px;}
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none;
@@ -59,8 +59,8 @@ input[type="search"]::-webkit-search-cancel-button {
 #ctabs{padding: 10px;}
 #ctabs button{border: 0;color: #fff;background: #282828;padding: 7px 12px;margin-right: 10px;}
 
-#video{background-size:100% 20%;background-position: center;background-repeat: no-repeat;}
-#v_video{width : 100%;}
+#video{background-size:100% 100%;background-position: center;background-repeat: no-repeat;}
+#v_video{width : 100%;aspect-ratio: 16 / 9;}
 #v_details{padding: 15px;background-color: rgba(0,0,0,0.5);backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px);}
 #v_title{font-size: 19px;}
 #v_text{margin-top: 7px;font-size: 12px;color:#ccc;}
@@ -70,7 +70,7 @@ input[type="search"]::-webkit-search-cancel-button {
 #v_chsub{font-size: 13px;color: #eee;margin-right:5px;}
 #v_extra{display: flex;overflow-x: scroll;-ms-overflow-style: none;scrollbar-width: none;}
 #v_extra::-webkit-scrollbar{display: none;}
-#v_lik,#v_dis,#v_share,#v_down{height: 35px;display: flex;align-items: center;justify-content: center;background: #4c4d4d;font-size: 12px;padding-left: 37px;padding-top: 4px;padding-bottom: 7px;padding-right: 15px;position: relative;border-radius: 20px;margin-right: 10px;color: #fff;}
+#v_lik,#v_dis,#v_share,#v_down,#v_dbtn{height: 35px;display: flex;align-items: center;justify-content: center;background: #4c4d4d;font-size: 12px;padding-left: 37px;padding-top: 4px;padding-bottom: 7px;padding-right: 15px;position: relative;border-radius: 20px;margin-right: 10px;color: #fff;}
 .proico{position: absolute;top: 6px;left: 8px;}
 @media screen and (min-width: 700px) {
   #main{display: flex !important;justify-content: center;flex-wrap: wrap}
@@ -95,7 +95,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 <body>
   <div class="pad-10" id="head" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
-  <a href="https://asbros.github.io/utube"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
+  <a href="https://run.spck.io/index.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Utube</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
   <!--<button id="search"><svg style="margin-right: 5px;" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(241,241,241)" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg></button>-->
@@ -126,6 +126,7 @@ input[type="search"]::-webkit-search-cancel-button {
       <div id="v_dis"><svg class="proico" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" height="24px" stroke="currentColor"><path d="M15.73 5.5h1.035A7.465 7.465 0 0 1 18 9.625a7.465 7.465 0 0 1-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 0 1-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.499 4.499 0 0 0-.322 1.672v.633A.75.75 0 0 1 9 22a2.25 2.25 0 0 1-2.25-2.25c0-1.152.26-2.243.723-3.218.266-.558-.107-1.282-.725-1.282H3.622c-1.026 0-1.945-.694-2.054-1.715A12.137 12.137 0 0 1 1.5 12.25c0-2.848.992-5.464 2.649-7.521C4.537 4.247 5.136 4 5.754 4H9.77a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23ZM21.669 14.023c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.958 8.958 0 0 1-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227Z" /></svg></div>
       <div id="v_share"><svg class="proico" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" /></svg>Share</div>
       <div id="v_down"><svg class="proico" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>Download</div>
+      <div id="v_dbtn"><svg class="proico" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>Description</div>
     </div>
     </div>
   </div>
@@ -186,42 +187,58 @@ function item(i) {
   atag = document.createElement("a");
   body = document.createElement("div");
   img = document.createElement("img");
-  img.src = i.thumbnail;
   if(sh){img.classList.add("shorts")}
   time = document.createElement("div");
-  time.innerText = convertSeconds(i.duration);
   time.classList.add("time");
   body.classList.add("body");
-  body.appendChild(img);
-  if(!ps){
-  body.appendChild(time);
-  }
-  if(!g){
-  atag.setAttribute("href", "https://asbros.github.io/utube"+"?v="+i.url.substring(9));
-  }else{
-  atag.setAttribute("href", "https://asbros.github.io/utube"+"?p="+i.url.substring(15));
-  }
     
   foot = document.createElement("div");
   fimg = document.createElement("div");
   fimg.classList.add("fimg");
   chimg = document.createElement("img");
   title = document.createElement("div");
+  chnm = document.createElement("span");
+  chtxt = document.createElement("span");
+  fdet = document.createElement("div");
+  fdet.classList.add("det");
+  foot.classList.add("foot");
+  title.classList.add("title")
+  chnm.classList.add("name");
+  chtxt.classList.add("txt");
+  if(sessionStorage.getItem("invidious") == "yes"){
+  img.src = i.videoThumbnails[i.videoThumbnails.length-5].url;
+  time.innerText = convertSeconds(i.lengthSeconds);
+  body.appendChild(img);
+  body.appendChild(time);
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?v="+i.videoId);
+  title.innerText = i.title;
+  chnm.innerText = i.author;
+  chtxt.innerText = i.viewCountText + " views";
+  chimg.style.display = "none";
+  fdet.classList.remove("det");
+  }else{
+  img.src = i.thumbnail;
+  time.innerText = convertSeconds(i.duration);
+  body.appendChild(img);
+  if(!ps){
+  body.appendChild(time);
+  }
+  if(!g){
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?v="+i.url.substring(9));
+  }else{
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?p="+i.url.substring(15));
+  }
   if(!g){
   title.innerText = i.title;
   }else{
   title.innerText = i.name;
   }
-  chnm = document.createElement("span");
   chnm.innerText = i.uploaderName;
-  chtxt = document.createElement("span");
   if(!g){
   chtxt.innerText = i.uploadedDate;
   }else{
   chtxt.innerText = i.videos+" videos";
   }
-  fdet = document.createElement("div");
-  fdet.classList.add("det");
   if(!b){
   chimg.src = i.uploaderAvatar;
   }else{
@@ -229,10 +246,7 @@ function item(i) {
   chnm.style.display = "none";
   fdet.classList.remove("det");
   }
-  foot.classList.add("foot");
-  title.classList.add("title")
-  chnm.classList.add("name");
-  chtxt.classList.add("txt");
+  }
   fimg.appendChild(chimg);
   foot.appendChild(fimg);
   foot.appendChild(title);
@@ -262,6 +276,7 @@ lodmor.onclick = function(){
   fetch("https://pipedapi.kavin.rocks/nextpage/search?nextpage="+nextpage)
   .then(r => r.json())
   .then((x) => {
+  sessionStorage.setItem("invidious","no");
     list(x.items);
   if(x.nextpage){
     nextpage = "";
@@ -273,6 +288,7 @@ lodmor.onclick = function(){
    fetch("https://pipedapi.kavin.rocks/nextpage/channel/"+c+"?nextpage="+ nextpvid)
   .then(r => r.json())
   .then((x) => {
+  sessionStorage.setItem("invidious","no");
     list(x.relatedStreams);
     if (x.nextpage) {
       nextpvid = "";
@@ -283,6 +299,7 @@ lodmor.onclick = function(){
 };
 
 if((!id && !p) && (!q && !c)){
+  sessionStorage.setItem("invidious","no");
 fetch("https://pipedapi.kavin.rocks/trending?region=IN")
 .then(r => r.json())
 .then(x => list(x));
@@ -290,7 +307,7 @@ main.style.display = "block";
   loader.hide();
 }else{
   if(id){
-  fetch("https://pipedapi.kavin.rocks/streams/"+id)
+  fetch("https://invidious.fdn.fr/api/v1/videos/"+id)
   .then(r => r.json())
   .then(x => play(x));
   var video = document.querySelector("#video");
@@ -309,34 +326,85 @@ main.style.display = "block";
   var v_dis = document.querySelector("#v_dis");
   var v_share = document.querySelector("#v_share");
   var v_down = document.querySelector("#v_down");
+  var v_dbtn = document.querySelector("#v_dbtn");
   var v_desc = document.querySelector("#v_desc");
   var v_dbody = document.querySelector("#v_dbody");
-  v_desc.style.display = "";
   function play(x){
     v_title.innerText = x.title;
-				const hls = new Hls();
-				hls.attachMedia(v_video);
-				hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-					hls.loadSource(x.hls);
-				});
+    v_video.src = x.formatStreams[0].url;
+    var cthmb = x.videoThumbnails[x.videoThumbnails.length-5].url;
+    v_video.setAttribute("poster",cthmb)
 	  v_video.play();
-  v_text.innerHTML = x.views + " views" + " • "+ x.uploadDate.substring(0,10);
-  v_chimg.src = x.uploaderAvatar;
-  v_chnm.innerHTML = x.uploader;
-  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
-  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
-  v_chsub.innerText = subFormat(x.uploaderSubscriberCount);
-  v_lik.innerHTML += x.likes;
-  v_dis.innerHTML += x.dislikes;
-  video.style.backgroundImage = "url("+x.thumbnailUrl+")";
+  v_text.innerHTML = x.viewCount + " views" + " • "+ x.publishedText;
+  v_chimg.src = x.authorThumbnails[0].url;
+  v_chnm.innerHTML = x.author;
+  v_chimg.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.authorId});
+  v_chnm.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.authorId});
+  v_chsub.innerText = x.subCountText;
+  v_lik.innerHTML += x.likeCount;
+  v_dis.innerHTML += x.dislikeCount;
+ // video.style.backgroundImage = "url("+x.videoThumbnails[0].url+")";
   document.title = x.title;
-  v_dbody.innerHTML = x.description;
+  v_dbody.innerHTML = x.descriptionHtml;
   loader.hide();
-  list(x.relatedStreams);
+  sessionStorage.setItem("invidious","yes");
+  list(x.recommendedVideos);
+  main.style.marginTop = "10px";
+  if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: x.title,
+        artwork: [{ src: cthmb, sizes: "96x96" }, { src: cthmb, sizes: "128x128" }, { src: cthmb, sizes: "192x192" }, { src: cthmb, sizes: "256x256" }, { src: cthmb, sizes: "384x384" }, { src: cthmb, sizes: "512x512" }]
+      });
+    }
+   // downloadUrl(x.formatStreams,x.adaptiveFormats);
   }
+  /*function downloadUrl(vl,al){
+    var dwns = [];
+    for (var i = 0; i < vl.length; i++) {
+      var f = vl[i];
+      var dwn = {
+        html: f.qualityLabel + "."+f.container,
+        close: false,
+        click: function() {
+          window.open(f.url);
+        }
+      }
+      dwns.push(dwn);
+    }
+      for (var i = 0; i < al.length; i++) {
+  var f = al[i];
+  var dwna = {
+    html: f.audioQuality + "."+f.container,
+    close: false,
+    click: function() {
+      window.open(f.url);
+    }
+  }
+  dwns.push(dwna)
+}
+    v_down.onclick = function(){
+    as.popup({
+      title: "Download",
+      titleSize: 20,
+     image: x.thumbnail[3].url,
+      imageHeight: 200,
+      imageWidth: 280,
+      closeIcon: true,
+      closeBtn: false,
+      buttons: dwns
+    });
+    }
+  }*/
   v_share.addEventListener("click",function(){
     navigator.share({text:document.title,url:window.location.href});
   });
+  v_dbtn.onclick = function(){
+    if(v_desc.style.display == "none"){
+      v_desc.style.display = "";
+    }else{
+      v_desc.style.display = "none";
+    }
+  }
   const options = {
   	method: 'GET',
   	headers: {
@@ -381,9 +449,9 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     as.popup({
       title: "Download",
       titleSize: 20,
-      /*image: x.thumbnail[3].url,
+      image: x.thumbnail[3].url,
       imageHeight: 200,
-      imageWidth: 280,*/
+      imageWidth: 280,
       closeIcon: true,
       closeBtn: false,
       buttons: dwns
@@ -402,6 +470,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     fetch("https://pipedapi.kavin.rocks/search?filter=videos&q="+q)
     .then(r => r.json())
     .then((x) => {
+  sessionStorage.setItem("invidious","no");
       list(x.items);
       if(x.nextpage){
         nextpage = encodeURI(x.nextpage)+"&filter=videos&q="+q;
@@ -428,6 +497,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     cvideo.onclick = function(){
       g = "";ps = "";sh = "";
         main.innerHTML = "";
+  sessionStorage.setItem("invidious","no");
       list(x.relatedStreams);
       document.querySelectorAll("#ctabs button").forEach((tb) => {tb.style.borderBottom = "0px"});
       cvideo.style.borderBottom = "1px solid #fff";
@@ -472,6 +542,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
           if(t.name == "shorts"){
             sh = true;
           }else{sh = ""}
+  sessionStorage.setItem("invidious","no");
           list(k.content);
           document.querySelectorAll("#ctabs button").forEach((tb) => {tb.style.borderBottom = "0px"});
           this.style.borderBottom = "1px solid #fff";
@@ -498,6 +569,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     var csub = document.querySelector("#csub");
     var cdes = document.querySelector("#cdes");
     var cvideo = document.querySelector("#cvideo");
+  sessionStorage.setItem("invidious","no");
     list(l.relatedStreams);
     channel.style.display = "";
     main.style.marginTop = "5px";
@@ -552,7 +624,7 @@ sinput.addEventListener("keypress", function(event) {
   }
 });
 function search(v){
-  window.location.href = "https://asbros.github.io/utube"+"?s="+v;
+  window.location.href = "https://run.spck.io/index.html"+"?s="+v;
 }
 </script>
 </body>
