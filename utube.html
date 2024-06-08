@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,8 @@
 <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
 <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
 <script src='https://asbros.github.io/popup.js/popup.js'></script>
-<script src="//cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
+<link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
 <style>
   *{color: #fff;font-family:'Jost', sans-serif;transition: all 0.3s;box-sizing: border-box;user-select: none;}
 body {margin: 0;background: rgb(22,26,29);}
@@ -31,7 +33,7 @@ body {margin: 0;background: rgb(22,26,29);}
 .foot{padding: 7px;overflow: hidden;}
 .fimg{height: 100%;display: inline;width: 60px;}
 .foot img{height: 40px;width: 40px;border-radius: 50%;float: left;margin-right: 10px;filter: brightness(90%);}
-.det{margin-left: 51px;}
+.det{margin-left: 51px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;}
 .title{font-size: 15px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;}
 .name,.txt{color: #eee;font-size: 12px;}
 .name {margin-right: 10px;}
@@ -90,6 +92,7 @@ input[type="search"]::-webkit-search-cancel-button {
   .wdsktp .vid a{display: flex;flex-direction: row;}
   .wdsktp .vid .fimg{display: none}
   .wdsktp .vid .det{margin: 0px !important; white-space: nowrap;overflow: hidden;text-overflow: ellipsis}
+  #v_desc{display: block !important;}
 }
 </style>
 </head>
@@ -311,6 +314,7 @@ main.style.display = "block";
   fetch("https://invidious.fdn.fr/api/v1/videos/"+id)
   .then(r => r.json())
   .then(x => play(x));
+  loader.hide();
   var video = document.querySelector("#video");
   video.style.display = "block";
   main.style.display = "";
@@ -332,7 +336,7 @@ main.style.display = "block";
   var v_dbody = document.querySelector("#v_dbody");
   function play(x){
     v_title.innerText = x.title;
-    v_video.src = x.formatStreams[0].url;
+   // v_video.src = x.formatStreams[x.formatStreams.length-2].url;
     var cthmb = x.videoThumbnails[x.videoThumbnails.length-5].url;
     v_video.setAttribute("poster",cthmb)
 	  v_video.play();
@@ -347,7 +351,6 @@ main.style.display = "block";
  // video.style.backgroundImage = "url("+x.videoThumbnails[0].url+")";
   document.title = x.title;
   v_dbody.innerHTML = x.descriptionHtml;
-  loader.hide();
   sessionStorage.setItem("invidious","yes");
   list(x.recommendedVideos);
   main.style.marginTop = "10px";
@@ -450,8 +453,8 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     as.popup({
       title: "Download",
       titleSize: 20,
-      image: x.thumbnail[3].url,
-      imageHeight: 200,
+      image: x.thumbnail[2].url,
+      imageHeight: 210,
       imageWidth: 280,
       closeIcon: true,
       closeBtn: false,
@@ -627,6 +630,28 @@ sinput.addEventListener("keypress", function(event) {
 function search(v){
   window.location.href = "https://asbros.github.io/utube"+"?s="+v;
 }
+</script>
+<script type="module">
+  import { VidstackPlayer, VidstackPlayerLayout } from 'https://cdn.vidstack.io/player';
+
+var link = window.location.search;
+var sprm = new URLSearchParams(link);
+var sid = sprm.get("v");
+
+  const player = await VidstackPlayer.create({
+    target: '#v_video',
+    title: document.title,
+    src: 'https://www.youtube.com/watch?v='+sid,
+    poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0i8Bk48DkEu73e9DlgO2S-DqKVQn8A8GkKMe-kKMyRB6uUqPrWfKZGJoN&s=10",
+    autoPlay: true,
+    autoQuality: true,
+    canPictureInPicture: true,
+    loop: true,
+    playsInline: true,
+    layout: new VidstackPlayerLayout({
+      thumbnails: '',
+    })
+  });
 </script>
 </body>
 </html>
