@@ -1,12 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>AS Utube</title>
   <meta content='#dc3545' name='theme-color' />
 <meta charset='utf-8' />
@@ -20,15 +17,18 @@
 <link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
 <link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
 <style>
-  *{color: #fff;font-family:'Jost', sans-serif;transition: all 0.3s;box-sizing: border-box;user-select: none;}
+*{color: #fff;font-family:'Jost', sans-serif;transition: all 0.3s;box-sizing: border-box;user-select: none;}
 body {margin: 0;background: rgb(22,26,29);}
 .vid{margin-bottom: 10px;}
-  .vid:hover{background: rgb(0,0,0)}
-  .vid:hover img{filter: brightness(120%)} 
-  .vid a{text-decoration: none;}
+.vid:hover{background: rgb(0,0,0)}
+.vid:hover img{filter: brightness(120%)} 
+.vid a{text-decoration: none;}
 .body{position: relative;}
 .body img{width: 100%;aspect-ratio: 16/9;filter: brightness(90%);}
-.body .shorts{aspect-ratio: 9/16;height: 176px;object-fit: contain;}
+.chpg .shorts{display: inline-block;width: 150px;margin: 10px;background: rgb(42,43,46);border-radius: 10px;}
+.chpg .shorts:hover{background: rgb(0,0,0)}
+.chpg .shorts img{aspect-ratio: 9/16;height: 176px;object-fit: contain;}
+.chpg .shorts .foot{}
 .time{position: absolute;bottom: 14px;right: 8px;background-color: rgba(0,0,0,0.8);color: white;font-size: 12px;border-radius: 7px;padding: 2px 6px;}
 .foot{padding: 7px;overflow: hidden;}
 .fimg{height: 100%;display: inline;width: 60px;}
@@ -50,7 +50,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 #sinput:focus{outline: none;}
 #search{width: 40px;border: none;height: 40px;align-items: center;background: none;padding: 6px;border-radius: 50%;}
-#searchss{position: fixed;top: 75px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
+#searchss{position: fixed;top: 70px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
 #searchss div{background: rgba(0,0,0,0.5);color: #fff;padding: 12px;border-bottom: 0.01px solid #ccc;font-size:15px;}
 
 #channel{}
@@ -86,13 +86,14 @@ input[type="search"]::-webkit-search-cancel-button {
   #video{margin-top: 85px !important;}
   .wdsktp #more_apps{width: 60%;}
   .wdsktp #main{position: absolute;top: 90px;right: 0;width: 40%;margin-top: 0 !important;}
-  .wdsktp .vid{width: 90% !important;border-radius: 5px;height: 90px}
+  .wdsktp .vid{width: 90% !important;border-radius: 5px;height: 100px}
   .wdsktp #v_details{background: none !important;}
-  .wdsktp .body img{height: 90px;width: 150px;border-radius: 5px;}
+  .wdsktp .body img{height: 90px;width: 150px;border-radius: 5px;margin: 5px;}
   .wdsktp .vid a{display: flex;flex-direction: row;}
   .wdsktp .vid .fimg{display: none}
   .wdsktp .vid .det{margin: 0px !important; white-space: nowrap;overflow: hidden;text-overflow: ellipsis}
   #v_desc{display: block !important;}
+  #v_dbtn{display: none;}
 }
 </style>
 </head>
@@ -116,8 +117,8 @@ input[type="search"]::-webkit-search-cancel-button {
   </div>
 </div>
   <div id="video" style="margin-top: 80px;display: none;">
-    <video id="v_video" controls allowfullscreen></video>
-    <div id="v_details">
+    <div style="display: flex;justify-content: center;align-items: center;"><video id="v_video" controls allowfullscreen></video></div>
+    <div id="v_details" style="display: none">
     <div id="v_title"></div>
     <div id="v_text"></div>
     <div id="v_chdet">
@@ -135,7 +136,6 @@ input[type="search"]::-webkit-search-cancel-button {
     </div>
   </div>
     <div id="v_desc" style="padding: 20px;display: none;padding-top: 10px;word-break: break-all;">
-      <div style="font-size: 21px;margin-bottom: 8px;word-break: break-all;">Description:-</div>
       <div id="v_dbody" style="font-size: 14px;color: #eee;"></div>
     </div>
   <div id="main" style="margin-top:80px;display: none;"></div>
@@ -191,7 +191,7 @@ function item(i) {
   atag = document.createElement("a");
   body = document.createElement("div");
   img = document.createElement("img");
-  if(sh){img.classList.add("shorts")}
+  if(sh){}
   time = document.createElement("div");
   time.classList.add("time");
   body.classList.add("body");
@@ -209,18 +209,6 @@ function item(i) {
   title.classList.add("title")
   chnm.classList.add("name");
   chtxt.classList.add("txt");
-  if(sessionStorage.getItem("invidious") == "yes"){
-  img.src = i.videoThumbnails[i.videoThumbnails.length-5].url;
-  time.innerText = convertSeconds(i.lengthSeconds);
-  body.appendChild(img);
-  body.appendChild(time);
-  atag.setAttribute("href", "https://asbros.github.io/utube"+"?v="+i.videoId);
-  title.innerText = i.title;
-  chnm.innerText = i.author;
-  chtxt.innerText = i.viewCountText + " views";
-  chimg.style.display = "none";
-  fdet.classList.remove("det");
-  }else{
   img.src = i.thumbnail;
   time.innerText = convertSeconds(i.duration);
   body.appendChild(img);
@@ -228,7 +216,12 @@ function item(i) {
   body.appendChild(time);
   }
   if(!g){
+    if(i.isShort != true){
   atag.setAttribute("href", "https://asbros.github.io/utube"+"?v="+i.url.substring(9));
+    }else{
+    atag.setAttribute("href", "https://asbros.github.io/utube"+"?shorts=true&v="+i.url.substring(9));
+    vid.classList.add("shorts");
+    }
   }else{
   atag.setAttribute("href", "https://asbros.github.io/utube"+"?p="+i.url.substring(15));
   }
@@ -249,7 +242,6 @@ function item(i) {
   chimg.style.display = "none";
   chnm.style.display = "none";
   fdet.classList.remove("det");
-  }
   }
   fimg.appendChild(chimg);
   foot.appendChild(fimg);
@@ -280,7 +272,6 @@ lodmor.onclick = function(){
   fetch("https://pipedapi.kavin.rocks/nextpage/search?nextpage="+nextpage)
   .then(r => r.json())
   .then((x) => {
-  sessionStorage.setItem("invidious","no");
     list(x.items);
   if(x.nextpage){
     nextpage = "";
@@ -292,7 +283,6 @@ lodmor.onclick = function(){
    fetch("https://pipedapi.kavin.rocks/nextpage/channel/"+c+"?nextpage="+ nextpvid)
   .then(r => r.json())
   .then((x) => {
-  sessionStorage.setItem("invidious","no");
     list(x.relatedStreams);
     if (x.nextpage) {
       nextpvid = "";
@@ -303,7 +293,6 @@ lodmor.onclick = function(){
 };
 
 if((!id && !p) && (!q && !c)){
-  sessionStorage.setItem("invidious","no");
 fetch("https://pipedapi.kavin.rocks/trending?region=IN")
 .then(r => r.json())
 .then(x => list(x));
@@ -311,7 +300,7 @@ main.style.display = "block";
   loader.hide();
 }else{
   if(id){
-  fetch("https://invidious.fdn.fr/api/v1/videos/"+id)
+  fetch("https://pipedapi.kavin.rocks/streams/"+id)
   .then(r => r.json())
   .then(x => play(x));
   loader.hide();
@@ -335,24 +324,24 @@ main.style.display = "block";
   var v_desc = document.querySelector("#v_desc");
   var v_dbody = document.querySelector("#v_dbody");
   function play(x){
+    v_details.style.display = "";
     v_title.innerText = x.title;
    // v_video.src = x.formatStreams[x.formatStreams.length-2].url;
-    var cthmb = x.videoThumbnails[x.videoThumbnails.length-5].url;
+    var cthmb = x.thumbnailUrl;
     v_video.setAttribute("poster",cthmb)
 	  v_video.play();
-  v_text.innerHTML = x.viewCount + " views" + " • "+ x.publishedText;
-  v_chimg.src = x.authorThumbnails[0].url;
-  v_chnm.innerHTML = x.author;
-  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.authorId});
-  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.authorId});
-  v_chsub.innerText = x.subCountText;
-  v_lik.innerHTML += x.likeCount;
-  v_dis.innerHTML += x.dislikeCount;
+  v_text.innerHTML = x.views + " views" + " • "+ x.uploadDate.substring(0,10);
+  v_chimg.src = x.uploaderAvatar;
+  v_chnm.innerHTML = x.uploader;
+  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
+  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
+  v_chsub.innerText = subFormat(x.uploaderSubscriberCount);
+  v_lik.innerHTML += x.likes;
+  v_dis.innerHTML += x.dislikes;
  // video.style.backgroundImage = "url("+x.videoThumbnails[0].url+")";
   document.title = x.title;
-  v_dbody.innerHTML = x.descriptionHtml;
-  sessionStorage.setItem("invidious","yes");
-  list(x.recommendedVideos);
+  v_dbody.innerHTML = x.description;
+  list(x.relatedStreams);
   main.style.marginTop = "10px";
   if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -474,7 +463,6 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     fetch("https://pipedapi.kavin.rocks/search?filter=videos&q="+q)
     .then(r => r.json())
     .then((x) => {
-  sessionStorage.setItem("invidious","no");
       list(x.items);
       if(x.nextpage){
         nextpage = encodeURI(x.nextpage)+"&filter=videos&q="+q;
@@ -491,6 +479,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
       b = true;
     main.style.display = "block";
     loader.hide();
+    document.body.classList.add("chpg");
     var channel = document.querySelector("#channel");
     var cnm = document.querySelector("#cnm");
     var cban = document.querySelector("#cban");
@@ -501,7 +490,6 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     cvideo.onclick = function(){
       g = "";ps = "";sh = "";
         main.innerHTML = "";
-  sessionStorage.setItem("invidious","no");
       list(x.relatedStreams);
       document.querySelectorAll("#ctabs button").forEach((tb) => {tb.style.borderBottom = "0px"});
       cvideo.style.borderBottom = "1px solid #fff";
@@ -528,7 +516,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     });
     x.tabs.forEach((t) => {
       var div = document.createElement("button");
-      div.innerText = t.name;
+      div.innerText = t.name[0].toUpperCase() + t.name.slice(1);
       div.setAttribute("id","c"+t.name);
       div.onclick = function(){
         main.innerHTML = "";
@@ -546,7 +534,6 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
           if(t.name == "shorts"){
             sh = true;
           }else{sh = ""}
-  sessionStorage.setItem("invidious","no");
           list(k.content);
           document.querySelectorAll("#ctabs button").forEach((tb) => {tb.style.borderBottom = "0px"});
           this.style.borderBottom = "1px solid #fff";
@@ -566,6 +553,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
       b = true;
       main.style.display = "block";
     loader.hide();
+    document.body.classList.add("chpg");
     var channel = document.querySelector("#channel");
     var cnm = document.querySelector("#cnm");
     var cban = document.querySelector("#cban");
@@ -573,7 +561,6 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     var csub = document.querySelector("#csub");
     var cdes = document.querySelector("#cdes");
     var cvideo = document.querySelector("#cvideo");
-  sessionStorage.setItem("invidious","no");
     list(l.relatedStreams);
     channel.style.display = "";
     main.style.marginTop = "5px";
@@ -637,7 +624,11 @@ function search(v){
 var link = window.location.search;
 var sprm = new URLSearchParams(link);
 var sid = sprm.get("v");
-
+var isShort = sprm.get("shorts");
+var orientation = "landscape";
+    if(isShort == "true"){
+      orientation = 'portrait';
+    }
   const player = await VidstackPlayer.create({
     target: '#v_video',
     title: document.title,
@@ -647,11 +638,16 @@ var sid = sprm.get("v");
     autoQuality: true,
     canPictureInPicture: true,
     loop: true,
+    fullscreenOrientation: orientation,
     playsInline: true,
     layout: new VidstackPlayerLayout({
       thumbnails: '',
     })
   });
+    if(isShort == "true"){
+      v_video.style.height = "480px";
+      v_video.style.width = "270px";
+    }
 </script>
 </body>
 </html>
