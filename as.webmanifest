@@ -13,7 +13,9 @@
             "type": "image/png"
         }
     ],
+    "start_url": "/",
     "theme_color": "#272727",
     "background_color": "#ffffff",
-    "display": "standalone"
+    "display": "standalone",
+  "viewport":"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
 }
