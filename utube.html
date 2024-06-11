@@ -16,8 +16,8 @@
 <link rel="manifest" href="https://asbros.github.io/as.webmanifest">
 <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
 <script src='https://asbros.github.io/popup.js/popup.js'></script>
-<link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
-<link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
+<!--<link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
+<link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />-->
 <style>
 *{color: #fff;font-family:'Jost', sans-serif;transition: all 0.3s;box-sizing: border-box;user-select: none;}
 body {margin: 0;background: rgb(22,26,29);}
@@ -83,7 +83,7 @@ input[type="search"]::-webkit-search-cancel-button {
   .vid img{border-top-left-radius: 20px;border-top-right-radius: 20px;}
  #sinput{width: 400px;float: right}
  #searchss{position: absolute !important;left: calc(100% - 420px) !important;right: 20px}
-  #v_video{border-radius: 20px;}
+  #v_video{border-radius: 20px;position: -webkit-sticky;position: sticky;top: 80px;}
   #video,#v_desc{width: 58%;margin-left: 2%;background: none !important;}
   #video{margin-top: 85px !important;}
   .wdsktp #more_apps{width: 60%;}
@@ -102,7 +102,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 <body>
   <div class="pad-10" id="head" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
-  <a href="https://asbros.github.io/utube"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
+  <a href="https://run.spck.io/index.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Utube</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
   <!--<button id="search"><svg style="margin-right: 5px;" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(241,241,241)" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg></button>-->
@@ -119,7 +119,7 @@ input[type="search"]::-webkit-search-cancel-button {
   </div>
 </div>
   <div id="video" style="margin-top: 80px;display: none;">
-    <div style="display: flex;justify-content: center;align-items: center;"><video id="v_video" controls allowfullscreen></video></div>
+    <div style="display: flex;justify-content: center;align-items: center;position: -webkit-sticky;position: sticky;top: 80;z-index:999999;"><iframe id="v_video" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
     <div id="v_details" style="display: none">
     <div id="v_title"></div>
     <div id="v_text"></div>
@@ -149,8 +149,6 @@ input[type="search"]::-webkit-search-cancel-button {
  </div>
   <script>
 var loader = as.loader();
-loader.show();
-
 function convertSeconds(seconds){
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
@@ -219,13 +217,13 @@ function item(i) {
   }
   if(!g){
     if(i.isShort != true){
-  atag.setAttribute("href", "https://asbros.github.io/utube"+"?v="+i.url.substring(9));
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?v="+i.url.substring(9));
     }else{
-    atag.setAttribute("href", "https://asbros.github.io/utube"+"?shorts=true&v="+i.url.substring(9));
+    atag.setAttribute("href", "https://run.spck.io/index.html"+"?shorts=true&v="+i.url.substring(9));
     vid.classList.add("shorts");
     }
   }else{
-  atag.setAttribute("href", "https://asbros.github.io/utube"+"?p="+i.url.substring(15));
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?p="+i.url.substring(15));
   }
   if(!g){
   title.innerText = i.title;
@@ -295,6 +293,8 @@ lodmor.onclick = function(){
 };
 
 if((!id && !p) && (!q && !c)){
+    loader = as.loader();
+    loader.show();
 fetch("https://pipedapi.kavin.rocks/trending?region=IN")
 .then(r => r.json())
 .then(x => list(x));
@@ -302,6 +302,8 @@ main.style.display = "block";
   loader.hide();
 }else{
   if(id){
+    loader = as.loader();
+    loader.show();
   fetch("https://pipedapi.kavin.rocks/streams/"+id)
   .then(r => r.json())
   .then(x => play(x));
@@ -311,6 +313,7 @@ main.style.display = "block";
   main.style.display = "";
   document.body.classList.add("wdsktp");
   var v_video = document.querySelector("#v_video");
+  v_video.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1");
   var v_title = document.querySelector("#v_title");
   var v_text = document.querySelector("#v_text");
   var v_chdet = document.querySelector("#v_chdet");
@@ -330,13 +333,11 @@ main.style.display = "block";
     v_title.innerText = x.title;
    // v_video.src = x.formatStreams[x.formatStreams.length-2].url;
     var cthmb = x.thumbnailUrl;
-    v_video.setAttribute("poster",cthmb)
-	  v_video.play();
   v_text.innerHTML = x.views + " views" + " • "+ x.uploadDate.substring(0,10);
   v_chimg.src = x.uploaderAvatar;
   v_chnm.innerHTML = x.uploader;
-  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
-  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.uploaderUrl.substring(9)});
+  v_chimg.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.uploaderUrl.substring(9)});
+  v_chnm.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.uploaderUrl.substring(9)});
   v_chsub.innerText = subFormat(x.uploaderSubscriberCount);
   v_lik.innerHTML += x.likes;
   v_dis.innerHTML += x.dislikes;
@@ -462,6 +463,8 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
   });
 });
   }else if(q){
+    loader = as.loader();
+    loader.show();
     fetch("https://pipedapi.kavin.rocks/search?filter=videos&q="+q)
     .then(r => r.json())
     .then((x) => {
@@ -472,15 +475,16 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
     });
     main.style.display = "block";
     sinput.value = q;
-    loader.hide();
     load_more.style.display = "flex";
+  loader.hide();
   }else if(c){
+    loader = as.loader();
+    loader.show();
     fetch("https://pipedapi.kavin.rocks/channel/"+c)
     .then(r => r.json())
     .then((x) => {
       b = true;
     main.style.display = "block";
-    loader.hide();
     document.body.classList.add("chpg");
     var channel = document.querySelector("#channel");
     var cnm = document.querySelector("#cnm");
@@ -523,6 +527,7 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
       div.onclick = function(){
         main.innerHTML = "";
     load_more.style.display = "none";
+    loader = as.loader();
         loader.show();
         fetch("https://pipedapi.kavin.rocks/channels/tabs?data="+t.data)
         .then(y => y.json())
@@ -539,8 +544,8 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
           list(k.content);
           document.querySelectorAll("#ctabs button").forEach((tb) => {tb.style.borderBottom = "0px"});
           this.style.borderBottom = "1px solid #fff";
+          loader.hide();
         });
-        loader.hide();
       }
       document.querySelector("#ctabs").appendChild(div);
     });
@@ -548,7 +553,10 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
       nextpvid = encodeURI(x.nextpage);
       }
     });
+  loader.hide();
   }else if(p){
+    loader = as.loader();
+    loader.show();
     fetch("https://pipedapi.kavin.rocks/playlists/"+p)
     .then(z => z.json())
     .then((l) => {
@@ -600,7 +608,6 @@ sinput.addEventListener("input",function(){
       s.innerText = i;
       s.addEventListener("click",function(){
         search(i);
-        loader.show();
       })
       searchss.appendChild(s);
     })
@@ -617,10 +624,10 @@ sinput.addEventListener("keypress", function(event) {
   }
 });
 function search(v){
-  window.location.href = "https://asbros.github.io/utube"+"?s="+v;
+  window.location.href = "https://run.spck.io/index.html"+"?s="+v;
 }
 </script>
-<script type="module">
+<!--<script type="module">
   import { VidstackPlayer, VidstackPlayerLayout } from 'https://cdn.vidstack.io/player';
 
 var link = window.location.search;
@@ -650,6 +657,6 @@ var orientation = "landscape";
       v_video.style.height = "480px";
       v_video.style.width = "270px";
     }
-</script>
+</script>-->
 </body>
 </html>
