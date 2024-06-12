@@ -26,7 +26,7 @@ body {margin: 0;background: rgb(22,26,29);}
 .vid:hover img{filter: brightness(120%)} 
 .vid a{text-decoration: none;}
 .body{position: relative;}
-.body img{width: 100%;aspect-ratio: 16/9;filter: brightness(90%);}
+.body img{width: 100%;aspect-ratio: 16/9;filter: brightness(90%);object-fit: cover;}
 .chpg .shorts{display: inline-block;width: 150px;margin: 10px;background: rgb(42,43,46);border-radius: 10px;}
 .chpg .shorts:hover{background: rgb(0,0,0)}
 .chpg .shorts img{aspect-ratio: 9/16;height: 176px;object-fit: contain;}
@@ -65,7 +65,7 @@ input[type="search"]::-webkit-search-cancel-button {
 #ctabs button{border: 0;color: #fff;background: #282828;padding: 7px 12px;margin-right: 10px;}
 
 #video{background-size:100% 10%;background-position: center;background-repeat: no-repeat;}
-#v_video{width : 100%;aspect-ratio: 16 / 9;}
+#v_video{width : 100%;object-fit: cover;}
 #v_details{padding: 15px;background-color: rgba(0,0,0,0.5);backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px);}
 #v_title{font-size: 19px;}
 #v_text{margin-top: 7px;font-size: 12px;color:#ccc;}
@@ -83,7 +83,6 @@ input[type="search"]::-webkit-search-cancel-button {
   .vid img{border-top-left-radius: 20px;border-top-right-radius: 20px;}
  #sinput{width: 400px;float: right}
  #searchss{position: absolute !important;left: calc(100% - 420px) !important;right: 20px}
-  #v_video{border-radius: 20px;}
   #video,#v_desc{width: 58%;margin-left: 2%;background: none !important;}
   #video{margin-top: 85px !important;}
   .wdsktp #more_apps{width: 60%;}
@@ -102,7 +101,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 <body>
   <div class="pad-10" id="head" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
-  <a href="https://asbros.github.io/utube"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
+  <a href="https://run.spck.io/index.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Utube</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
   <!--<button id="search"><svg style="margin-right: 5px;" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(241,241,241)" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg></button>-->
@@ -118,7 +117,9 @@ input[type="search"]::-webkit-search-cancel-button {
   </div>
 </div>
   <div id="video" style="margin-top: 80px;display: none;">
-    <div style="display: flex;justify-content: center;align-items: center;"><iframe id="v_video" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    <div style="display: flex;justify-content: center;align-items: center;">
+      <video id="v_video" controls autoplay loop allowfullscreen controlsList="nodownload"></video>
+      <iframe id="v_iframe" style="display: none;width: 100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe></div>
     <div id="v_details" style="display: none">
     <div id="v_title"></div>
     <div id="v_text"></div>
@@ -209,7 +210,7 @@ function item(i) {
   chnm.classList.add("name");
   chtxt.classList.add("txt");
   if(i.type != "playlist"){
-  img.src = i.videoThumbnails[1].url;
+  img.src = i.videoThumbnails[4].url;
   }else{
     img.src = i.playlistThumbnail;
   }
@@ -220,13 +221,13 @@ function item(i) {
   }
   if(!g){
     if(i.isShort != true){
-  atag.setAttribute("href", "https://asbros.github.io/utube"+"?v="+i.videoId);
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?v="+i.videoId);
     }else{
-    atag.setAttribute("href", "https://asbros.github.io/utube"+"?shorts=true&v="+i.videoId);
+    atag.setAttribute("href", "https://run.spck.io/index.html"+"?shorts=true&v="+i.videoId);
     vid.classList.add("shorts");
     }
   }else{
-  atag.setAttribute("href", "https://asbros.github.io/utube"+"?p="+i.playlistId);
+  atag.setAttribute("href", "https://run.spck.io/index.html"+"?p="+i.playlistId);
   }
   title.innerText = i.title;
   chnm.innerText = i.author;
@@ -312,7 +313,6 @@ main.style.display = "block";
   main.style.display = "";
   document.body.classList.add("wdsktp");
   var v_video = document.querySelector("#v_video");
-  //v_video.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&rel=0");
   var v_title = document.querySelector("#v_title");
   var v_text = document.querySelector("#v_text");
   var v_chdet = document.querySelector("#v_chdet");
@@ -328,15 +328,21 @@ main.style.display = "block";
   var v_desc = document.querySelector("#v_desc");
   var v_dbody = document.querySelector("#v_dbody");
   function play(x){
-    v_details.style.display = "";
-    v_title.innerText = x.title;
-    v_video.src = x.formatStreams[x.formatStreams.length-1].url;
-    var cthmb = x.videoThumbnails[4].url;
+  v_details.style.display = "";
+  v_title.innerText = x.title;
+  v_video.setAttribute("src",x.formatStreams[x.formatStreams.length-1].url);
+  v_video.onerror = function(){
+    v_video.style.display = "none";
+    v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+x.videoId+"?autoplay=1&loop=1&rel=0");
+    v_iframe.style.display = "block";
+  }
+ /* v_video.setAttribute("srcdoc",`<video autoplay controlsList='nodownload' onerror='window.location = "https://www.youtube-nocookie.com/embed/${id}?autoplay=1&loop=1&rel=0"' controls style='width: 100%;margin: 0;border-radius: 5px;' src='`+x.formatStreams[x.formatStreams.length-1].url+"'></video>");*/
+  var cthmb = x.videoThumbnails[4].url;
   v_text.innerHTML = x.viewCount + " views" + " • "+ x.publishedText;
   v_chimg.src = x.authorThumbnails[4].url;
   v_chnm.innerHTML = x.author;
-  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.authorId});
-  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/utube"+"?c="+x.authorId});
+  v_chimg.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.authorId});
+  v_chnm.addEventListener("click",function(){window.location.href="https://run.spck.io/index.html"+"?c="+x.authorId});
   v_chsub.innerText = x.subCountText;
   v_lik.innerHTML += x.likeCount;
   //v_dis.innerHTML += x.dislikeCount;
@@ -620,7 +626,7 @@ sinput.addEventListener("keypress", function(event) {
   }
 });
 function search(v){
-  window.location.href = "https://asbros.github.io/utube"+"?s="+v;
+  window.location.href = "https://run.spck.io/index.html"+"?s="+v;
 }
 </script>
 <!--<script type="module">
