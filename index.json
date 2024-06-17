@@ -55,7 +55,7 @@
   },
   {
      "name": "Store",
-     "image": "https://i.imgur.com/VRy5qED.png",
+     "image": "https://i.imgur.com/rAF56kQ.jpeg",
      "about": "",
      "url": "https://asbros.github.io/web/store"
   },
@@ -76,12 +76,6 @@
      "image": "https://i.imgur.com/oelJRyu.png",
      "about": "",
      "url": "https://asbros.github.io/web/img2link"
-   },
-   {
-     "name": "File to Link",
-     "image": "https://i.imgur.com/oelJRyu.png",
-     "about": "",
-     "url": "https://asbros.github.io/web/file2link"
    },
   {
      "name": "Responsinator",
