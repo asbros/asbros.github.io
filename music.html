@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,1,0" />
 <script src='https://asbros.github.io/popup.js/popup.js'></script>
 <style>
-*{color: #fff;font-family:'Jost', sans-serif;font-weight: 400;font-style: normal;transition: all 0.3s;box-sizing: border-box;user-select: none;}
+*{color: #fff;font-weight: 400;font-style: normal;transition: all 0.3s;box-sizing: border-box;user-select: none;}
 body {margin: 0;background: rgb(22,26,29);}
 #top_playlists{display: flex;overflow-x: scroll;margin: 5px;font-size: 15px;margin-bottom: 20px;-ms-overflow-style: none;scrollbar-width: none;}
 #top_playlists::-webkit-scrollbar {
@@ -190,7 +190,7 @@ input[type="search"]::-webkit-search-cancel-button {
 </div>
     </div>
   </div>
-  <div id="playing" style="padding: 7px 10px;background: rgba(42,43,46);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);color: #fff;position: fixed;bottom: -101%;left: 10px;right: 10px;z-index: 9;display: flex;align-items: center;border-radius: 40px;">
+  <div id="playing" style="padding: 10px;background: rgba(42,43,46,0.8);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);color: #fff;position: fixed;bottom: -101%;left: 10px;right: 10px;z-index: 9;display: flex;align-items: center;border-radius: 40px;">
   <img id="play_img" style="width: 50px;height: 50px;border-radius: 50%;margin-right: 10px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
     <div id="play_title" style="font-size: 16px;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
@@ -209,8 +209,7 @@ input[type="search"]::-webkit-search-cancel-button {
  </div>
  <script>var uri = window.location.toString();
 if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
-  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
-  
+
 var all_songs = $("#all_songs");
 var title = $("#title");
 var image = $("#image");
