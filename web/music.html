@@ -207,7 +207,8 @@ input[type="search"]::-webkit-search-cancel-button {
   <hr>
  <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
- <script>var uri = window.location.toString();
+ <script>
+ var uri = window.location.toString();
 if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
 
 var all_songs = $("#all_songs");
@@ -536,6 +537,7 @@ function item(i,n) {
     fetch("https://pipedapi.drgns.space/streams/"+id)
     .then(y => y.json())
     .then((x) => {
+      videoId = id;
       cSong = n;
       sing(x,imgsrc);
     });
@@ -605,6 +607,13 @@ next.onclick = play_next.onclick = function(){
     .then((x) => {
        var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
       sing(x,thumb);
+      if(localStorage.getItem(id)){
+        like.style.display = "none";
+        liked.style.display = "";
+      }else{
+        liked.style.display = "none";
+        like.style.display = "";
+      }
     });
 }
 prev.onclick = function(){
@@ -624,6 +633,13 @@ prev.onclick = function(){
     .then((x) => {
        var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
       sing(x,thumb);
+      if(localStorage.getItem(id)){
+        like.style.display = "none";
+        liked.style.display = "";
+      }else{
+        liked.style.display = "none";
+        like.style.display = "";
+      }
     });
 }
 /*timer.onchange = function(){
