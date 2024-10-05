@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <title>AS Movies Hub</title>
 <meta content='#dc3545' name='theme-color' />
@@ -13,10 +14,10 @@
 <script src='https://asbros.github.io/popup.js/popup.js'></script>
 <style type='text/css'>
  *{font-family:'jost', sans-serif;user-select:none;transition: all 0.3s;}
- body{padding:0;margin: 0;}
+ body{padding:0;margin: 0;background-color: rgb(22,26,29);}
  .mcon{margin:0;padding:5px;}
  .plrd{margin-top: 10px;}
- #video{height:270px;width:100%;border: 0;background-image: url(https://i.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.webp);background-position: center;background-repeat: no-repeat;box-shadow: rgba(33,33,33, 0.4) 0px 5px, rgba(33,33,33, 0.3) 0px 10px, rgba(33,33,33, 0.2) 0px 15px, rgba(33,33,33, 0.1) 0px 20px, rgba(33,33,33, 0.05) 0px 25px;}
+ #video{height:270px;width:100%;border: 0;background-image: url(https://i.pinimg.com/originals/e2/63/00/e26300c0c746d3163a0f48223c897cee.gif);background-position: center;background-repeat: no-repeat;background-size: 50% 50%;}
  #search {
   box-sizing: border-box;
   font-size: 16px;
@@ -35,7 +36,7 @@
  flex-wrap: wrap;
  margin-top: 15px;
  justify-content: space-evenly;
- color: #000;
+ color: #eee;
  font-size: 20px;
  text-align: center;
  }
@@ -46,6 +47,8 @@
    background-size: 100%;
    margin-bottom: 7px;
    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+   background-repeat: no-repeat;
+   background-size: cover;
    transition: all 0.5s ease;
  }
  #list > div:hover{
@@ -69,6 +72,38 @@
  #det{
    margin-top: 20px;
  }
+ #casts{
+   display: flex;
+   flex-direction: row;
+   overflow-x: scroll;
+ }
+ #casts > div{
+   margin-right: 10px;
+   text-align: center;
+ }
+ #casts > div > div:nth-child(3){
+   font-size: 12px;
+   color: #ddd;
+   word-wrap: break-word;
+ }
+ #casts > div > div:nth-child(2){
+   font-size: 14px;
+   color: #fff;
+   word-wrap: break-word;
+ }
+ #casts img{
+   width: 80px;
+   height: 80px;
+   object-fit: cover;
+   border-radius: 50%;
+ }
+ #servers button{
+   color: #fff;
+   background: rgb(76,77,77);
+   border: none;
+   padding: 8px 11px;
+   border-radius: 20px;
+   margin-right: 10px;
  }
  @media only screen and (min-width: 600px) {
   .dsktp #video{width:100%;height:600px;}
@@ -88,25 +123,32 @@
 </style>
 </head>
 
-<body class="bg-light-blue">
- <div class="white bg-black pad-10" style="display:flex;align-items:center;;">
+<body>
+ <div class="white pad-10" style="display:flex;align-items:center;background-color: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0,0,0,.75);">
   <img style="height: 40px;width: 40px;border-radius: 50%;margin-right: 10px;" src="https://i.imgur.com/ZEQdTSH.png">
-  <span class="josefin-font f-20" style="flex: 1;margin-top: 3px;">AS Movies Hub</span>
+  <span class="jost-font f-20" style="flex: 1;margin-top: 3px;font-weight: bold;">MOVIES HUB</span>
   <a href="https://asbros.github.io/" target="_blank" style="text-decoration: none;margin-right: 7px">
    <img style="height: 35px;width: 35px;border-radius: 50%;border: 1px solid #fff;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn_srWSHiwJue3vu3Hbfv4u_YM3f9d7JxLrC5zYUf_6a0JJUgNEbw6dz5R&s=10"></a>
  </div>
  <div class='mcon'>
   <div class='plrd jost-font' id="plrd" style="display: none;">
-   <button onclick="home()" class="btn white shadow jost-font f-16" style="margin-bottom:10px;background:rgba(0,0,0,0.7);padding:5px;padding-right:10px;"><svg fill="#fff" width="30px" height="30px" viewBox="0 0 32 32" data-name="Layer 2" id="Layer_2" xmlns="http://www.w3.org/2000/svg">
-     <title />
+   <button onclick="history.back()" class="btn white shadow jost-font f-16" style="margin-bottom:10px;background:#222831;padding:5px;padding-right:10px;"><svg fill="#fff" width="30px" height="30px" viewBox="0 0 32 32" data-name="Layer 2" id="Layer_2" xmlns="http://www.w3.org/2000/svg">
      <path d="M11.17,10.23a33.37,33.37,0,0,0-3.05,3.13c-.51.62-1.28,1.3-1.21,2.17s.81,1.24,1.35,1.76a16.3,16.3,0,0,1,2.57,3.17c.86,1.36,3,.11,2.16-1.26a21.06,21.06,0,0,0-1.82-2.48A16.16,16.16,0,0,0,10,15.52c-.22-.21-.86-1.14-.68-.49l-.13,1a17.85,17.85,0,0,1,3.72-4c1.19-1.08-.58-2.85-1.77-1.76Z" />
      <path d="M9.4,17a109.13,109.13,0,0,0,12.53-.1c1.59-.11,1.61-2.61,0-2.5a109.13,109.13,0,0,1-12.53.1c-1.61-.07-1.6,2.43,0,2.5Z" />
     </svg>Home</button>
-   <iframe allowfullscreen id='video' sandbox="allow-scripts allow-same-origin allow-top-navigation"></iframe><br>
-   <div id="det" class="note-box pad-15">
-    <div id="dname" style="font-size: 22px;font-weight: bold;color:#000;"></div>
+   <iframe allowfullscreen id='video' sandbox="allow-scripts allow-same-origin allow-top-navigation"></iframe>
+   <div id="servers" style="display: flex;flex-direction: row;flex-wrap: nowrap;padding: 0px 7px;overflow-x: scroll;background: none;margin-top: 10px;justify-content: center;">
+     <!--<div style="color: #fff;font-style: 17px;display: flex;align-items: center;justify-content: center;margin-right: 15px;">Servers: </div>-->
+     <button onclick="ser(1)" class="jost-font">Server 1</button>
+     <button onclick="ser(2)" class="jost-font">Server 2</button>
+     <button onclick="ser(3)" class="jost-font">Server 3</button>
+     <button onclick="ser(4)" class="jost-font">Server 4</button>
+   </div>
+   <div id="det" class="pad-15" style="background-color: #222831;">
+    <div id="dname" style="font-size: 22px;font-weight: bold;color:#EEEEEE;"></div>
     <hr>
-    <div id="dover" style="font-size: 17px;"></div>
+    <div id="dover" style="font-size: 16px;margin-bottom: 20px;color: #eee;"></div>
+    <div id="casts"></div>
    </div>
   </div>
   <div id="cntt">
@@ -120,10 +162,10 @@
    <div id="list" class='chnld'>
     <!-- Loading Popular Movies... -->
    </div>
-   <center><button onclick="auto(window.cp+1)" class="btn jost f-16 white shadow active" style="padding: 10px 15px;margin-bottom: 10px;margin-top: 10px;background:#333;border-radius:5px;" id="more">Load More...</button></center>
+   <center><button onclick="auto(window.cp+1)" class="btn jost f-16 white shadow active" style="padding: 10px 15px;margin-bottom: 10px;margin-top: 10px;background:#222831;border-radius:5px;" id="more">Load More...</button></center>
   </div>
  </div>
- <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 10px;">
+ <div class="pad-10" style="align-items:center;text-align:center;background: #222831;margin-top: 10px;">
   <a style="text-decoration: none;font-size: 18px;" href="https://asbros.github.io/" class="white">More Apps →</a><br>
   <hr>
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
@@ -141,8 +183,12 @@
    dlst.innerHTML = "";
   list.forEach((c,i) => {
     var div = document.createElement("div");
-    div.setAttribute("id",i)
+    div.setAttribute("id",i);
+    if(c.poster_path != null){
     div.style.backgroundImage = "url(https://image.tmdb.org/t/p/w300/"+c.poster_path+")";
+    }else{
+      div.style.backgroundImage = "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNNLEL-qmmLeFR1nxJuepFOgPYfnwHR56vcw&s)"
+    }
     var nm = document.createElement("div");
     switch(t){
      case "tv":
@@ -238,7 +284,7 @@
      var u;
      switch(type){
      case "tv":
-     u = "https://vidsrc.cc/v2/embed/tv/"+id;
+     u = 'https://www.2embed.cc/embedtvfull/'+id;
      //https://vidsrc.me/embed/tv?tmdb=
      //https://vidsrc.cc/v2/embed/movie/
      //https://player.autoembed.cc/embed/movie/"+id+"?server=2
@@ -252,12 +298,92 @@
      dname.innerText = det.title || det.name;
      dover.innerText = det.overview;
      }
-     }else{
      }
      
-     function home(){
-     window.location.href = "https://asbros.github.io/web/movies";
-     } 
+     var servers = document.getElementById("servers");
+     if(type == "movie"){
+     function ser(vs){
+       var cs;
+       video.setAttribute("sandbox","allow-scripts allow-same-origin allow-top-navigation");
+       switch(vs){
+        case 1:
+          cs = "https://player.autoembed.cc/embed/movie/"+id+"?server=5";
+          break;
+        case 2:
+          cs = 'https://www.2embed.skin/embed/'+id;
+          break;
+        case 3:
+          cs = "https://vidsrc.cc/v2/embed/movie/"+id;
+          break;
+        case 4:
+          cs = "https://player.smashy.stream/movie/"+id+"?remove=search|watchWithFriends";
+          //video.removeAttribute("sandbox");
+          break;
+       }
+       video.contentWindow.location.replace(cs);
+     }
+    fetch('https://api.themoviedb.org/3/movie/'+id+'/credits?language=en-US', options)
+  .then(response => response.json())
+  .then(response => {
+    var cast = response.cast;
+    showCast(cast);
+  })
+  .catch(err => console.error(err));
+     }
+     else if(type = "tv"){
+     function ser(vs){
+       var cs;
+       video.setAttribute("sandbox","allow-scripts allow-same-origin allow-top-navigation");
+       switch(vs){
+        case 4:
+          cs = "https://player.autoembed.cc/embed/tv/"+id+"?server=5";
+         break;
+        case 1:
+          cs = 'https://www.2embed.cc/embedtvfull/'+id;
+          break;
+        case 2:
+          cs = "https://vidsrc.cc/v2/embed/tv/"+id;
+          break;
+        case 3:
+          cs = "https://player.smashy.stream/tv/"+id+"?s=1&e=1&remove=search|watchWithFriends";
+          //video.removeAttribute("sandbox");
+          break;
+       }
+       video.contentWindow.location.replace(cs);
+     }
+   fetch('https://api.themoviedb.org/3/tv/' + id + '/credits?language=en-US', options)
+  .then(response => response.json())
+  .then(response => {
+    var cast = response.cast;
+    showCast(cast);
+  })
+  .catch(err => console.error(err));
+     }
+     else{
+       servers.style.display = "none";
+     }
+  function showCast(cast){
+    if(cast.length > 1){
+      var casts = document.getElementById('casts');
+      cast.forEach((c) => {
+        var d = document.createElement("div");
+        var i = document.createElement("img");
+        var n = document.createElement("div");
+        var r = document.createElement("div");
+        n.innerText = c.name;
+        r.innerText = c.character;
+        if(c.profile_path != null){
+        i.src = "https://image.tmdb.org/t/p/w342"+c.profile_path;
+        }else{
+          i.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdV-8SUnrHY-ZAd5BrS80yZiif4HnKRF0uk82-7dh-rHtqQ7NDvEfqKq7_&s=10";
+        }
+        d.appendChild(i);
+        d.appendChild(n);
+        d.appendChild(r);
+        casts.appendChild(d);
+      })
+    }
+  }
  </script>
 </body>
 
