@@ -40,8 +40,8 @@
  text-align: center;
  }
  #list > a{
-   height: 144px;
-   width: 99px;
+   width: 110px;
+   aspect-ratio: 11/16;
    border-radius: 2px;
    margin-bottom: 7px;
    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -88,7 +88,6 @@
  }
  @media only screen and (min-width: 600px) {
    #list > a{
-     height: 192px;
      width: 132px;
    }
   /*.dsktp .mcon{display:flex;}
@@ -252,6 +251,7 @@
      var up = new URLSearchParams(lq);
      var id = up.get("i");
      var type = up.get("t");
+     var imdb;
      if(id && type){
      cntt.style.display = "none";
      plrd.style.display = "";
@@ -262,7 +262,7 @@
      fetch('https://api.themoviedb.org/3/tv/'+id, options)
   .then(response => response.json())
   .then(response => {
-    det(response.name,response.overview);
+    det(response.name,response.overview,response.imdb_id);
   })
   .catch(err => console.error(err));
      //https://vidsrc.me/embed/tv?tmdb=
@@ -274,15 +274,16 @@
      fetch('https://api.themoviedb.org/3/movie/'+id, options)
   .then(response => response.json())
   .then(response => {
-    det(response.title,response.overview);
+    det(response.title,response.overview,response.imdb_id);
   })
   .catch(err => console.error(err));
      }
      video.src = u;
      }
-     function det(title,overview){
+     function det(title,overview,imdb_id){
      dname.innerText = title;
      dover.innerText = overview;
+     imdb = imdb_id;
      }
      
      var servers = document.getElementById("servers");
@@ -301,7 +302,7 @@
           cs = "https://vidsrc.cc/v2/embed/movie/"+id;
           break;
         case 4:
-          cs = "https://player.smashy.stream/movie/"+id+"?remove=search|watchWithFriends";
+          cs = "https://embed.smashystream.com/dude.php?imdb="+imdb;
           //video.removeAttribute("sandbox");
           break;
        }
