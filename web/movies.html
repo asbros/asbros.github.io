@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <title>AS Movies Hub</title>
 <meta content='#dc3545' name='theme-color' />
@@ -17,7 +16,7 @@
  body{padding:0;margin: 0;background-color: rgb(22,26,29);}
  .mcon{margin:0;padding:5px;}
  .plrd{margin-top: 10px;}
- #video{height:270px;width:100%;border: 0;background-image: url(https://i.pinimg.com/originals/e2/63/00/e26300c0c746d3163a0f48223c897cee.gif);background-position: center;background-repeat: no-repeat;background-size: 50% 50%;}
+ #video{width:100%;aspect-ratio: 4/3;border: 0;background-image: url(https://i.pinimg.com/originals/e2/63/00/e26300c0c746d3163a0f48223c897cee.gif);background-position: center;background-repeat: no-repeat;background-size: 50% 50%;}
  #search {
   box-sizing: border-box;
   font-size: 16px;
@@ -40,34 +39,18 @@
  font-size: 20px;
  text-align: center;
  }
- #list > div{
-   height: 165px;
-   width: 111px;
+ #list > a{
+   height: 144px;
+   width: 99px;
    border-radius: 2px;
-   background-size: 100%;
    margin-bottom: 7px;
    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
    background-repeat: no-repeat;
    background-size: cover;
    transition: all 0.5s ease;
  }
- #list > div:hover{
+ #list > a:hover{
    transform: scale(1.2);
- }
- #list div div{
-   display: none;
-   text-align: center;
-   font-size: 15px;
-   width: 100%;
-   color: #fff;
-   position: absolute;
-   bottom: 0px;
-   padding: 5px;
-   box-sizing: border-box;
-   background: rgba(27,27,27,0.5);
-   white-space:nowrap;
-   overflow:hidden;
-   text-overflow:ellipsis;
  }
  #det{
    margin-top: 20px;
@@ -79,7 +62,6 @@
  }
  #casts > div{
    margin-right: 10px;
-   text-align: center;
  }
  #casts > div > div:nth-child(3){
    font-size: 12px;
@@ -92,10 +74,9 @@
    word-wrap: break-word;
  }
  #casts img{
-   width: 80px;
-   height: 80px;
+   width: 100px;
+   aspect-ratio: 1/1.5;
    object-fit: cover;
-   border-radius: 50%;
  }
  #servers button{
    color: #fff;
@@ -106,7 +87,10 @@
    margin-right: 10px;
  }
  @media only screen and (min-width: 600px) {
-  .dsktp #video{width:100%;height:600px;}
+   #list > a{
+     height: 192px;
+     width: 132px;
+   }
   /*.dsktp .mcon{display:flex;}
   .dsktp .plrd{width:60%;background:#000;height:100%;}
   .dsktp #video{width:100%;height:500px;}
@@ -182,28 +166,24 @@
    list = data;
    dlst.innerHTML = "";
   list.forEach((c,i) => {
-    var div = document.createElement("div");
-    div.setAttribute("id",i);
+    var adiv = document.createElement("a");
+    adiv.setAttribute("id",i);
     if(c.poster_path != null){
-    div.style.backgroundImage = "url(https://image.tmdb.org/t/p/w300/"+c.poster_path+")";
+    adiv.style.backgroundImage = "url(https://image.tmdb.org/t/p/w300/"+c.poster_path+")";
     }else{
-      div.style.backgroundImage = "url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNNLEL-qmmLeFR1nxJuepFOgPYfnwHR56vcw&s)"
+      adiv.style.backgroundImage = "url(https://i.imgur.com/FQxlt1k.png)";
+      adiv.style.backgroundSize = "35% 25%";
+      adiv.style.backgroundPosition = "center";
     }
-    var nm = document.createElement("div");
     switch(t){
      case "tv":
-     nm.innerText = c.name;
+      adiv.setAttribute("title",c.name);
      break;
      default:
-     nm.innerText = c.title;
+     adiv.setAttribute("title",c.title);
     }
-    div.onclick = function(){
-     localStorage.setItem(c.id,JSON.stringify(c));
-     window.location.assign(window.location.href+"?i="+c.id+"&t="+t);
-      document.body.classList.add('dsktp');
-    }
-    div.appendChild(nm);
-    dlst.appendChild(div);
+    adiv.setAttribute("href",window.location.href+"?i="+c.id+"&t="+t);
+    dlst.appendChild(adiv);
   });
   }else{
    dlst.innerHTML = `No results found!`;
@@ -214,18 +194,12 @@
    list = list.concat(data);
    dlst.innerHTML = "";
   list.forEach((c,i) => {
-    var div = document.createElement("div");
-    div.setAttribute("id",i)
-    div.style.backgroundImage = "url(https://image.tmdb.org/t/p/w300/"+c.poster_path+")";
-    var nm = document.createElement("div");
-     nm.innerText = c.title;
-    div.onclick = function(){
-     localStorage.setItem(c.id,JSON.stringify(c));
-     window.location.assign(window.location.href+"?i="+c.id+"&t=movie");
-      document.body.classList.add('dsktp');
-    }
-    div.appendChild(nm);
-    dlst.appendChild(div);
+    var adiv = document.createElement("a");
+    adiv.setAttribute("id",i);
+    adiv.setAttribute("title",c.title)
+    adiv.style.backgroundImage = "url(https://image.tmdb.org/t/p/w300/"+c.poster_path+")";
+    adiv.setAttribute("href",window.location.href+"?i="+c.id+"&t=movie");
+    dlst.appendChild(adiv);
   });
      }
   
@@ -285,19 +259,30 @@
      switch(type){
      case "tv":
      u = 'https://www.2embed.cc/embedtvfull/'+id;
+     fetch('https://api.themoviedb.org/3/tv/'+id, options)
+  .then(response => response.json())
+  .then(response => {
+    det(response.name,response.overview);
+  })
+  .catch(err => console.error(err));
      //https://vidsrc.me/embed/tv?tmdb=
      //https://vidsrc.cc/v2/embed/movie/
      //https://player.autoembed.cc/embed/movie/"+id+"?server=2
      break;
      default:
      u = "https://player.autoembed.cc/embed/movie/"+id+"?server=5";
+     fetch('https://api.themoviedb.org/3/movie/'+id, options)
+  .then(response => response.json())
+  .then(response => {
+    det(response.title,response.overview);
+  })
+  .catch(err => console.error(err));
      }
      video.src = u;
-     var det = JSON.parse(localStorage.getItem(id));
-     if(det){
-     dname.innerText = det.title || det.name;
-     dover.innerText = det.overview;
      }
+     function det(title,overview){
+     dname.innerText = title;
+     dover.innerText = overview;
      }
      
      var servers = document.getElementById("servers");
