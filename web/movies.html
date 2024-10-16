@@ -16,7 +16,7 @@
  body{padding:0;margin: 0;background-color: rgb(22,26,29);}
  .mcon{margin:0;padding:5px;}
  .plrd{margin-top: 10px;}
- #video{width:100%;aspect-ratio: 4/3;border: 0;background-image: url(https://i.pinimg.com/originals/e2/63/00/e26300c0c746d3163a0f48223c897cee.gif);background-position: center;background-repeat: no-repeat;background-size: 50% 50%;}
+ #video{width:100%;aspect-ratio: 4/3;border: 0;background-image: url(https://i.pinimg.com/originals/61/00/ab/6100abd8629af73f7e354794ccb28264.gif);background-position: center;background-repeat: no-repeat;}
  #search {
   box-sizing: border-box;
   font-size: 16px;
@@ -67,7 +67,7 @@
   background-repeat: no-repeat;
  }
  #list{
-   display: flex;
+ display: flex;
  flex-wrap: wrap;
  margin-top: 15px;
  justify-content: space-evenly;
@@ -76,9 +76,8 @@
  text-align: center;
  }
  #list > a{
-   width: 110px;
-   aspect-ratio: 11/16;
-   border-radius: 2px;
+   width: 116px;
+   height: 174px;
    margin-bottom: 7px;
    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
    background-repeat: no-repeat;
@@ -86,7 +85,7 @@
    transition: all 0.5s ease;
  }
  #list > a:hover{
-   transform: scale(1.2);
+   transform: scale(1.05);
  }
  #det{
    margin-top: 20px;
@@ -115,7 +114,7 @@
    font-weight: bold;
  }
  #casts img{
-   width: 110px;
+   width: 115px;
    height:140px;
    object-fit: cover;
  }
@@ -153,11 +152,11 @@
   <img style="height: 40px;width: 40px;border-radius: 50%;margin-right: 10px;" src="https://i.imgur.com/ZEQdTSH.png">
   <span class="jost-font f-20" style="flex: 1;margin-top: 3px;font-weight: bold;">MOVIES HUB</span>
   <a href="https://asbros.github.io/" target="_blank" style="text-decoration: none;margin-right: 7px">
-   <img style="height: 35px;width: 35px;border-radius: 50%;border: 1px solid #fff;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn_srWSHiwJue3vu3Hbfv4u_YM3f9d7JxLrC5zYUf_6a0JJUgNEbw6dz5R&s=10"></a></div>
+   <img style="height: 38px;width: 38px;border-radius: 50%;border: 1px solid #999;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn_srWSHiwJue3vu3Hbfv4u_YM3f9d7JxLrC5zYUf_6a0JJUgNEbw6dz5R&s=10"></a></div>
    <div style="display: flex;justify-content: center;align-items: center;padding:5px;margin-top: 10px;" id="scont">
     <select name="stype" id="stype" oninput="document.querySelector('#search').blur();search(document.querySelector('#search').value.toUpperCase());">
-     <option value="movie">Movies</option>
-     <option value="tv">Series</option>
+     <option value="movie">MOVIES</option>
+     <option value="tv">SERIES</option>
     </select>
     <input type="search" id="search" onkeyup="search(this.value.toUpperCase())" onchange="search(this.value.toUpperCase())" placeholder="Search...">
    </div>
