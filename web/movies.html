@@ -20,15 +20,51 @@
  #search {
   box-sizing: border-box;
   font-size: 16px;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 25px;
+  margin-left: 10px;
+  border: 0;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
+  background: rgba(0,0,0,0.5);font-size: 16px;
  }
+ #search:focus{outline: 1px solid #fff;}
+ input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    margin-left: .4em;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
+    background-size: contain;
+    cursor: pointer;
+}
  #stype{
-   font-size: 15px;
-   height: 43px;
-   padding: 0;
-   margin-right: 7px;
+  background-color: rgba(0,0,0,0.5);
+  font-size: 16px;
+  border: 0;
+  border-radius: 20px;
+  color: #fff;
+  line-height: 1.5em;
+  padding: 0.6em 3em 0.6em 1em;
+  margin: 0;      
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
  }
  #list{
    display: flex;
@@ -112,11 +148,19 @@
 </head>
 
 <body>
- <div class="white pad-10" style="display:flex;align-items:center;background-color: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0,0,0,.75);">
+ <div class="white pad-10" style="background-color: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0,0,0,.75);">
+  <div style="display: flex;align-items: center;">
   <img style="height: 40px;width: 40px;border-radius: 50%;margin-right: 10px;" src="https://i.imgur.com/ZEQdTSH.png">
   <span class="jost-font f-20" style="flex: 1;margin-top: 3px;font-weight: bold;">MOVIES HUB</span>
   <a href="https://asbros.github.io/" target="_blank" style="text-decoration: none;margin-right: 7px">
-   <img style="height: 35px;width: 35px;border-radius: 50%;border: 1px solid #fff;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn_srWSHiwJue3vu3Hbfv4u_YM3f9d7JxLrC5zYUf_6a0JJUgNEbw6dz5R&s=10"></a>
+   <img style="height: 35px;width: 35px;border-radius: 50%;border: 1px solid #fff;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn_srWSHiwJue3vu3Hbfv4u_YM3f9d7JxLrC5zYUf_6a0JJUgNEbw6dz5R&s=10"></a></div>
+   <div style="display: flex;justify-content: center;align-items: center;padding:5px;margin-top: 10px;" id="scont">
+    <select name="stype" id="stype" oninput="document.querySelector('#search').blur();search(document.querySelector('#search').value.toUpperCase());">
+     <option value="movie">Movies</option>
+     <option value="tv">Series</option>
+    </select>
+    <input type="search" id="search" onkeyup="search(this.value.toUpperCase())" onchange="search(this.value.toUpperCase())" placeholder="Search...">
+   </div>
  </div>
  <div class='mcon'>
   <div class='plrd jost-font' id="plrd" style="display: none;">
@@ -140,13 +184,6 @@
    </div>
   </div>
   <div id="cntt">
-   <div style="display: flex;justify-content: center;align-items: center;padding:5px 5px 0px 5px;">
-    <select class="alert-blue" name="stype" id="stype" oninput="document.querySelector('#search').blur();search(document.querySelector('#search').value.toUpperCase());">
-     <option value="movie">Movies</option>
-     <option value="tv">Series</option>
-    </select>
-    <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" onchange="search(this.value.toUpperCase())" placeholder="Search for movies/series...">
-   </div>
    <div id="list" class='chnld'>
     <!-- Loading Popular Movies... -->
    </div>
@@ -163,6 +200,7 @@
   var plrd = document.querySelector("#plrd");
   var video = document.querySelector("#video");
   var cntt = document.querySelector("#cntt");
+  var scont = document.querySelector("#scont");
   
      var list = [];
      function add(data,t){
@@ -259,6 +297,7 @@
      var imdb;
      if(id && type){
      cntt.style.display = "none";
+     scont.style.display = "none";
      plrd.style.display = "";
      var u;
      switch(type){
