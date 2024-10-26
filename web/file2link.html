@@ -57,16 +57,14 @@
     xhr.addEventListener("load", function(){
     let res = JSON.parse(this.responseText);
     if(res.status == "ok"){
-      if(true){
         $("progressBar").style.display = "none";
-        url = "https://store1.gofile.io/download/web/"+res.data.fileId+"/"+res.data.fileName;
+        url = res.data.downloadPage;
         $("txt").href = url;
         $("txt").innerText = url;
         $("btn").innerHTML = "Upload Another File";
         $("btn").removeAttribute("disabled");
         $("copy").style.display = "";
         $("btn").style.display = "";
-      }
     }else{
       alert("Sorry, try again!");
     }
