@@ -75,8 +75,6 @@
 .s-40{width: 40px !important;height: 40px !important;}
 .s-45{width: 45px !important;height: 45px !important;}
 .s-50{width: 50px !important;height: 50px !important;}
-.w-full{width: 100% !important;}
-.h-full{height: 100% !important;}
 
 /* Alerts styles background*/
 .alert-blue,.alert-red,.alert-green,.alert-yellow{padding: 13px;position: relative;border-radius: 4px;}
@@ -104,8 +102,6 @@
 /* Padding, margin and border radius */
 .pad-7{padding: 7px !important;}
 .pad-10{padding: 10px !important;}
-.pad-15{padding: 15px !important;}
-.pad-17{padding: 17px !important;}
 .margin-5{margin: 5px !important;}
 .margin-10{margin: 10px !important;}
 .radius-5{border-radius: 5px !important;}
@@ -121,11 +117,11 @@ kbd{-moz-border-radius: 3px;-moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2
 a,btn{cursor: pointer;}
 .bold{font-weight: bold !important;}
 .blur{filter: blur(7px);-webkit-filter: blur(7px);}
+.bg-blur{-webkit-backdrop-filter: blur(8px);backdrop-filter: blur(8px);}
 .drop-shadow{filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.4));-webkit-filter: drop-shadow(8px 8px 10px rgba(0,0,0,0.4));}
+.box-shadow{rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px}
+.shadow{box-shadow: rgba(45,35,66,0.4) 0px 2px 4px, rgba(45,35,66,0.3) 0px 7px 13px -3px,rgba(54,57,90,0.2) 0px -3px 0px inset;}
 .circle{border-radius:50% !important;}
 .active{transition: all 0.3s;}
 .active:active{transform: scale(0.8) !important;}
-.uppercase{text-transform: uppercase !important;}
-.lowercase{text-transform: lowercase !important;}
-.shadow{box-shadow: rgba(45,35,66,0.4) 0px 2px 4px, rgba(45,35,66,0.3) 0px 7px 13px -3px,rgba(54,57,90,0.2) 0px -3px 0px inset;}
 .no-select{user-select: none !important;-webkit-user-select: none !important;-ms-user-select: none !important;}
