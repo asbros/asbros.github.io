@@ -359,7 +359,6 @@ if(id && type){
  if(type == "movie"){
      function ser(vs){
        var cs;
-       video.setAttribute("sandbox","allow-scripts allow-same-origin allow-top-navigation");
        switch(vs){
         case 1:
           cs = "https://player.autoembed.cc/embed/movie/"+id+"?server=5";
@@ -372,7 +371,6 @@ if(id && type){
           break;
         case 4:
           cs = "https://embed.smashystream.com/dude.php?imdb="+imdb;
-          //video.removeAttribute("sandbox");
           break;
        }
        video.contentWindow.location.replace(cs);
@@ -388,7 +386,6 @@ if(id && type){
    else if(type = "tv"){
      function ser(vs){
        var cs;
-       video.setAttribute("sandbox","allow-scripts allow-same-origin allow-top-navigation");
        switch(vs){
         case 4:
           cs = "https://player.autoembed.cc/embed/tv/"+id+"?server=5";
@@ -401,7 +398,6 @@ if(id && type){
           break;
         case 3:
           cs = "https://vidbinge.dev/embed/tv/"+id+"/1/1";
-          //video.removeAttribute("sandbox");
           break;
        }
        video.contentWindow.location.replace(cs);
