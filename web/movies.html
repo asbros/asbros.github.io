@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<head>
 <title>AS Movies Hub</title>
 <meta charset='UTF-8' />
 <meta content='width=device-width, user-scalable=no' name='viewport' />
@@ -14,14 +15,13 @@
 <meta content='AS Movies Hub' name='title' />
 <meta content='A 100% free movies, web series and anime streaming website. No ads! Different Servers... and more. Watch online for free and safe.' name='description' />
 <meta content='https://asbros.github.io/web/movies,asbros.github.io/web/movies,as movies hub, AS MOVIES HUB,asbros, asbros github,free movies online, free web series online, hdhub4u, moviezilla, filmyzilla, 123movies, yesmovies, movies7, netflix, netmirror, imdb, tmdb, omdb, hindi movies, indian movies, bollywood movies, english movies, hollywood movies, tollywood movies, south movies, watch movies web series and anime online' name='keywords' />
-<meta content='https://i.imgur.com/ZEQdTSH.png' property='og:image' />
-<link href='https://i.imgur.com/ZEQdTSH.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
-<link href='https://i.imgur.com/ZEQdTSH.png' rel='apple-touch-icon' />
+<meta content='https://i.imgur.com/ZEQdTSH.png' property='og:image'/>
+<link href='https://i.imgur.com/ZEQdTSH.png' rel='shortcut icon' type='image/vnd.microsoft.icon'/>
+<link href='https://i.imgur.com/ZEQdTSH.png' rel='apple-touch-icon'/>
 <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
 <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
-<script src='https://asbros.github.io/popup.js/popup.js'></script>
 <style type='text/css'>
- *{font-family:'jost', sans-serif;user-select:none;transition: all 0.3s;}
+ *{font-family:'sen', sans-serif;user-select:none;transition: all 0.3s;}
  body{padding:0;margin: 0;background-color: rgb(22,26,29);}
  .mcon{margin:0;padding:5px;}
  .plrd{width: 100%;margin-top: 10px;}
@@ -183,10 +183,13 @@
  <div class='mcon'>
   <div class='plrd jost-font' id="plrd" style="display: none;">
     <div id="frame">
-   <button onclick="if(history.length>1){history.back()}else{window.location.href='https://asbros.github.io/web/movies'}" class="btn white shadow jost-font f-16" style="margin-bottom:10px;background:#222831;padding:5px;padding-right:10px;"><svg fill="#fff" width="30px" height="30px" viewBox="0 0 32 32" data-name="Layer 2" id="Layer_2" xmlns="http://www.w3.org/2000/svg">
+      <div style="display: flex;justify-content: space-between;margin-bottom: 10px;">
+   <button onclick="if(history.length>1){history.back()}else{window.location.href='https://asbros.github.io/web/movies'}" class="btn white shadow jost-font f-16" style="background:#222831;padding:5px;padding-right:10px;"><svg fill="#fff" width="30px" height="30px" viewBox="0 0 32 32" data-name="Layer 2" id="Layer_2" xmlns="http://www.w3.org/2000/svg">
      <path d="M11.17,10.23a33.37,33.37,0,0,0-3.05,3.13c-.51.62-1.28,1.3-1.21,2.17s.81,1.24,1.35,1.76a16.3,16.3,0,0,1,2.57,3.17c.86,1.36,3,.11,2.16-1.26a21.06,21.06,0,0,0-1.82-2.48A16.16,16.16,0,0,0,10,15.52c-.22-.21-.86-1.14-.68-.49l-.13,1a17.85,17.85,0,0,1,3.72-4c1.19-1.08-.58-2.85-1.77-1.76Z" />
      <path d="M9.4,17a109.13,109.13,0,0,0,12.53-.1c1.59-.11,1.61-2.61,0-2.5a109.13,109.13,0,0,1-12.53.1c-1.61-.07-1.6,2.43,0,2.5Z" />
     </svg>Back</button>
+   <button onclick="navigator.share({text: cTitle+' - Watch online for free!',url:window.location.href})" class="btn white shadow jost-font f-16" style="background:#222831;padding:5px;padding-right:10px;padding-left: 10px;" id="sharebtn">Share<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" style="margin-left: 4px" height="18px" fill="#fff"><path d="M 18 2 A 3 3 0 0 0 15 5 A 3 3 0 0 0 15.054688 5.5605469 L 7.9394531 9.7109375 A 3 3 0 0 0 6 9 A 3 3 0 0 0 3 12 A 3 3 0 0 0 6 15 A 3 3 0 0 0 7.9355469 14.287109 L 15.054688 18.439453 A 3 3 0 0 0 15 19 A 3 3 0 0 0 18 22 A 3 3 0 0 0 21 19 A 3 3 0 0 0 18 16 A 3 3 0 0 0 16.0625 16.712891 L 8.9453125 12.560547 A 3 3 0 0 0 9 12 A 3 3 0 0 0 8.9453125 11.439453 L 16.060547 7.2890625 A 3 3 0 0 0 18 8 A 3 3 0 0 0 21 5 A 3 3 0 0 0 18 2 z"/></svg></button>
+   </div>
    <iframe allowfullscreen id='video' sandbox="allow-scripts allow-same-origin allow-top-navigation"></iframe>
    <div id="servers" style="display: flex;flex-direction: row;flex-wrap: nowrap;padding: 10px 0px;overflow-x: hidden;background: none;margin-top: 10px;justify-content: center;">
      <!--<div style="color: #fff;font-style: 17px;display: flex;align-items: center;justify-content: center;margin-right: 15px;">Servers: </div>-->
@@ -197,9 +200,9 @@
    </div>
    </div>
    <div id="det" class="pad-15" style="background-color: #222831;">
-    <div id="dname" style="font-size: 22px;font-weight: bold;color:#b30909;"></div>
+    <div id="dname" style="font-size: 22px;font-weight: bold;color:#b30909;padding: 0px 10px;padding-top: 5px;font-family: 'Poppins"></div>
     <hr>
-    <div id="dover" style="font-size: 16px;margin-bottom: 20px;color: #eee;word-wrap: break-word;"></div>
+    <div id="dover" style="font-size: 16px;margin-bottom: 20px;color: #eee;word-wrap: break-word;padding: 0px 10px;"></div>
     <div id="casts"></div>
    </div>
   </div>
@@ -216,6 +219,9 @@
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
  <script>
+ if (!navigator.share) {
+   document.querySelector("#sharebtn").style.display = "none";
+ }
   var dlst = document.querySelector("#list");
   var plrd = document.querySelector("#plrd");
   var video = document.querySelector("#video");
@@ -265,27 +271,6 @@
   });
  }
   
-  var isSearch = false;
-  function search(q){
-   if(q.trim()){
-   isSearch = true;
-   dlst.innerHTML = `Searching for “${q}”`;
-    document.querySelector("#more").style.display = "none";
-  var t = document.getElementById("stype").value;
-  var url = 'https://api.themoviedb.org/3/search/'+t+'?query='+q.trim()+'&api_key=d0b6d12cc20f0c9f7ebba84813da8766';
-     fetch(url)
-     .then(response => response.json())
-     .then((data) => {
-   add(data.results,t);
-     });
-  }else{
-    list = [];
-    auto(1);
-    isSearch = false;
-    document.querySelector("#more").style.display = "";
-  }
-  }
-  
   const options = {
   method: 'GET',
   headers: {
@@ -306,6 +291,27 @@
      });
    }
     auto(1);
+  
+  var isSearch = false;
+  function search(q){
+   if(q.trim()){
+   isSearch = true;
+   dlst.innerHTML = `Searching for “${q}”`;
+    document.querySelector("#more").style.display = "none";
+  var t = document.getElementById("stype").value;
+  var url = 'https://api.themoviedb.org/3/search/'+t+'?query='+q.trim()+'&api_key=d0b6d12cc20f0c9f7ebba84813da8766';
+     fetch(url)
+     .then(response => response.json())
+     .then((data) => {
+   add(data.results,t);
+     });
+  }else{
+    list = [];
+    auto(1);
+    isSearch = false;
+    document.querySelector("#more").style.display = "";
+  }
+  }
   var dname = document.querySelector("#dname");
   var dover = document.querySelector("#dover");
   var lq = window.location.search;
@@ -342,7 +348,9 @@ if(id && type){
      }
      video.src = u;
   }
+  var cTitle;
   function det(title,overview,imdb_id){
+    cTitle = title;
    dname.innerText = title;
    dover.innerText = overview;
    imdb = imdb_id;
@@ -442,5 +450,4 @@ if(id && type){
 }
  </script>
 </body>
-
 </html>
