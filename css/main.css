@@ -75,6 +75,8 @@
 .s-40{width: 40px !important;height: 40px !important;}
 .s-45{width: 45px !important;height: 45px !important;}
 .s-50{width: 50px !important;height: 50px !important;}
+.w-full{width: 100% !important;}
+.h-full{height: 100% !important;}
 
 /* Alerts styles background*/
 .alert-blue,.alert-red,.alert-green,.alert-yellow{padding: 13px;position: relative;border-radius: 4px;}
@@ -102,6 +104,8 @@
 /* Padding, margin and border radius */
 .pad-7{padding: 7px !important;}
 .pad-10{padding: 10px !important;}
+.pad-15{padding: 15px !important;}
+.pad-17{padding: 17px !important;}
 .margin-5{margin: 5px !important;}
 .margin-10{margin: 10px !important;}
 .radius-5{border-radius: 5px !important;}
