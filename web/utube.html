@@ -309,7 +309,7 @@ main.style.display = "block";
   if(id){
     loader = as.loader();
     loader.show();
-  fetch("https://invidious.jing.rocks/api/v1/videos/"+id)
+  fetch("https://inv.nadeko.net/api/v1/videos/"+id)
   .then(r => r.json())
   .then(x => play(x));
   loader.hide();
