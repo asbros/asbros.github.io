@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
  <meta charset="UTF-8">
  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -210,6 +209,7 @@
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
  <script>
+ javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   var uri = window.location.toString();
   if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
   
@@ -498,6 +498,13 @@
   function list(l){
    l.forEach(item);
   }
+  const options = {
+  	method: 'GET',
+  	headers: {
+  		'X-RapidAPI-Key': '3a6008168fmshc89e2b9e019262ap1db9f8jsne1aad62d8bff',
+  		'X-RapidAPI-Host': 'yt-api.p.rapidapi.com'
+  	}
+  };
   function item(i,n) {
    var vid,id,body,img,time,title,foot,chnm,chtxt;
    id = i.url.substring(9);
@@ -542,7 +549,15 @@
        videoId = id;
        cSong = n;
        sing(x,imgsrc);
-     });
+     })
+     .catch(e => {
+fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
+  .then(response => response.json())
+  .then(x => {
+    audio.src = x.formats[x.formats.length-1].url;
+    play.click();
+  });
+     })
    }
    all_songs.appendChild(vid);
   }
