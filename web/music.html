@@ -107,7 +107,7 @@
     }
     #timer::-moz-range-track {
     height: 7px;
-    background: #ccc;
+    background: #fff;
     border-radius: 0px;
     }
     #timer::-webkit-slider-thumb {
@@ -123,7 +123,7 @@
     height: 7px;
     width: 7px;
     background-color: #fff;
-    border: 1px solid #fff;
+    border: 1px solid #f00;
     box-shadow: -407px 0 0 400px #fff;
     }
     #ctime{float: left}
@@ -173,7 +173,7 @@
    <div class="wrap"><span id="title">Loading Song...</span></div>
    <div class="wrap"><span id="artists"></span></div>
    <div id="time">
-    <input id="timer" disabled="true" type="range" min="0" value="0">
+    <input id="timer" type="range" min="0" value="0">
     <div>
      <span id="ctime">0:00</span>
      <span id="ttime">0:00</span>
@@ -191,7 +191,7 @@
    </div>
   </div>
  </div>
- <div id="playing" class="shadow" style="padding: 10px;background: rgba(10,45,25,1);color: #fff;position: fixed;bottom: -101%;left: 0px;right: 0px;z-index: 9;display: flex;align-items: center;">
+ <div id="playing" class="box-shadow" style="padding: 7px;background: rgba(10,45,25,1);color: #fff;position: fixed;bottom: -110%;left: 10px;right: 10px;z-index: 9;display: flex;align-items: center;border-radius: 40px;">
   <img id="play_img" style="width: 50px;height: 50px;border-radius: 50%;margin-right: 10px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
    <div id="play_title" style="font-size: 16px;font-weight: bold;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
@@ -209,7 +209,6 @@
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
  <script>
- javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   var uri = window.location.toString();
   if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
   
@@ -247,6 +246,16 @@
      "id": "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g",
     "image": "https://lh3.googleusercontent.com/YZdpsbRWLdPleKHBP4s3mvrpdhzuWAXIY8nSQbZmCDB_9LO-SsRH9csMThHheFcwsvvVM0ROisidL271=w544-h544-s-l90-rj",
    },
+   {
+     "name": "Best Of Arijit Singh",
+     "id": "PL0Z67tlyTaWq7xmJYR0Im1fwtIhc0T0_6",
+    "image": "https://i.scdn.co/image/ab67616d0000b273e0129ac6975a3a8b658f708b",
+   },
+   {
+     "name": "Glory",
+     "id": "PL9bw4S5ePsEG_nRuruWzLzfXeqNIWOtHe",
+    "image": "https://lh3.googleusercontent.com/0Xeyqa11v6fdHI-GkU1ReWrF21yDokQ8hRZ0utN6NAmLt6WMZMmayuCG6fvu_1-zIHb86RsDg3qctKun=w544-h544-l90-rj",
+   },
      {
        "name": "Bollywood Dance Hitlist",
        'id': "RDCLAK5uy_kjNBBWqyQ_Cy14B0P4xrcKgd39CRjXXKk",
@@ -283,7 +292,7 @@
        "image": "https://lh3.googleusercontent.com/Ln2MJlJACFseZCGUtX3IOYdnNzRGH64TEjS9Dw7rPjSWI5pa7SGyfXzTigRVqPSGKXz29JlIB-5S-A=w544-h544-l90-rj"
      }
    ]
-  var queries = ["bollywood",'haryanvi','hindi romantic','hindi','hindi remake'];
+  var queries = ["t-series","zee music company","shemaroo music"];
     function q(){
       var cpq = queries[Math.floor(Math.random() * queries.length)];
       return cpq;
@@ -373,7 +382,7 @@
      $("#top_playlists").appendChild(div);
   });
   for(var i = 0;i < 3;i++){
-  fetch("https://pipedapi.kavin.rocks/search?filter=music_songs&q="+q())
+  fetch("https://pipedapi.kavin.rocks/search?filter=music_videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -383,7 +392,7 @@
   }
   lodmor.style.display = "";
   lodmor.onclick = function(){
-   fetch("https://pipedapi.kavin.rocks/search?filter=music_songs&q="+q())
+   fetch("https://pipedapi.kavin.rocks/search?filter=music_videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -399,7 +408,7 @@
    all_songs.innerHTML = "";
    sinput.value = "";
    sinput.blur();
-   fetch("https://pipedapi.kavin.rocks/search?filter=music_songs&q=" + s_page)
+   fetch("https://pipedapi.kavin.rocks/search?filter=music_videos&q=" + s_page)
    .then(r => r.json())
    .then((x) => {
      loader.hide();
@@ -414,7 +423,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function() {
          var rnp = encodeURIComponent(cnp);
-         fetch("https://pipedapi.kavin.rocks/nextpage/search?nextpage=" + rnp + "&filter=music_songs&q=" + s_page)
+         fetch("https://pipedapi.kavin.rocks/nextpage/search?nextpage=" + rnp + "&filter=music_videos&q=" + s_page)
            .then(s => s.json())
            .then((z) => {
              cList = (z.items);
@@ -498,25 +507,19 @@
   function list(l){
    l.forEach(item);
   }
-  const options = {
-  	method: 'GET',
-  	headers: {
-  		'X-RapidAPI-Key': '3a6008168fmshc89e2b9e019262ap1db9f8jsne1aad62d8bff',
-  		'X-RapidAPI-Host': 'yt-api.p.rapidapi.com'
-  	}
-  };
   function item(i,n) {
    var vid,id,body,img,time,title,foot,chnm,chtxt;
    id = i.url.substring(9);
    vid = document.createElement("div");
    vid.classList.add("vid");
+   vid.classList.add("ripple");
    body = document.createElement("div");
    img = document.createElement("img");
-   var imgsrc = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+   var imgsrc;
    if(!p_page){
-    imgsrc = i.thumbnail;
+    imgsrc = "https://i.ytimg.com/vi/"+id+"/mqdefault.jpg";
    }else{
-     imgsrc = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+     imgsrc = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
      img.classList.add("plistimg");
    }
    img.src = imgsrc;
@@ -542,22 +545,22 @@
    vid.appendChild(body);
    vid.appendChild(foot);
    vid.onclick = function(){
-     playing.style.bottom = "0px";
-     fetch("https://pipedapi.kavin.rocks/streams/"+id)
+     playing.style.bottom = "10px";
+    /* fetch("https://pipedapi.kavin.rocks/streams/"+id)
      .then(y => y.json())
      .then((x) => {
        videoId = id;
        cSong = n;
        sing(x,imgsrc);
      })
-     .catch(e => {
-fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
+     .catch(e => {});*/
+fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id)
   .then(response => response.json())
   .then(x => {
-    audio.src = x.formats[x.formats.length-1].url;
-    play.click();
+       videoId = id;
+       cSong = n;
+    singerr(x.data,imgsrc);
   });
-     })
    }
    all_songs.appendChild(vid);
   }
@@ -600,6 +603,45 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
    }
    play.click();
   }
+  function singerr(s, fav) {
+   play_title.innerText = "Loading...";
+   audio.pause();
+   var urls = s.video_formats;
+   audio.src = urls[0].url;
+   title.innerText = s.title;
+   play_title.innerText = s.title;
+   document.title = s.title;
+   image.src = s.thumbnail;
+   play_img.src = s.thumbnail;
+   if(p_page){
+     image.classList.add("long");
+   }
+   //artists.innerText = s.tags;
+   ttime.innerText = stm(s.duration);
+   timer.setAttribute("min", 0);
+   timer.setAttribute("max", s.duration);
+   $("#player").style.backgroundImage = "url(" + s.thumbnail + ")";
+   sessionStorage.setItem("n",s.title);
+   sessionStorage.setItem("i",s.thumbnail);
+   sessionStorage.setItem("x",videoId);
+   sessionStorage.setItem("d",s.duration);
+       if(localStorage.getItem(videoId)){
+         like.style.display = "none";
+         liked.style.display = "";
+       }else{
+         liked.style.display = "none";
+         like.style.display = "";
+       }
+   if (fav) {
+     if ("mediaSession" in navigator) {
+       navigator.mediaSession.metadata = new MediaMetadata({
+         title: s.title,
+         artwork: [{ src: fav, sizes: "96x96" }, { src: fav, sizes: "128x128" }, { src: fav, sizes: "192x192" }, { src: fav, sizes: "256x256" }, { src: fav, sizes: "384x384" }, { src: fav, sizes: "512x512" }]
+       });
+     }
+   }
+   play.click();
+  }
   play.onclick = play_play.onclick = function(){
    audio.play();
   }
@@ -619,11 +661,11 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://pipedapi.kavin.rocks/streams/"+id)
+   fetch("https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v="+id)
      .then(y => y.json())
      .then((x) => {
         var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
-       sing(x,thumb);
+       singerr(x.data,thumb);
        if(localStorage.getItem(id)){
          like.style.display = "none";
          liked.style.display = "";
@@ -645,11 +687,11 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://pipedapi.kavin.rocks/streams/"+id)
+   fetch("https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v="+id)
      .then(y => y.json())
      .then((x) => {
         var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
-       sing(x,thumb);
+       singerr(x.data,thumb);
        if(localStorage.getItem(id)){
          like.style.display = "none";
          liked.style.display = "";
@@ -659,10 +701,10 @@ fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
        }
      });
   }
-  /*timer.onchange = function(){
+  timer.onchange = function(){
    audio.currentTime = this.value;
    ctime.innerText = stm(audio.currentTime);
-  }*/
+  }
   audio.onplay = function(){
    play.style.display = "none";
    pause.style.display = "";
