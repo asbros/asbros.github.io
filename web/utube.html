@@ -316,7 +316,6 @@ main.style.display = "block";
   .then(x => {play(x);loader.hide();})
   .catch(e => {
     loader.hide();
-    vidS(id);
    /*v_video.style.display = "none";
    v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&rel=0");
    v_iframe.style.display = "block";
@@ -659,11 +658,10 @@ var orientation = "landscape";
     if(isShort == "true"){
       orientation = 'portrait';
     }
-  function vidS(x){
   const player = await VidstackPlayer.create({
     target: '#v_video',
     title: document.title,
-    src: 'https://www.youtube.com/watch?v='+x,
+    src: 'https://www.youtube.com/watch?v='+sid,
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0i8Bk48DkEu73e9DlgO2S-DqKVQn8A8GkKMe-kKMyRB6uUqPrWfKZGJoN&s=10",
     autoPlay: true,
     autoQuality: true,
@@ -675,7 +673,6 @@ var orientation = "landscape";
       thumbnails: '',
     })
   });
-  }
     if(isShort == "true"){
       v_video.style.height = "480px";
       v_video.style.width = "270px";
