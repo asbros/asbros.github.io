@@ -315,6 +315,7 @@ main.style.display = "block";
   .then(r => r.json())
   .then(x => {play(x);loader.hide();})
   .catch(e => {
+    loader.hide();
     vidS(id);
    /*v_video.style.display = "none";
    v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&rel=0");
