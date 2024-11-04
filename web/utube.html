@@ -659,7 +659,7 @@ var sprm = new URLSearchParams(link);
 var sid = sprm.get("v");
 var isShort = sprm.get("shorts");
 var orientation = "landscape";
-  if(sid && (sessionStorage.getItem("error") == "true")){
+  if(sid){
     if(isShort == "true"){
       orientation = 'portrait';
     }
