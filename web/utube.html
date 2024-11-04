@@ -149,7 +149,6 @@ input[type="search"]::-webkit-search-cancel-button {
  <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
   <script>
-    javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
 var loader = as.loader();
 function convertSeconds(seconds){
   const hours = Math.floor(seconds / 3600)
@@ -313,18 +312,23 @@ main.style.display = "block";
     loader.show();
   fetch("https://inv.nadeko.net/api/v1/videos/"+id)
   .then(r => r.json())
-  .then(x => {play(x);loader.hide();})
-  .catch(e => {
+  .then(x => {
+    play(x);
     loader.hide();
-   /*v_video.style.display = "none";
-   v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&rel=0");
-   v_iframe.style.display = "block";
+    sessionStorage.setItem("error","false");
+    })
+  .catch(e => {
+    sessionStorage.setItem("error","true");
+    
   v_details.style.display = "";
-  document.querySelector("#v_chdet").style.display = "none";
+    document.querySelector("#v_chdet").style.display = "none";
   document.querySelector("#v_lik").style.display = "none";
   document.querySelector("#v_dbtn").style.display = "none";
-  document.body.classList.add("error");
-  loader.hide();*/
+    loader.hide();
+   /*v_video.style.display = "none";
+v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&rel=0");
+   v_iframe.style.display = "block";
+  */
   })
   var video = document.querySelector("#video");
   video.style.display = "block";
@@ -655,12 +659,13 @@ var sprm = new URLSearchParams(link);
 var sid = sprm.get("v");
 var isShort = sprm.get("shorts");
 var orientation = "landscape";
+  if(sid && (sessionStorage.getItem("error") == "true")){
     if(isShort == "true"){
       orientation = 'portrait';
     }
   const player = await VidstackPlayer.create({
     target: '#v_video',
-    title: document.title,
+    title: "",
     src: 'https://www.youtube.com/watch?v='+sid,
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0i8Bk48DkEu73e9DlgO2S-DqKVQn8A8GkKMe-kKMyRB6uUqPrWfKZGJoN&s=10",
     autoPlay: true,
@@ -677,6 +682,7 @@ var orientation = "landscape";
       v_video.style.height = "480px";
       v_video.style.width = "270px";
     }
+  }
 </script>
 </body>
 </html>
