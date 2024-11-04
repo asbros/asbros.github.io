@@ -3,12 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sen&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 .josefin-font{font-family: 'Josefin Sans';}
 .poppins-font{font-family: 'Poppins';}
 .jost{font-family: 'Jost', sans-serif;}
 .sen{font-family: "Sen", sans-serif;}
-.inter{font-family: "Inter", sans-serif;}
 /* css variables */
 :root{
   --red: #dc3545;
