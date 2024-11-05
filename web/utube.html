@@ -665,8 +665,8 @@ var orientation = "landscape";
     }
   const player = await VidstackPlayer.create({
     target: '#v_video',
-    title: "Utube",
-    src: 'https://www.youtube.com/watch?v='+sid,
+    title: "",
+    src: 'youtube/'+sid,
     poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0i8Bk48DkEu73e9DlgO2S-DqKVQn8A8GkKMe-kKMyRB6uUqPrWfKZGJoN&s=10",
     autoPlay: true,
     autoQuality: true,
@@ -677,15 +677,13 @@ var orientation = "landscape";
   viewType: 'video',
   streamType: 'on-demand',
   logLevel: 'warn',
-  crossOrigin: true
+  crossOrigin: true,
+    layout
   });
-    /*if(isShort == "true"){
-    const player = await VidstackPlayer.create({
-    fullscreenOrientation: 'portrait',
-    })
+    if(isShort == "true"){
       v_video.style.height = "480px";
       v_video.style.width = "100%";
-    }*/
+    }
   }
 </script>
 </body>
