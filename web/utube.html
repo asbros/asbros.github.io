@@ -661,9 +661,7 @@ var isShort = sprm.get("shorts");
 var orientation = "landscape";
   if(sid){
     if(isShort == "true"){
-      const player = await VidstackPlayer.create({
-    fullscreenOrientation: 'portrait',
-    })
+      orientation = "portrait"
     }
   const player = await VidstackPlayer.create({
     target: '#v_video',
