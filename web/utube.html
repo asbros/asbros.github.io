@@ -674,17 +674,18 @@ var orientation = "landscape";
     loop: true,
     fullscreenOrientation: 'landscape',
     playsInline: true,
-    layout: new VidstackPlayerLayout({
-    thumbnails: '',
-    })
+  viewType: 'video',
+  streamType: 'on-demand',
+  logLevel: 'warn',
+  crossOrigin: true
   });
-    if(isShort == "true"){
+    /*if(isShort == "true"){
     const player = await VidstackPlayer.create({
     fullscreenOrientation: 'portrait',
     })
       v_video.style.height = "480px";
       v_video.style.width = "100%";
-    }
+    }*/
   }
 </script>
 </body>
