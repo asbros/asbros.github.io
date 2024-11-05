@@ -661,7 +661,9 @@ var isShort = sprm.get("shorts");
 var orientation = "landscape";
   if(sid){
     if(isShort == "true"){
-      orientation = 'portrait';
+      const player = await VidstackPlayer.create({
+    fullscreenOrientation: 'portrait',
+    })
     }
   const player = await VidstackPlayer.create({
     target: '#v_video',
@@ -672,15 +674,18 @@ var orientation = "landscape";
     autoQuality: true,
     canPictureInPicture: true,
     loop: true,
-    fullscreenOrientation: orientation,
+    fullscreenOrientation: 'landscape',
     playsInline: true,
     layout: new VidstackPlayerLayout({
     thumbnails: '',
     })
   });
     if(isShort == "true"){
+    const player = await VidstackPlayer.create({
+    fullscreenOrientation: 'portrait',
+    })
       v_video.style.height = "480px";
-      v_video.style.width = "270px";
+      v_video.style.width = "100%";
     }
   }
 </script>
