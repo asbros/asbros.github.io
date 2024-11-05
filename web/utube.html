@@ -324,12 +324,12 @@ main.style.display = "block";
     document.querySelector("#v_chdet").style.display = "none";
   document.querySelector("#v_lik").style.display = "none";
   document.querySelector("#v_dbtn").style.display = "none";
-    loader.hide();
    /*v_video.style.display = "none";
 v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&rel=0");
    v_iframe.style.display = "block";
   */
   })
+    loader.hide();
   var video = document.querySelector("#video");
   video.style.display = "block";
   main.style.display = "";
@@ -667,11 +667,7 @@ var orientation = "landscape";
     target: '#v_video',
     title: "",
     src: 'youtube/'+sid,
-    autoPlay: true,
-    autoQuality: true,
-    canPictureInPicture: true,
-    loop: true,
-    fullscreenOrientation: 'landscape',
+    poster: "https://i.ytimg.com/vi/"+sid+"/mqdefault.jpg";,
     playsInline: true,
   viewType: 'video',
   streamType: 'on-demand',
