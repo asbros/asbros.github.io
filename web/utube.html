@@ -678,7 +678,9 @@ var orientation = "landscape";
   streamType: 'on-demand',
   logLevel: 'warn',
   crossOrigin: true,
-    layout
+  layout: new VidstackPlayerLayout({
+    thumbnails: '',
+    })
   });
     if(isShort == "true"){
       v_video.style.height = "480px";
