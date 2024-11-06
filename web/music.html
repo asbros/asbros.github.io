@@ -516,11 +516,7 @@
    body = document.createElement("div");
    img = document.createElement("img");
    var imgsrc;
-   if(!p_page){
-    imgsrc = "https://i.ytimg.com/vi/"+id+"/mqdefault.jpg";
-   }else{
      imgsrc = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
-   }
    img.src = imgsrc;
    img.classList.add("plistimg");
    time = document.createElement("div");
@@ -554,6 +550,7 @@
        sing(x,imgsrc);
      })
      .catch(e => {});*/
+   audio.pause();
 fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id)
   .then(response => response.json())
   .then(x => {
