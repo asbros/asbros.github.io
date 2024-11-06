@@ -550,6 +550,7 @@
        sing(x,imgsrc);
      })
      .catch(e => {});*/
+    play_title.innerText = "Loading...";
    audio.pause();
 fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id)
   .then(response => response.json())
@@ -610,9 +611,7 @@ fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id
    document.title = s.title;
    image.src = s.thumbnail;
    play_img.src = s.thumbnail;
-   if(p_page){
      image.classList.add("long");
-   }
    //artists.innerText = s.tags;
    ttime.innerText = stm(s.duration);
    timer.setAttribute("min", 0);
