@@ -520,9 +520,9 @@
     imgsrc = "https://i.ytimg.com/vi/"+id+"/mqdefault.jpg";
    }else{
      imgsrc = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
-     img.classList.add("plistimg");
    }
    img.src = imgsrc;
+   img.classList.add("plistimg");
    time = document.createElement("div");
    time.innerText = stm(i.duration);
    time.classList.add("time");
