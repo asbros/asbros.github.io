@@ -3,10 +3,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 .josefin-font{font-family: 'Josefin Sans';}
 .poppins-font{font-family: 'Poppins';}
 .jost{font-family: 'Jost', sans-serif;}
 .sen{font-family: "Sen", sans-serif;}
+.lato{font-family: "Lato", sans-serif;}
 /* css variables */
 :root{
   --red: #dc3545;
