@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,7 +70,7 @@
     backdrop-filter: blur(20px);
   }
     #image{
-    width: 200px;
+    width: 300px;
     height: 200px;
     border-radius: 15px;
     object-fit: cover;
@@ -78,7 +79,7 @@
     .long{height: 180px !important;width: 320px !important;}
    .wrap{text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
   #title{font-size: 30px;line-height: 50px;}
-  #artists{font-size: 16px;line-height: 30px;opacity: 0.8;}
+  #artists{font-size: 16px;opacity: 0.8;}
   #controls button,#close{
     background: none;
     border: 0;
@@ -382,7 +383,7 @@
      $("#top_playlists").appendChild(div);
   });
   for(var i = 0;i < 3;i++){
-  fetch("https://pipedapi.kavin.rocks/search?filter=music_videos&q="+q())
+  fetch("https://api.piped.yt/search?filter=music_videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -392,7 +393,7 @@
   }
   lodmor.style.display = "";
   lodmor.onclick = function(){
-   fetch("https://pipedapi.kavin.rocks/search?filter=music_videos&q="+q())
+   fetch("https://api.piped.yt/search?filter=music_videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -408,7 +409,7 @@
    all_songs.innerHTML = "";
    sinput.value = "";
    sinput.blur();
-   fetch("https://pipedapi.kavin.rocks/search?filter=music_videos&q=" + s_page)
+   fetch("https://api.piped.yt/search?filter=music_videos&q=" + s_page)
    .then(r => r.json())
    .then((x) => {
      loader.hide();
@@ -423,7 +424,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function() {
          var rnp = encodeURIComponent(cnp);
-         fetch("https://pipedapi.kavin.rocks/nextpage/search?nextpage=" + rnp + "&filter=music_videos&q=" + s_page)
+         fetch("https://api.piped.yt/nextpage/search?nextpage=" + rnp + "&filter=music_videos&q=" + s_page)
            .then(s => s.json())
            .then((z) => {
              cList = (z.items);
@@ -443,7 +444,7 @@
    sinput.value = "";
    searchss.style.display = "none";
    all_songs.innerHTML = "";
-   fetch("https://pipedapi.kavin.rocks/playlists/" + p_page)
+   fetch("https://api.piped.yt/playlists/" + p_page)
    .then(r => r.json())
    .then((x) => {
      $("#top_playlists").innerHTML = `${x.name}`;
@@ -457,7 +458,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function(){
        var rnp = encodeURIComponent(cnp);
-       fetch("https://pipedapi.kavin.rocks/nextpage/playlists/"+p_page+"?nextpage="+rnp)
+       fetch("https://api.piped.yt/nextpage/playlists/"+p_page+"?nextpage="+rnp)
        .then(s => s.json())
        .then((z) => {
          var nList = (z.relatedStreams);
@@ -512,7 +513,7 @@
    id = i.url.substring(9);
    vid = document.createElement("div");
    vid.classList.add("vid");
-   vid.classList.add("ripple");
+   vid.classList.add("active");
    body = document.createElement("div");
    img = document.createElement("img");
    var imgsrc;
@@ -542,7 +543,7 @@
    vid.appendChild(foot);
    vid.onclick = function(){
      playing.style.bottom = "10px";
-    /* fetch("https://pipedapi.kavin.rocks/streams/"+id)
+    /* fetch("https://api.piped.yt/streams/"+id)
      .then(y => y.json())
      .then((x) => {
        videoId = id;
@@ -552,12 +553,12 @@
      .catch(e => {});*/
     play_title.innerText = "Loading...";
    audio.pause();
-fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id)
+fetch('https://video-api-transform.vercel.app/api/streams/' + id)
   .then(response => response.json())
   .then(x => {
        videoId = id;
        cSong = n;
-    singerr(x.data,imgsrc);
+    sing(x,imgsrc);
   });
    }
    all_songs.appendChild(vid);
@@ -566,59 +567,22 @@ fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id
    play_title.innerText = "Loading...";
    audio.pause();
    var urls = s.audioStreams;
-   audio.src = urls[1].url;
+   audio.src = urls[0].url;
    title.innerText = s.title;
    play_title.innerText = s.title;
    document.title = s.title;
-   image.src = s.thumbnailUrl;
-   play_img.src = s.thumbnailUrl;
+   image.src = "https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg";
+   play_img.src = "https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg";
    if(p_page){
      image.classList.add("long");
    }
-   artists.innerText = s.tags;
+   artists.innerText = s.uploader;
    ttime.innerText = stm(s.duration);
    timer.setAttribute("min", 0);
    timer.setAttribute("max", s.duration);
    $("#player").style.backgroundImage = "url(" + s.thumbnailUrl + ")";
    sessionStorage.setItem("n",s.title);
    sessionStorage.setItem("i",s.thumbnailUrl);
-   sessionStorage.setItem("x",videoId);
-   sessionStorage.setItem("d",s.duration);
-       if(localStorage.getItem(videoId)){
-         like.style.display = "none";
-         liked.style.display = "";
-       }else{
-         liked.style.display = "none";
-         like.style.display = "";
-       }
-   if (fav) {
-     if ("mediaSession" in navigator) {
-       navigator.mediaSession.metadata = new MediaMetadata({
-         title: s.title,
-         artwork: [{ src: fav, sizes: "96x96" }, { src: fav, sizes: "128x128" }, { src: fav, sizes: "192x192" }, { src: fav, sizes: "256x256" }, { src: fav, sizes: "384x384" }, { src: fav, sizes: "512x512" }]
-       });
-     }
-   }
-   play.click();
-  }
-  function singerr(s, fav) {
-   play_title.innerText = "Loading...";
-   audio.pause();
-   var urls = s.video_formats;
-   audio.src = urls[0].url;
-   title.innerText = s.title;
-   play_title.innerText = s.title;
-   document.title = s.title;
-   image.src = s.thumbnail;
-   play_img.src = s.thumbnail;
-     image.classList.add("long");
-   //artists.innerText = s.tags;
-   ttime.innerText = stm(s.duration);
-   timer.setAttribute("min", 0);
-   timer.setAttribute("max", s.duration);
-   $("#player").style.backgroundImage = "url(" + s.thumbnail + ")";
-   sessionStorage.setItem("n",s.title);
-   sessionStorage.setItem("i",s.thumbnail);
    sessionStorage.setItem("x",videoId);
    sessionStorage.setItem("d",s.duration);
        if(localStorage.getItem(videoId)){
@@ -657,10 +621,10 @@ fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v="+id)
+   fetch("https://video-api-transform.vercel.app/api/streams/"+id)
      .then(y => y.json())
      .then((x) => {
-        var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+        var thumb = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
        singerr(x.data,thumb);
        if(localStorage.getItem(id)){
          like.style.display = "none";
@@ -683,10 +647,10 @@ fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v="+id)
+   fetch("https://video-api-transform.vercel.app/api/streams/"+id)
      .then(y => y.json())
      .then((x) => {
-        var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+        var thumb = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
        singerr(x.data,thumb);
        if(localStorage.getItem(id)){
          like.style.display = "none";
@@ -750,7 +714,7 @@ fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id
   }*/
   sinput.addEventListener("input",function(){
    if(this.value != ""){
-   fetch("https://pipedapi.kavin.rocks/suggestions/?query="+this.value.trim())
+   fetch("https://api.piped.yt/suggestions/?query="+this.value.trim())
    .then(r => r.json())
    .then(x => {
      searchss.style.display = "";
@@ -865,6 +829,7 @@ fetch('https://cdn58.savetube.su/info?url=https://www.youtube.com/watch?v=' + id
    alert("Call Ajax to Refresh");
   }*/
   }
+  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
  </script>
 </body>
 
