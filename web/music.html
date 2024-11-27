@@ -67,7 +67,7 @@
     justify-content: space-around;
     padding: 25px;
     background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(25px);
   }
     #image{
     width: 300px;
@@ -580,9 +580,9 @@ fetch('https://video-api-transform.vercel.app/api/streams/' + id)
    ttime.innerText = stm(s.duration);
    timer.setAttribute("min", 0);
    timer.setAttribute("max", s.duration);
-   $("#player").style.backgroundImage = "url(" + s.thumbnailUrl + ")";
+   $("#player").style.backgroundImage = "url(" + "https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg" + ")";
    sessionStorage.setItem("n",s.title);
-   sessionStorage.setItem("i",s.thumbnailUrl);
+   sessionStorage.setItem("i","https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg");
    sessionStorage.setItem("x",videoId);
    sessionStorage.setItem("d",s.duration);
        if(localStorage.getItem(videoId)){
