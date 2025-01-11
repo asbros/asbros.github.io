@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
  <meta charset="UTF-8">
  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <title>AS Music</title>
- <meta content='#000' name='theme-color' />
+ <meta content='#dc3545' name='theme-color' />
  <meta charset='utf-8' />
  <meta content='width=device-width, initial-scale=1.0' name='viewport' />
  <meta content='https://i.imgur.com/p081OXx.png' property='og:image' />
@@ -66,29 +67,29 @@
     justify-content: space-around;
     padding: 25px;
     background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(20px);
   }
     #image{
-    width: 320px;
-    height: 180px;
+    width: 300px;
+    height: 200px;
     border-radius: 15px;
     object-fit: cover;
     box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
     }
     .long{height: 180px !important;width: 320px !important;}
    .wrap{text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-  #title{font-size: 30px;line-height: 50px;}
-  #artists{font-size: 16px;opacity: 0.8;}
+  #title{font-size: 25px;}
+    #artists{font-size: 20px;opacity: 0.8;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
   #controls button,#close{
     background: none;
     border: 0;
     }
     #controls span,#close span,#play_play span,#play_pause span{
-    font-size: 35px;
+    font-size: 40px;
     }
     #play_next span{font-size: 28px;}
     #play span, #pause span{
-    font-size: 62px;
+    font-size: 65px;
     }
     #time{width: 100%}
   #timer {
@@ -107,7 +108,7 @@
     }
     #timer::-moz-range-track {
     height: 7px;
-    background: #fff;
+    background: #ccc;
     border-radius: 0px;
     }
     #timer::-webkit-slider-thumb {
@@ -123,7 +124,7 @@
     height: 7px;
     width: 7px;
     background-color: #fff;
-    border: 1px solid #f00;
+    border: 1px solid #fff;
     box-shadow: -407px 0 0 400px #fff;
     }
     #ctime{float: left}
@@ -144,7 +145,7 @@
       #top_playlists > div{}
       #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
       .vid{width: 300px;}
-      #playing{width: 360px;left: calc(100% - 380px) !important;}
+      #playing{width: 360px;left: calc(100% - 370px) !important;margin-bottom: 10px !important;border-radius: 50px}
       #player{height: 500px !important;width: 380px;left: calc(100% - 380px) !important;}
     }
  </style>
@@ -155,6 +156,7 @@
   <a href="https://asbros.github.io/web/music"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://i.imgur.com/p081OXx.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Music</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
+    <button id="liked_playlists" class="active"><span class="material-symbols-outlined" style="font-size: 33px;color: #C51104;">favorite</span></button>
  </div>
  <div id="searchss" style="display: none;"></div>
  <div id="main" style="margin-top:85px;">
@@ -165,7 +167,6 @@
  <div id="player" style="position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;height: calc(100%)">
   <div id="song">
    <div style="width: 100%">
-    <button id="liked_playlists" class="active"><span class="material-symbols-outlined" style="font-size: 33px;color: #C51104;">favorite</span></button>
     <button class='active' id='close' style='float: right;'><span class="material-symbols-outlined">keyboard_arrow_down</span>
     </button>
    </div>
@@ -191,8 +192,8 @@
    </div>
   </div>
  </div>
- <div id="playing" class="box-shadow" style="padding: 7px;background: rgba(10,45,25,1);color: #fff;position: fixed;bottom: -110%;left: 10px;right: 10px;z-index: 9;display: flex;align-items: center;border-radius: 40px;">
-  <img id="play_img" style="width: 50px;height: 50px;border-radius: 50%;margin-right: 10px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
+ <div id="playing" class="" style="margin:10px;border-radius:50px;padding: 10px;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;left: 0px;right: 0px;z-index: 9;display: flex;align-items: center;">
+  <img id="play_img" style="width: 45px;height: 45px;border-radius: 50%;margin-right: 7px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
    <div id="play_title" style="font-size: 16px;font-weight: bold;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
   </div>
@@ -382,7 +383,7 @@
      $("#top_playlists").appendChild(div);
   });
   for(var i = 0;i < 3;i++){
-  fetch("https://api.piped.yt/search?filter=music_videos&q="+q())
+  fetch("https://pol1.piapi.ggtyler.dev/search?filter=all&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -392,7 +393,7 @@
   }
   lodmor.style.display = "";
   lodmor.onclick = function(){
-   fetch("https://api.piped.yt/search?filter=music_videos&q="+q())
+   fetch("https://pol1.piapi.ggtyler.dev/search?filter=all&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -408,7 +409,7 @@
    all_songs.innerHTML = "";
    sinput.value = "";
    sinput.blur();
-   fetch("https://api.piped.yt/search?filter=music_videos&q=" + s_page)
+   fetch("https://pol1.piapi.ggtyler.dev/search?filter=all&q=" + s_page)
    .then(r => r.json())
    .then((x) => {
      loader.hide();
@@ -423,7 +424,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function() {
          var rnp = encodeURIComponent(cnp);
-         fetch("https://api.piped.yt/nextpage/search?nextpage=" + rnp + "&filter=music_videos&q=" + s_page)
+         fetch("https://pol1.piapi.ggtyler.dev/nextpage/search?nextpage=" + rnp + "&filter=all&q=" + s_page)
            .then(s => s.json())
            .then((z) => {
              cList = (z.items);
@@ -443,7 +444,7 @@
    sinput.value = "";
    searchss.style.display = "none";
    all_songs.innerHTML = "";
-   fetch("https://api.piped.yt/playlists/" + p_page)
+   fetch("https://pol1.piapi.ggtyler.dev/playlists/" + p_page)
    .then(r => r.json())
    .then((x) => {
      $("#top_playlists").innerHTML = `${x.name}`;
@@ -457,7 +458,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function(){
        var rnp = encodeURIComponent(cnp);
-       fetch("https://api.piped.yt/nextpage/playlists/"+p_page+"?nextpage="+rnp)
+       fetch("https://pol1.piapi.ggtyler.dev/nextpage/playlists/"+p_page+"?nextpage="+rnp)
        .then(s => s.json())
        .then((z) => {
          var nList = (z.relatedStreams);
@@ -515,10 +516,14 @@
    vid.classList.add("active");
    body = document.createElement("div");
    img = document.createElement("img");
-   var imgsrc;
-     imgsrc = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
-   img.src = imgsrc;
-   img.classList.add("plistimg");
+   var imgsrc = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+   if(!p_page){
+    imgsrc = i.thumbnail;
+   }else{
+     imgsrc = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+     img.classList.add("plistimg");
+   }
+   img.src = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
    time = document.createElement("div");
    time.innerText = stm(i.duration);
    time.classList.add("time");
@@ -541,47 +546,37 @@
    vid.appendChild(body);
    vid.appendChild(foot);
    vid.onclick = function(){
-     playing.style.bottom = "10px";
-    /* fetch("https://api.piped.yt/streams/"+id)
+     playing.style.bottom = "0px";
+     fetch("https://invidious.nikkosphere.com/api/v1/videos/"+id)
      .then(y => y.json())
      .then((x) => {
        videoId = id;
        cSong = n;
        sing(x,imgsrc);
-     })
-     .catch(e => {});*/
-    play_title.innerText = "Loading...";
-   audio.pause();
-fetch('https://video-api-transform.vercel.app/api/streams/' + id)
-  .then(response => response.json())
-  .then(x => {
-       videoId = id;
-       cSong = n;
-    sing(x,imgsrc);
-  });
+     });
    }
    all_songs.appendChild(vid);
   }
   function sing(s, fav) {
    play_title.innerText = "Loading...";
    audio.pause();
-   var urls = s.audioStreams;
+   var urls = s.adaptiveFormats;
    audio.src = urls[0].url;
    title.innerText = s.title;
    play_title.innerText = s.title;
    document.title = s.title;
-   image.src = "https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg";
-   play_img.src = "https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg";
+   image.src = 'https://i.ytimg.com/vi/'+s.videoId+'/maxresdefault.jpg';
+   play_img.src = 'https://i.ytimg.com/vi/'+s.videoId+'/maxresdefault.jpg';
    if(p_page){
      image.classList.add("long");
    }
-   artists.innerText = s.uploader;
+   artists.innerText = s.author;
    ttime.innerText = stm(s.duration);
    timer.setAttribute("min", 0);
    timer.setAttribute("max", s.duration);
-   $("#player").style.backgroundImage = "url(" + "https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg" + ")";
+   $("#player").style.backgroundImage = "url(" + s.thumbnailUrl + ")";
    sessionStorage.setItem("n",s.title);
-   sessionStorage.setItem("i","https://i.ytimg.com/vi/"+videoId+"/sddefault.jpg");
+   sessionStorage.setItem("i",s.thumbnailUrl);
    sessionStorage.setItem("x",videoId);
    sessionStorage.setItem("d",s.duration);
        if(localStorage.getItem(videoId)){
@@ -620,11 +615,11 @@ fetch('https://video-api-transform.vercel.app/api/streams/' + id)
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://video-api-transform.vercel.app/api/streams/"+id)
+   fetch("https://invidious.nikkosphere.com/api/v1/videos/"+id)
      .then(y => y.json())
      .then((x) => {
-        var thumb = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
-       singerr(x.data,thumb);
+        var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+       sing(x,thumb);
        if(localStorage.getItem(id)){
          like.style.display = "none";
          liked.style.display = "";
@@ -646,11 +641,11 @@ fetch('https://video-api-transform.vercel.app/api/streams/' + id)
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://video-api-transform.vercel.app/api/streams/"+id)
+   fetch("https://invidious.nikkosphere.com/api/v1/videos/"+id)
      .then(y => y.json())
      .then((x) => {
-        var thumb = "https://i.ytimg.com/vi/"+id+"/sddefault.jpg";
-       singerr(x.data,thumb);
+        var thumb = "https://i.ytimg.com/vi/"+id+"/hqdefault.jpg";
+       sing(x,thumb);
        if(localStorage.getItem(id)){
          like.style.display = "none";
          liked.style.display = "";
@@ -713,7 +708,7 @@ fetch('https://video-api-transform.vercel.app/api/streams/' + id)
   }*/
   sinput.addEventListener("input",function(){
    if(this.value != ""){
-   fetch("https://api.piped.yt/suggestions/?query="+this.value.trim())
+   fetch("https://pol1.piapi.ggtyler.dev/suggestions/?query="+this.value.trim())
    .then(r => r.json())
    .then(x => {
      searchss.style.display = "";
