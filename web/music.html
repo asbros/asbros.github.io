@@ -383,7 +383,7 @@
      $("#top_playlists").appendChild(div);
   });
   for(var i = 0;i < 3;i++){
-  fetch("https://pipedapi.drgns.space/search?filter=all&q="+q())
+  fetch("https://pipedapi.drgns.space/search?filter=videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -393,7 +393,7 @@
   }
   lodmor.style.display = "";
   lodmor.onclick = function(){
-   fetch("https://pipedapi.drgns.space/search?filter=all&q="+q())
+   fetch("https://pipedapi.drgns.space/search?filter=videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -409,7 +409,7 @@
    all_songs.innerHTML = "";
    sinput.value = "";
    sinput.blur();
-   fetch("https://pipedapi.drgns.space/search?filter=all&q=" + s_page)
+   fetch("https://pipedapi.drgns.space/search?filter=videos&q=" + s_page)
    .then(r => r.json())
    .then((x) => {
      loader.hide();
@@ -424,7 +424,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function() {
          var rnp = encodeURIComponent(cnp);
-         fetch("https://pipedapi.drgns.space/nextpage/search?nextpage=" + rnp + "&filter=all&q=" + s_page)
+         fetch("https://pipedapi.drgns.space/nextpage/search?nextpage=" + rnp + "&filter=videos&q=" + s_page)
            .then(s => s.json())
            .then((z) => {
              cList = (z.items);
