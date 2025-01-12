@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,14 +20,15 @@
  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,1,0" />
  <script src='https://asbros.github.io/popup.js/popup.js'></script>
  <style>
+  .blury{filter: blur(20px)}
   *{color: #fff;font-family:'Jost', sans-serif;font-weight: 400;font-style: normal;transition: all 0.3s;box-sizing: border-box;user-select: none;}
   body {margin: 0;background: rgb(22,26,29);}
   #top_playlists{display: flex;overflow-x: scroll;margin: 5px;font-size: 15px;margin-bottom: 20px;-ms-overflow-style: none;scrollbar-width: none;}
   #top_playlists::-webkit-scrollbar {
     display: none;
   }
-  .psop{padding: 5px !important;margin: 10px !important;font-weight: bold}
-  #top_playlists > div{width: 145px;height: 176px;background: rgb(255,255,255,0.09);margin: 7px;border-radius: 10px;display: inline-block;}
+  .psop{padding: 5px !important;margin: 10px !important;font-size: 20px !important;font-weight: bold}
+  #top_playlists > div{width: 140px;height: 176px;background: rgb(255,255,255,0.09);margin: 7px;border-radius: 10px;display: inline-block;}
   #top_playlists > div img{width: 140px;height: 140px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
   #top_playlists > div > div{font-weight: bold;padding: 8px;display: block;padding-top: 0px;text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
   .vid{display: flex;margin-right: 20px;margin-left: 20px;margin-bottom:12px;overflow: hidden;word-wrap: break-word;background: rgba(255,255,255,0.09);border-radius: 10px;height: 80px;}
@@ -59,24 +61,31 @@
     background-repeat: no-repeat;
   }
   #song{
-    height: 100%;
+    margin-left:auto;margin-right:auto;margin-bottom:10px;
+    width: 390px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     justify-content: space-around;
-    padding: 25px;
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(20px);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(25px);
+    border-radius: 15px !important;
   }
     #image{
-    width: 320px;
-    height: 320px;
+    width: 360px;
+    height: 360px;
+    margin-bottom:12px;
+    margin-top:5px;
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
     }
    /*.long{height: 180px !important;width: 320px !important;}*/
-   .wrap{text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+   .wrap{text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;margin-left: 5px;margin-right: 5px;margin-bottom: 7px;}
   #title{font-size: 20px;}
     #artists{font-size: 17px;opacity: 0.8;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
   #controls button,#close{
@@ -142,12 +151,12 @@
     }
     @media screen and (min-width: 640px) {
       #top_playlists{flex-wrap: wrap;margin-left: 50px;margin-right: 50px;padding-left: 0;padding-right: 0;justify-content: center;}
-      #top_playlists > div{}
       #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
-      .vid{width: 280px;}
-      #playing{width: 360px;left: calc(100% - 370px) !important;margin-bottom: 10px !important;border-radius: 50px}
-      #player{height: 500px !important;width: 380px;left: calc(100% - 380px) !important;}
-    }
+      .vid{width: 280px;margin-right: 10px;margin-left: 10px;}
+      #playing{width: 280px !important;left: calc(100% - 365px) !important;margin-bottom: 10px !important;border-radius: 15px !important;}
+      #player{width: 280px !important;left: calc(100% - 365px) !important;margin-bottom: 5px !important;}
+      #song{width: 280px !important;left: calc(100% - 365px) !important;margin-bottom: 5px !important;}
+      #image{width: 250px;height: 250px;}
  </style>
 </head>
 
@@ -164,7 +173,7 @@
   <div id="all_songs"></div>
  </div>
  <audio id="audio"></audio>
- <div id="player" style="position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;height: calc(100%)">
+ <div id="player" style="width: 390px;position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;margin-left:auto;margin-right:auto;margin-bottom:10px;">
   <div id="song">
    <div style="width: 100%">
     <button class='active' id='close' style='float: right;'><span class="material-symbols-outlined">keyboard_arrow_down</span>
@@ -192,7 +201,7 @@
    </div>
   </div>
  </div>
- <div id="playing" class="" style="margin:10px;border-radius:50px;padding: 10px;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;left: 0px;right: 0px;z-index: 9;display: flex;align-items: center;">
+ <div id="playing" class="" style="background-image: linear-gradient(to right, #434343 0%, black 100%);width: 390px;margin-left:auto;margin-right:auto;margin-bottom:10px;border-radius:15px;padding: 10px;background: rgba(0,0,0,0.5);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;right:0;left:0;z-index: 9;display: flex;align-items: center;">
   <img id="play_img" style="width: 45px;height: 45px;border-radius: 50%;margin-right: 7px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
    <div id="play_title" style="font-size: 16px;font-weight: bold;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
@@ -243,9 +252,38 @@
   
   var topPlaylists = [
    {
-     "name": "Bollywood Hitlist",
-     "id": "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g",
-    "image": "https://lh3.googleusercontent.com/YZdpsbRWLdPleKHBP4s3mvrpdhzuWAXIY8nSQbZmCDB_9LO-SsRH9csMThHheFcwsvvVM0ROisidL271=w544-h544-s-l90-rj",
+  "name": "Bollywood Hitlist",
+  "id": "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g",
+  "image": "https://lh3.googleusercontent.com/YZdpsbRWLdPleKHBP4s3mvrpdhzuWAXIY8nSQbZmCDB_9LO-SsRH9csMThHheFcwsvvVM0ROisidL271=w544-h544-s-l90-rj",
+},
+{
+  "name": "Haryanvi Hits",
+  "id": "RDCLAK5uy_nyA7D8UxzP13UPVa1sxmolm4RfXHQqVBA",
+  "image": "https://lh3.googleusercontent.com/4gxOk8i_7lm3lnUjv5Ci3M1VBgbRO1tLdNWqAcPXECEKbwR89GKNvrLinh3xzEXV_2Dxwe1sJgJKGzs=w544-h544-l90-rj",
+},
+{
+  "name": "Punjabi Workout",
+  "id": "RDCLAK5uy_mfZNbqLGOHWAFPeZiSfKN5x1d6sfOW_VI",
+  "image": "https://lh3.googleusercontent.com/TKpR3XVAOqdkA-3pzJkRfy6CJ6-iZRUKuZ7WaA5s2QwM5K3uH_F03rpjzqZCwc3DizQH7BZhedo9pCg=w544-h544-l90-rj",
+},
+{
+  "name": "Presenting Sidhu Moose Wala",
+  "id": "RDCLAK5uy_mvyuxV8oINta7LIlJhGIPRNdtsGVFX-tE",
+  "image": "https://lh3.googleusercontent.com/9hTbfTURHdYijBiGG_s7tjtucAdXCVoOtTyU9wyVHT5S5qBJK3OA942TGE2PGgdADVmk-4kVnZsszU4=w544-h544-l90-rj",
+},{
+  "name": "Presenting Yo Yo Honey Singh",
+  "id": "RDCLAK5uy_kr3pcLM0Dc_A9wvxCj0vVjob3maWg1WgA",
+  "image": "https://lh3.googleusercontent.com/eEC3De6ctolQ2PVePzlmRLTm0lgf3Gbz3a-zBGghkryUNmxnqAyJeW9g67V7MivGRhSCaB0UEib16RlL=w544-h544-l90-rj",
+},
+{
+  "name": "Bollywood Hitlist",
+  "id": "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g",
+  "image": "https://lh3.googleusercontent.com/YZdpsbRWLdPleKHBP4s3mvrpdhzuWAXIY8nSQbZmCDB_9LO-SsRH9csMThHheFcwsvvVM0ROisidL271=w544-h544-s-l90-rj",
+},
+   {
+     "name": "New Music Haryanvi",
+     "id": "RDCLAK5uy_nTkyDVpCk3iCQG_3bDJyhGgb1uzcBZM4A",
+    "image": "https://lh3.googleusercontent.com/0ePcA4oEgLbcu18P52k-sZ9gDhTZ8SXldqWOnvrCb49KJLaP6EZ9qwkAfN25d3jvrHnyaw-LcSm0N4g=w544-h544-l90-rj",
    },
    {
      "name": "Best Of Arijit Singh",
@@ -474,6 +512,7 @@
   }
   function player_page(x_page){
    player.style.bottom = 0;
+   main.setAttribute('class', 'blury');
   }
   function liked_page(){
    lodmor.style.display = "none";
@@ -690,6 +729,7 @@
    //location.hash = "player";
   }
   close.onclick = function(){
+  main.setAttribute('class', 'active');
    history.back();
      //player.style.bottom = '-110%';
   }
