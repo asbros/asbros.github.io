@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,14 +20,14 @@
  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,1,0" />
  <script src='https://asbros.github.io/popup.js/popup.js'></script>
  <style>
-  .blury{filter: blur(20px)}
+  .blury{filter: blur(20px);pointer-events:none;}
   *{color: #fff;font-family:'Jost', sans-serif;font-weight: 400;font-style: normal;transition: all 0.3s;box-sizing: border-box;user-select: none;}
   body {margin: 0;background: rgb(22,26,29);}
   #top_playlists{display: flex;overflow-x: scroll;margin: 5px;font-size: 15px;margin-bottom: 20px;-ms-overflow-style: none;scrollbar-width: none;}
   #top_playlists::-webkit-scrollbar {
     display: none;
   }
-  .psop{padding: 5px !important;margin: 10px !important;font-size: 20px !important;font-weight: bold}
+  .psop{padding: 5px !important;font-size: 18px !important;font-weight: bold}
   #top_playlists > div{width: 140px;height: 176px;background: rgb(255,255,255,0.09);margin: 7px;border-radius: 10px;display: inline-block;}
   #top_playlists > div img{width: 140px;height: 140px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
   #top_playlists > div > div{font-weight: bold;padding: 8px;display: block;padding-top: 0px;text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
@@ -60,8 +61,8 @@
     background-repeat: no-repeat;
   }
   #song{
-    margin-left:auto;margin-right:auto;margin-bottom:10px;
-    width: 390px;
+    margin-left:auto;margin-right:auto;margin-bottom:0px;
+    width: 309px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -75,8 +76,8 @@
     border-radius: 15px !important;
   }
     #image{
-    width: 360px;
-    height: 360px;
+    width: 270px;
+    height: 270px;
     margin-bottom:12px;
     margin-top:5px;
     border-radius: 10px;
@@ -91,7 +92,7 @@
     background: none;
     border: 0;
     }
-    #controls span{font-size: 35px ;}
+    #controls span{font-size: 30px ;}
     #close span,#play_play span,#play_pause span{
     font-size: 40px;
     }
@@ -160,8 +161,8 @@
 </head>
 
 <body>
- <div class="pad-10" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
-  <a href="https://asbros.github.io/web/music"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://i.imgur.com/p081OXx.png"></a>
+ <div id='headerg' class="pad-10" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
+  <a href="https://asbros.github.io/web/music.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://i.imgur.com/p081OXx.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Music</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
     <button id="liked_playlists" class="active"><span class="material-symbols-outlined" style="font-size: 33px;color: #C51104;">favorite</span></button>
@@ -172,7 +173,7 @@
   <div id="all_songs"></div>
  </div>
  <audio id="audio"></audio>
- <div id="player" style="width: 390px;position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;margin-left:auto;margin-right:auto;margin-bottom:10px;">
+ <div id="player" style="width: 309px;position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;margin-left:auto;margin-right:auto;margin-bottom:10px;">
   <div id="song">
    <div style="width: 100%">
     <button class='active' id='close' style='float: right;'><span class="material-symbols-outlined">keyboard_arrow_down</span>
@@ -200,7 +201,7 @@
    </div>
   </div>
  </div>
- <div id="playing" class="" style="background-image: linear-gradient(to right, #434343 0%, black 100%);width: 390px;margin-left:auto;margin-right:auto;margin-bottom:10px;border-radius:15px;padding: 10px;background: rgba(0,0,0,0.5);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;right:0;left:0;z-index: 9;display: flex;align-items: center;">
+ <div id="playing" class="" style="background-image: linear-gradient(to right, #434343 0%, black 100%);width: 309px;margin-left:auto;margin-right:auto;margin-bottom:10px;border-radius:15px;padding: 10px;background: rgba(0,0,0,0.5);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;right:0;left:0;z-index: 9;display: flex;align-items: center;">
   <img id="play_img" style="width: 45px;height: 45px;border-radius: 50%;margin-right: 7px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
    <div id="play_title" style="font-size: 16px;font-weight: bold;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
@@ -212,7 +213,7 @@
   </div>
  </div>
  <div id="load_more" style="display: flex;align-items: center;justify-content: center;margin-top: 5px;margin-bottom: 10px;"><button id="lodmor" style="display: none;padding: 6px 12px;color: #fff;background: #282828;border: none;font-size: 17px;border-radius: 7px;" class="shadow active">Load More</button></div>
- <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 0px;">
+ <div id="footerg" class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 0px;">
   <a style="text-decoration: none;font-size: 18px;" href="https://asbros.github.io/" class="white">More Apps →</a><br>
   <hr>
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
@@ -251,9 +252,9 @@
   
   var topPlaylists = [
    {
-  "name": "Bollywood Hitlist",
-  "id": "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g",
-  "image": "https://lh3.googleusercontent.com/YZdpsbRWLdPleKHBP4s3mvrpdhzuWAXIY8nSQbZmCDB_9LO-SsRH9csMThHheFcwsvvVM0ROisidL271=w544-h544-s-l90-rj",
+  "name": "Haryanvi Party",
+  "id": "RDCLAK5uy_mN9vO_dypsJubNdWlO5JSTtCA0SI3o-88",
+  "image": "https://lh3.googleusercontent.com/SAb-aBl4fpPO1NX39s6I0-KX2XQ_ZHUDDHdARLPKSYPMZEi6eNh0WQq7cecv44efA3u4LFZUpcfoiXw=w544-h544-l90-rj",
 },
 {
   "name": "Haryanvi Hits",
@@ -512,6 +513,9 @@
   function player_page(x_page){
    player.style.bottom = 0;
    main.setAttribute('class', 'blury');
+   headerg.setAttribute('class', 'blury');
+   footerg.setAttribute('class', 'blury');
+   load_more.setAttribute('class', 'blury');
   }
   function liked_page(){
    lodmor.style.display = "none";
@@ -729,6 +733,9 @@
   }
   close.onclick = function(){
   main.setAttribute('class', '');
+  headerg.setAttribute('class', 'pad-10');
+  footerg.setAttribute('class', 'pad-10');
+  load_more.setAttribute('class', '');
    history.back();
      //player.style.bottom = '-110%';
   }
@@ -862,6 +869,7 @@
    alert("Call Ajax to Refresh");
   }*/
   }
+  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
  </script>
 </body>
 
