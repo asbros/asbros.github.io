@@ -17,7 +17,7 @@
  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,600,1,0" />
  <script src='https://asbros.github.io/popup.js/popup.js'></script>
  <style>
-  .blury{filter: blur(25px);pointer-events:none;}
+  .blury{filter: blur(5px);pointer-events:none;}
   *{color: #fff;font-family:'Jost', sans-serif;font-weight: 400;font-style: normal;transition: all 0.3s;box-sizing: border-box;user-select: none;}
   body {margin: 0;background: rgb(22,26,29);}
   #top_playlists{display: flex;overflow-x: scroll;margin: 5px;font-size: 15px;margin-bottom: 20px;-ms-overflow-style: none;scrollbar-width: none;}
@@ -151,15 +151,15 @@
       #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
       .vid{width: 280px;margin-right: 10px;left: calc(50% + 140px) !important;}
       #playing{width: 280px !important;left: calc(50%+140px) !important;margin-bottom: 10px !important;border-radius: 15px !important;}
-      #player{width: 280px !important;left: calc(100% - 980px) !important;margin-left: auto !important;margin-right: auto !important;}
-      #song{width: 280px !important;left: calc(100% - 980px) !important;}
+      #player{width: 280px !important;left: calc(50%+140px) !important;margin-left: auto !important;margin-right: auto !important;}
+      #song{width: 280px !important;left: calc(50%+140px) !important;}
       #image{width: 250px;height: 250px;}
  </style>
 </head>
 
 <body>
  <div id='headerg' class="pad-10" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
-  <a href="https://asbros.github.io/web/music.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://i.imgur.com/p081OXx.png"></a>
+  <a href="https://asbros.github..io/web/music.html"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://i.imgur.com/p081OXx.png"></a>
   <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Music</span>-->
   <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
     <button id="liked_playlists" class="active"><span class="material-symbols-outlined" style="font-size: 33px;color: #C51104;">favorite</span></button>
@@ -418,7 +418,7 @@
      $("#top_playlists").appendChild(div);
   });
   for(var i = 0;i < 3;i++){
-  fetch("https://pipedapi.drgns.space/search?filter=videos&q="+q())
+  fetch("https://pipedapi.drgns.space/search?filter=music_songs&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -428,7 +428,7 @@
   }
   lodmor.style.display = "";
   lodmor.onclick = function(){
-   fetch("https://pipedapi.drgns.space/search?filter=videos&q="+q())
+   fetch("https://pipedapi.drgns.space/search?filter=music_songs&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -444,7 +444,7 @@
    all_songs.innerHTML = "";
    sinput.value = "";
    sinput.blur();
-   fetch("https://pipedapi.drgns.space/search?filter=videos&q=" + s_page)
+   fetch("https://pipedapi.drgns.space/search?filter=music_songs&q=" + s_page)
    .then(r => r.json())
    .then((x) => {
      loader.hide();
@@ -459,7 +459,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function() {
          var rnp = encodeURIComponent(cnp);
-         fetch("https://pipedapi.drgns.space/nextpage/search?nextpage=" + rnp + "&filter=videos&q=" + s_page)
+         fetch("https://pipedapi.drgns.space/nextpage/search?nextpage=" + rnp + "&filter=music_songs&q=" + s_page)
            .then(s => s.json())
            .then((z) => {
              cList = (z.items);
@@ -600,11 +600,11 @@
    play_title.innerText = "Loading...";
    audio.pause();
    var urls = s.adaptiveFormats;
-   audio.src = urls[0].url;
+   audio.src = "https://invidious.nikkosphere.com/"+urls[1].url.slice(42);
    title.innerText = s.title;
    play_title.innerText = s.title;
    document.title = s.title;
-   image.src = 'https://wsrv.nl/?url=https://i.ytimg.com/vi_webp/'+s.videoId+'/maxresdefault.webp&w=720&h=720';
+   image.src = 'https://wsrv.nl/?url=https://i.ytimg.com/vi_webp/'+s.videoId+'/maxresdefault.webp&w=720&h=720&fit=cover';
    play_img.src = 'https://wsrv.nl/?url=https://i.ytimg.com/vi_webp/'+s.videoId+'/mqdefault.webp&w=720&h=720&fit=cover';
    if(p_page){
      image.classList.add("long");
@@ -751,7 +751,7 @@
   }*/
   sinput.addEventListener("input",function(){
    if(this.value != ""){
-   fetch("https://pipedapi.drgns.space/suggestions/?query="+this.value.trim())
+   fetch("https://invidious.nikkosphere.com/api/v1/search/suggestions?q="+this.value.trim())
    .then(r => r.json())
    .then(x => {
      searchss.style.display = "";
