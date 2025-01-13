@@ -21,7 +21,7 @@
 <style>
 *{color: #fff;font-family:'Jost', sans-serif;transition: all 0.3s;box-sizing: border-box;user-select: none;}
 body {margin: 0;background: rgb(22,26,29);}
-.vid{margin-bottom: 10px;}
+.vid{margin-bottom: 5px !important;}
 .vid:hover{background: rgb(0,0,0)}
 .vid:hover img{filter: brightness(120%)} 
 .vid a{text-decoration: none;}
@@ -65,7 +65,7 @@ input[type="search"]::-webkit-search-cancel-button {
 #ctabs button{border: 0;color: #fff;background: #282828;padding: 7px 12px;margin-right: 10px;}
 
 #video{background-size:100% 10%;background-position: center;background-repeat: no-repeat;}
-#v_video{width : 100%;height: 270px;}
+#v_video{width : 100%;height: 300px;}
 #v_details{padding: 15px;background-color: rgba(0,0,0,0.5);backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px);}
 #v_title{font-size: 19px;}
 #v_text{margin-top: 7px;font-size: 12px;color:#ccc;}
@@ -80,7 +80,7 @@ input[type="search"]::-webkit-search-cancel-button {
 #v_iframe{width: 100%;min-height: 270px;aspect-ratio: 16 / 9;}
 @media screen and (min-width: 1000px) {
   #main{display: flex !important;justify-content: center;flex-wrap: wrap}
-  .vid{width: 250px !important;margin: 10px;background: rgb(42,43,46);border-radius: 20px;}
+  .vid{width: 250px !important;margin:10px;background: rgb(42,43,46);border-radius: 20px;}
   .vid img{border-top-left-radius: 20px;border-top-right-radius: 20px;}
  #sinput{width: 400px;float: right}
  #searchss{position: absolute !important;left: calc(100% - 420px) !important;right: 20px}
@@ -88,7 +88,7 @@ input[type="search"]::-webkit-search-cancel-button {
   #video{margin-top: 85px !important;}
   .wdsktp #more_apps{width: 60%;}
   .wdsktp #main{position: absolute;top: 90px;right: 0;width: 40%;margin-top: 0 !important;}
-  .wdsktp .vid{width: 90% !important;border-radius: 5px;height: 100px}
+  .wdsktp .vid{width: 90% !important;border-radius: 5px;height: 100px;}
   .wdsktp #v_details{background: none !important;}
   .wdsktp .body img{height: 90px;width: 150px;border-radius: 5px;margin: 5px;}
   .wdsktp .vid a{display: flex;flex-direction: row;}
@@ -96,6 +96,7 @@ input[type="search"]::-webkit-search-cancel-button {
   .wdsktp .vid .det{margin: 0px !important; white-space: nowrap;overflow: hidden;text-overflow: ellipsis}
   #v_desc{display: block !important;}
   #v_dbtn{display: none;}
+  #v_video{width : 100%;height: 400px;}
 }
 </style>
 </head>
@@ -138,8 +139,8 @@ input[type="search"]::-webkit-search-cancel-button {
     </div>
     </div>
   </div>
-    <div id="v_desc" style="padding: 20px;display: none;padding-top: 10px;word-break: break-all;">
-      <div id="v_dbody" style="font-size: 14px;color: #eee;"></div>
+    <div id="v_desc" style="padding: 20px;display: none;padding-top: 10px;word-break: break-word;pointer-events: none;">
+      <div id="v_dbody" style="font-size: 14px;color: #eee;font-family: poppins !important;"></div>
     </div>
   <div id="main" style="margin-top:80px;display: none;"></div>
     <div id="load_more" style="display: none;align-items: center;justify-content: center;margin-top: 5px;margin-bottom: 10px;"><button id="lodmor" class="active" style="padding: 6px 12px;color: #fff;background: #282828;border: none;font-size: 17px;border-radius: 7px;">Load More</button></div>
@@ -269,7 +270,7 @@ var load_more = document.querySelector("#load_more");
 var lodmor = document.querySelector("#lodmor");
 lodmor.onclick = function(){
   if(q){
-  fetch("https://pipedapi.kavin.rocks/nextpage/search?nextpage="+nextpage)
+  fetch("https://pipedapi.drgns.space/nextpage/search?nextpage="+nextpage)
   .then(r => r.json())
   .then((x) => {
     list(x.items);
@@ -280,7 +281,7 @@ lodmor.onclick = function(){
   });
   }
   if(c){
-   fetch("https://pipedapi.kavin.rocks/nextpage/channel/"+c+"?nextpage="+ nextpvid)
+   fetch("https://pipedapi.drgns.space/nextpage/channel/"+c+"?nextpage="+ nextpvid)
   .then(r => r.json())
   .then((x) => {
     list(x.relatedStreams);
@@ -295,7 +296,7 @@ lodmor.onclick = function(){
 if((!id && !p) && (!q && !c)){
     loader = as.loader();
     loader.show();
-fetch("https://invidious.jing.rocks/api/v1/trending?region=IN&type=music")
+fetch("https://invidious.nikkosphere.com/api/v1/trending?region=IN&type=music")
 .then(r => r.json())
 .then((x) => {
   list(x);
@@ -310,7 +311,7 @@ main.style.display = "block";
   if(id){
     loader = as.loader();
     loader.show();
-  fetch("https://inv.nadeko.net/api/v1/videos/"+id)
+  fetch("https://invidious.nikkosphere.com/api/v1/videos/"+id)
   .then(r => r.json())
   .then(x => {
     play(x);
@@ -354,11 +355,11 @@ v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autop
   function play(x){
   v_details.style.display = "";
   v_title.innerText = x.title;
-  v_video.setAttribute("src",x.formatStreams[x.formatStreams.length-1].url);
+  v_video.setAttribute("src",x.adaptiveFormats[x.adaptiveFormats.length-1].url);
   v_video.onerror = function(){
     v_video.style.display = "none";
-    v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+x.videoId+"?autoplay=1&loop=1&rel=0");
-    v_iframe.style.display = "block";
+  /*  v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+x.videoId+"?autoplay=1&loop=1&rel=0");
+    v_iframe.style.display = "block";*/
   }
  /* v_video.setAttribute("srcdoc",`<video autoplay controlsList='nodownload' onerror='window.location = "https://www.youtube-nocookie.com/embed/${id}?autoplay=1&loop=1&rel=0"' controls style='width: 100%;margin: 0;border-radius: 5px;' src='`+x.formatStreams[x.formatStreams.length-1].url+"'></video>");*/
   var cthmb = x.videoThumbnails[4].url;
@@ -623,7 +624,7 @@ window.onhashchange = function(){
 }
 sinput.addEventListener("input",function(){
   if(this.value != ""){
-  fetch("https://pipedapi.kavin.rocks/suggestions?query="+this.value.trim())
+  fetch("https://pipedapi.drgns.space/suggestions?query="+this.value.trim())
   .then(r => r.json())
   .then(x => {
     searchss.style.display = "";
