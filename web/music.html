@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,8 +8,6 @@
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <title>AS Music</title>
  <meta content='#161a1d' name='theme-color' />
- <meta charset='utf-8' />
- <meta content='width=device-width, initial-scale=1.0' name='viewport' />
  <meta content='https://i.imgur.com/p081OXx.png' property='og:image' />
  <link href='https://i.imgur.com/p081OXx.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
  <link href='https://i.imgur.com/p081OXx.png' rel='apple-touch-icon' />
@@ -30,7 +29,7 @@
   #top_playlists > div{width: 140px;height: 176px;background: rgb(255,255,255,0.09);margin: 7px;border-radius: 10px;display: inline-block;}
   #top_playlists > div img{width: 140px;height: 140px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
   #top_playlists > div > div{font-weight: bold;padding: 8px;display: block;padding-top: 0px;text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-  .vid{display: flex;margin-right: 20px;margin-left: 20px;margin-bottom:12px;overflow: hidden;word-wrap: break-word;background: rgba(255,255,255,0.09);border-radius: 10px;height: 80px;}
+  .vid{display: flex;margin-right: 20px;margin-left: 20px;margin-bottom:12px;overflow: hidden;word-wrap: break-word;background: rgba(255,255,255,0.09);border-radius: 10px;height: 80px;width: 320px;}
   .body{position: relative;}
   .body img{height: 80px;aspect-ratio:1/1;border-radius: 10px;object-fit: cover;}
   .plistimg{width: 100px;object-fit: cover;}
@@ -60,9 +59,7 @@
     background-repeat: no-repeat;
   }
   #song{
-    margin-left:auto;margin-right:auto;margin-bottom:0px;
-    width: 309px;
-    height: auto;
+    width: 320px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -71,12 +68,13 @@
     padding-right: 15px;
     justify-content: space-around;
     background: rgba(0,0,0,0.5);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(25px);
     border-radius: 15px !important;
   }
     #image{
-    width: 270px;
-    height: 270px;
+    width: 290px;
+    height: 290px;
     margin-bottom:12px;
     margin-top:5px;
     border-radius: 10px;
@@ -95,6 +93,7 @@
     #close span,#play_play span,#play_pause span{
     font-size: 40px;
     }
+    #close{padding: 0;}
     #play_next span{font-size: 28px;}
     #play span, #pause span{
     font-size: 70px;
@@ -151,10 +150,10 @@
     @media screen and (min-width: 640px) {
       #top_playlists{flex-wrap: wrap;margin-left: 50px;margin-right: 50px;padding-left: 0;padding-right: 0;justify-content: center;}
       #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
-      .vid{width: 280px;margin-right: 10px;margin-left: 10px;}
-      #playing{width: 280px !important;left: calc(100% - 365px) !important;margin-bottom: 10px !important;border-radius: 15px !important;}
-      #player{width: 280px !important;left: calc(100% - 365px) !important;margin-bottom: 5px !important;}
-      #song{width: 280px !important;left: calc(100% - 365px) !important;margin-bottom: 5px !important;}
+      .vid{width: 280px;margin-right: 10px;left: calc(50% + 140px) !important;}
+      #playing{width: 280px !important;left: calc(50%+140px) !important;margin-bottom: 10px !important;border-radius: 15px !important;}
+      #player{width: 280px !important;left: calc(100% - 980px) !important;margin-left: auto !important;margin-right: auto !important;}
+      #song{width: 280px !important;left: calc(100% - 980px) !important;}
       #image{width: 250px;height: 250px;}
  </style>
 </head>
@@ -172,7 +171,7 @@
   <div id="all_songs"></div>
  </div>
  <audio id="audio"></audio>
- <div id="player" style="width: 309px;position: fixed;left: 0;right: 0;bottom: -110%;z-index: 10;margin-left:auto;margin-right:auto;margin-bottom:10px;">
+ <div id="player" style="width: 320px;position: fixed;left: 0;right: 0;bottom: 0;bottom:0;opacity:1;z-index: 10;margin-bottom:10px;margin-left:auto;margin-right:auto;">
   <div id="song">
    <div style="width: 100%">
     <button class='active' id='close' style='float: right;'><span class="material-symbols-outlined">keyboard_arrow_down</span>
@@ -200,7 +199,7 @@
    </div>
   </div>
  </div>
- <div id="playing" class="" style="background-image: linear-gradient(to right, #434343 0%, black 100%);width: 309px;margin-left:auto;margin-right:auto;margin-bottom:10px;border-radius:15px;padding: 10px;background: rgba(0,0,0,0.5);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;right:0;left:0;z-index: 9;display: flex;align-items: center;">
+ <div id="playing" class="" style="background-image: linear-gradient(to right, #434343 0%, black 100%);width: 320px;margin-left:auto;margin-right:auto;margin-bottom:10px;border-radius:15px;padding: 10px;background: rgba(0,0,0,0.5);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;right:0;left:0;z-index: 9;display: flex;align-items: center;">
   <img id="play_img" style="width: 45px;height: 45px;border-radius: 50%;margin-right: 7px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
    <div id="play_title" style="font-size: 16px;font-weight: bold;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
@@ -348,18 +347,18 @@
    x_page = param.get("x");
    l_page = param.get("liked");
   if((!s_page && !p_page) && (!x_page && !l_page)){
-   player.style.bottom = '-110%';
+   player.style.display = 'none';
    home_page();
   }else if(s_page){
-   player.style.bottom = '-110%';
+   player.style.display = 'none';
    search_page(s_page);
   }else if(p_page){
-   player.style.bottom = '-110%';
+   player.style.display = 'none';
    playlist_page(p_page);
   }else if(x_page){
    player_page(x_page);
   }else if (l_page) {
-   player.style.bottom = '-110%';
+   player.style.display = 'none';
    liked_page();
   }
   }
@@ -385,7 +384,7 @@
   }
   liked_playlists.onclick = function(){
    history.pushState(null,null,"?liked=true");
-   player.style.bottom = "-110%";
+   player.style.display = "none";
    url = window.location.search;
    param = new URLSearchParams(url);
    s_page = param.get("s");
@@ -510,7 +509,7 @@
    });
   }
   function player_page(x_page){
-   player.style.bottom = 0;
+   player.style.display = '';
    main.setAttribute('class', 'blury');
    headerg.setAttribute('class', 'blury');
    footerg.setAttribute('class', 'blury');
@@ -868,6 +867,7 @@
    alert("Call Ajax to Refresh");
   }*/
   }
+  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
 </script>
 </body>
 
