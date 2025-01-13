@@ -751,7 +751,7 @@
   }*/
   sinput.addEventListener("input",function(){
    if(this.value != ""){
-   fetch("https://invidious.nikkosphere.com/api/v1/search/suggestions?q="+this.value.trim())
+   fetch("https://pipedapi.drgns.space/suggestions?query="+this.value.trim())
    .then(r => r.json())
    .then(x => {
      searchss.style.display = "";
