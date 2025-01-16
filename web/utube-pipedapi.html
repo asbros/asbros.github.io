@@ -304,7 +304,7 @@ main.style.display = "block";
   if(id){
     loader = as.loader();
     loader.show();
-  fetch("https://pipedapi.drgns.space/streams/"+id)
+  fetch("https://invidious.nikkosphere.com/api/v1/videos/"+id)
   .then(r => r.json())
   .then(x => play(x));
   loader.hide();
@@ -331,17 +331,17 @@ main.style.display = "block";
   function play(x){
     v_details.style.display = "";
     v_title.innerText = x.title;
-   // v_video.src = x.formatStreams[x.formatStreams.length-2].url;
-    var cthmb = x.thumbnailUrl;
-  v_text.innerHTML = x.views + " views" + " • "+ x.uploadDate.substring(0,10);
-  v_chimg.src = x.uploaderAvatar;
-  v_chnm.innerHTML = x.uploader;
+    v_video.src = x.adaptiveFormats[10].url;
+    var cthmb = x.videoThumbnails[1].url;
+  v_text.innerHTML = x.viewCount + " views" + " • "+ x.uploadDate.substring(0,10);
+  v_chimg.src = x.authorThumbnails[0].url;
+  v_chnm.innerHTML = x.author;
   v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/web/utube-pipedapi"+"?c="+x.uploaderUrl.substring(9)});
   v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/web/utube-pipedapi"+"?c="+x.uploaderUrl.substring(9)});
-  v_chsub.innerText = subFormat(x.uploaderSubscriberCount);
-  v_lik.innerHTML += x.likes;
-  v_dis.innerHTML += x.dislikes;
- // video.style.backgroundImage = "url("+x.videoThumbnails[0].url+")";
+  v_chsub.innerText = x.subCountText;
+  v_lik.innerHTML += x.likeCount;
+  v_dis.innerHTML += x.dislikeCount;
+  video.style.backgroundImage = "url("+x.videoThumbnails[0].url+")";
   document.title = x.title;
   v_dbody.innerHTML = x.description;
   list(x.relatedStreams);
