@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,7 +93,7 @@
     #close span,#play_play span,#play_pause span{
     font-size: 40px;
     }
-    #close{padding: 0;}
+    #close{padding: 0;float: right;}
     #play_next span{font-size: 28px;}
     #play span, #pause span{
     font-size: 70px;
@@ -150,12 +151,16 @@
       #top_playlists{flex-wrap: wrap;margin-left: 50px;margin-right: 50px;padding-left: 0;padding-right: 0;justify-content: center;}
       #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
       .vid{width: 280px;margin-right: 10px;left: calc(50% + 140px) !important;}
-      #playing{width: 280px !important;left: calc(50%+140px) !important;margin-bottom: 10px !important;border-radius: 15px !important;}
-      #player{width: 280px !important;left: calc(50%+140px) !important;margin-left: auto !important;margin-right: auto !important;}
-      #song{width: 280px !important;left: calc(50%+140px) !important;}
-      #image{width: 250px;height: 250px;}
+      #playing{width: 500px !important;left: calc(50%+250px) !important;margin-bottom: 10px !important;border-radius: 15px !important;}
+      #player{width: 500px !important;left: calc(50%+250px) !important;margin-left: auto !important;margin-right: auto !important;}
+      #song{width: 500px !important;left: calc(50%+250px) !important;}
+      #image{width: 200px;height: 200px;margin-right: 15px;margin-top: 20px !important;}
      #sinput{width: 400px;float: right}
      #searchss{position: absolute !important;left: calc(100% - 420px) !important;right: 20px}
+     #gg{display: flex;flex-direction: row}
+     #gf{display: flex;flex-direction: column}
+     .wrap{margin-top: 0 !important;width: 250px !important;float: left !important;text-align: left !important;}
+     #close{text-align: right !important;}
  </style>
 </head>
 
@@ -174,11 +179,11 @@
  <audio id="audio"></audio>
  <div id="player" style="width: 320px;position: fixed;left: 0;right: 0;bottom: 0;bottom:0;opacity:1;z-index: 10;margin-bottom:10px;margin-left:auto;margin-right:auto;">
   <div id="song">
-   <div style="width: 100%">
-    <button class='active' id='close' style='float: right;'><span class="material-symbols-outlined">keyboard_arrow_down</span>
-    </button>
-   </div>
+   <div id='gg'>
    <img id="image" src="https://nglemployeedirectory.in/images/loading.gif">
+   <div id="gf">
+    <button class='' id='close' style=''><span class="material-symbols-outlined">keyboard_arrow_down</span>
+    </button>
    <div class="wrap"><span id="title">Loading Song...</span></div>
    <div class="wrap"><span id="artists"></span></div>
    <div id="time">
@@ -197,6 +202,7 @@
     <button id='pause' style='display: none'><span class="material-symbols-outlined">pause_circle</span></button>
     <button class='active' id='next'><span class="material-symbols-outlined">skip_next</span></button>
     <button class='active' id='down'><span class="material-symbols-outlined">arrow_downward</span></button>
+   </div></div>
    </div>
   </div>
  </div>
