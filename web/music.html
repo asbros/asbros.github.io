@@ -53,47 +53,57 @@
   #searchss{position: fixed;top: 65px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
   #searchss div{background: rgba(0,0,0,0.5);color: #fff;padding: 12px;border-bottom: 0.01px solid #ccc;font-size:15px;}
   #player{
-    background-image: linear-gradient(to right, #434343 0%, black 100%);
-    background-size: fill;
-    background-position: center;
-    background-repeat: no-repeat;
+    width: 320px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    bottom:0;
+    opacity:1;
+    z-index: 10;
+    margin-bottom:10px;
+    margin-left:auto;
+    margin-right:auto;
+    align-items: center;
+    background: rgba(0,0,0,0.7);
+    justify-content: space-around;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(25px);
+    border-radius: 10px;
   }
   #song{
     width: 320px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
     justify-content: space-around;
-    background: rgba(0,0,0,0.5);
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(25px);
-    border-radius: 10px !important;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
     #image{
     width: 290px;
     height: 290px;
-    margin-bottom:12px;
+    margin-bottom:3px;
     margin-top:5px;
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
     }
+    #gf{width: 290px;}
    /*.long{height: 180px !important;width: 320px !important;}*/
-   .wrap{text-align: center;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;margin-left: 5px;margin-right: 5px;margin-bottom: 7px;}
+   .wrap{text-align: left;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;margin-bottom: 7px;}
   #title{font-size: 20px;}
     #artists{font-size: 17px;opacity: 0.8;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-  #controls button,#close{
-    background: none;
-    border: 0;
+  #controls button{
+    background: none;border: 0;
     }
     #controls span{font-size: 30px ;}
     #close span,#play_play span,#play_pause span{
     font-size: 40px;
     }
-    #close{padding: 0;float: right;}
+    #close{padding: 0;background: 0;border: 0;float: right;margin-right: 10px;margin-top: 5px;width: 40px; height: 35px;border-radius: 50%;}
     #play_next span{font-size: 28px;}
     #play span, #pause span{
     font-size: 70px;
@@ -154,13 +164,11 @@
       #playing{width: 500px !important;left: calc(50%+250px) !important;margin-bottom: 10px !important;border-radius: 15px !important;}
       #player{width: 500px !important;left: calc(50%+250px) !important;margin-left: auto !important;margin-right: auto !important;}
       #song{width: 500px !important;left: calc(50%+250px) !important;}
-      #image{width: 200px;height: 200px;margin-right: 15px;margin-top: 20px !important;}
+      #image{width: 200px;height: 200px;margin-right: 15px;margin-bottom: 5px;}
      #sinput{width: 400px;float: right}
      #searchss{position: absolute !important;left: calc(100% - 420px) !important;right: 20px}
      #gg{display: flex;flex-direction: row}
-     #gf{display: flex;flex-direction: column}
-     .wrap{margin-top: 0 !important;width: 250px !important;float: left !important;text-align: left !important;}
-     #close{text-align: right !important;}
+     #gf{display: flex;flex-direction: column;width: 250px !important;margin: auto;}
  </style>
 </head>
 
@@ -177,13 +185,13 @@
   <div id="all_songs"></div>
  </div>
  <audio id="audio"></audio>
- <div id="player" style="width: 320px;position: fixed;left: 0;right: 0;bottom: 0;bottom:0;opacity:1;z-index: 10;margin-bottom:10px;margin-left:auto;margin-right:auto;">
+ <div id="player">
+    <button class='active' id='close' style=''><span class="material-symbols-outlined">keyboard_arrow_down</span>
+    </button>
   <div id="song">
    <div id='gg'>
    <img id="image" src="https://nglemployeedirectory.in/images/loading.gif">
    <div id="gf">
-    <button class='' id='close' style=''><span class="material-symbols-outlined">keyboard_arrow_down</span>
-    </button>
    <div class="wrap"><span id="title">Loading Song...</span></div>
    <div class="wrap"><span id="artists"></span></div>
    <div id="time">
@@ -225,7 +233,7 @@
  </div>
  <script>
   var uri = window.location.toString();
-  if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
+  if (uri.indexOf("?player=true","?player=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?player=true"));window.history.replaceState({}, document.title, clean_uri);}
   
   var all_songs = $("#all_songs");
   var title = $("#title");
@@ -728,10 +736,10 @@
    next.click();
   }
   play_click.onclick = play_img.onclick = function(){
-   history.pushState(null,null,"?x=true");
+   history.pushState(null,null,"?player=true");
    url = window.location.search;
    param = new URLSearchParams(url);
-   x_page = param.get("x");
+   x_page = param.get("player");
    player_page();
    //player.style.bottom = 0;
    //location.hash = "player";
