@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -731,7 +730,6 @@
    play_pause.style.display = "none";
    play_play.style.display = "";
   play_img.classList.remove("rotate");
-  as.toast({type: "error",title: "Unable to play !",timer: 1500});
   }
   audio.ontimeupdate = function(){
    timer.value = audio.currentTime;
