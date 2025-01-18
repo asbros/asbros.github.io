@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -627,14 +628,16 @@
      image.classList.add("long");
    }
    artists.innerText = s.author;
-   ttime.innerText = stm(s.duration);
+   var ur = new URL(s.adaptiveFormats[1].url);
+   var durn = ur.searchParams.get("dur");
+   ttime.innerText = stm(durn);
    timer.setAttribute("min", 0);
-   timer.setAttribute("max", s.duration);
+   timer.setAttribute("max", durn);
    $("#player").style.backgroundImage = "url(" + s.thumbnailUrl + ")";
    sessionStorage.setItem("n",s.title);
    sessionStorage.setItem("i",s.thumbnailUrl);
    sessionStorage.setItem("x",videoId);
-   sessionStorage.setItem("d",s.duration);
+   sessionStorage.setItem("d",durn);
        if(localStorage.getItem(videoId)){
          like.style.display = "none";
          liked.style.display = "";
