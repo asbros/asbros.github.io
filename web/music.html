@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,41 +108,43 @@
     font-size: 70px;
     }
     #time{width: 100%}
-  #timer {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    cursor: pointer;
-    outline: none;
-    overflow: hidden;
-    border-radius: 2px;
-    }
-    #timer::-webkit-slider-runnable-track {
-    height: 7px;
-    background: #ccc;
-    border-radius: 0px;
-    }
-    #timer::-moz-range-track {
-    height: 7px;
-    background: #ccc;
-    border-radius: 0px;
-    }
-    #timer::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 7px;
-    width: 7px;
-    background-color: #fff;
-    border: 2px solid #fff;
-    box-shadow: -407px 0 0 400px #fff;
-    }
-    #timer::-moz-range-thumb {
-    height: 7px;
-    width: 7px;
-    background-color: #fff;
-    border: 1px solid #fff;
-    box-shadow: -407px 0 0 400px #fff;
-    }
+    #timer{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: 16px;
+}
+#timer::-webkit-slider-runnable-track {
+  height: 13px;
+  background: #ccc;
+  border-radius: 16px;
+}
+#timer::-moz-range-track {
+  height: 13px;
+  background: #ccc;
+  border-radius: 16px;
+}
+#timer::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 13px;
+  width: 13px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #f50;
+  box-shadow: -407px 0 0 400px #ba450b;
+}
+#timer::-moz-range-thumb {
+  height: 13px;
+  width: 13px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid #f50;
+  box-shadow: -407px 0 0 400px #ba450b;
+}
     #ctime{float: left}
     #ttime{float: right;}
     .rotate{
@@ -233,7 +234,7 @@
  </div>
  <script>
   var uri = window.location.toString();
-  if (uri.indexOf("?player=true","?player=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?player=true"));window.history.replaceState({}, document.title, clean_uri);}
+  if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
   
   var all_songs = $("#all_songs");
   var title = $("#title");
@@ -727,6 +728,7 @@
    play_pause.style.display = "none";
    play_play.style.display = "";
   play_img.classList.remove("rotate");
+  as.toast({type: "error",title: "Unable to play !",timer: 1500});
   }
   audio.ontimeupdate = function(){
    timer.value = audio.currentTime;
@@ -736,7 +738,7 @@
    next.click();
   }
   play_click.onclick = play_img.onclick = function(){
-   history.pushState(null,null,"?player=true");
+   history.pushState(null,null,"?x=true");
    url = window.location.search;
    param = new URLSearchParams(url);
    x_page = param.get("player");
