@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +53,7 @@
   #searchss{position: fixed;top: 65px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
   #searchss div{background: rgba(0,0,0,0.5);color: #fff;padding: 12px;border-bottom: 0.01px solid #ccc;font-size:15px;}
   #player{
-    width: 320px;
+    width: 90%;
     position: fixed;
     left: 0;
     right: 0;
@@ -71,28 +72,29 @@
     border-radius: 10px;
   }
   #song{
-    width: 320px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);
     border-radius: 10px;
+    padding: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
+    justify-content: space-around;
   }
     #image{
-    width: 290px;
-    height: 290px;
+    width: 100%;
     margin-bottom:3px;
     margin-top:5px;
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
     }
-    #gf{width: 290px;}
+    #gf{width: 100%;}
    /*.long{height: 180px !important;width: 320px !important;}*/
-   .wrap{text-align: left;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;margin-bottom: 7px;}
+   .wrap{text-align: left;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;margin-bottom: 5px;}
   #title{font-size: 20px;}
     #artists{font-size: 17px;opacity: 0.8;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
   #controls button{
@@ -158,7 +160,7 @@
       transform: rotate(360deg);
      }
     }
-    @media screen and (min-width: 640px) {
+    @media screen and (min-width: 600px) {
       #top_playlists{flex-wrap: wrap;margin-left: 50px;margin-right: 50px;padding-left: 0;padding-right: 0;justify-content: center;}
       #all_songs{display: flex;flex-wrap: wrap;justify-content: center;}
       .vid{width: 280px;margin-right: 10px;left: calc(50% + 140px) !important;}
@@ -215,7 +217,7 @@
    </div>
   </div>
  </div>
- <div id="playing" class="" style="background-image: linear-gradient(to right, #434343 0%, black 100%);width: 320px;margin-left:auto;margin-right:auto;margin-bottom:10px;border-radius:10px;padding: 10px;background: rgba(0,0,0,0.5);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;right:0;left:0;z-index: 9;display: flex;align-items: center;">
+ <div id="playing" style="background-image: linear-gradient(to right, #434343 0%, black 100%);width: 90%;margin-left:auto;margin-right:auto;margin-bottom:10px;border-radius:10px;padding: 10px;background: rgba(0,0,0,0.5);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);color: #fff;position: fixed;bottom: -101%;right:0;left:0;z-index: 9;display: flex;align-items: center;">
   <img id="play_img" style="width: 45px;height: 45px;border-radius: 50%;margin-right: 7px;object-fit: cover;" src="https://nglemployeedirectory.in/images/loading.gif">
   <div style="flex: 1;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" id="play_click">
    <div id="play_title" style="font-size: 16px;font-weight: bold;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">Loading...</div>
@@ -885,6 +887,7 @@
    alert("Call Ajax to Refresh");
   }*/
   }
+  javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
 </script>
 </body>
 
