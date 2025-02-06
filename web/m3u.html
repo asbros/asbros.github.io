@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U Extractor and Player</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.14.3/video-js.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://asbros.github.io/css/main.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'jost', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1e1e1e;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            border-radius: 8px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #ffeb3b;
+        }
+        .upload-section, .link-section {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .upload-section input, .link-section input {
+            width: calc(100% - 160px);
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #333;
+            color: #fff;
+            margin-right: 10px;
+        }
+        .upload-section button, .link-section button {
+            padding: 10px 20px;
+            font-size: 15px;
+            background-color: #ffeb3b;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .upload-section button i, .link-section button i {
+            margin-right: 5px;
+        }
+        .upload-section button:hover, .link-section button:hover {
+            background-color: #ffc107;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            position: relative;
+            background: #333;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            padding: 3px;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.7);
+        }
+        .card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 5px;
+        }
+        .card-title {
+            font-size: 16px !important;
+            color: #ffeb3b;
+        }
+        .loader {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .loader img {
+            width: 50px;
+        }
+        .video-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+        .video-popup video {
+            width: 90%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ffeb3b;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .close-btn:hover {
+            background-color: #ffc107;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            transform: scale(1.3);
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>M3U Extractor and Player</h1>
+        </div>
+        <div class="upload-section">
+            <input type="file" id="m3uFile" accept=".m3u">
+            <button onclick="extractM3U()" class="btn waves-effect waves-light yellow darken-2 black-text"><i class="fas fa-link"></i>Extract</button>
+        </div>
+        <div class="link-section">
+            <input type="text" id="m3uLink" placeholder="Enter M3U link">
+            <button onclick="extractM3UByLink()" class="btn waves-effect waves-light yellow darken-2 black-text"><i class="fas fa-link"></i>Extract</button>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search channels..." oninput="searchChannels()">
+        </div>
+        <div class="grid" id="channelGrid"></div>
+        <div class="loader" id="loader" style="display: none;">
+            <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading...">
+        </div>
+    </div>
+    <div class="video-popup" id="videoPopup">
+        <button class="close-btn" onclick="closeVideoPopup()"><i class="fas fa-times"></i></button>
+        <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" data-setup='{}'></video>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.14.3/video.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let channels = [];
+        const channelGrid = document.getElementById('channelGrid');
+        const loader = document.getElementById('loader');
+        const videoPopup = document.getElementById('videoPopup');
+        const videoPlayer = videojs('videoPlayer');
+
+        function extractM3U() {
+            const file = document.getElementById('m3uFile').files[0];
+            if (!file) return;
+            loader.style.display = 'block';
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const content = event.target.result;
+                processM3UContent(content);
+            };
+            reader.readAsText(file);
+        }
+
+        function extractM3UByLink() {
+            const link = document.getElementById('m3uLink').value;
+            if (!link) return;
+            loader.style.display = 'block';
+            fetch(link)
+                .then(response => response.text())
+                .then(content => processM3UContent(content))
+                .catch(() => {
+                    loader.style.display = 'none';
+                    Swal.fire('Error', 'Failed to fetch M3U content', 'error');
+                });
+        }
+
+        function processM3UContent(content) {
+            channels = [];
+            const lines = content.split('\n');
+            let channel = null;
+            lines.forEach(line => {
+                if (line.startsWith('#EXTINF:')) {
+                    const info = line.match(/#EXTINF:.+,(.+)/);
+                    const logoMatch = line.match(/tvg-logo="(.+?)"/);
+                    const title = info ? info[1].trim() : 'Unknown';
+                    const logo = logoMatch ? logoMatch[1].trim() : 'https://via.placeholder.com/200x150?text=No+Logo';
+                    channel = { title, logo };
+                } else if (line.startsWith('http')) {
+                    if (channel) {
+                        channel.url = line.trim();
+                        channels.push(channel);
+                        channel = null;
+                    }
+                }
+            });
+            loader.style.display = 'none';
+            if (channels.length === 0) {
+                Swal.fire('No channel found !!', '', 'warning');
+            } else {
+                renderChannels();
+            }
+        }
+
+        function renderChannels() {
+            channelGrid.innerHTML = '';
+            channels.forEach(channel => {
+                const card = document.createElement('div');
+                card.className = 'card animate__animated animate__fadeIn';
+                card.innerHTML = `
+                    <img src="${channel.logo}" alt="${channel.title}">
+                    <div class="card-title">${channel.title}</div>
+                `;
+                card.onclick = () => playChannel(channel.url);
+                channelGrid.appendChild(card);
+            });
+        }
+
+        function playChannel(url) {
+            videoPlayer.src({ type: 'application/x-mpegURL', src: url });
+            videoPopup.style.display = 'flex';
+            videoPlayer.play();
+        }
+
+        function closeVideoPopup() {
+            videoPlayer.pause();
+            videoPopup.style.display = 'none';
+        }
+
+        function searchChannels() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const filteredChannels = channels.filter(channel => channel.title.toLowerCase().includes(query));
+            renderFilteredChannels(filteredChannels);
+        }
+
+        function renderFilteredChannels(filteredChannels) {
+            channelGrid.innerHTML = '';
+            filteredChannels.forEach(channel => {
+                const card = document.createElement('div');
+                card.className = 'card animate__animated animate__fadeIn';
+                card.innerHTML = `
+                    <img src="${channel.logo}" alt="${channel.title}">
+                    <div class="card-title">${channel.title}</div>
+                `;
+                card.onclick = () => playChannel(channel.url);
+                channelGrid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
