@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Website</title>
+    <style>
+        :root {
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --primary-color: #ff0000;
+            --secondary-color: #fff;
+            --button-hover-color: #cc0000;
+            --dark-bg-color: #181818;
+            --dark-text-color: #fff;
+            --dark-secondary-color: #202020;
+            --dark-button-hover-color: #ff4444;
+        }
+        [data-theme="dark"] {
+            --bg-color: var(--dark-bg-color);
+            --text-color: var(--dark-text-color);
+            --primary-color: #ff0000;
+            --secondary-color: var(--dark-secondary-color);
+            --button-hover-color: var(--dark-button-hover-color);
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        #search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: var(--secondary-color);
+        }
+        #search-container input {
+            padding: 10px;
+            width: 50%;
+            max-width: 500px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 10px;
+            transition: box-shadow 0.3s;
+        }
+        #search-container input:focus {
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+        #search-container select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            transition: box-shadow 0.3s;
+        }
+        #search-container select:focus {
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .video, .playlist, .artist {
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .video:hover, .playlist:hover, .artist:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .video img, .playlist img, .artist img {
+            width: 100%;
+            display: block;
+        }
+        .video-title, .playlist-title, .artist-title {
+            padding: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--text-color);
+            text-align: center;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: var(--button-hover-color);
+            transform: scale(1.1);
+        }
+        .toggle-button img {
+            width: 20px;
+            height: 20px;
+        }
+        .loader {
+            border: 8px solid var(--secondary-color);
+            border-top: 8px solid var(--primary-color);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+            display: none;
+        }
+        .shimmer {
+            background: linear-gradient(to right, #f6f7f8 0%, #e9e9e9 20%, #f6f7f8 40%, #f6f7f8 100%);
+            background-size: 800px 104px;
+            animation: shimmer 1.5s infinite linear;
+        }
+        .shimmer img {
+            visibility: hidden;
+        }
+        .shimmer .video-title, .shimmer .playlist-title, .shimmer .artist-title {
+            visibility: hidden;
+        }
+        #load-more-container {
+            text-align: center;
+            margin: 20px;
+        }
+        #load-more {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #load-more:hover {
+            background-color: var(--button-hover-color);
+            transform: scale(1.05);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: -800px 0;
+            }
+            100% {
+                background-position: 800px 0;
+            }
+        }
+        @media (max-width: 600px) {
+            #search-container {
+                flex-direction: column;
+            }
+            #search-container input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            #search-container select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            #load-more {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Music Website</h1>
+    <button class="toggle-button" onclick="toggleDarkMode()">
+        <img id="toggle-icon" src="https://img.icons8.com/ios-filled/50/ffffff/sun.png" alt="Toggle Dark Mode">
+    </button>
+</header>
+
+<div id="search-container">
+    <input type="text" id="search" placeholder="Search for music..." oninput="searchVideos()">
+    <select id="search-type" onchange="searchVideos()">
+        <option value="video">Songs</option>
+        <option value="playlist">Playlists</option>
+        <option value="channel">Artists</option>
+    </select>
+</div>
+
+<div id="loader" class="loader"></div>
+<div id="results"></div>
+<div id="load-more-container">
+    <button id="load-more" onclick="fetchNextPage()">Load More</button>
+</div>
+
+<script>
+    const API_KEY = 'AIzaSyC_0VrHiqGnjCP1ZHFlTldtKP-CFbyFIQs';
+    let nextPageToken = '';
+    let query = '';
+    let type = '';
+    let isFetching = false;
+    let isPlaylistOpen = false;
+    let isArtistOpen = false;
+    let currentPlaylistId = '';
+    let currentArtistId = '';
+
+    // Initialize theme on page load based on localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateToggleButtonIcon(savedTheme);
+
+        window.addEventListener('popstate', (event) => {
+            if (event.state) {
+                const { view, id, title } = event.state;
+                if (view === 'playlist') {
+                    openPlaylist(id, title, false);
+                } else if (view === 'artist') {
+                    openArtist(id, title, false);
+                } else {
+                    goHome();
+                }
+            } else {
+                goHome();
+            }
+        });
+
+        goHome();
+    });
+
+    async function fetchData(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Fetch error: ', error);
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
+            return fetchData(url); // Retry fetching the data
+        }
+    }
+
+    async function searchVideos() {
+        query = document.getElementById('search').value;
+        type = document.getElementById('search-type').value;
+        nextPageToken = '';
+        isPlaylistOpen = false;
+        isArtistOpen = false;
+        clearResults();
+        if (query.trim() === '') return;
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=${type}&key=${API_KEY}`;
+        try {
+            showShimmer();
+            const data = await fetchData(url);
+            nextPageToken = data.nextPageToken;
+            displayResults(data.items);
+        } catch (error) {
+            console.error('Search error: ', error);
+        } finally {
+            hideShimmer();
+        }
+    }
+
+    async function fetchNextPage() {
+        if (!nextPageToken || isFetching) return;
+        isFetching = true;
+        let url = '';
+        if (isPlaylistOpen) {
+            url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${currentPlaylistId}&key=${API_KEY}&pageToken=${nextPageToken}&maxResults=20`;
+        } else if (isArtistOpen) {
+            url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${currentArtistId}&key=${API_KEY}&pageToken=${nextPageToken}&maxResults=20`;
+        } else {
+            url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=${type}&pageToken=${nextPageToken}&key=${API_KEY}`;
+        }
+        try {
+            showShimmer();
+            const data = await fetchData(url);
+            nextPageToken = data.nextPageToken;
+            displayResults(data.items);
+        } catch (error) {
+            console.error('Pagination error: ', error);
+        } finally {
+            hideShimmer();
+            isFetching = false;
+        }
+    }
+
+    function displayResults(items) {
+        const results = document.getElementById('results');
+        items.forEach(item => {
+            const element = document.createElement('div');
+            if (item.id.kind === "youtube#playlist") {
+                element.classList.add('playlist');
+                element.dataset.playlistId = item.id.playlistId;
+                element.addEventListener('click', () => openPlaylist(item.id.playlistId, item.snippet.title));
+            } else if (item.id.kind === "youtube#channel") {
+                element.classList.add('artist');
+                element.dataset.channelId = item.id.channelId;
+                element.addEventListener('click', () => openArtist(item.id.channelId, item.snippet.title));
+            } else {
+                element.classList.add('video');
+            }
+            let thumbnail = item.snippet.thumbnails.high.url;
+            let title = item.snippet.title;
+            element.innerHTML = `
+                <img src="${thumbnail}" alt="${title}">
+                <div class="video-title">${title}</div>
+            `;
+            results.appendChild(element);
+        });
+    }
+
+    function clearResults() {
+        document.getElementById('results').innerHTML = '';
+    }
+
+    function showShimmer() {
+        const results = document.getElementById('results');
+        for (let i = 0; i < 6; i++) {
+            const element = document.createElement('div');
+            element.classList.add('shimmer', 'video');
+            element.innerHTML = `
+                <img src="" alt="">
+                <div class="video-title"></div>
+            `;
+            results.appendChild(element);
+        }
+    }
+
+    function hideShimmer() {
+        const shimmers = document.querySelectorAll('.shimmer');
+        shimmers.forEach(shimmer => shimmer.remove());
+    }
+
+    function toggleDarkMode() {
+        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const targetTheme = currentTheme === "light" ? "dark" : "light";
+
+        document.documentElement.setAttribute('data-theme', targetTheme);
+        localStorage.setItem('theme', targetTheme);
+
+        updateToggleButtonIcon(targetTheme);
+    }
+
+    function updateToggleButtonIcon(theme) {
+        const icon = document.getElementById("toggle-icon");
+        if (theme === "light") {
+            icon.src = "https://img.icons8.com/ios-filled/50/000000/moon-symbol.png";
+        } else {
+            icon.src = "https://img.icons8.com/ios-filled/50/ffffff/sun.png";
+        }
+    }
+
+    function goHome() {
+        isPlaylistOpen = false;
+        isArtistOpen = false;
+        currentPlaylistId = '';
+        currentArtistId = '';
+        localStorage.removeItem('view');
+        document.querySelector('header h1').textContent = 'Music Website';
+        document.getElementById('search-container').style.display = 'flex';
+        clearResults();
+        history.replaceState(null, '', location.pathname);
+    }
+
+    async function openPlaylist(playlistId, title, pushState = true) {
+        isPlaylistOpen = true;
+        isArtistOpen = false;
+        currentPlaylistId = playlistId;
+        localStorage.setItem('view', JSON.stringify({ view: 'playlist', id: playlistId, title }));
+        if (pushState) {
+            history.pushState({ view: 'playlist', id: playlistId, title }, title, `#playlist-${playlistId}`);
+        }
+        clearResults();
+        document.querySelector('header h1').textContent = title;
+        document.getElementById('search-container').style.display = 'none';
+        const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${API_KEY}&maxResults=20`;
+        try {
+            showShimmer();
+            const data = await fetchData(url);
+            nextPageToken = data.nextPageToken;
+            displayResults(data.items.map(item => ({
+                ...item,
+                id: { kind: 'youtube#video', videoId: item.snippet.resourceId.videoId }
+            })));
+        } catch (error) {
+            console.error('Playlist fetch error: ', error);
+        } finally {
+            hideShimmer();
+        }
+    }
+
+    async function openArtist(channelId, title, pushState = true) {
+        isArtistOpen = true;
+        isPlaylistOpen = false;
+        currentArtistId = channelId;
+        localStorage.setItem('view', JSON.stringify({ view: 'artist', id: channelId, title }));
+        if (pushState) {
+            history.pushState({ view: 'artist', id: channelId, title }, title, `#artist-${channelId}`);
+        }
+        clearResults();
+        document.querySelector('header h1').textContent = title;
+        document.getElementById('search-container').style.display = 'none';
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&key=${API_KEY}&maxResults=20`;
+        try {
+            showShimmer();
+            const data = await fetchData(url);
+            nextPageToken = data.nextPageToken;
+            displayResults(data.items.map(item => ({
+                ...item,
+                id: { kind: 'youtube#video', videoId: item.id.videoId }
+            })));
+        } catch (error) {
+            console.error('Artist fetch error: ', error);
+        } finally {
+            hideShimmer();
+        }
+    }
+</script>
+
+</body>
+</html>
