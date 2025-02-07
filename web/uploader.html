@@ -356,7 +356,7 @@
   
   async function copyToClipboard() {
     try {
-      await navigator.clipboard.writeText(downloadLink.href);
+      await navigator.clipboard.writeText(downloadLink);
       Swal.fire({
         icon: 'success',
         title: 'Copied!',
