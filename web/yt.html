@@ -1,452 +1,365 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Website</title>
-    <style>
-        :root {
-            --bg-color: #f9f9f9;
-            --text-color: #333;
-            --primary-color: #ff0000;
-            --secondary-color: #fff;
-            --button-hover-color: #cc0000;
-            --dark-bg-color: #181818;
-            --dark-text-color: #fff;
-            --dark-secondary-color: #202020;
-            --dark-button-hover-color: #ff4444;
-        }
-        [data-theme="dark"] {
-            --bg-color: var(--dark-bg-color);
-            --text-color: var(--dark-text-color);
-            --primary-color: #ff0000;
-            --secondary-color: var(--dark-secondary-color);
-            --button-hover-color: var(--dark-button-hover-color);
-        }
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-        }
-        header {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        header h1 {
-            margin: 0;
-            font-size: 1.8em;
-        }
-        #search-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background-color: var(--secondary-color);
-        }
-        #search-container input {
-            padding: 10px;
-            width: 50%;
-            max-width: 500px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            margin-right: 10px;
-            transition: box-shadow 0.3s;
-        }
-        #search-container input:focus {
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-        }
-        #search-container select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            transition: box-shadow 0.3s;
-        }
-        #search-container select:focus {
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-        }
-        #results {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            animation: fadeIn 1s ease-in-out;
-        }
-        .video, .playlist, .artist {
-            background-color: var(--secondary-color);
-            border-radius: 5px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .video:hover, .playlist:hover, .artist:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        .video img, .playlist img, .artist img {
-            width: 100%;
-            display: block;
-        }
-        .video-title, .playlist-title, .artist-title {
-            padding: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: var(--text-color);
-            text-align: center;
-        }
-        .toggle-button {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: var(--primary-color);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        .toggle-button:hover {
-            background-color: var(--button-hover-color);
-            transform: scale(1.1);
-        }
-        .toggle-button img {
-            width: 20px;
-            height: 20px;
-        }
-        .loader {
-            border: 8px solid var(--secondary-color);
-            border-top: 8px solid var(--primary-color);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-            margin: 50px auto;
-            display: none;
-        }
-        .shimmer {
-            background: linear-gradient(to right, #f6f7f8 0%, #e9e9e9 20%, #f6f7f8 40%, #f6f7f8 100%);
-            background-size: 800px 104px;
-            animation: shimmer 1.5s infinite linear;
-        }
-        .shimmer img {
-            visibility: hidden;
-        }
-        .shimmer .video-title, .shimmer .playlist-title, .shimmer .artist-title {
-            visibility: hidden;
-        }
-        #load-more-container {
-            text-align: center;
-            margin: 20px;
-        }
-        #load-more {
-            padding: 10px 20px;
-            background-color: var(--primary-color);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: var(--text-color);
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        #load-more:hover {
-            background-color: var(--button-hover-color);
-            transform: scale(1.05);
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes shimmer {
-            0% {
-                background-position: -800px 0;
-            }
-            100% {
-                background-position: 800px 0;
-            }
-        }
-        @media (max-width: 600px) {
-            #search-container {
-                flex-direction: column;
-            }
-            #search-container input {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            #search-container select {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            #load-more {
-                width: 100%;
-                padding: 15px;
-            }
-        }
-    </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>AS UTUBE</title>
+ <!-- Bootstrap CSS -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <!-- Bootstrap Icons -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+ <!-- Google Fonts -->
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+ <!-- Custom CSS -->
+ <style>
+  :root {
+      --gradient-1: #ff6b6b;
+      --gradient-2: #4ecdc4;
+      --bg-color: #ffffff;
+      --text-color: #212529;
+      --card-bg: #ffffff;
+      --header-bg: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+      --shadow-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  [data-bs-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #f8f9fa;
+      --card-bg: #2d2d2d;
+      --header-bg: linear-gradient(135deg, #2c3e50, #3498db);
+      --shadow-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .video-card {
+      margin-bottom: 20px;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 6px var(--shadow-color);
+      background-color: var(--card-bg);
+  }
+  
+  .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px var(--shadow-color);
+  }
+  
+  .video-thumbnail {
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+  }
+  
+  #playerContainer {
+      width: 100%;
+      height: 400px;
+  }
+  
+  .hero-header {
+      background: var(--header-bg);
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px var(--shadow-color);
+  }
+  
+  .brand-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .search-type-btn {
+      transition: all 0.3s;
+  }
+  
+  .theme-toggle {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: all 0.3s;
+  }
+  
+  [data-bs-theme="dark"] .theme-toggle {
+      background: rgba(0, 0, 0, 0.1);
+      color: var(--text-color);
+  }
+  
+  @media (max-width: 768px) {
+      #playerContainer {
+          height: 250px;
+      }
+      
+      .brand-title {
+          font-size: 2rem;
+      }
+  
+      .theme-toggle {
+          position: static;
+          margin-top: 1rem;
+      }
+      
+      .header-content {
+          flex-direction: column;
+      }
+  }
+ </style>
 </head>
+
 <body>
-
-<header>
-    <h1>Music Website</h1>
-    <button class="toggle-button" onclick="toggleDarkMode()">
-        <img id="toggle-icon" src="https://img.icons8.com/ios-filled/50/ffffff/sun.png" alt="Toggle Dark Mode">
+ <!-- Header -->
+ <header class="hero-header">
+  <div class="container text-center position-relative">
+   <div class="header-content d-flex justify-content-between align-items-center">
+    <h1 class="brand-title text-white mb-0">AS UTUBE</h1>
+    <button class="theme-toggle" id="themeToggle">
+     <i class="bi bi-moon-fill d-none"></i>
+     <i class="bi bi-sun-fill"></i>
     </button>
-</header>
+   </div>
+  </div>
+ </header>
 
-<div id="search-container">
-    <input type="text" id="search" placeholder="Search for music..." oninput="searchVideos()">
-    <select id="search-type" onchange="searchVideos()">
-        <option value="video">Songs</option>
-        <option value="playlist">Playlists</option>
-        <option value="channel">Artists</option>
-    </select>
-</div>
+ <!-- Search Bar -->
+ <div class="container my-4">
+  <div class="row">
+   <div class="col-md-8 offset-md-2">
+    <div class="input-group">
+     <div class="input-group-prepend">
+      <select class="form-select search-type-btn" id="searchType">
+       <option value="video">Videos</option>
+       <option value="channel">Channels</option>
+       <option value="playlist">Playlists</option>
+      </select>
+     </div>
+     <input type="text" id="searchInput" class="form-control" placeholder="Search YouTube...">
+     <button class="btn btn-primary search-type-btn" onclick="handleSearch()">
+      <i class="bi bi-search"></i> Search
+     </button>
+    </div>
+   </div>
+  </div>
+ </div>
 
-<div id="loader" class="loader"></div>
-<div id="results"></div>
-<div id="load-more-container">
-    <button id="load-more" onclick="fetchNextPage()">Load More</button>
-</div>
+ <!-- Video Container -->
+ <div class="container">
+  <div class="row" id="videoContainer"></div>
+ </div>
 
-<script>
-    const API_KEY = 'AIzaSyC_0VrHiqGnjCP1ZHFlTldtKP-CFbyFIQs';
-    let nextPageToken = '';
-    let query = '';
-    let type = '';
-    let isFetching = false;
-    let isPlaylistOpen = false;
-    let isArtistOpen = false;
-    let currentPlaylistId = '';
-    let currentArtistId = '';
+ <!-- Load More Button -->
+ <div class="container my-4 text-center">
+  <button class="btn btn-primary search-type-btn" id="loadMore" onclick="loadMore()">Load More</button>
+ </div>
 
-    // Initialize theme on page load based on localStorage
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateToggleButtonIcon(savedTheme);
+ <!-- Video Player Modal -->
+ <div class="modal fade" id="videoModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h5 class="modal-title" id="videoTitle"></h5>
+     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-0">
+     <div id="playerContainer"></div>
+    </div>
+   </div>
+  </div>
+ </div>
 
-        window.addEventListener('popstate', (event) => {
-            if (event.state) {
-                const { view, id, title } = event.state;
-                if (view === 'playlist') {
-                    openPlaylist(id, title, false);
-                } else if (view === 'artist') {
-                    openArtist(id, title, false);
-                } else {
-                    goHome();
-                }
-            } else {
-                goHome();
-            }
-        });
+ <!-- Bootstrap JS and Popper.js -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ <!-- YouTube IFrame API -->
+ <script src="https://www.youtube.com/iframe_api"></script>
 
-        goHome();
-    });
-
-    async function fetchData(url) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Fetch error: ', error);
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
-            return fetchData(url); // Retry fetching the data
-        }
-    }
-
-    async function searchVideos() {
-        query = document.getElementById('search').value;
-        type = document.getElementById('search-type').value;
-        nextPageToken = '';
-        isPlaylistOpen = false;
-        isArtistOpen = false;
-        clearResults();
-        if (query.trim() === '') return;
-        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=${type}&key=${API_KEY}`;
-        try {
-            showShimmer();
-            const data = await fetchData(url);
-            nextPageToken = data.nextPageToken;
-            displayResults(data.items);
-        } catch (error) {
-            console.error('Search error: ', error);
-        } finally {
-            hideShimmer();
-        }
-    }
-
-    async function fetchNextPage() {
-        if (!nextPageToken || isFetching) return;
-        isFetching = true;
-        let url = '';
-        if (isPlaylistOpen) {
-            url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${currentPlaylistId}&key=${API_KEY}&pageToken=${nextPageToken}&maxResults=20`;
-        } else if (isArtistOpen) {
-            url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${currentArtistId}&key=${API_KEY}&pageToken=${nextPageToken}&maxResults=20`;
-        } else {
-            url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=${type}&pageToken=${nextPageToken}&key=${API_KEY}`;
-        }
-        try {
-            showShimmer();
-            const data = await fetchData(url);
-            nextPageToken = data.nextPageToken;
-            displayResults(data.items);
-        } catch (error) {
-            console.error('Pagination error: ', error);
-        } finally {
-            hideShimmer();
-            isFetching = false;
-        }
-    }
-
-    function displayResults(items) {
-        const results = document.getElementById('results');
-        items.forEach(item => {
-            const element = document.createElement('div');
-            if (item.id.kind === "youtube#playlist") {
-                element.classList.add('playlist');
-                element.dataset.playlistId = item.id.playlistId;
-                element.addEventListener('click', () => openPlaylist(item.id.playlistId, item.snippet.title));
-            } else if (item.id.kind === "youtube#channel") {
-                element.classList.add('artist');
-                element.dataset.channelId = item.id.channelId;
-                element.addEventListener('click', () => openArtist(item.id.channelId, item.snippet.title));
-            } else {
-                element.classList.add('video');
-            }
-            let thumbnail = item.snippet.thumbnails.high.url;
-            let title = item.snippet.title;
-            element.innerHTML = `
-                <img src="${thumbnail}" alt="${title}">
-                <div class="video-title">${title}</div>
-            `;
-            results.appendChild(element);
-        });
-    }
-
-    function clearResults() {
-        document.getElementById('results').innerHTML = '';
-    }
-
-    function showShimmer() {
-        const results = document.getElementById('results');
-        for (let i = 0; i < 6; i++) {
-            const element = document.createElement('div');
-            element.classList.add('shimmer', 'video');
-            element.innerHTML = `
-                <img src="" alt="">
-                <div class="video-title"></div>
-            `;
-            results.appendChild(element);
-        }
-    }
-
-    function hideShimmer() {
-        const shimmers = document.querySelectorAll('.shimmer');
-        shimmers.forEach(shimmer => shimmer.remove());
-    }
-
-    function toggleDarkMode() {
-        const currentTheme = document.documentElement.getAttribute("data-theme");
-        const targetTheme = currentTheme === "light" ? "dark" : "light";
-
-        document.documentElement.setAttribute('data-theme', targetTheme);
-        localStorage.setItem('theme', targetTheme);
-
-        updateToggleButtonIcon(targetTheme);
-    }
-
-    function updateToggleButtonIcon(theme) {
-        const icon = document.getElementById("toggle-icon");
-        if (theme === "light") {
-            icon.src = "https://img.icons8.com/ios-filled/50/000000/moon-symbol.png";
-        } else {
-            icon.src = "https://img.icons8.com/ios-filled/50/ffffff/sun.png";
-        }
-    }
-
-    function goHome() {
-        isPlaylistOpen = false;
-        isArtistOpen = false;
-        currentPlaylistId = '';
-        currentArtistId = '';
-        localStorage.removeItem('view');
-        document.querySelector('header h1').textContent = 'Music Website';
-        document.getElementById('search-container').style.display = 'flex';
-        clearResults();
-        history.replaceState(null, '', location.pathname);
-    }
-
-    async function openPlaylist(playlistId, title, pushState = true) {
-        isPlaylistOpen = true;
-        isArtistOpen = false;
-        currentPlaylistId = playlistId;
-        localStorage.setItem('view', JSON.stringify({ view: 'playlist', id: playlistId, title }));
-        if (pushState) {
-            history.pushState({ view: 'playlist', id: playlistId, title }, title, `#playlist-${playlistId}`);
-        }
-        clearResults();
-        document.querySelector('header h1').textContent = title;
-        document.getElementById('search-container').style.display = 'none';
-        const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${API_KEY}&maxResults=20`;
-        try {
-            showShimmer();
-            const data = await fetchData(url);
-            nextPageToken = data.nextPageToken;
-            displayResults(data.items.map(item => ({
-                ...item,
-                id: { kind: 'youtube#video', videoId: item.snippet.resourceId.videoId }
-            })));
-        } catch (error) {
-            console.error('Playlist fetch error: ', error);
-        } finally {
-            hideShimmer();
-        }
-    }
-
-    async function openArtist(channelId, title, pushState = true) {
-        isArtistOpen = true;
-        isPlaylistOpen = false;
-        currentArtistId = channelId;
-        localStorage.setItem('view', JSON.stringify({ view: 'artist', id: channelId, title }));
-        if (pushState) {
-            history.pushState({ view: 'artist', id: channelId, title }, title, `#artist-${channelId}`);
-        }
-        clearResults();
-        document.querySelector('header h1').textContent = title;
-        document.getElementById('search-container').style.display = 'none';
-        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&key=${API_KEY}&maxResults=20`;
-        try {
-            showShimmer();
-            const data = await fetchData(url);
-            nextPageToken = data.nextPageToken;
-            displayResults(data.items.map(item => ({
-                ...item,
-                id: { kind: 'youtube#video', videoId: item.id.videoId }
-            })));
-        } catch (error) {
-            console.error('Artist fetch error: ', error);
-        } finally {
-            hideShimmer();
-        }
-    }
-</script>
-
+ <!-- YouTube API Script -->
+ <script>
+  // Theme handling
+  const themeToggle = document.getElementById('themeToggle');
+  const storedTheme = localStorage.getItem('theme');
+  
+  // Set initial theme
+  if (storedTheme) {
+      document.body.setAttribute('data-bs-theme', storedTheme);
+      toggleIcons(storedTheme);
+  }
+  
+  // Toggle theme
+  themeToggle.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.body.setAttribute('data-bs-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      toggleIcons(newTheme);
+  });
+  
+  function toggleIcons(theme) {
+      const moonIcon = themeToggle.querySelector('.bi-moon-fill');
+      const sunIcon = themeToggle.querySelector('.bi-sun-fill');
+      
+      if (theme === 'dark') {
+          moonIcon.classList.remove('d-none');
+          sunIcon.classList.add('d-none');
+      } else {
+          moonIcon.classList.add('d-none');
+          sunIcon.classList.remove('d-none');
+      }
+  }
+  
+  // Original YouTube API Script
+  const API_KEY = 'AIzaSyAcqHZh-8pZr1H5Kdq5Hwa0jVl9Yc9jupg';
+  let nextPageToken = '';
+  let currentSearchTerm = '';
+  let currentSearchType = 'video';
+  let player;
+  
+  function onYouTubeIframeAPIReady() {
+      player = new YT.Player('playerContainer', {
+          height: '100%',
+          width: '100%',
+          events: {
+              'onReady': onPlayerReady
+          }
+      });
+  }
+  
+  function onPlayerReady(event) {
+      // Player ready callback
+  }
+  
+  async function fetchContent(searchTerm = '', pageToken = '', searchType = 'video') {
+      let url;
+      if (searchTerm) {
+          url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=${searchType}&q=${encodeURIComponent(searchTerm)}&maxResults=12&regionCode=IN&key=${API_KEY}&pageToken=${pageToken}`;
+      } else {
+          url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=IN&maxResults=12&key=${API_KEY}&pageToken=${pageToken}`;
+      }
+  
+      try {
+          const response = await fetch(url);
+          const data = await response.json();
+          nextPageToken = data.nextPageToken || '';
+          return data.items || [];
+      } catch (error) {
+          console.error('Error fetching content:', error);
+          return [];
+      }
+  }
+  
+  function displayContent(items, isSearch = false, searchType = 'video') {
+      const container = document.getElementById('videoContainer');
+      
+      items.forEach(item => {
+          const snippet = item.snippet;
+          let contentCard;
+  
+          if (searchType === 'video') {
+              const videoId = isSearch ? item.id.videoId : item.id;
+              contentCard = createVideoCard(snippet, videoId);
+          } else if (searchType === 'channel') {
+              contentCard = createChannelCard(snippet, item.id.channelId);
+          } else if (searchType === 'playlist') {
+              contentCard = createPlaylistCard(snippet, item.id.playlistId);
+          }
+  
+          container.innerHTML += contentCard;
+      });
+  }
+  
+  function createVideoCard(snippet, videoId) {
+      return `
+          <div class="col-md-3 col-sm-6">
+              <div class="card video-card" onclick="playVideo('${videoId}', '${snippet.title.replace(/'/g, "\\'")}')">
+                  <img src="${snippet.thumbnails.medium.url}" class="card-img-top video-thumbnail" alt="${snippet.title}">
+                  <div class="card-body">
+                      <h5 class="card-title">${snippet.title}</h5>
+                      <p class="card-text text-muted">${snippet.channelTitle}</p>
+                  </div>
+              </div>
+          </div>
+      `;
+  }
+  
+  function createChannelCard(snippet, channelId) {
+      return `
+          <div class="col-md-3 col-sm-6">
+              <div class="card video-card" onclick="window.open('https://www.youtube.com/channel/${channelId}', '_blank')">
+                  <img src="${snippet.thumbnails.medium.url}" class="card-img-top video-thumbnail" alt="${snippet.title}">
+                  <div class="card-body">
+                      <h5 class="card-title">${snippet.title}</h5>
+                      <p class="card-text text-muted">Channel</p>
+                  </div>
+              </div>
+          </div>
+      `;
+  }
+  
+  function createPlaylistCard(snippet, playlistId) {
+      return `
+          <div class="col-md-3 col-sm-6">
+              <div class="card video-card" onclick="window.open('https://www.youtube.com/playlist?list=${playlistId}', '_blank')">
+                  <img src="${snippet.thumbnails.medium.url}" class="card-img-top video-thumbnail" alt="${snippet.title}">
+                  <div class="card-body">
+                      <h5 class="card-title">${snippet.title}</h5>
+                      <p class="card-text text-muted">Playlist</p>
+                  </div>
+              </div>
+          </div>
+      `;
+  }
+  
+  function playVideo(videoId, title) {
+      const modal = new bootstrap.Modal(document.getElementById('videoModal'));
+      document.getElementById('videoTitle').textContent = title;
+      
+      if (player && typeof player.loadVideoById === 'function') {
+          player.loadVideoById(videoId);
+      }
+      
+      modal.show();
+  }
+  
+  window.onload = async function() {
+      const videos = await fetchContent();
+      displayContent(videos);
+  };
+  
+  async function handleSearch() {
+      currentSearchTerm = document.getElementById('searchInput').value;
+      currentSearchType = document.getElementById('searchType').value;
+      const items = await fetchContent(currentSearchTerm, '', currentSearchType);
+      document.getElementById('videoContainer').innerHTML = '';
+      displayContent(items, true, currentSearchType);
+      document.getElementById('loadMore').style.display = nextPageToken ? 'block' : 'none';
+  }
+  
+  async function loadMore() {
+      const items = await fetchContent(currentSearchTerm, nextPageToken, currentSearchType);
+      displayContent(items, true, currentSearchType);
+      document.getElementById('loadMore').style.display = nextPageToken ? 'block' : 'none';
+  }
+  
+  document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') handleSearch();
+  });
+  
+  document.getElementById('videoModal').addEventListener('hide.bs.modal', () => {
+      if (player && typeof player.stopVideo === 'function') {
+          player.stopVideo();
+      }
+  });
+ </script>
 </body>
 </html>
