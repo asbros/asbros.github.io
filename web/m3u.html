@@ -127,7 +127,6 @@
   }
   .video-popup video {
       width: 90%;
-      height: auto;
       border-radius: 10px;
   }
   .close-btn {
@@ -173,8 +172,8 @@
    <h1>AS M3U PLAYER</h1>
   </div>
   <div class="upload-section">
-   <input style="flex:0;" type="file" id="m3uFile" accept=".m3u">
-   <button style="flex:1;" onclick="extractM3U()" class="btn waves-effect waves-light yellow darken-2 black-text"><i class="fas fa-link"></i></button>
+   <input type="file" id="m3uFile" accept=".m3u">
+   <button onclick="extractM3U()" class="btn waves-effect waves-light yellow darken-2 black-text"><i class="fas fa-link"></i></button>
   </div>
   <div class="link-section">
    <input type="text" id="m3uLink" placeholder="Enter M3U link" value="https://iptv-org.github.io/iptv/index.m3u" />
