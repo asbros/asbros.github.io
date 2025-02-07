@@ -1,179 +1,186 @@
 <!DOCTYPE html>
-<title>AS LIVE TV</title>
-<script type="text/javascript" charset="utf-8" async="" src="https://ssl.p.jwpcdn.com/player/v/8.30.0/jwpsrv.js"></script>
-<meta content='#dc3545' name='theme-color' />
-<meta charset='utf-8' />
-<meta content='width=device-width, initial-scale=1.0' name='viewport' />
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="https://asbros.github.io/as.webmanifest">
-<meta content='https://i.imgur.com/aFOM5pg.png' property='og:image' />
-<link href='https://i.imgur.com/aFOM5pg.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
-<link href='https://i.imgur.com/aFOM5pg.png' rel='apple-touch-icon' />
-<link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
-<link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
-<script src='https://asbros.github.io/popup.js/popup.js'></script>
-<script src="//hlsbook.net/wp-content/examples/hls.min.js"></script>
-<style type='text/css'>
- *{font-family:'Jost', sans-serif;user-select:none;transition: all 0.3s;}
- body{padding:0;margin:0;background: rgb(100,100,100);}
- .mcon{margin:0;padding:0px;}
- .plrd{position:-webkit-sticky;position:sticky;z-index:9999999;top:0;border:5px solid #dc3545;background:#000;margin-top: 10px;}
- #video{width:100%;height:100%;}
-button{padding:10px;background:rgba(153, 153, 153, 0.4);margin-bottom:5px;font-size:17px;border:0;width:100%;text-align:left;}
- #search {
-  background-image: url('https://www.w3schools.com/css/searchicon.png');
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  width: 100%;
-  margin-top: 10px;
-  box-sizing: border-box;
-  font-size: 16px;
-  padding: 10px 20px 10px 40px;
-  border: 1px solid #ddd;
-}
- #list{
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: space-around;
-   margin-top: 20px;
-   color: #000;
-   font-size: 20px;
- }
- #list > div{
-   height: 150px;
-   width: 111px;
-   margin-bottom: 10px;
-   background: rgba(255,255,255,0.9);
-   border-radius: 5px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
- }
- #list > div:hover{
-   background: rgba(0,0,0,0.2);
- }
- #list div img{
-   height: 80px;
-   width: 80px;
-   margin-bottom: 15px;
- }
- #list div div{
-   text-align: center;
-   font-size: 13px;
-   width: 95%;
-   color: #111;
-   white-space:nowrap;
-   overflow:hidden;
-   text-overflow:ellipsis;
- }
- @media only screen and (min-width: 1000px) {
-  .dsktp .mcon{display:flex;}
-  .dsktp .plrd{width:60%;background:#000;height:100%;}
-  .dsktp #video{height:100%;}
-  .dsktp #cntt{
-      width: 40%;
-      height: 540px;
-      overflow-y: scroll;
-      padding: 10px;
-      background: rgba(0,0,0,0.2);
-  }
-  .dsktp .chnld{filter:none !important;-webkit-filter:none !important;}
- }
-</style>
-</head>
-
-<body class="bg-light-blue">
- <script src="https://content.jwplatform.com/libraries/Z79JsmAO.js"></script>
- <div class="white pad-15 shadow bg-red" style="display: flex;align-items: center;height:38px">
-     <img style="height: 45px;width: 45px;border-radius: 50%;margin-right: 3px;" src="https://i.imgur.com/aFOM5pg.png">
-   <span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Live TV</span>
-   <a href="https://anshul-web.blogspot.com/" target="_blank" style="text-decoration: none;margin-right: 7px"><img style="height: 38px;width: 38px;border-radius: 50%;border: 1px solid #fff;" src="https://i.imgur.com/xlkY3OT.jpg"></a>
-   <a href="https://shubham-web.blogspot.com/" target="_blank" style="text-decoration: none;"><img style="height: 38px;width: 38px;border-radius: 50%;border: 1px solid #fff;" src="https://i.imgur.com/PWYt3DO.jpg"></a>
-  </div>
- <div class='mcon'>
-  <div class='plrd' id="plrd" style="display: none;">
-   <video autoplay='' controls='' id='video'></video>
-  </div>
-  <div id="cntt">
-   <input class="input-blue" type="search" id="search" onkeyup="search(this.value.toUpperCase())" oninput="search(this.value.toUpperCase())" placeholder="Search for tv channels...">
-  <div id="list" class='chnld'>
-      Loading Live Channels...
-  </div>
-  </div>
- </div>
- <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 10px;">
-  <a style="text-decoration: none;font-size: 17px;" href="https://asbros.github.io/" class="white">More Apps →</a><br><hr>
-  <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
- </div>
- <script>
- 
-  var dlst = document.querySelector("#list");
-  var plrd = document.querySelector("#plrd");
-  
- var list = [];
- fetch("https://api.npoint.io/ede7b617d1f60ac64170")
- .then(response => response.json())
- .then((data) => {
-   list = data;
-   dlst.innerHTML = "";
-  list.forEach((c,i) => {
-    var div = document.createElement("div");
-    div.setAttribute("id",i);
-    var img = document.createElement("img");
-    img.src = c.img;
-    var nm = document.createElement("div");
-    nm.innerText = c.name;
-    div.onclick = function(){
-      plrd.style.display = "";
-     if(c.m3u8 !== true){
-      play(c.url,c.keyId,c.key);
-     }else{
-      play(c.url,c.keyId,c.key,"hls");
-     }
-     document.body.classList.add('dsktp');
-    }
-    div.appendChild(img);
-    div.appendChild(nm);
-    dlst.appendChild(div);
-  });
-  
- });
- 
-  function play(url,kid,k,t){
-  var cat = "dash";
-   if(t == "hls"){
-     cat = "hls";
-   }else{
-     cat = "dash";
-   }
-  jwplayer("video").setup({
-         'preload': "auto",
-         "autostart": true,
-         'stretching': "uniform",
-         'width': "100%",
-         'aspectratio': "16:9",
-         'image': "https://i.imgur.com/aFOM5pg.png",
-         'logo': "https://i.imgur.com/aFOM5pg.png",
-         file: url,
-         type: cat,
-         drm: {"clearkey": {  "keyId":kid,"key":k}},
-         abouttext: "US ?",
-         aboutlink: "https://asbros.github.io/"
-  });
-  }
-  function search(q){
-   for (i = 0; i < list.length; i++) {
-        var a = list[i].name;
-        if (a.toUpperCase().indexOf(q.trim()) > -1) {
-         document.getElementById(i).style.display = "";
-        } else {
-         document.getElementById(i).style.display = "none";
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS LIVE TV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Minimal Custom CSS -->
+    <style>
+        .video-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none; /* Initially hidden */
         }
-    }
-  }
- </script>
-</body>
 
+        /* Make the video responsive */
+        #video {
+            width: 100%; /* 16:9 aspect ratio */
+            position: relative;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .channel-card {
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.125);
+        }
+
+        .channel-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+    
+    <!-- Player dependencies -->
+    <script src="https://content.jwplatform.com/libraries/Z79JsmAO.js"></script>
+    <script src="//hlsbook.net/wp-content/examples/hls.min.js"></script>
+</head>
+<body class="bg-light">
+    <!-- Header -->
+    <nav class="navbar navbar-light bg-white border-bottom py-2">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="https://i.imgur.com/aFOM5pg.png" class="rounded-circle me-2" width="40" height="40">
+                <span class="fs-5 text-danger">AS Live TV</span>
+            </a>
+            <div class="d-flex gap-2">
+                <a href="https://anshul-web.blogspot.com/" target="_blank">
+                    <img src="https://i.imgur.com/xlkY3OT.jpg" class="rounded-circle" width="40" height="40">
+                </a>
+                <a href="https://shubham-web.blogspot.com/" target="_blank">
+                    <img src="https://i.imgur.com/PWYt3DO.jpg" class="rounded-circle" width="40" height="40">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Video Container -->
+    <div class="video-container" id="videoContainer">
+        <div id="video"></div> <!-- JW Player will render here -->
+    </div>
+
+    <main class="container py-4">
+        <!-- Search -->
+        <div class="mb-4">
+            <div class="input-group">
+                <span class="input-group-text bg-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </span>
+                <input type="search" class="form-control" 
+                       id="search" placeholder="Search channels..."
+                       onkeyup="searchChannels(this.value.toLowerCase())">
+            </div>
+        </div>
+
+        <!-- Channels Grid -->
+        <div id="channelGrid" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+            <div class="col">
+                <div class="text-center text-muted">Loading channels...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-4">
+        <div class="container text-center">
+            <a href="https://asbros.github.io/" class="text-decoration-none text-danger">More Apps →</a>
+            <hr class="my-2">
+            <p class="mb-0 text-muted">AS BROTHERS ❤️</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let channels = [];
+        let playerInstance = null;
+        const channelGrid = document.querySelector('#channelGrid');
+        const videoContainer = document.querySelector('#videoContainer');
+
+        // Fetch channels
+        fetch("https://asbros.github.io/js/live.json")
+            .then(response => response.json())
+            .then(data => {
+                channels = data;
+                renderChannels(data);
+            })
+            .catch(error => {
+                channelGrid.innerHTML = `
+                    <div class="col-12 text-center text-danger py-4">
+                        Error loading channels: ${error.message}
+                    </div>
+                `;
+                console.error('Channel fetch error:', error);
+            });
+
+        // Render channels
+        function renderChannels(channelList) {
+            channelGrid.innerHTML = channelList.map((channel, index) => `
+                <div class="col">
+                    <div class="card channel-card h-100" onclick="playChannel(${index})">
+                        <img src="${channel.img}" class="card-img-top p-2 object-fit-contain" 
+                             alt="${channel.name}" style="height: 120px">
+                        <div class="card-body text-center p-2">
+                            <p class="card-text text-truncate small mb-0">${channel.name}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Play channel
+        function playChannel(index) {
+            const channel = channels[index];
+            videoContainer.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Initialize or update JW Player
+            if (!playerInstance) {
+                playerInstance = jwplayer('video').setup({
+                    file: channel.url,
+                    image: channel.img,
+                    width: '100%',
+                    aspectratio: '16:9',
+                    autostart: true,
+                    stretching: 'uniform'
+                });
+            } else {
+                playerInstance.load([{ 
+                    file: channel.url,
+                    image: channel.img
+                }]);
+                playerInstance.play();
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (playerInstance) {
+                    playerInstance.resize();
+                }
+            });
+        }
+
+        // Search channels
+        function searchChannels(query) {
+            const filtered = channels.filter(channel => 
+                channel.name.toLowerCase().includes(query)
+            );
+            renderChannels(filtered);
+        }
+    </script>
+</body>
 </html>
