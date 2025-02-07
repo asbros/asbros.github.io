@@ -65,17 +65,11 @@
      "about": "",
      "url": "https://asbros.github.io/web/paint"
   },
-   {
-     "name": "IMAGE2LINK",
-     "image": "https://i.imgur.com/oelJRyu.png",
-     "about": "",
-     "url": "https://asbros.github.io/web/img2link"
-   },
   {
-     "name": "FILE2LINK",
+     "name": "Universal Uploader",
      "image": "https://i.imgur.com/usFmRlS.png",
      "about": "",
-     "url": "https://asbros.github.io/web/file2link"
+     "url": "https://asbros.github.io/web/uploader"
   },
   {
      "name": "POPUP JS",
