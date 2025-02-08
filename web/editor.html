@@ -105,6 +105,17 @@
       padding: 20px;
       color: #95a5a6;
   }
+  #undoBtn, #redoBtn {
+      padding: 5px 10px;
+  }
+  .swal2-popup pre {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      max-height: 300px;
+      white-space: pre-wrap;
+  }
  </style>
 </head>
 
@@ -113,6 +124,14 @@
  <div class="header d-flex justify-content-between align-items-center">
   <h4 class="mb-0">Code Editor</h4>
   <div>
+   <!-- Undo/Redo Buttons -->
+   <button class="btn btn-sm btn-secondary me-2" id="undoBtn" title="Undo">
+    <i class="bi bi-arrow-counterclockwise"></i>
+   </button>
+   <button class="btn btn-sm btn-secondary me-2" id="redoBtn" title="Redo">
+    <i class="bi bi-arrow-clockwise"></i>
+   </button>
+   <!-- Preview Button -->
    <button class="btn btn-sm btn-primary" id="togglePreviewBtn">
     <i class="bi bi-layout-split"></i> Show Preview
    </button>
@@ -171,10 +190,11 @@
    </select>
   </div>
 
-  <!-- source Code -->
+  <!-- Import from URL -->
   <button class="btn btn-primary w-100 mb-3" id="importFromURL">
    <i class="bi bi-globe"></i> Import from URL
   </button>
+
   <!-- Download Code -->
   <button class="btn btn-info w-100 mb-3" id="downloadCode">
    <i class="bi bi-download"></i> Download Code
@@ -189,11 +209,23 @@
   <button class="btn btn-secondary w-100 mb-3" id="loadFile">
    <i class="bi bi-file-earmark-arrow-up"></i> Load File
   </button>
+  
+<!-- Share Code -->
+  <button class="btn btn-success w-100 mb-3" id="shareCode">
+   <i class="bi bi-share"></i> Share Code
+  </button>
+  
+  <!-- Check Code -->
+  <button class="btn btn-danger w-100 mb-3" id="checkCode">
+   <i class="bi bi-bug"></i> Check Code
+  </button>
 
-  <!-- Session Management -->
-  <button class="btn btn-success w-100 mb-4" id="saveSession">
+  <!-- Save Session -->
+  <button class="btn btn-dark w-100 mb-4" id="saveSession">
    <i class="bi bi-save"></i> Save Session
   </button>
+
+  <!-- Saved Sessions -->
   <h5><i class="bi bi-folder"></i> Saved Sessions</h5>
   <div id="sessionsList" class="sessions-list">
    <div class="loading-spinner"></div>
@@ -231,13 +263,122 @@
       enableLiveAutocompletion: true,
       enableSnippets: true
   });
-  
-  // Load saved content from localStorage
+
+  // Load saved content from localStorage only if exists
   const savedContent = localStorage.getItem('editorContent');
   if (savedContent) {
       editor.setValue(savedContent);
+  } else {
+      editor.setValue(""); // Clear initial content
+  }
+
+  // Undo/Redo functionality
+  document.getElementById('undoBtn').addEventListener('click', () => {
+      editor.undo();
+  });
+  document.getElementById('redoBtn').addEventListener('click', () => {
+      editor.redo();
+  });
+
+// Share Code Functionality
+  document.getElementById('shareCode').addEventListener('click', () => {
+      const code = editor.getValue();
+      if (!code.trim()) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Empty Code!',
+              text: 'Please write some code to share.',
+          });
+          return;
+      }
+
+      // Encode the code to base64 for the URL
+      const encodedCode = btoa(encodeURIComponent(code));
+      const shareLink = `${window.location.origin}${window.location.pathname}?preview=${encodedCode}`;
+
+      // Show share options
+      Swal.fire({
+          title: 'Share Code',
+          html: `
+              <p>Copy the link below to share your code:</p>
+              <input type="text" id="shareLinkInput" class="form-control" value="${shareLink}" readonly>
+              <br>
+              <button class="btn btn-primary w-100" id="copyLinkBtn">
+                  <i class="bi bi-clipboard"></i> Copy Link
+              </button>
+          `,
+          didOpen: () => {
+              document.getElementById('copyLinkBtn').addEventListener('click', () => {
+                  const input = document.getElementById('shareLinkInput');
+                  input.select();
+                  document.execCommand('copy');
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Copied!',
+                      text: 'Link copied to clipboard.',
+                      timer: 1500,
+                  });
+              });
+          },
+      });
+  });
+
+  // Handle Preview Mode from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const previewCode = urlParams.get('preview');
+  if (previewCode) {
+      // Decode the code from base64
+      const decodedCode = decodeURIComponent(atob(previewCode));
+      document.getElementById('editor').style.display = 'none';
+      document.querySelector('.preview-container').style.display = 'block';
+      document.getElementById('preview').srcdoc = decodedCode;
+      document.getElementById('togglePreviewBtn').style.display = 'none';
+      document.getElementById('settingsToggleBtn').style.display = 'none';
   }
   
+  // Code Validation Functionality
+  document.getElementById('checkCode').addEventListener('click', () => {
+      const code = editor.getValue();
+      try {
+          // Create document fragment to validate HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(code, "text/html");
+          
+          // Check for parser errors
+          const errors = doc.querySelectorAll('parsererror');
+          if (errors.length > 0) {
+              const errorMessages = Array.from(errors).map(error => 
+                  error.textContent.replace(/Below is a rendering of the page up to the first error\./g, '')
+              ).join('\n');
+              
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Code Errors Found!',
+                  html: `<pre>${errorMessages}</pre>`,
+                  footer: '<b>Tip:</b> Check for unclosed tags or invalid syntax'
+              });
+          } else {
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Code Valid!',
+                  text: 'No syntax errors found in the HTML',
+                  timer: 2000
+              });
+          }
+      } catch (error) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Validation Error',
+              text: error.message
+          });
+      }
+  });
+
+  // Update existing save content logic
+  editor.session.on('change', () => {
+      localStorage.setItem('editorContent', editor.getValue());
+  });
+
   // Save content to localStorage on change
   editor.session.on('change', () => {
       localStorage.setItem('editorContent', editor.getValue());
@@ -268,6 +409,8 @@
           isPreviewVisible ? '<i class="bi bi-code-square"></i> Show Editor' : '<i class="bi bi-layout-split"></i> Show Preview';
       document.getElementById('refreshPreviewBtn').classList.toggle('d-none', !isPreviewVisible);
       document.getElementById('settingsToggleBtn').style.display = isPreviewVisible ? 'none' : 'block';
+      document.getElementById('undoBtn').style.display = isPreviewVisible ? 'none' : 'inline-block';
+      document.getElementById('redoBtn').style.display = isPreviewVisible ? 'none' : 'inline-block';
       
       if(isPreviewVisible) updatePreview();
   });
@@ -512,25 +655,8 @@
       if (savedContent) editor.setValue(savedContent);
   });
   
-  // Initial Content
-  if (!sessionStorage.getItem('savedSessions')) {
-      editor.setValue(`<!DOCTYPE html>
-  <html>
-  <head>
-      <title>New Document</title>
-      <style>
-  body { padding: 20px; }
-      </style>
-  </head>
-  <body>
-      <h1>Hello World!</h1>
-      <script>
-  console.log('Hello from the editor!');
-      <\/script>
-  </body>
-  </html>`);
-  }
  </script>
+ 
  <script>
   // Add this code in the JavaScript section
   document.getElementById('importFromURL').addEventListener('click', async () => {
