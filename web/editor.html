@@ -280,7 +280,7 @@
       editor.redo();
   });
 
-// Share Code Functionality
+ // Share Code Functionality - Updated for short URLs
   document.getElementById('shareCode').addEventListener('click', () => {
       const code = editor.getValue();
       if (!code.trim()) {
@@ -292,21 +292,29 @@
           return;
       }
 
-      // Encode the code to base64 for the URL
-      const encodedCode = btoa(encodeURIComponent(code));
-      const shareLink = `${window.location.origin}${window.location.pathname}?preview=${encodedCode}`;
+      // Compress code using LZ-String
+      const compressed = LZString.compressToEncodedURIComponent(code);
+      const shareLink = `${window.location.origin}${window.location.pathname}?p=${compressed}`;
 
       // Show share options
       Swal.fire({
           title: 'Share Code',
           html: `
-              <p>Copy the link below to share your code:</p>
-              <input type="text" id="shareLinkInput" class="form-control" value="${shareLink}" readonly>
-              <br>
+              <p class="small">Share this short link:</p>
+              <input type="text" id="shareLinkInput" 
+                     class="form-control mb-2" 
+                     value="${shareLink}" 
+                     readonly
+                     style="font-size: 0.9rem">
               <button class="btn btn-primary w-100" id="copyLinkBtn">
                   <i class="bi bi-clipboard"></i> Copy Link
               </button>
+              <div class="mt-2 text-muted small">
+                  <i class="bi bi-info-circle"></i> 
+                  Link contains compressed version of your code
+              </div>
           `,
+          width: '500px',
           didOpen: () => {
               document.getElementById('copyLinkBtn').addEventListener('click', () => {
                   const input = document.getElementById('shareLinkInput');
@@ -315,7 +323,7 @@
                   Swal.fire({
                       icon: 'success',
                       title: 'Copied!',
-                      text: 'Link copied to clipboard.',
+                      text: 'Short link copied to clipboard',
                       timer: 1500,
                   });
               });
@@ -323,19 +331,27 @@
       });
   });
 
-  // Handle Preview Mode from URL
+  // Handle Preview Mode from URL - Updated decompression
   const urlParams = new URLSearchParams(window.location.search);
-  const previewCode = urlParams.get('preview');
-  if (previewCode) {
-      // Decode the code from base64
-      const decodedCode = decodeURIComponent(atob(previewCode));
-      document.getElementById('editor').style.display = 'none';
-      document.querySelector('.preview-container').style.display = 'block';
-      document.getElementById('preview').srcdoc = decodedCode;
-      document.getElementById('togglePreviewBtn').style.display = 'none';
-      document.getElementById('settingsToggleBtn').style.display = 'none';
-  }
-  
+  const compressedCode = urlParams.get('p');
+  if (compressedCode) {
+      try {
+          const decodedCode = LZString.decompressFromEncodedURIComponent(compressedCode);
+          if (decodedCode) {
+              document.getElementById('editor').style.display = 'none';
+              document.querySelector('.preview-container').style.display = 'block';
+              document.getElementById('preview').srcdoc = decodedCode;
+              document.getElementById('togglePreviewBtn').style.display = 'none';
+              document.getElementById('settingsToggleBtn').style.display = 'none';
+          }
+      } catch (error) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Invalid Share Link',
+              text: 'Could not load the shared code'
+          });
+      }
+  }  
   // Code Validation Functionality
   document.getElementById('checkCode').addEventListener('click', () => {
       const code = editor.getValue();
