@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Code Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.0/ace.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>
+    <style>
+        #editor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+        .editor-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .preview-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            background: white;
+            z-index: 1000;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .settings-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .settings-menu.open {
+            left: 0;
+        }
+        .session-item {
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            padding: 12px;
+            background: #fff;
+            border: 1px solid #dee2e6;
+        }
+        .session-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .session-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Code Editor</h4>
+        <div>
+            <button class="btn btn-sm btn-primary" id="togglePreviewBtn">
+                <i class="bi bi-layout-split"></i> Show Preview
+            </button>
+            <button class="btn btn-sm btn-success d-none" id="refreshPreviewBtn">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Settings Button -->
+    <button class="btn btn-primary floating-btn" id="settingsToggleBtn">
+        <i class="bi bi-gear"></i>
+    </button>
+
+    <!-- Settings Menu -->
+    <div class="settings-menu" id="settingsMenu">
+        <h4 class="mb-4"><i class="bi bi-gear"></i> Settings</h4>
+
+        <!-- Font Size -->
+        <div class="mb-3">
+            <label class="form-label">Font Size</label>
+            <select class="form-select" id="fontSize">
+                <option value="12">12px</option>
+                <option value="14">14px</option>
+                <option value="16">16px</option>
+                <option value="18">18px</option>
+                <option value="20">20px</option>
+            </select>
+        </div>
+
+        <!-- Font Family -->
+        <div class="mb-3">
+            <label class="form-label">Font Family</label>
+            <select class="form-select" id="fontFamily">
+                <option value="monospace">Monospace</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Consolas">Consolas</option>
+                <option value="Source Code Pro">Source Code Pro</option>
+            </select>
+        </div>
+
+        <!-- Theme -->
+        <div class="mb-3">
+            <label class="form-label">Theme</label>
+            <select class="form-select" id="themeSelect">
+                <optgroup label="Light Themes">
+                    <option value="chrome">Chrome</option>
+                    <option value="clouds">Clouds</option>
+                    <option value="crimson_editor">Crimson Editor</option>
+                </optgroup>
+                <optgroup label="Dark Themes">
+                    <option value="monokai">Monokai</option>
+                    <option value="dracula">Dracula</option>
+                    <option value="tomorrow_night">Tomorrow Night</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <!-- Download Code -->
+        <button class="btn btn-info w-100 mb-3" id="downloadCode">
+            <i class="bi bi-download"></i> Download Code
+        </button>
+
+        <!-- Beautify Code -->
+        <button class="btn btn-warning w-100 mb-3" id="beautifyCode">
+            <i class="bi bi-magic"></i> Beautify Code
+        </button>
+
+        <!-- Load File -->
+        <button class="btn btn-secondary w-100 mb-3" id="loadFile">
+            <i class="bi bi-file-earmark-arrow-up"></i> Load File
+        </button>
+
+        <!-- Session Management -->
+        <button class="btn btn-success w-100 mb-4" id="saveSession">
+            <i class="bi bi-save"></i> Save Session
+        </button>
+        <h5><i class="bi bi-folder"></i> Saved Sessions</h5>
+        <div id="sessionsList" class="sessions-list">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Editor Container -->
+    <div class="editor-container">
+        <div id="editor"></div>
+    </div>
+
+    <!-- Preview Container -->
+    <div class="preview-container">
+        <iframe class="w-100 h-100" id="preview"></iframe>
+    </div>
+
+    <script>
+        // Initialize Ace Editor
+        const editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/html");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            fontSize: 14,
+            fontFamily: "monospace",
+            useSoftTabs: true,
+            wrap: true
+        });
+
+        // Enable Ace Autocompletion
+        ace.require("ace/ext/language_tools");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: true
+        });
+
+        // Load saved content from localStorage
+        const savedContent = localStorage.getItem('editorContent');
+        if (savedContent) {
+            editor.setValue(savedContent);
+        }
+
+        // Save content to localStorage on change
+        editor.session.on('change', () => {
+            localStorage.setItem('editorContent', editor.getValue());
+        });
+
+        // Load saved settings from localStorage
+        const savedFontSize = localStorage.getItem('editorFontSize') || '14';
+        const savedFontFamily = localStorage.getItem('editorFontFamily') || 'monospace';
+        const savedTheme = localStorage.getItem('editorTheme') || 'monokai';
+
+        // Apply saved settings
+        editor.setFontSize(savedFontSize);
+        editor.setOptions({ fontFamily: savedFontFamily });
+        editor.setTheme(`ace/theme/${savedTheme}`);
+
+        // Update settings dropdowns to reflect saved values
+        document.getElementById('fontSize').value = savedFontSize;
+        document.getElementById('fontFamily').value = savedFontFamily;
+        document.getElementById('themeSelect').value = savedTheme;
+
+        // Toggle Preview
+        let isPreviewVisible = false;
+        document.getElementById('togglePreviewBtn').addEventListener('click', () => {
+            isPreviewVisible = !isPreviewVisible;
+            document.querySelector('.editor-container').style.display = isPreviewVisible ? 'none' : 'block';
+            document.querySelector('.preview-container').style.display = isPreviewVisible ? 'block' : 'none';
+            document.getElementById('togglePreviewBtn').innerHTML = 
+                isPreviewVisible ? '<i class="bi bi-code-square"></i> Show Editor' : '<i class="bi bi-layout-split"></i> Show Preview';
+            document.getElementById('refreshPreviewBtn').classList.toggle('d-none', !isPreviewVisible);
+            document.getElementById('settingsToggleBtn').style.display = isPreviewVisible ? 'none' : 'block';
+            
+            if(isPreviewVisible) updatePreview();
+        });
+
+        // Update Preview
+        function updatePreview() {
+            const code = editor.getValue();
+            const iframe = document.getElementById('preview');
+            const blob = new Blob([code], { type: 'text/html' });
+            iframe.src = URL.createObjectURL(blob);
+        }
+
+        // Refresh Preview
+        document.getElementById('refreshPreviewBtn').addEventListener('click', updatePreview);
+
+        // Settings Toggle
+        document.getElementById('settingsToggleBtn').addEventListener('click', () => {
+            document.getElementById('settingsMenu').classList.toggle('open');
+        });
+
+        // Close settings when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#settingsMenu') && 
+                !e.target.closest('#settingsToggleBtn')) {
+                document.getElementById('settingsMenu').classList.remove('open');
+            }
+        });
+
+        // Font Size Change
+        document.getElementById('fontSize').addEventListener('change', (e) => {
+            const fontSize = e.target.value;
+            editor.setFontSize(fontSize);
+            localStorage.setItem('editorFontSize', fontSize);
+        });
+
+        // Font Family Change
+        document.getElementById('fontFamily').addEventListener('change', (e) => {
+            const fontFamily = e.target.value;
+            editor.setOptions({ fontFamily });
+            localStorage.setItem('editorFontFamily', fontFamily);
+        });
+
+        // Theme Change
+        document.getElementById('themeSelect').addEventListener('change', (e) => {
+            const theme = e.target.value;
+            editor.setTheme(`ace/theme/${theme}`);
+            localStorage.setItem('editorTheme', theme);
+        });
+
+        // Download Code
+        document.getElementById('downloadCode').addEventListener('click', async () => {
+            const { value: fileName } = await Swal.fire({
+                title: 'Download Code',
+                input: 'text',
+                inputLabel: 'Enter file name:',
+                inputValue: 'code.html',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) return 'Please enter a file name!';
+                }
+            });
+
+            if (fileName) {
+                const blob = new Blob([editor.getValue()], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        });
+
+        // Beautify Code
+        document.getElementById('beautifyCode').addEventListener('click', () => {
+            const beautifiedCode = html_beautify(editor.getValue());
+            editor.setValue(beautifiedCode);
+        });
+
+        // Load File
+        document.getElementById('loadFile').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.html,.css,.js,.txt';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    Swal.fire({
+                        title: 'Load File?',
+                        text: 'Current code will be replaced. Continue?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Load'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            editor.setValue(event.target.result);
+                        }
+                    });
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        });
+
+        // Session Management (Using Session Storage)
+        const SESSION_PREFIX = 'editorSession-';
+
+        function saveSession(sessionName) {
+            // Validate empty content
+            const content = editor.getValue().trim();
+            if (content === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Empty Content',
+                    text: 'Please write something before saving!'
+                });
+                return;
+            }
+
+            // Validate existing names
+            const sessions = JSON.parse(sessionStorage.getItem('savedSessions') || '[]');
+            if (sessions.includes(sessionName)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Duplicate Name',
+                    text: 'Session name already exists! Please choose a different name.'
+                });
+                return;
+            }
+
+            sessions.push(sessionName);
+            sessionStorage.setItem('savedSessions', JSON.stringify(sessions));
+            sessionStorage.setItem(`${SESSION_PREFIX}${sessionName}`, content);
+            loadSessionsList();
+        }
+
+        function loadSession(sessionName) {
+            const sessionData = sessionStorage.getItem(`${SESSION_PREFIX}${sessionName}`);
+            if (sessionData) {
+                editor.setValue(sessionData);
+                currentSession = sessionName;
+                updatePreview();
+            }
+        }
+
+        function loadSessionsList() {
+            const sessions = JSON.parse(sessionStorage.getItem('savedSessions') || '[]');
+            const sessionsList = document.getElementById('sessionsList');
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                sessionsList.innerHTML = sessions.length > 0
+                    ? sessions.map(session => `
+                        <div class="session-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-file-earmark-code me-2"></i>
+                                    <span class="session-name">${session}</span>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-primary me-2" onclick="handleSessionClick('${session}')">
+                                        <i class="bi bi-folder2-open"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteSession('${session}')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                    : `<div class="empty-state">
+                        <i class="bi bi-folder-x fs-4"></i>
+                        <div class="mt-2">No saved sessions found</div>
+                       </div>`;
+            }, 500); // Simulate loading delay
+        }
+
+        async function handleSessionClick(sessionName) {
+            const { isConfirmed } = await Swal.fire({
+                title: 'Load Session?',
+                text: `Are you sure you want to load "${sessionName}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Load'
+            });
+
+            if (isConfirmed) {
+                loadSession(sessionName);
+                Swal.fire({
+                    title: 'Session Loaded!',
+                    text: `"${sessionName}" has been loaded successfully`,
+                    icon: 'success',
+                    timer: 2000
+                });
+            }
+        }
+
+        async function deleteSession(sessionName) {
+            const { isConfirmed } = await Swal.fire({
+                title: 'Delete Session?',
+                text: `Are you sure you want to delete "${sessionName}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete'
+            });
+
+            if (isConfirmed) {
+                sessionStorage.removeItem(`${SESSION_PREFIX}${sessionName}`);
+                const sessions = JSON.parse(sessionStorage.getItem('savedSessions') || '[]')
+                    .filter(name => name !== sessionName);
+                sessionStorage.setItem('savedSessions', JSON.stringify(sessions));
+                loadSessionsList();
+                Swal.fire('Deleted!', 'Session has been deleted.', 'success');
+            }
+        }
+
+        // Save Session Button
+        document.getElementById('saveSession').addEventListener('click', async () => {
+            const { value: sessionName } = await Swal.fire({
+                title: 'Save Session',
+                input: 'text',
+                inputLabel: 'Enter a unique session name:',
+                inputPlaceholder: 'My Session',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) return 'Please enter a session name!';
+                    if (value.length > 20) return 'Name should be less than 20 characters!';
+                }
+            });
+
+            if (sessionName) {
+                saveSession(sessionName);
+           
+          Swal.fire({
+              title: 'Saved!',
+              text: `Session "${sessionName}" saved successfully`,
+              icon: 'success',
+              timer: 2000
+          });
+      }
+  });
+  
+  // Initial Content
+  if (!sessionStorage.getItem('savedSessions')) {
+      editor.setValue(`<!DOCTYPE html>
+  <html>
+  <head>
+      <title>New Document</title>
+      <style>
+  body { padding: 20px; }
+      </style>
+  </head>
+  <body>
+      <h1>Hello World!</h1>
+      <script>
+  console.log('Hello from the editor!');
+      <\/script>
+  </body>
+  </html>`);
+  }
+ </script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
