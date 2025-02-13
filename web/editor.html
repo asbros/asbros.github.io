@@ -841,29 +841,29 @@
   });
   
   document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sharedName = urlParams.get('shared');
-  
-    if (sharedName) {
-        // Fetch shared code from Firebase
-        firebase.database().ref(`codes/${sharedName}`).once('value').then((snapshot) => {
-            const data = snapshot.val();
-            if (data && data.code) {
-                editor.setValue(data.code);
-  
-                // Disable editing if permission is view-only
-                if (data.permission === 'view') {
-                    editor.setReadOnly(true);
-                    Swal.fire('Info', 'This code is view-only. Editing is disabled.', 'info');
-                }
-            } else {
-                Swal.fire('Error', 'Shared code not found.', 'error');
-            }
-        }).catch(() => {
-            Swal.fire('Error', 'Failed to load shared code.', 'error');
-        });
-    }
-  });
+  const urlParams = new URLSearchParams(window.location.search);
+  const sharedName = urlParams.get('shared');
+
+  if (sharedName) {
+    firebase.database().ref(`codes/${sharedName}`).once('value')
+      .then((snapshot) => {
+        const data = snapshot.val();
+        if (data && data.code) {
+          editor.setValue(data.code);
+          if (data.permission === 'view') {
+            editor.setReadOnly(true);
+            Swal.fire('Info', 'This code is view-only. Editing is disabled.', 'info');
+          }
+        } else {
+          Swal.fire('Error', 'Shared code not found.', 'error');
+        }
+      })
+      .catch((error) => {
+        console.error('Firebase Error:', error);
+        Swal.fire('Error', 'Failed to load shared code. Please try again later.', 'error');
+      });
+  }
+});
   
   document.getElementById('getSavedCodeBtn').addEventListener('click', async () => {
   // Ask for the name of the saved code
