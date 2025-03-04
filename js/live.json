@@ -2,7 +2,7 @@
   {
     "img": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-43-j5fca4k0-v3/imageContent-43-j5fca4k0-m4.png",
     "name": "Set HD",
-    "url": "https://cdn-3.pishow.tv/live/1612/master.m3u8"
+    "url": "https://jcevents.akamaized.net/bpk-tv/JC_Sports18_1HD/JCHLS/hdntl=exp=1741153381~acl=%2f*~id=97ff5c734c6f4a3ea96b01cfd44846cc~data=hdntl~hmac=0af3581f161bae67efc6d4aba882ef7a34ac308c204bfe17e7317eb77bd2aafc/index.m3u8"
   },
   {
     "img": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-12081-j9oc38xc-v8/imageContent-12081-j9oc38xc-m7.png",
@@ -132,12 +132,12 @@
   {
     "img": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/transparentImages/Star%20Sports%201%20HD.png",
     "name": "Star Sports 1 HD",
-    "url": "https://bpprod5linear.akamaized.net/bpk-tv/irdeto_com_Channel_250/output/manifest.mpd"
+    "url": "https://jcevents.akamaized.net/bpk-tv/JC_Sports18_1HD/JCHLS/hdntl=exp=1741153381~acl=%2f*~id=97ff5c734c6f4a3ea96b01cfd44846cc~data=hdntl~hmac=0af3581f161bae67efc6d4aba882ef7a34ac308c204bfe17e7317eb77bd2aafc/index.m3u8"
   },
   {
     "img": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/transparentImages/Star%20Sports%202%20HD.png",
     "name": "Star Sports 2 HD",
-    "url": "https://bpprod5linear.akamaized.net/bpk-tv/irdeto_com_Channel_251/output/manifest.mpd"
+    "url": "https://jcevents.akamaized.net/bpk-tv/JC_Sports18_1HD/JCHLS/hdntl=exp=1741153381~acl=%2f*~id=97ff5c734c6f4a3ea96b01cfd44846cc~data=hdntl~hmac=0af3581f161bae67efc6d4aba882ef7a34ac308c204bfe17e7317eb77bd2aafc/index.m3u8"
   },
   {
     "img": "https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-759-j5m13014-v2/imageContent-759-j5m13014-m3.png",
