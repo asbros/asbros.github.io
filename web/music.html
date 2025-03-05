@@ -462,7 +462,7 @@
      $("#top_playlists").appendChild(div);
   });
   for(var i = 0;i < 3;i++){
-  fetch("https://pol1.piapi.ggtyler.dev/search?filter=music_songs&q="+q())
+  fetch("https://pol1.piapi.ggtyler.dev/search?filter=videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -472,7 +472,7 @@
   }
   lodmor.style.display = "";
   lodmor.onclick = function(){
-   fetch("https://pol1.piapi.ggtyler.dev/search?filter=music_songs&q="+q())
+   fetch("https://pol1.piapi.ggtyler.dev/search?filter=videos&q="+q())
   .then(r => r.json())
   .then((x) => {
    cList = cList.concat(x.items);
@@ -488,7 +488,7 @@
    all_songs.innerHTML = "";
    sinput.value = "";
    sinput.blur();
-   fetch("https://pol1.piapi.ggtyler.dev/search?filter=music_songs&q=" + s_page)
+   fetch("https://pol1.piapi.ggtyler.dev/search?filter=videos&q=" + s_page)
    .then(r => r.json())
    .then((x) => {
      loader.hide();
@@ -503,7 +503,7 @@
        lodmor.style.display = "";
        lodmor.onclick = function() {
          var rnp = encodeURIComponent(cnp);
-         fetch("https://pol1.piapi.ggtyler.dev/nextpage/search?nextpage=" + rnp + "&filter=music_songs&q=" + s_page)
+         fetch("https://pol1.piapi.ggtyler.dev/nextpage/search?nextpage=" + rnp + "&filter=videos&q=" + s_page)
            .then(s => s.json())
            .then((z) => {
              cList = (z.items);
