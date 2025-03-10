@@ -240,7 +240,6 @@
   <hr>
   <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
  </div>
- <script>window.location.href="https://asbros.github.io/web/piped";</script>
  <script>
   var uri = window.location.toString();
   if (uri.indexOf("?x=true","?x=true") > 0) {var clean_uri = uri.substring(0, uri.indexOf("?x=true"));window.history.replaceState({}, document.title, clean_uri);}
@@ -631,7 +630,7 @@
    vid.appendChild(foot);
    vid.onclick = function(){
      playing.style.bottom = "0px";
-     fetch("https://inv.vy.ci/api/v1/videos/"+id)
+     fetch("https://invidious.f5.si/api/v1/videos/"+id)
      .then(y => y.json())
      .then((x) => {
        videoId = id;
@@ -645,12 +644,12 @@
    play_title.innerText = "Loading...";
    audio.pause();
    var urls = s.adaptiveFormats;
-   audio.src = "https://inv.vy.ci/"+urls[1].url.slice(42);
+   audio.src = "https://invidious.f5.si/"+urls[1].url.slice(42);
    title.innerText = s.title;
    play_title.innerText = s.title;
    document.title = s.title;
    image.src = 'https://wsrv.nl/?url=https://i.ytimg.com/vi_webp/'+s.videoId+'/maxresdefault.webp&w=720&h=720&fit=cover';
-   svidp.src = 'https://inv.vy.ci/embed/'+s.videoId+"?autoplay=0";
+   svidp.src = 'https://invidious.f5.si/embed/'+s.videoId+"?autoplay=0";
    play_img.src = 'https://wsrv.nl/?url=https://i.ytimg.com/vi_webp/'+s.videoId+'/mqdefault.webp&w=720&h=720&fit=cover';
    if(p_page){
      image.classList.add("long");
@@ -702,7 +701,7 @@
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://inv.vy.ci/api/v1/videos/"+id)
+   fetch("https://invidious.f5.si/api/v1/videos/"+id)
      .then(y => y.json())
      .then((x) => {
         var thumb = 'https://wsrv.nl/?url=https://i.ytimg.com/vi_webp/'+id+'/mqdefault.webp&w=720&h=720&fit=cover';
@@ -728,7 +727,7 @@
    play_img.src = "https://nglemployeedirectory.in/images/loading.gif";
    title.innerText = "Loading...";
    image.src = "https://nglemployeedirectory.in/images/loading.gif";
-   fetch("https://inv.vy.ci/api/v1/videos/"+id)
+   fetch("https://invidious.f5.si/api/v1/videos/"+id)
      .then(y => y.json())
      .then((x) => {
         var thumb = 'https://wsrv.nl/?url=https://i.ytimg.com/vi_webp/'+id+'/mqdefault.webp&w=720&h=720&fit=cover';
