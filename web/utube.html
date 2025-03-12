@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AS Utube</title>
+  <meta content='#dc3545' name='theme-color' />
+<meta charset='utf-8' />
+<meta content='width=device-width, initial-scale=1.0' name='viewport' />
+<meta content='https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png' property='og:image' />
+<link href='https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
+<link href='https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png' rel='apple-touch-icon' />
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="https://asbros.github.io/as.webmanifest">
+<link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
+<script src='https://asbros.github.io/popup.js/popup.js'></script>
+<link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
+<link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
+<style>
+*{color: #fff;font-family:'Jost', sans-serif;transition: all 0.3s;box-sizing: border-box;user-select: none;}
+body {margin: 0;background: rgb(22,26,29);}
+.vid{margin-bottom: 5px !important;}
+.vid:hover{background: rgb(0,0,0)}
+.vid:hover img{filter: brightness(120%)} 
+.vid a{text-decoration: none;}
+.body{position: relative;}
+.body img{width: 100%;aspect-ratio: 16/9;filter: brightness(90%);object-fit: cover;}
+.chpg .shorts{display: inline-block;width: 150px;margin: 10px;background: rgb(42,43,46);border-radius: 10px;}
+.chpg .shorts:hover{background: rgb(0,0,0)}
+.chpg .shorts img{aspect-ratio: 9/16;height: 176px;object-fit: contain;}
+.chpg .shorts .foot{}
+.time{position: absolute;bottom: 14px;right: 8px;background-color: rgba(0,0,0,0.8);color: white;font-size: 12px;border-radius: 7px;padding: 2px 6px;}
+.foot{padding: 7px;overflow: hidden;}
+.fimg{height: 100%;display: inline;width: 60px;}
+.foot img{height: 40px;width: 40px;border-radius: 50%;float: left;margin-right: 10px;filter: brightness(90%);}
+.det{margin-left: 2px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;}
+.title{font-size: 15px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;}
+.name,.txt{color: #eee;font-size: 12px;}
+.name {margin-right: 10px;}
+#sdiv{margin-left: 10px;margin-right: 2px;width: 100%;}
+#sinput{color: #fff;padding: 12px 20px;border-radius: 25px;border: 0;width: 100%;background: rgba(0,0,0,0.5);font-size: 16px;}
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    margin-left: .4em;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
+    background-size: contain;
+    cursor: pointer;
+}
+#sinput:focus{outline: none;}
+#search{width: 40px;border: none;height: 40px;align-items: center;background: none;padding: 6px;border-radius: 50%;}
+#searchss{position: fixed;top: 70px;left: 0;right: 0;max-height: 500px;z-index: 9999;background: rgba(10,45,25,0.1);backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);overflow-y: scroll;}
+#searchss div{background: rgba(0,0,0,0.5);color: #fff;padding: 12px;border-bottom: 0.01px solid #ccc;font-size:15px;}
+
+#channel{}
+#cban{width: 100%;height: 100px;object-fit: cover;}
+#cdct{display: flex;align-items: center;padding-left: 7px;padding-right: 10px;margin-top: 5px;margin-bottom: 7px;}
+#cimg{width: 40px;border-radius: 50%;}
+#cnm{flex: 1;font-size: 20px;margin-left: 7px;margin-right: 5px;}
+#cdes{margin-left: 54px;color: #eee;font-size: 14px;}
+#ctabs{padding: 10px;}
+#ctabs button{border: 0;color: #fff;background: #282828;padding: 7px 12px;margin-right: 10px;}
+
+#video{background-size:100% 10%;background-position: center;background-repeat: no-repeat;}
+#v_video{width : 100%;height: 300px;}
+#v_details{padding: 15px;background-color: rgba(0,0,0,0.5);backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px);}
+#v_title{font-size: 19px;}
+#v_text{margin-top: 7px;font-size: 12px;color:#ccc;}
+#v_chdet{margin-top: 10px;border-radius: 15px;display: flex;align-items: center;margin-bottom: 15px;}
+#v_chimg{height: 35px;width: 35px;border-radius: 50%;}
+#v_chnm{display: inline;margin-left: 8px;font-size: 17.5px;width: 100%}
+#v_chsub{font-size: 13px;color: #eee;margin-right:5px;}
+#v_extra{display: flex;overflow-x: scroll;-ms-overflow-style: none;scrollbar-width: none;}
+#v_extra::-webkit-scrollbar{display: none;}
+#v_lik,#v_dis,#v_share,#v_down,#v_dbtn{height: 40px;display: flex;align-items: center;justify-content: center;background: #4c4d4d;font-size: 14px;padding-left: 35px;padding-top: 4px;padding-bottom: 7px;padding-right: 15px;position: relative;border-radius: 18px;margin-right: 10px;color: #fff;}
+.proico{position: absolute;top: 10px;left: 8px;}
+#v_iframe{width: 100%;min-height: 270px;aspect-ratio: 16 / 9;}
+@media screen and (min-width: 1000px) {
+  #main{display: flex !important;justify-content: center;flex-wrap: wrap}
+  .vid{width: 250px !important;margin:10px;background: rgb(42,43,46);border-radius: 20px;}
+  .vid img{border-top-left-radius: 20px;border-top-right-radius: 20px;}
+ #sinput{width: 400px;float: right}
+ #searchss{position: absolute !important;left: calc(100% - 420px) !important;right: 20px}
+  #video,#v_desc{width: 58%;margin-left: 2%;background: none !important;}
+  #video{margin-top: 85px !important;}
+  .wdsktp #more_apps{width: 60%;}
+  .wdsktp #main{position: absolute;top: 90px;right: 0;width: 40%;margin-top: 0 !important;}
+  .wdsktp .vid{width: 90% !important;border-radius: 5px;height: 100px;}
+  .wdsktp #v_details{background: none !important;}
+  .wdsktp .body img{height: 90px;width: 150px;border-radius: 5px;margin: 5px;}
+  .wdsktp .vid a{display: flex;flex-direction: row;}
+  .wdsktp .vid .fimg{display: none}
+  .wdsktp .vid .det{margin: 0px !important; white-space: nowrap;overflow: hidden;text-overflow: ellipsis}
+  #v_desc{display: block !important;}
+  #v_dbtn{display: none;}
+  #v_video{width : 100%;height: 400px;}
+}
+</style>
+</head>
+
+<body>
+  <div class="pad-10" id="head" style="color: #000;display: flex;align-items: center;justify-content: center;background: rgba(10,45,25,0.1);box-shadow: 0 5px 5px rgba(0, 0, 0, 0.75);position: fixed;top: 0;left:0;right:0;z-index: 9999;backdrop-filter: blur(25px);-webkit-backdrop-filter: blur(25px);">
+  <a href="https://asbros.github.io/web/utube"><img style="height: 38px;width: 38px;margin-right: 3px;margin-top: 7px;" src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png"></a>
+  <!--<span class="josefin-font f-20" style="flex: 1;margin-left: 3px;margin-top: 2px;">AS Utube</span>-->
+  <div id="sdiv"><input id="sinput" type="search" placeholder="Search"></div>
+  <!--<button id="search"><svg style="margin-right: 5px;" height="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="rgb(241,241,241)" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg></button>-->
+</div>
+<div id="searchss" style="display: none;"></div>
+<div id="channel" style="margin-top: 75px;display: none;">
+  <img id="cban">
+  <div id="cdct"><img id="cimg">
+  <div id="cnm"></div>
+  <div id="csub"></div></div>
+  <div id="cdes" style="display: none;">Click to see description.</div>
+  <div id="ctabs">
+  </div>
+</div>
+  <div id="video" style="margin-top: 80px;display: none;">
+    <div style="display: flex;justify-content: center;align-items: center;" id="errdiv">
+      <video id="v_video" controls loop allowfullscreen controlsList="nodownload"></video>
+      <iframe id="v_iframe" style="display: none;" title="YouTube video player" frameborder="0" sandbox='allow-scripts allow-presentation allow-same-origin allow-top-navigation' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe></div>
+    <div id="v_details" style="display: none">
+    <div id="v_title"></div>
+    <div id="v_text"></div>
+    <div id="v_chdet">
+      <img id="v_chimg">
+      <div id="v_chnm"></div>
+      <div id="v_chsub"></div>
+    </div>
+    <div id="v_extra">
+      <div id="v_lik"><svg class="proico" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" height="24px" stroke="currentColor"><path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" /></svg></div>
+      <!--<div id="v_dis"><svg class="proico" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" height="24px" stroke="currentColor"><path d="M15.73 5.5h1.035A7.465 7.465 0 0 1 18 9.625a7.465 7.465 0 0 1-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 0 1-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.499 4.499 0 0 0-.322 1.672v.633A.75.75 0 0 1 9 22a2.25 2.25 0 0 1-2.25-2.25c0-1.152.26-2.243.723-3.218.266-.558-.107-1.282-.725-1.282H3.622c-1.026 0-1.945-.694-2.054-1.715A12.137 12.137 0 0 1 1.5 12.25c0-2.848.992-5.464 2.649-7.521C4.537 4.247 5.136 4 5.754 4H9.77a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23ZM21.669 14.023c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.958 8.958 0 0 1-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227Z" /></svg></div>-->
+      <div id="v_share"><svg class="proico" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" /></svg>Share</div>
+      <div id="v_down"><svg class="proico" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>Download</div>
+      <div id="v_dbtn"><svg class="proico" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>Description</div>
+    </div>
+    </div>
+  </div>
+    <div id="v_desc" style="padding: 20px;display: none;padding-top: 10px;word-break: break-word;pointer-events: none;">
+      <div id="v_dbody" style="font-size: 14px;color: #eee;font-family: poppins !important;"></div>
+    </div>
+  <div id="main" style="margin-top:80px;display: none;"></div>
+    <div id="load_more" style="display: none;align-items: center;justify-content: center;margin-top: 5px;margin-bottom: 10px;"><button id="lodmor" class="active" style="padding: 6px 12px;color: #fff;background: #282828;border: none;font-size: 17px;border-radius: 7px;">Load More</button></div>
+  <div class="pad-10" style="align-items:center;text-align:center;background: rgb(51,51,51);margin-top: 0px;" id="more_apps">
+  <a style="text-decoration: none;font-size: 18px;" href="https://asbros.github.io/" class="white">More Apps →</a><br>
+  <hr>
+ <span style="text-decoration: none;font-size: 21px;" class="white">AS BROTHERS </span>❤️
+ </div>
+  <script>
+var loader = as.loader();
+function convertSeconds(seconds){
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  const hourString = hours > 0 ? `${hours}`:''
+  const minuteString = minutes > 0 ? `${minutes}`:''
+  const secondString =
+    remainingSeconds > 0 ? `${remainingSeconds}`:''
+
+  if (hours > 0) {
+    return `${hourString}:${minuteString || '0'}${secondString && `:${secondString}`}`
+  } else if (!hours && minutes > 0) {
+    return `${minuteString}${secondString && `:${secondString}`}`
+  }
+
+  return secondString;
+}
+function subFormat(num) {
+    var sub =  Math.abs(parseInt(num));
+    if (sub > 999999){
+      var ns = sub/1000000;
+      return ns.toString()+"M";
+    }else if(sub > 999){
+      var ns = sub/1000;
+      return ns.toString()+"K";
+    }else{
+      return sub;
+    }
+}
+
+var b,g,ps,sh,nextpage,nextpvid;
+function list(l){
+  l.forEach(item);
+}
+function item(i) {
+  var vid,atag,body,img,title,foot,chnm,chtxt;
+  vid = document.createElement("div");
+  vid.classList.add("vid");
+  atag = document.createElement("a");
+  body = document.createElement("div");
+  img = document.createElement("img");
+  if(sh){}
+  time = document.createElement("div");
+  time.classList.add("time");
+  body.classList.add("body");
+    
+  foot = document.createElement("div");
+  fimg = document.createElement("div");
+  fimg.classList.add("fimg");
+  title = document.createElement("div");
+  chnm = document.createElement("span");
+  chtxt = document.createElement("span");
+  fdet = document.createElement("div");
+  fdet.classList.add("det");
+  foot.classList.add("foot");
+  title.classList.add("title")
+  chnm.classList.add("name");
+  chtxt.classList.add("txt");
+  if(i.type != "playlist"){
+  img.src = "https://i.ytimg.com/vi/"+i.videoId+"/sddefault.jpg";
+  }else{
+    img.src = i.playlistThumbnail;
+  }
+  time.innerText = convertSeconds(i.lengthSeconds);
+  body.appendChild(img);
+  if(!ps){
+  body.appendChild(time);
+  }
+  if(!g){
+    if(i.isShort != true){
+  atag.setAttribute("href", "https://asbros.github.io/web/utube"+"?v="+i.videoId);
+    }else{
+    atag.setAttribute("href", "https://asbros.github.io/web/utube"+"?shorts=true&v="+i.videoId);
+    vid.classList.add("shorts");
+    }
+  }else{
+  atag.setAttribute("href", "https://asbros.github.io/web/utube"+"?p="+i.playlistId);
+  }
+  title.innerText = i.title;
+  chnm.innerText = i.author;
+  if(!g){
+  chtxt.innerText = i.publishedText;
+  }else{
+  chtxt.innerText = i.videoCount+" videos";
+  }
+  if(chtxt.innerText == "undefined"){
+    chtxt.style.display = "none";
+  }
+  if(!b){
+  }else{
+  chnm.style.display = "none";
+  fdet.classList.remove("det");
+  }
+  foot.appendChild(fimg);
+  foot.appendChild(title);
+  foot.appendChild(fdet);
+  fdet.appendChild(chnm);
+  fdet.appendChild(chtxt);
+  atag.appendChild(body);
+  atag.appendChild(foot);
+  vid.appendChild(atag);
+  main.appendChild(vid);
+}
+
+var main = document.querySelector("#main");
+
+function all(){
+var url = window.location.search;
+var param = new URLSearchParams(url);
+var id = param.get("v");
+var q = param.get("s");
+var c = param.get("c");
+var p = param.get("p");
+
+var load_more = document.querySelector("#load_more");
+var lodmor = document.querySelector("#lodmor");
+lodmor.onclick = function(){
+  if(q){
+  fetch("https://pipedapi.drgns.space/nextpage/search?nextpage="+nextpage)
+  .then(r => r.json())
+  .then((x) => {
+    list(x.items);
+  if(x.nextpage){
+    nextpage = "";
+    nextpage = encodeURI(x.nextpage)+"&filter=videos&q="+q;;
+  }
+  });
+  }
+  if(c){
+   fetch("https://pipedapi.drgns.space/nextpage/channel/"+c+"?nextpage="+ nextpvid)
+  .then(r => r.json())
+  .then((x) => {
+    list(x.relatedStreams);
+    if (x.nextpage) {
+      nextpvid = "";
+      nextpvid = encodeURI(x.nextpage);
+    }
+  });
+  }
+};
+
+if((!id && !p) && (!q && !c)){
+    loader = as.loader();
+    loader.show();
+fetch("https://invidious.f5.si/api/v1/trending?region=IN&type=music")
+.then(r => r.json())
+.then((x) => {
+  list(x);
+  loader.hide();
+})
+.catch((e) => {
+  alert("Error \n Try to reload");
+  window.location.reload();
+})
+main.style.display = "block";
+}else{
+  if(id){
+    loader = as.loader();
+    loader.show();
+  fetch("https://invidious.f5.si/api/v1/videos/"+id)
+  .then(r => r.json())
+  .then(x => {
+    play(x);
+    loader.hide();
+    sessionStorage.setItem("error","false");
+    })
+  .catch(e => {
+    sessionStorage.setItem("error","true");
+    
+  v_details.style.display = "";
+    document.querySelector("#v_title").style.display = "none";
+    document.querySelector("#v_text").style.display = "none";
+    document.querySelector("#v_chdet").style.display = "none";
+  document.querySelector("#v_lik").style.display = "none";
+  document.querySelector("#v_dbtn").style.display = "none";
+   /*v_video.style.display = "none";
+v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&rel=0");
+   v_iframe.style.display = "block";
+  */
+  })
+    loader.hide();
+  var video = document.querySelector("#video");
+  video.style.display = "block";
+  main.style.display = "";
+  document.body.classList.add("wdsktp");
+  var v_video = document.querySelector("#v_video");
+  var v_title = document.querySelector("#v_title");
+  var v_text = document.querySelector("#v_text");
+  var v_chdet = document.querySelector("#v_chdet");
+  var v_chimg = document.querySelector("#v_chimg");
+  var v_chnm = document.querySelector("#v_chnm");
+  var v_chsub = document.querySelector("#v_chsub");
+  var v_extra = document.querySelector("#v_extra");
+  var v_lik = document.querySelector("#v_lik");
+  //var v_dis = document.querySelector("#v_dis");
+  var v_share = document.querySelector("#v_share");
+  var v_down = document.querySelector("#v_down");
+  var v_dbtn = document.querySelector("#v_dbtn");
+  var v_desc = document.querySelector("#v_desc");
+  var v_dbody = document.querySelector("#v_dbody");
+  function play(x){
+  v_details.style.display = "";
+  v_title.innerText = x.title;
+  v_video.setAttribute("src",x.adaptiveFormats[x.adaptiveFormats.length-1].url);
+  v_video.onerror = function(){
+    v_video.style.display = "none";
+  /*  v_iframe.setAttribute("src","https://www.youtube-nocookie.com/embed/"+x.videoId+"?autoplay=1&loop=1&rel=0");
+    v_iframe.style.display = "block";*/
+  }
+ /* v_video.setAttribute("srcdoc",`<video autoplay controlsList='nodownload' onerror='window.location = "https://www.youtube-nocookie.com/embed/${id}?autoplay=1&loop=1&rel=0"' controls style='width: 100%;margin: 0;border-radius: 5px;' src='`+x.formatStreams[x.formatStreams.length-1].url+"'></video>");*/
+  var cthmb = x.videoThumbnails[4].url;
+  v_text.innerHTML = x.viewCount + " views" + " • "+ x.publishedText;
+  v_chimg.src = x.authorThumbnails[4].url;
+  v_chnm.innerHTML = x.author;
+  v_chimg.addEventListener("click",function(){window.location.href="https://asbros.github.io/web/utube"+"?c="+x.authorId});
+  v_chnm.addEventListener("click",function(){window.location.href="https://asbros.github.io/web/utube"+"?c="+x.authorId});
+  v_chsub.innerText = x.subCountText;
+  v_lik.innerHTML += x.likeCount;
+  //v_dis.innerHTML += x.dislikeCount;
+  //video.style.backgroundImage = "url("+x.videoThumbnails[4].url+")";
+  document.title = x.title;
+  v_dbody.innerHTML = x.descriptionHtml;
+  list(x.recommendedVideos);
+  main.style.marginTop = "10px";
+  if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: x.title,
+        artwork: [{ src: cthmb, sizes: "96x96" }, { src: cthmb, sizes: "128x128" }, { src: cthmb, sizes: "192x192" }, { src: cthmb, sizes: "256x256" }, { src: cthmb, sizes: "384x384" }, { src: cthmb, sizes: "512x512" }]
+      });
+    }
+   // downloadUrl(x.formatStreams,x.adaptiveFormats);
+  }
+  /*function downloadUrl(vl,al){
+    var dwns = [];
+    for (var i = 0; i < vl.length; i++) {
+      var f = vl[i];
+      var dwn = {
+        html: f.qualityLabel + "."+f.container,
+        close: false,
+        click: function() {
+          window.open(f.url);
+        }
+      }
+      dwns.push(dwn);
+    }
+      for (var i = 0; i < al.length; i++) {
+  var f = al[i];
+  var dwna = {
+    html: f.audioQuality + "."+f.container,
+    close: false,
+    click: function() {
+      window.open(f.url);
+    }
+  }
+  dwns.push(dwna)
+}
+    v_down.onclick = function(){
+    as.popup({
+      title: "Download",
+      titleSize: 20,
+     image: x.thumbnail[3].url,
+      imageHeight: 200,
+      imageWidth: 280,
+      closeIcon: true,
+      closeBtn: false,
+      buttons: dwns
+    });
+    }
+  }*/
+  v_share.addEventListener("click",function(){
+    navigator.share({text:document.title,url:window.location.href});
+  });
+  v_dbtn.onclick = function(){
+    if(v_desc.style.display == "none"){
+      v_desc.style.display = "";
+    }else{
+      v_desc.style.display = "none";
+    }
+  }
+  const options = {
+  	method: 'GET',
+  	headers: {
+  		'X-RapidAPI-Key': '3a6008168fmshc89e2b9e019262ap1db9f8jsne1aad62d8bff',
+  		'X-RapidAPI-Host': 'yt-api.p.rapidapi.com'
+  	}
+  };
+  v_down.addEventListener("click",function(){
+   var loader1 = as.loader();
+   loader1.show();
+var dwns = [];
+fetch('https://yt-api.p.rapidapi.com/dl?id=' + id, options)
+  .then(response => response.json())
+  .then(x => {
+    var fs = x.formats;
+    for (var i = 0; i < fs.length; i++) {
+      var f = fs[i];
+      var dwn = {
+        html: f.qualityLabel + ".mp4",
+        close: false,
+        click: function() {
+          window.open(f.url);
+        }
+      }
+      dwns.push(dwn);
+    }
+    var afs = x.adaptiveFormats;
+    for (var i = 0; i < afs.length; i++) {
+      var af = afs[i];
+      if (i != 0 && afs[i - 1].quality != af.quality) {
+        var dwna = {
+          html: "Audio • "+af.quality + ".mp3",
+          close: false,
+          click: function() {
+            window.open(af.url);
+          }
+        }
+        dwns.push(dwna);
+      } else { i++; }
+    }
+    loader1.hide();
+    as.popup({
+      title: "Download",
+      titleSize: 20,
+      image: x.thumbnail[2].url,
+      imageHeight: 210,
+      imageWidth: 280,
+      closeIcon: true,
+      closeBtn: false,
+      buttons: dwns
+    });
+  })
+  .catch(err => {
+    loader1.hide();
+    as.alert({
+      icon: true,
+      title: "Error",
+      text: "Please enter valid youtube url or try again later"
+    });
+  });
+});
+  }else if(q){
+    loader = as.loader();
+    loader.show();
+    fetch("https://invidious.f5.si/api/v1/search?region=IN&type=video&q="+q)
+    .then(r => r.json())
+    .then((x) => {
+      list(x);
+      if(x.nextpage){
+        nextpage = encodeURI(x.nextpage)+"&filter=videos&q="+q;
+      }
+      loader.hide();
+    });
+    main.style.display = "block";
+    sinput.value = q;
+    load_more.style.display = "flex";
+  }else if(c){
+    loader = as.loader();
+    loader.show();
+    fetch("https://invidious.f5.si/api/v1/channels/"+c)
+    .then(r => r.json())
+    .then((x) => {
+      b = true;
+    main.style.display = "block";
+    document.body.classList.add("chpg");
+    var channel = document.querySelector("#channel");
+    var cnm = document.querySelector("#cnm");
+    var cban = document.querySelector("#cban");
+    var cimg = document.querySelector("#cimg");
+    var csub = document.querySelector("#csub");
+    var cdes = document.querySelector("#cdes");
+    channel.style.display = "";
+    main.style.marginTop = "5px";
+    cnm.innerText = x.author;
+    if(x.authorBanners){
+    cban.src = x.authorThumbnails[5].url;
+    }else{cban.style.display = "none"}
+    if(x.authorThumbnails){
+    cimg.src = x.authorThumbnails[4].url;
+    }else{cimg.style.display = "none";cnm.style.marginTop = "20px";cnm.style.fontSize = "25px"}
+    if(x.subCount){
+    csub.innerText = subFormat(x.subCount);
+    }else{csub.style.display = "none"}
+    cdes.addEventListener('click',function(){
+      as.popup({
+        title: "Description",
+        text: x.description
+      });
+    });
+    x.tabs.forEach((t,tn) => {
+      var div = document.createElement("button");
+      div.innerText = t[0].toUpperCase() + t.slice(1);
+      div.setAttribute("id","c"+t);
+      div.onclick = function(){
+        main.innerHTML = "";
+    load_more.style.display = "none";
+    loader = as.loader();
+        loader.show();
+        fetch("https://invidious.f5.si/api/v1/channels/"+x.authorId+"/"+t)
+        .then(y => y.json())
+        .then((k) => {
+          if(t == "playlists"){
+            g = true;
+          }else{g = ""}
+          if(t == "playlists" || t == "shorts"){
+            ps = true;
+          }else{ps = ""}
+          if(t == "shorts"){
+            sh = true;
+          }else{sh = ""}
+          if(t != "playlists"){
+          list(k.videos);
+          }else{
+          list(k.playlists);
+          }
+          loader.hide();
+        });
+      document.querySelectorAll("#ctabs button").forEach((tb) => {tb.style.borderBottom = "0px"});
+      this.style.borderBottom = "1px solid #fff";
+      }
+      if(tn == 1){
+        div.click();
+      }
+      document.querySelector("#ctabs").appendChild(div);
+      if(t == "home" || t == "podcasts" || t == "community"){
+        div.style.display = "none";
+      }
+    });
+    if(x.nextpage){
+      nextpvid = encodeURI(x.nextpage);
+      }
+    });
+  loader.hide();
+  }else if(p){
+    loader = as.loader();
+    loader.show();
+    fetch("https://invidious.f5.si/api/v1/playlists/"+p)
+    .then(z => z.json())
+    .then((l) => {
+      b = true;
+      main.style.display = "block";
+    loader.hide();
+    document.body.classList.add("chpg");
+    var channel = document.querySelector("#channel");
+    var cnm = document.querySelector("#cnm");
+    var cban = document.querySelector("#cban");
+    var cimg = document.querySelector("#cimg");
+    var csub = document.querySelector("#csub");
+    var cdes = document.querySelector("#cdes");
+    list(l.videos);
+    channel.style.display = "";
+    main.style.marginTop = "5px";
+    cnm.innerText = l.title + " - "+l.author;
+    cnm.style.fontSize = "15px";
+    cban.style.height = "200px";
+    cban.style.display = "none";
+    cimg.src = l.authorThumbnails[4].url;
+    csub.innerText = l.videoCount+" videos";
+    });
+  }
+}
+}
+all();
+var v_chdet = document.querySelector("#v_chdet");
+var searchss = document.querySelector("#searchss");
+sinput.addEventListener("click",function(){
+  location.hash = "search";
+});
+window.onhashchange = function(){
+  searchss.style.display = "none";
+}
+sinput.addEventListener("input",function(){
+  if(this.value != ""){
+  fetch("https://pipedapi.drgns.space/suggestions?query="+this.value.trim())
+  .then(r => r.json())
+  .then(x => {
+    searchss.style.display = "";
+    searchss.innerHTML = "";
+    if(x.length > 0){
+    x.forEach((i) => {
+      var s = document.createElement("div");
+      s.innerText = i;
+      s.addEventListener("click",function(){
+        search(i);
+      })
+      searchss.appendChild(s);
+    })
+  }
+  })
+}else{
+  searchss.style.display = "none";
+}
+});
+sinput.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    search(this.value.trim());
+  }
+});
+function search(v){
+  window.location.href = "https://asbros.github.io/web/utube"+"?s="+v;
+}
+</script>
+<script type="module">
+  import { VidstackPlayer, VidstackPlayerLayout } from 'https://cdn.vidstack.io/player';
+
+var link = window.location.search;
+var sprm = new URLSearchParams(link);
+var sid = sprm.get("v");
+var isShort = sprm.get("shorts");
+var orientation = "landscape";
+  if(sid){
+    if(isShort == "true"){
+      orientation = "portrait"
+    }
+  const player = await VidstackPlayer.create({
+    target: '#v_video',
+    title: "",
+    src: 'youtube/'+sid,
+    poster: "https://i.ytimg.com/vi/"+sid+"/mqdefault.jpg",
+    autoPlay: false,
+    autoQuality: true,
+    canPictureInPicture: true,
+    loop: true,
+    fullscreenOrientation: orientation,
+    playsInline: true,
+  viewType: 'video',
+  streamType: 'on-demand',
+  logLevel: 'warn',
+  crossOrigin: true,
+  layout: new VidstackPlayerLayout({
+    thumbnails: '',
+    })
+  });
+    if(isShort == "true"){
+      v_video.style.height = "480px";
+      v_video.style.width = "100%";
+    }
+  }
+</script>
+</body>
+</html>
