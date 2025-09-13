@@ -45,7 +45,6 @@
       font-weight: 600;
       letter-spacing: 0.07em;
     }
-    /* Homepage styles */
     #homeSection {
       padding: 5rem 1.5rem 4rem;
       max-width: 960px;
@@ -65,7 +64,6 @@
       margin-bottom: 3rem;
       text-align: center;
     }
-    /* Content boxes */
     .info-box {
       background: white;
       padding: 2rem 3rem;
@@ -87,7 +85,6 @@
       line-height: 1.6;
       color: #2c3e50;
     }
-    /* Buttons */
     button.btn-primary, button.btn-outline-primary {
       font-weight: 700;
       letter-spacing: 0.05em;
@@ -111,7 +108,6 @@
       background: #4356ff;
       color: #f3f8ff;
     }
-    /* Dashboard styling */
     .dashboard-section {
       min-height: 70vh;
       padding: 3rem 1rem 3rem;
@@ -171,15 +167,34 @@
       padding: 0.45em 0.85em;
       border-radius: 20px;
     }
-    /* Responsive */
-    @media (max-width:700px) { 
+    .alert-email-verify {
+      background: #fff3cd;
+      border-color: #ffeeba;
+      color: #856404;
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    @media (max-width:700px){
       .profile-card { max-width: 95vw;}
-      #homeSection {
-        padding: 3rem 1rem 3rem;
-      }
-      .info-box {
-        padding: 1.5rem 2rem;
-      }
+      #homeSection {padding: 3rem 1rem 3rem;}
+      .info-box {padding: 1.5rem 2rem;}
+    }
+    /* Forgot password link */
+    #forgotPasswordLink {
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #4356ff;
+      text-decoration: underline;
+      display: inline-block;
+      margin-top: -0.6rem;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+    #forgotPasswordLink:hover {
+      color: #2a2d72;
     }
   </style>
 </head>
@@ -200,7 +215,6 @@
             <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
           </li>
         </ul>
-        <!-- Logged In Nav -->
         <ul class="navbar-nav ms-auto align-items-center" id="navLoggedIn" style="display:none;">
           <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -257,10 +271,8 @@
       </p>
     </section>
 
-    <!-- Dashboard container (hidden initially) -->
     <section class="dashboard-section" id="dashboard" role="region" aria-label="User dashboard" style="display:none;">
       <div class="row gx-4 gy-4">
-        <!-- Profile Section -->
         <div class="col-md-4">
           <div class="card shadow profile-card" role="region" aria-labelledby="profileName">
             <div class="card-body text-center">
@@ -269,12 +281,16 @@
               <div class="text-muted mb-1" id="profileUsername" tabindex="0"></div>
               <hr/>
               <span class="badge badge-primary-custom" id="profileRoleBADGE" aria-label="User role badge"></span>
+              <div id="emailVerificationWarning" class="alert-email-verify" style="display:none;">
+                Your email address has not been verified. Please check your inbox and verify your email to continue.
+                <br/>
+                <button id="resendVerificationBtn" class="btn btn-sm btn-outline-primary mt-2">Resend Verification Email</button>
+              </div>
               <div id="profileCardDetails" class="mt-4"></div>
             </div>
           </div>
         </div>
-        <!-- Dashboard Actions -->
-        <div class="col-md-8" id="dashboardContent" role="main" tabindex="0" style="margin-top: 75px;"></div>
+        <div class="col-md-8" id="dashboardContent" role="main" tabindex="0" style="margin-top: 75px";></div>
       </div>
     </section>
   </main>
@@ -338,6 +354,7 @@
             <label for="loginPassword" class="form-label">Password</label>
             <input type="password" class="form-control" required id="loginPassword" aria-required="true" />
           </div>
+          <div id="forgotPasswordLink" role="button" tabindex="0" aria-label="Forgot password">Forgot Password?</div>
         </div>
         <div class="modal-footer p-3">
           <button type="submit" class="btn btn-primary w-100 fw-bold">Log In</button>
@@ -345,6 +362,28 @@
       </form>
     </div>
   </div>
+
+<!-- Forgot Password Modal -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true" aria-labelledby="forgotPasswordModalLabel" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" id="forgotPasswordForm" autocomplete="off">
+      <div class="modal-header bg-header">
+        <h5 class="modal-title text-white" id="forgotPasswordModalLabel">Reset Password</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Please enter your registered email address to receive a password reset link.</p>
+        <div class="mb-3">
+          <label for="resetEmailInput" class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="resetEmailInput" required aria-required="true" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+      </div>
+    </form>
+  </div>
+</div>
 
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -365,7 +404,6 @@
     let currentUserUID = null;
     let lastSearchRequestedAmount = 0;
 
-    // Navbar toggles
     function showNavLoggedIn(userObj) {
       document.getElementById('navLoggedOut').style.display = 'none';
       document.getElementById('navLoggedIn').style.display = '';
@@ -378,7 +416,23 @@
       document.getElementById('navLoggedIn').style.display = 'none';
     }
 
-    // Registration
+    // Resend verification mail button
+    document.getElementById('resendVerificationBtn').onclick = async () => {
+      if(firebase.auth().currentUser){
+        try {
+          await firebase.auth().currentUser.sendEmailVerification();
+          Swal.fire({
+            icon: 'success',
+            title: 'Verification Email Sent',
+            text: 'Please check your email inbox (and spam folder).'
+          });
+        } catch (error) {
+          Swal.fire({ icon: 'error', title: 'Failed to send email', text: error.message });
+        }
+      }
+    };
+
+    // Registration with email verification
     document.getElementById('registerForm').onsubmit = async function(e) {
       e.preventDefault();
       let fullName = regFullName.value.trim();
@@ -402,6 +456,7 @@
       }
       try {
         let cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        await cred.user.sendEmailVerification();
         let userObj = {
           fullName, username: username_plain, username_lowercase: username,
           email, role, avatar: "https://i.pravatar.cc/100?u="+encodeURIComponent(username_plain),
@@ -411,7 +466,7 @@
         Swal.fire({
           icon: "success",
           title: "Registered!",
-          text: "Your account has been created successfully. Please login to continue."
+          html: "Verification email sent! Please verify your email before logging in."
         });
         bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
       } catch (error) {
@@ -419,7 +474,11 @@
       }
     };
 
-    // Login
+document.getElementById('forgotPasswordLink').onclick = () => {
+  let forgotModal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+  forgotModal.show();
+};
+
     document.getElementById('loginForm').onsubmit = async function(e) {
       e.preventDefault();
       let username = loginUsername.value.trim().toLowerCase();
@@ -431,7 +490,17 @@
       }
       let user = Object.values(snap.val())[0];
       try {
-        await firebase.auth().signInWithEmailAndPassword(user.email, password);
+        let userCred = await firebase.auth().signInWithEmailAndPassword(user.email, password);
+        if(!userCred.user.emailVerified){
+          Swal.fire({
+            icon: "warning",
+            title: "Email Not Verified",
+            html: "Your email is not verified. Please check your inbox for the verification link or resend it from the dashboard.",
+            confirmButtonText: "OK"
+          });
+          bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+          return;
+        }
       } catch (error) {
         Swal.fire({ icon: "error", title: "Login Failed", text: "Incorrect username or password." });
         return;
@@ -440,24 +509,33 @@
       bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
     };
 
-    // Show dashboard logic
     async function showDashboard(userObj, uid) {
       currentUserUID = uid;
       showNavLoggedIn(userObj);
-
-      // Hide homepage, show dashboard only
       document.getElementById('homeSection').style.display = 'none';
       document.getElementById('dashboard').style.display = '';
 
-      // Profile info
       document.getElementById('profileName').textContent = userObj.fullName;
       document.getElementById('profileAvatar').src = userObj.avatar || "https://i.pravatar.cc/100?u="+encodeURIComponent(userObj.username);
       document.getElementById('profileUsername').textContent = "@" + userObj.username;
       document.getElementById('profileRoleBADGE').textContent = userObj.role === "cash" ? "Cash User" : "Credit Card Holder";
+
+      const verificationWarning = document.getElementById('emailVerificationWarning');
+      verificationWarning.style.display = 'none';
+
+      const currentUser = firebase.auth().currentUser;
+      if (currentUser && !currentUser.emailVerified) {
+        verificationWarning.style.display = 'block';
+        // Restrict dashboard content when unverified
+        document.getElementById('dashboardContent').innerHTML = `<div class="alert alert-warning text-center" role="alert">
+          Your account is not verified. Please verify your email to access full features.
+        </div>`;
+        return;
+      }
+
       document.getElementById('profileCardDetails').innerHTML = "";
 
       if (userObj.role === "cash") {
-        // Cash user dashboard
         document.getElementById('dashboardContent').innerHTML = `
           <div class="card shadow mb-3">
             <div class="card-body">
@@ -482,7 +560,7 @@
           Object.entries(snap.val() || {}).forEach(([cardUid, u]) => {
             if ((!bank || (u.cardPostings || []).some(p => p.bank.toLowerCase().includes(bank))) &&
                 (!amount || (u.cardPostings || []).some(p => Number(p.amount) >= amount))) {
-              u.cardPostings.forEach((card, index) => {
+              u.cardPostings.forEach(card => {
                 if ((!bank || card.bank.toLowerCase().includes(bank)) &&
                     (!amount || Number(card.amount) >= amount)) {
                   html += `<div class="credit-card-info" role="region" aria-label="Credit card info of ${u.username} bank ${card.bank}">
@@ -500,7 +578,6 @@
         };
 
       } else if(userObj.role === "card") {
-        // Credit card holder dashboard
         document.getElementById('dashboardContent').innerHTML = `
           <div class="card shadow">
             <div class="card-body">
@@ -616,7 +693,6 @@
       }
     }
 
-    // Contact Admin alert then WhatsApp
     window.contactAdmin = function(username, bank, cardLimit, neededAmount) {
       Swal.fire({
         title: 'Contact Admin',
@@ -649,6 +725,7 @@
       if (user) {
         let snap = await firebase.database().ref("users/" + user.uid).once("value");
         if (snap.exists()) {
+          await user.reload(); // Refresh user data including emailVerified
           showDashboard(snap.val(), user.uid);
         }
       } else {
@@ -657,6 +734,33 @@
         document.getElementById('homeSection').style.display = "";
       }
     });
+    
+document.getElementById('forgotPasswordForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('resetEmailInput');
+  const email = emailInput.value.trim();
+  if (!email) {
+    Swal.fire({ icon: 'warning', title: 'Email Required', text: 'Please enter your registered email.' });
+    return;
+  }
+  try {
+    await firebase.auth().sendPasswordResetEmail(email);
+    Swal.fire({
+      icon: 'success',
+      title: 'Reset Email Sent',
+      html: 'Check your email inbox for the password reset link.'
+    });
+    bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
+    emailInput.value = '';
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Failed to send reset email',
+      text: error.message
+    });
+  }
+};
+
   </script>
 </body>
 </html>
