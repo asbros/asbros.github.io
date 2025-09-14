@@ -276,13 +276,29 @@
           <li><strong>Transparency:</strong> Clear card limits, user profiles, and roles ensure trustworthiness.</li>
         </ul>
       </div>
+      <div class="info-box" tabindex="0" aria-label="How to use this website">
+  <h3>How to Use This Website</h3>
+  <p>
+    This platform connects users who need cash with verified credit card holders securely. Follow these steps to get started and make the most of the features:
+  </p>
+  <ol style="font-size:1.1rem; color:#2c3e50; padding-left: 1.2rem;">
+    <li><strong>Register an Account:</strong> Choose your role as a <em>Cash User</em> or <em>Credit Card Holder</em> and complete registration with email verification.</li>
+    <li><strong>Verify Your Email:</strong> Check your inbox to verify your email address; this unlocks full access.</li>
+    <li><strong>For Credit Card Holders:</strong> Add your credit card postings including bank name and limit. Request official verification by contacting admins via WhatsApp for added trust.</li>
+    <li><strong>For Cash Users:</strong> Search credit card holders by bank name and amount needed to find matching offers.</li>
+    <li><strong>Contact Admin:</strong> When you find a suitable credit card holder, use the platform’s contact button to connect with admins instantly through WhatsApp to facilitate the transaction.</li>
+    <li><strong>Manage Your Profile & Requests:</strong> Update your profile, view your card postings or cash requests, and track your activity via your personalized dashboard.</li>
+    <li><strong>Secure Communication:</strong> Use the integrated system to ensure transparency, review user verification badges, and maintain secure interactions.</li>
+    <li><strong>Reset Password:</strong> If needed, use the ‘Forgot Password’ option on the login page to quickly reset your credentials.</li>
+  </ol>
+  <p>
+    With these tools, the platform ensures a fast, secure, and trustworthy exchange between cash seekers and credit card holders.
+  </p>
+</div>
       <div class="text-center mt-4">
         <button class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="Login to your account">Login</button>
         <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#registerModal" aria-label="Register for a new account">Register</button>
       </div>
-      <p class="text-center text-muted mt-5" style="font-size: 0.9rem;">
-        &copy; 2025 Cash ↔ Credit Card Platform. All rights reserved.
-      </p>
     </section>
     <section class="dashboard-section" id="dashboard" role="region" aria-label="User dashboard" style="display:none;">
       <div class="row gx-4 gy-4">
@@ -348,6 +364,9 @@
         </div>
       </div>
     </section>
+      <p class="text-center text-muted mt-5" style="font-size: 0.9rem;">
+        &copy; 2025 Cash ↔ Credit Card Platform. All rights reserved.
+      </p>
   </main>
   <!-- Register Modal -->
   <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true" aria-labelledby="registerModalLabel" role="dialog">
@@ -415,6 +434,11 @@
       </form>
     </div>
   </div>
+  <div id="loader" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255,255,255,0.8); z-index:1050; display:flex; justify-content:center; align-items:center;">
+  <div class="spinner-border text-primary" role="status" aria-live="polite" aria-label="Loading...">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
   <!-- Forgot Password Modal -->
   <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true" aria-labelledby="forgotPasswordModalLabel" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
@@ -585,20 +609,28 @@
       // Verification button for CARD HOLDERS only
       const vrc = document.getElementById('verificationRequestContainer');
       if (userObj.role === "card") {
-        vrc.innerHTML = `
-          <button id="requestVerificationBtn" class="btn btn-success fw-bold w-100" type="button">
-            <i class="bi bi-shield-check me-2"></i>Request Verification
-          </button>
-        `;
-        document.getElementById('requestVerificationBtn').onclick = function() {
-          const phone = "918969467256";
-          const msg = "Hello Admin, I am " + userObj.username + " and would like to start the credit card holder verification process. Please guide me.";
-          const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
-          window.open(url, "_blank");
-        };
-      } else {
-        vrc.innerHTML = "";
-      }
+  if (userObj.isVerified) {
+    vrc.innerHTML = `
+      <button class="btn btn-secondary fw-bold w-100" type="button" disabled aria-label="Verified user">
+        <i class="bi bi-check-circle-fill me-2"></i>Verified
+      </button>
+    `;
+  } else {
+    vrc.innerHTML = `
+      <button id="requestVerificationBtn" class="btn btn-success fw-bold w-100" type="button">
+        <i class="bi bi-shield-check me-2"></i>Request Verification
+      </button>
+    `;
+    document.getElementById('requestVerificationBtn').onclick = function() {
+      const phone = "918969467256";
+      const msg = "Hello Admin, I am " + userObj.username + " and would like to start the credit card holder verification process. Please guide me.";
+      const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
+      window.open(url, "_blank");
+    };
+  }
+} else {
+  vrc.innerHTML = "";
+}
 
       if (userObj.role === "cash") {
         document.getElementById('dashboardContent').innerHTML = `
@@ -628,7 +660,7 @@
                     (!amount || Number(card.amount) >= amount)) {
                   html += `<div class="credit-card-info" role="region" aria-label="Credit card info of ${u.username} bank ${card.bank}">
   <b>${u.username}</b> 
-  ${u.isVerified ? '<span class="badge bg-success ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : ''}
+  ${u.isVerified ? '<span class="badge bg-primary ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : ''}
   (Bank: ${card.bank})<br/>
   Card Limit: ₹${card.amount.toLocaleString()}<br/>
   <button class="btn btn-sm btn-success mt-2" onclick="contactAdmin('${u.username}', '${card.bank}', ${card.amount}, ${amount})" aria-label="Contact admin about card at ${card.bank} from ${u.username}">
@@ -778,18 +810,20 @@
       firebase.auth().signOut();
     }
     firebase.auth().onAuthStateChanged(async (user) => {
-      if (user) {
-        let snap = await firebase.database().ref("users/" + user.uid).once("value");
-        if (snap.exists()) {
-          await user.reload();
-          showDashboard(snap.val(), user.uid);
-        }
-      } else {
-        showNavLoggedOut();
-        document.getElementById('dashboard').style.display = "none";
-        document.getElementById('homeSection').style.display = "";
-      }
-    });
+  showLoader();
+  if (user) {
+    let snap = await firebase.database().ref("users/" + user.uid).once("value");
+    if (snap.exists()) {
+      await user.reload();
+      await showDashboard(snap.val(), user.uid);
+    }
+  } else {
+    showNavLoggedOut();
+    document.getElementById('dashboard').style.display = "none";
+    document.getElementById('homeSection').style.display = "";
+  }
+  hideLoader();
+});
     document.getElementById('forgotPasswordForm').onsubmit = async function(e) {
       e.preventDefault();
       const emailInput = document.getElementById('resetEmailInput');
@@ -816,6 +850,14 @@
       }
     };
     firebase.database().ref("users/" + uid).update({ isVerified: true });
+    
+    function showLoader() {
+  document.getElementById('loader').style.display = 'flex';
+}
+
+function hideLoader() {
+  document.getElementById('loader').style.display = 'none';
+}
   </script>
 </body>
 </html>
