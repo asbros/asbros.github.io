@@ -14,17 +14,30 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <style>
+    :root {
+      --primary-color: #4356ff;
+      --primary-dark: #2a2d72;
+      --secondary-color: #f3f8ff;
+      --accent-color: #e1eaff;
+      --text-color: #2c3e50;
+      --success-color: #28a745;
+      --danger-color: #dc3545;
+      --warning-color: #ffc107;
+    }
+    
     body {
-      background: #f3f8ff;
+      background: var(--secondary-color);
       font-family: 'Jost', sans-serif;
-      color: #2c3e50;
+      color: var(--text-color);
       scroll-behavior: smooth;
     }
+    
     .navbar {
-      background: linear-gradient(90deg, #2a2d72 0%, #4356ff 100%);
+      background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-color) 100%);
       box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
       z-index: 1030;
     }
+    
     .navbar .navbar-brand, 
     .navbar .nav-link, 
     .navbar .navbar-text, 
@@ -33,87 +46,115 @@
       font-weight: 600;
       letter-spacing: 0.05em;
     }
+    
     .navbar .dropdown-menu {
       right:0; left:auto;
       border-radius: 0.5rem;
       border: none;
       box-shadow: 0 8px 20px rgb(0 0 0 / 0.15);
     }
+    
     .bg-header {
-      background: linear-gradient(90deg, #2a2d72 0%, #4356ff 100%);
+      background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-color) 100%);
       color: #f3f8ff;
       font-weight: 600;
       letter-spacing: 0.07em;
     }
+    
     #homeSection {
       padding: 5rem 1.5rem 4rem;
       max-width: 960px;
       margin: auto;
       margin-top: 50px;
     }
+    
     #homeSection h1.display-4 {
       font-weight: 700;
-      color: #2a2d72;
+      color: var(--primary-dark);
       letter-spacing: 0.05em;
       margin-bottom: 1rem;
       text-align: center;
     }
+    
     #homeSection p.lead {
       font-size: 1.3rem;
-      color: #4356ff;
+      color: var(--primary-color);
       margin-bottom: 3rem;
       text-align: center;
     }
+    
     .info-box {
       background: white;
       padding: 2rem 3rem;
       margin-bottom: 2rem;
       border-radius: 1rem;
       box-shadow: 0 6px 15px rgb(67 86 255 / 0.15);
-      transition: box-shadow 0.3s ease;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
     }
+    
     .info-box:hover {
       box-shadow: 0 8px 30px rgb(67 86 255 / 0.3);
+      transform: translateY(-5px);
+      border-left-color: var(--primary-color);
     }
+    
     .info-box h3 {
       font-weight: 700;
-      color: #2a2d72;
+      color: var(--primary-dark);
       margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
     }
+    
+    .info-box h3 i {
+      margin-right: 10px;
+      font-size: 1.4rem;
+    }
+    
     .info-box p {
       font-size: 1.1rem;
       line-height: 1.6;
-      color: #2c3e50;
+      color: var(--text-color);
     }
+    
     button.btn-primary, button.btn-outline-primary {
       font-weight: 700;
       letter-spacing: 0.05em;
       border-radius: 30px;
       padding: 0.6rem 1.8rem;
       min-width: 140px;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
     }
+    
     button.btn-primary {
-      background: #4356ff;
+      background: var(--primary-color);
       border: none;
     }
+    
     button.btn-primary:hover {
-      background: #2a2d72;
+      background: var(--primary-dark);
+      transform: translateY(-2px);
     }
+    
     button.btn-outline-primary {
-      border-color: #4356ff;
-      color: #4356ff;
+      border-color: var(--primary-color);
+      color: var(--primary-color);
     }
+    
     button.btn-outline-primary:hover {
-      background: #4356ff;
+      background: var(--primary-color);
       color: #f3f8ff;
+      transform: translateY(-2px);
     }
+    
     .dashboard-section {
       min-height: 70vh;
       padding: 3rem 1rem 3rem;
       max-width: 960px;
       margin: auto;
     }
+    
     .profile-card {
       max-width: 420px;
       border-radius: 1rem;
@@ -121,52 +162,63 @@
       margin-top: 50px;
       box-shadow: 0 4px 25px rgb(67 86 255 / 0.25);
       background: #ffffff;
-      transition: box-shadow 0.3s ease;
+      transition: all 0.3s ease;
     }
+    
     .profile-card:hover {
       box-shadow: 0 6px 35px rgb(67 86 255 / 0.45);
+      transform: translateY(-5px);
     }
+    
     .profile-avatar {
       width: 80px;
       height: 80px;
       object-fit: cover;
       border-radius: 50%;
-      border: 3px solid #2a2d72;
+      border: 3px solid var(--primary-dark);
       background: #fff;
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
     }
+    
     .profile-avatar:hover {
       transform: scale(1.05);
       box-shadow: 0 0 10px #4356ff76;
     }
+    
     .credit-card-info {
       border-radius: 12px;
-      background: #e1eaff;
+      background: var(--accent-color);
       margin: 10px 0;
       padding: 12px 16px;
       font-weight: 600;
       box-shadow: 0 2px 10px rgb(67 86 255 / 0.1);
       position: relative;
-      transition: background 0.3s;
+      transition: all 0.3s;
     }
+    
     .credit-card-info:hover {
       background: #c7d5ff;
       cursor: default;
+      transform: translateY(-3px);
     }
+    
     .credit-card-info .actions {
       float: right;
     }
+    
     .credit-card-info .actions button {
       margin-left: 8px;
     }
+    
     .badge-primary-custom {
-      background-color: #4356ff;
+      background-color: var(--primary-color);
       font-weight: 600;
       letter-spacing: 0.05em;
       font-size: 0.85rem;
       padding: 0.45em 0.85em;
       border-radius: 20px;
     }
+    
     .alert-email-verify {
       background: #fff3cd;
       border-color: #ffeeba;
@@ -177,43 +229,179 @@
       font-weight: 600;
       text-align: center;
     }
-         /* FAQ Section */
+    
+    /* FAQ Section */
     #faqSection {
       max-width: 960px;
       margin: 3rem auto;
       padding: 1rem 1.5rem;
       display: block;
     }
+    
     #faqSection h2 {
-      color: #2a2d72;
+      color: var(--primary-dark);
       text-align: center;
       margin-bottom: 2rem;
     }
+    
     /* FAQ Accordion */
     #faqSection .accordion-button {
       font-weight: 600;
-      color: #2c3e50;
+      color: var(--text-color);
     }
+    
     #verificationRequestContainer {
       margin-top: 15px;
     }
+    
     @media (max-width:700px){
       .profile-card { max-width: 95vw;}
       #homeSection {padding: 3rem 1rem 3rem;}
       .info-box {padding: 1.5rem 2rem;}
     }
+    
     #forgotPasswordLink {
       cursor: pointer;
       font-size: 0.9rem;
-      color: #4356ff;
+      color: var(--primary-color);
       text-decoration: underline;
       display: inline-block;
       margin-top: -0.6rem;
       margin-bottom: 1rem;
       user-select: none;
     }
+    
     #forgotPasswordLink:hover {
-      color: #2a2d72;
+      color: var(--primary-dark);
+    }
+    
+    /* New styles for enhanced UI */
+    .security-tips {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 2rem 0;
+    }
+    
+    .security-tip {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .security-tip:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .security-tip i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+    
+    .security-tip-content h4 {
+      margin-bottom: 0.5rem;
+      color: var(--primary-dark);
+    }
+    
+    .security-tip-content p {
+      margin-bottom: 0;
+      color: var(--text-color);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    
+    .transaction-history {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .transaction-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+    
+    .security-notice {
+      background-color: #f8f9fa;
+      border-left: 4px solid var(--primary-color);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 4px;
+    }
+    
+    /* Settings Modal Styles */
+    .avatar-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary-color);
+      margin: 0 auto 15px;
+      display: block;
+    }
+    
+    .avatar-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    /* Circular verified badge */
+    .verified-badge {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--success-color);
+      color: white;
+      text-align: center;
+      line-height: 20px;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+    
+    /* Card user info styles */
+    .card-user-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .card-user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      border: 2px solid var(--primary-color);
+    }
+    
+    .card-user-details {
+      flex-grow: 1;
+    }
+    
+    .card-user-name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
     }
   </style>
 </head>
@@ -221,20 +409,39 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg shadow-sm fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Cash ↔ Credit Card</a>
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-credit-card me-2"></i>Cash ↔ Credit Card
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarContent" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navBarContent">
-        <ul class="navbar-nav ms-auto align-items-center" id="navLoggedOut" style="display:flex;">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <button class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+            <a class="nav-link" href="#homeSection">Home</a>
           </li>
           <li class="nav-item">
-            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+            <a class="nav-link" href="#faqSection">FAQ</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto align-items-center" id="navLoggedOut" style="display:flex;">
+          <li class="nav-item">
+            <button class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+              <i class="bi bi-box-arrow-in-right me-1"></i>Login
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#registerModal">
+              <i class="bi bi-person-plus me-1"></i>Register
+            </button>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto align-items-center" id="navLoggedIn" style="display:none;">
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showDashboardSection('main')">
+              <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+          </li>
           <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="https://i.pravatar.cc/70?u=cardholder" id="navAvatar" class="rounded-circle me-1" width="32" height="32" alt="User avatar"/><span id="navUsername"></span>
@@ -242,32 +449,63 @@
             <ul class="dropdown-menu dropdown-menu-end">
               <li class="dropdown-item-text"><b id="navRole"></b></li>
               <li><hr class="dropdown-divider"></li>
-              <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="bi bi-gear me-2"></i>Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item text-danger" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
             </ul>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+  
   <!-- Main Container -->
   <main>
     <section id="homeSection" aria-label="Homepage introduction and website details">
       <h1 class="display-4">Welcome to Cash ↔ Credit Card Platform</h1>
       <p class="lead">Turn your cash into credit or help others while earning — a safe, instant, and easy solution.</p>
+      
+      <!-- Security Tips Section (replaced stats) -->
+      <div class="security-tips">
+        <div class="security-tip">
+          <i class="bi bi-shield-check"></i>
+          <div class="security-tip-content">
+            <h4>Secure Transactions</h4>
+            <p>All transactions are monitored by our admin team to ensure safety and prevent fraud.</p>
+          </div>
+        </div>
+        <div class="security-tip">
+          <i class="bi bi-chat-dots"></i>
+          <div class="security-tip-content">
+            <h4>Direct Admin Contact</h4>
+            <p>Always communicate through our admin team on WhatsApp for verified and secure transactions.</p>
+          </div>
+        </div>
+        <div class="security-tip">
+          <i class="bi bi-eye"></i>
+          <div class="security-tip-content">
+            <h4>Verified Users Only</h4>
+            <p>We verify all credit card holders to ensure legitimacy and protect our community.</p>
+          </div>
+        </div>
+      </div>
+      
       <div class="info-box" tabindex="0" aria-label="What is this platform about">
-        <h3>What is this website?</h3>
+        <h3><i class="bi bi-info-circle"></i>What is this website?</h3>
         <p>
           This platform connects users who need cash by providing credit card access from verified credit card holders willing to share their cards securely. It bridges an important gap between cash needs and credit card availability.
         </p>
       </div>
+      
       <div class="info-box" tabindex="0" aria-label="Problems this platform solves">
-        <h3>Problems We Solve</h3>
+        <h3><i class="bi bi-lightbulb"></i>Problems We Solve</h3>
         <p>
           Many individuals face challenges accessing quick cash or credit card limits. Traditional loans involve complex processes and delays. Our platform offers an immediate solution by connecting cash users with credit card holders directly, reducing dependency on banks and formal credit systems.
         </p>
       </div>
+      
       <div class="info-box" tabindex="0" aria-label="Why choose this platform">
-        <h3>Why Choose Us?</h3>
+        <h3><i class="bi bi-award"></i>Why Choose Us?</h3>
         <ul style="font-size:1.1rem; color:#2c3e50;">
           <li><strong>Secure & Verified:</strong> User accounts are authenticated and managed securely with Firebase.</li>
           <li><strong>Easy-to-Use:</strong> Intuitive interface to post, search, and manage card details or cash requests.</li>
@@ -276,30 +514,42 @@
           <li><strong>Transparency:</strong> Clear card limits, user profiles, and roles ensure trustworthiness.</li>
         </ul>
       </div>
+      
       <div class="info-box" tabindex="0" aria-label="How to use this website">
-  <h3>How to Use This Website</h3>
-  <p>
-    This platform connects users who need cash with verified credit card holders securely. Follow these steps to get started and make the most of the features:
-  </p>
-  <ol style="font-size:1.1rem; color:#2c3e50; padding-left: 1.2rem;">
-    <li><strong>Register an Account:</strong> Choose your role as a <em>Cash User</em> or <em>Credit Card Holder</em> and complete registration with email verification.</li>
-    <li><strong>Verify Your Email:</strong> Check your inbox to verify your email address; this unlocks full access.</li>
-    <li><strong>For Credit Card Holders:</strong> Add your credit card postings including bank name and limit. Request official verification by contacting admins via WhatsApp for added trust.</li>
-    <li><strong>For Cash Users:</strong> Search credit card holders by bank name and amount needed to find matching offers.</li>
-    <li><strong>Contact Admin:</strong> When you find a suitable credit card holder, use the platform’s contact button to connect with admins instantly through WhatsApp to facilitate the transaction.</li>
-    <li><strong>Manage Your Profile & Requests:</strong> Update your profile, view your card postings or cash requests, and track your activity via your personalized dashboard.</li>
-    <li><strong>Secure Communication:</strong> Use the integrated system to ensure transparency, review user verification badges, and maintain secure interactions.</li>
-    <li><strong>Reset Password:</strong> If needed, use the ‘Forgot Password’ option on the login page to quickly reset your credentials.</li>
-  </ol>
-  <p>
-    With these tools, the platform ensures a fast, secure, and trustworthy exchange between cash seekers and credit card holders.
-  </p>
-</div>
+        <h3><i class="bi bi-question-circle"></i>How to Use This Website</h3>
+        <p>
+          This platform connects users who need cash with verified credit card holders securely. Follow these steps to get started and make the most of the features:
+        </p>
+        <ol style="font-size:1.1rem; color:#2c3e50; padding-left: 1.2rem;">
+          <li><strong>Register an Account:</strong> Choose your role as a <em>Cash User</em> or <em>Credit Card Holder</em> and complete registration with email verification.</li>
+          <li><strong>Verify Your Email:</strong> Check your inbox to verify your email address; this unlocks full access.</li>
+          <li><strong>For Credit Card Holders:</strong> Add your credit card postings including bank name and limit. Request official verification by contacting admins via WhatsApp for added trust.</li>
+          <li><strong>For Cash Users:</strong> Search credit card holders by bank name and amount needed to find matching offers.</li>
+          <li><strong>Contact Admin:</strong> When you find a suitable credit card holder, use the platform's contact button to connect with admins instantly through WhatsApp to facilitate the transaction.</li>
+          <li><strong>Manage Your Profile & Requests:</strong> Update your profile, view your card postings or cash requests, and track your activity via your personalized dashboard.</li>
+          <li><strong>Secure Communication:</strong> Use the integrated system to ensure transparency, review user verification badges, and maintain secure interactions.</li>
+          <li><strong>Reset Password:</strong> If needed, use the 'Forgot Password' option on the login page to quickly reset your credentials.</li>
+        </ol>
+        <p>
+          With these tools, the platform ensures a fast, secure, and trustworthy exchange between cash seekers and credit card holders.
+        </p>
+      </div>
+      
+      <div class="security-notice">
+        <h4><i class="bi bi-shield-check"></i> Security Notice</h4>
+        <p>We prioritize your security. All transactions are monitored, and we recommend never sharing sensitive information like CVV or PIN codes through the platform.</p>
+      </div>
+      
       <div class="text-center mt-4">
-        <button class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="Login to your account">Login</button>
-        <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#registerModal" aria-label="Register for a new account">Register</button>
+        <button class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="Login to your account">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Login
+        </button>
+        <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#registerModal" aria-label="Register for a new account">
+          <i class="bi bi-person-plus me-2"></i>Register
+        </button>
       </div>
     </section>
+    
     <section class="dashboard-section" id="dashboard" role="region" aria-label="User dashboard" style="display:none;">
       <div class="row gx-4 gy-4">
         <div class="col-md-4">
@@ -308,6 +558,7 @@
               <img id="profileAvatar" src="https://i.pravatar.cc/100?u=404" class="profile-avatar mb-3" alt="Profile Avatar" />
               <div class="h4 mb-0 fw-bold" id="profileName" tabindex="0"></div>
               <div class="text-muted mb-1" id="profileUsername" tabindex="0"></div>
+              <div class="text-muted mb-1" id="profilePhone" tabindex="0"></div>
               <hr/>
               <span class="badge badge-primary-custom" id="profileRoleBADGE" aria-label="User role badge"></span>
               <div id="emailVerificationWarning" class="alert-email-verify" style="display:none;">
@@ -317,12 +568,40 @@
               </div>
               <div id="profileCardDetails" class="mt-4"></div>
               <div id="verificationRequestContainer" class="mt-4"></div>
+              <div class="mt-4">
+                <button class="btn btn-outline-danger w-100" onclick="logout()">
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick Stats Card -->
+          <div class="card shadow mt-4">
+            <div class="card-body">
+              <h5 class="card-title fw-bold mb-3">Your Stats</h5>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Card Postings:</span>
+                <span id="userCardCount" class="fw-bold">0</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Connections Made:</span>
+                <span id="userConnections" class="fw-bold">0</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Member Since:</span>
+                <span id="memberSince" class="fw-bold">-</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-8" id="dashboardContent" role="main" tabindex="0" style="margin-top: 75px";></div>
+        
+        <div class="col-md-8" id="dashboardContent" role="main" tabindex="0" style="margin-top: 75px";>
+          <!-- Dashboard content will be loaded here -->
+        </div>
       </div>
     </section>
+    
     <section id="faqSection" aria-label="Frequently Asked Questions">
       <h2>Frequently Asked Questions</h2>
       <div class="accordion" id="faqAccordion" role="tablist">
@@ -346,7 +625,7 @@
           </h2>
           <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
             <div class="accordion-body">
-              Yes, all user data is securely stored and managed using Firebase services with strict authentication and verification measures.
+              Yes, all user data is securely stored and managed using Firebase services with strict authentication and verification measures. We never store your CVV or PIN codes.
             </div>
           </div>
         </div>
@@ -362,12 +641,50 @@
             </div>
           </div>
         </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="faqHeading4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+              What fees are involved in using this platform?
+            </button>
+          </h2>
+          <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              The platform itself is free to use. Any arrangements between users are to be agreed upon directly. We recommend discussing terms clearly before proceeding with any transaction.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
-      <p class="text-center text-muted mt-5" style="font-size: 0.9rem;">
-        &copy; 2025 Cash ↔ Credit Card Platform. All rights reserved.
-      </p>
+    
+    <footer class="mt-5 py-4 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mb-3 mb-md-0">
+            <h5>Cash ↔ Credit Card Platform</h5>
+            <p class="mb-0">Connecting cash users with credit card holders securely and efficiently.</p>
+          </div>
+          <div class="col-md-3 mb-3 mb-md-0">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li><a href="#homeSection" class="text-decoration-none">Home</a></li>
+              <li><a href="#faqSection" class="text-decoration-none">FAQ</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Contact</h5>
+            <ul class="list-unstyled">
+              <li><a href="https://wa.me/918969467256" class="text-decoration-none" target="_blank">WhatsApp Support</a></li>
+              <li><a href="#" class="text-decoration-none">Privacy Policy</a></li>
+              <li><a href="#" class="text-decoration-none">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4">
+        <p class="text-center text-muted mb-0">&copy; 2025 Cash ↔ Credit Card Platform. All rights reserved.</p>
+      </div>
+    </footer>
   </main>
+  
   <!-- Register Modal -->
   <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true" aria-labelledby="registerModalLabel" role="dialog">
     <div class="modal-dialog">
@@ -378,37 +695,53 @@
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label for="regFullName" class="form-label">Full Name</label>
+            <label for="regFullName" class="form-label">Full Name *</label>
             <input type="text" class="form-control" required id="regFullName" aria-required="true" />
           </div>
           <div class="mb-3">
-            <label for="regUsername" class="form-label">Choose Username</label>
+            <label for="regUsername" class="form-label">Choose Username *</label>
             <input type="text" class="form-control" required id="regUsername" aria-required="true" pattern="^[A-Za-z0-9_]+$" />
             <div class="form-text" id="registerFormHelp">Use letters, numbers, underscores only. Must be unique.</div>
           </div>
           <div class="mb-3">
-            <label for="regEmail" class="form-label">Email Address</label>
+            <label for="regEmail" class="form-label">Email Address *</label>
             <input type="email" class="form-control" required id="regEmail" aria-required="true" />
           </div>
           <div class="mb-3">
-            <label for="regPassword" class="form-label">Create Password</label>
-            <input type="password" class="form-control" required id="regPassword" aria-required="true" minlength="6" />
+            <label for="regPhone" class="form-label">Phone Number *</label>
+            <input type="tel" class="form-control" required id="regPhone" aria-required="true" pattern="[0-9]{10}" />
+            <div class="form-text">10-digit phone number without any spaces or special characters</div>
           </div>
           <div class="mb-3">
-            <label class="form-label">Register As</label>
+            <label for="regPassword" class="form-label">Create Password *</label>
+            <input type="password" class="form-control" required id="regPassword" aria-required="true" minlength="6" />
+            <div class="form-text">Minimum 6 characters with a mix of letters and numbers</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Register As *</label>
             <select class="form-select" required id="regRole" aria-required="true" aria-label="Select user role">
               <option value="" disabled selected>Select Role</option>
               <option value="cash">Cash User</option>
               <option value="card">Credit Card Holder</option>
             </select>
           </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="termsCheck" required>
+            <label class="form-check-label" for="termsCheck">
+              I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </label>
+          </div>
         </div>
         <div class="modal-footer p-3">
-          <button type="submit" class="btn btn-primary w-100 fw-bold">Register Now</button>
+          <button type="submit" class="btn btn-primary w-100 fw-bold">
+            <span id="registerSpinner" class="spinner-border spinner-border-sm me-2" style="display: none;"></span>
+            Register Now
+          </button>
         </div>
       </form>
     </div>
   </div>
+  
   <!-- Login Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true" aria-labelledby="loginModalLabel" role="dialog">
     <div class="modal-dialog">
@@ -429,16 +762,61 @@
           <div id="forgotPasswordLink" role="button" tabindex="0" aria-label="Forgot password">Forgot Password?</div>
         </div>
         <div class="modal-footer p-3">
-          <button type="submit" class="btn btn-primary w-100 fw-bold">Log In</button>
+          <button type="submit" class="btn btn-primary w-100 fw-bold">
+            <span id="loginSpinner" class="spinner-border spinner-border-sm me-2" style="display: none;"></span>
+            Log In
+          </button>
         </div>
       </form>
     </div>
   </div>
-  <div id="loader" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255,255,255,0.8); z-index:1050; display:flex; justify-content:center; align-items:center;">
-  <div class="spinner-border text-primary" role="status" aria-live="polite" aria-label="Loading...">
-    <span class="visually-hidden">Loading...</span>
+  
+  <!-- Settings Modal -->
+  <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true" aria-labelledby="settingsModalLabel" role="dialog">
+    <div class="modal-dialog">
+      <form class="modal-content" id="settingsForm" autocomplete="off">
+        <div class="modal-header bg-header">
+          <h5 class="modal-title text-white" id="settingsModalLabel">User Settings</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <img id="settingsAvatarPreview" src="https://i.pravatar.cc/100?u=default" class="avatar-preview" alt="Profile Avatar Preview" />
+            <div class="avatar-actions">
+              <button type="button" class="btn btn-outline-primary btn-sm" id="randomAvatarBtn">
+                <i class="bi bi-shuffle me-1"></i>Random Avatar
+              </button>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="settingsFullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="settingsFullName" aria-required="true" />
+          </div>
+          <div class="mb-3">
+            <label for="settingsUsername" class="form-label">Username</label>
+            <input type="text" class="form-control" id="settingsUsername" aria-required="true" pattern="^[A-Za-z0-9_]+$" />
+            <div class="form-text">Use letters, numbers, underscores only. Must be unique.</div>
+          </div>
+          <div class="mb-3">
+            <label for="settingsPhone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="settingsPhone" aria-required="true" pattern="[0-9]{10}" />
+            <div class="form-text">10-digit phone number without any spaces or special characters</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+  
+  <div id="loader" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255,255,255,0.8); z-index:1050; display:flex; justify-content:center; align-items:center;">
+    <div class="spinner-border text-primary" role="status" aria-live="polite" aria-label="Loading...">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
   <!-- Forgot Password Modal -->
   <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true" aria-labelledby="forgotPasswordModalLabel" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
@@ -460,10 +838,13 @@
       </form>
     </div>
   </div>
+  
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
   <!-- Firebase Initialization -->
   <script>
+    // Firebase configuration
     var firebaseConfig = {
       apiKey: "AIzaSyCxJqJadOqmVA9XHUEnf_bzY8_j9WhoOsc",
       authDomain: "chat-ebbc6.firebaseapp.com",
@@ -474,97 +855,292 @@
       appId: "1:900704224803:web:849180c787132c7baa1396",
       measurementId: "G-YYNMD5MS6M"
     };
+    
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    
+    // Global variables
     let currentUserUID = null;
     let lastSearchRequestedAmount = 0;
-
-    function showNavLoggedIn(userObj) {
-      document.getElementById('navLoggedOut').style.display = 'none';
-      document.getElementById('navLoggedIn').style.display = '';
-      document.getElementById('navUsername').textContent = userObj.username;
-      document.getElementById('navAvatar').src = "https://i.pravatar.cc/70?u=" + encodeURIComponent(userObj.username);
-      document.getElementById('navRole').textContent = userObj.role === "cash" ? "Cash User" : "Credit Card Holder";
-    }
-    function showNavLoggedOut() {
-      document.getElementById('navLoggedOut').style.display = '';
-      document.getElementById('navLoggedIn').style.display = 'none';
-    }
-
-    // Resend verification mail button
-    document.getElementById('resendVerificationBtn').onclick = async () => {
-      if(firebase.auth().currentUser){
-        try {
-          await firebase.auth().currentUser.sendEmailVerification();
-          Swal.fire({
-            icon: 'success',
-            title: 'Verification Email Sent',
-            text: 'Please check your email inbox (and spam folder).'
-          });
-        } catch (error) {
-          Swal.fire({ icon: 'error', title: 'Failed to send email', text: error.message });
+    let currentDashboardSection = 'main';
+    let currentUserData = null;
+    
+    // DOM ready event
+    document.addEventListener('DOMContentLoaded', function() {
+      // Setup event listeners
+      setupEventListeners();
+    });
+    
+    // Setup all event listeners
+    function setupEventListeners() {
+      // Forgot password link
+      document.getElementById('forgotPasswordLink').addEventListener('click', function() {
+        const forgotModal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+        forgotModal.show();
+      });
+      
+      // Resend verification email
+      document.getElementById('resendVerificationBtn').addEventListener('click', async function() {
+        if(firebase.auth().currentUser){
+          try {
+            showLoader();
+            await firebase.auth().currentUser.sendEmailVerification();
+            Swal.fire({
+              icon: 'success',
+              title: 'Verification Email Sent',
+              text: 'Please check your email inbox (and spam folder).'
+            });
+          } catch (error) {
+            Swal.fire({ icon: 'error', title: 'Failed to send email', text: error.message });
+          } finally {
+            hideLoader();
+          }
         }
+      });
+      
+      // Random avatar button
+      document.getElementById('randomAvatarBtn').addEventListener('click', function() {
+        generateRandomAvatar();
+      });
+      
+      // Settings form submission
+      document.getElementById('settingsForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await saveUserSettings();
+      });
+    }
+    
+    // Generate random avatar
+    function generateRandomAvatar() {
+      const randomId = Math.floor(Math.random() * 1000);
+      const newAvatarUrl = `https://i.pravatar.cc/100?u=${randomId}`;
+      document.getElementById('settingsAvatarPreview').src = newAvatarUrl;
+    }
+    
+    // Save user settings
+    async function saveUserSettings() {
+      const fullName = document.getElementById('settingsFullName').value.trim();
+      const username_plain = document.getElementById('settingsUsername').value.trim();
+      const username = username_plain.toLowerCase();
+      const phone = document.getElementById('settingsPhone').value.trim();
+      const avatarUrl = document.getElementById('settingsAvatarPreview').src;
+      
+      if (!fullName || !username_plain || !phone) {
+        Swal.fire({ icon: 'warning', title: 'Missing Fields', text: 'Please fill in all required fields.' });
+        return;
       }
-    };
-
+      
+      if(!(/^[A-Za-z0-9_]+$/.test(username_plain))) {
+        Swal.fire({ icon: 'warning', title: 'Invalid Username', text: 'Username may only use letters, numbers, underscores' });
+        return;
+      }
+      
+      if(!(/^[0-9]{10}$/.test(phone))) {
+        Swal.fire({ icon: 'warning', title: 'Invalid Phone', text: 'Phone number must be 10 digits without any special characters' });
+        return;
+      }
+      
+      try {
+        showLoader();
+        
+        // Check if username is already taken by another user
+        if (username_plain !== currentUserData.username) {
+          const snap = await firebase.database().ref("users").orderByChild("username_lowercase").equalTo(username).once("value");
+          if (snap.exists()) {
+            Swal.fire({
+              icon: "error",
+              title: "Username Taken!",
+              text: "Please choose another username (case-insensitive)."
+            });
+            hideLoader();
+            return;
+          }
+        }
+        
+        // Update user data
+        const updates = {
+          fullName,
+          username: username_plain,
+          username_lowercase: username,
+          phone,
+          avatar: avatarUrl
+        };
+        
+        await firebase.database().ref("users/" + currentUserUID).update(updates);
+        
+        // Update UI
+        document.getElementById('profileName').textContent = fullName;
+        document.getElementById('profileUsername').textContent = "@" + username_plain;
+        document.getElementById('profilePhone').textContent = "📱 " + phone;
+        document.getElementById('profileAvatar').src = avatarUrl;
+        document.getElementById('navUsername').textContent = username_plain;
+        document.getElementById('navAvatar').src = avatarUrl;
+        
+        // Close modal
+        bootstrap.Modal.getInstance(document.getElementById('settingsModal')).hide();
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Settings Updated',
+          text: 'Your profile has been updated successfully.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        
+      } catch (error) {
+        Swal.fire({ icon: 'error', title: 'Update Failed', text: error.message });
+      } finally {
+        hideLoader();
+      }
+    }
+    
+    // Open settings modal
+    function openSettingsModal() {
+      if (!currentUserData) return;
+      
+      document.getElementById('settingsFullName').value = currentUserData.fullName || '';
+      document.getElementById('settingsUsername').value = currentUserData.username || '';
+      document.getElementById('settingsPhone').value = currentUserData.phone || '';
+      document.getElementById('settingsAvatarPreview').src = currentUserData.avatar || 'https://i.pravatar.cc/100?u=default';
+      
+      const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+      settingsModal.show();
+    }
+    
     // Registration with email verification
     document.getElementById('registerForm').onsubmit = async function(e) {
       e.preventDefault();
-      let fullName = regFullName.value.trim();
-      let username_plain = regUsername.value.trim();
+      
+      const registerBtn = this.querySelector('button[type="submit"]');
+      const spinner = document.getElementById('registerSpinner');
+      
+      // Show loading state
+      registerBtn.disabled = true;
+      spinner.style.display = 'inline-block';
+      
+      let fullName = document.getElementById('regFullName').value.trim();
+      let username_plain = document.getElementById('regUsername').value.trim();
       let username = username_plain.toLowerCase();
-      let email = regEmail.value.trim();
-      let password = regPassword.value;
-      let role = regRole.value;
+      let email = document.getElementById('regEmail').value.trim();
+      let phone = document.getElementById('regPhone').value.trim();
+      let password = document.getElementById('regPassword').value;
+      let role = document.getElementById('regRole').value;
+      
+      // Validate inputs
       if(!(/^[A-Za-z0-9_]+$/.test(username_plain))) {
         Swal.fire("Username may only use letters, numbers, underscores");
+        registerBtn.disabled = false;
+        spinner.style.display = 'none';
         return;
       }
-      let snap = await firebase.database().ref("users").orderByChild("username_lowercase").equalTo(username).once("value");
-      if (snap.exists()) {
-        Swal.fire({
-          icon: "error",
-          title: "Username Taken!",
-          text: "Please choose another username (case-insensitive)."
-        });
+      
+      if(!(/^[0-9]{10}$/.test(phone))) {
+        Swal.fire("Phone number must be 10 digits without any special characters");
+        registerBtn.disabled = false;
+        spinner.style.display = 'none';
         return;
       }
+      
       try {
+        // Check if username already exists
+        let snap = await firebase.database().ref("users").orderByChild("username_lowercase").equalTo(username).once("value");
+        if (snap.exists()) {
+          Swal.fire({
+            icon: "error",
+            title: "Username Taken!",
+            text: "Please choose another username (case-insensitive)."
+          });
+          registerBtn.disabled = false;
+          spinner.style.display = 'none';
+          return;
+        }
+        
+        // Create user account
         let cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        
+        // Send verification email
         await cred.user.sendEmailVerification();
+        
+        // Create user object
         let userObj = {
-          fullName, username: username_plain, username_lowercase: username,
-          email, role, avatar: "https://i.pravatar.cc/100?u="+encodeURIComponent(username_plain),
-          cardPostings: []
+          fullName, 
+          username: username_plain, 
+          username_lowercase: username,
+          email, 
+          phone,
+          role, 
+          avatar: "https://i.pravatar.cc/100?u="+encodeURIComponent(username_plain),
+          cardPostings: [],
+          connections: 0,
+          createdAt: new Date().toISOString(),
+          isVerified: false,
+          blocked: false
         };
+        
+        // Save user to database
         await firebase.database().ref("users/" + cred.user.uid).set(userObj);
+        
+        // Show success message
         Swal.fire({
           icon: "success",
           title: "Registered!",
           html: "Verification email sent! Please verify your email before logging in."
         });
+        
+        // Close modal and reset form
         bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+        this.reset();
+        
       } catch (error) {
         Swal.fire({ icon: "error", title: "Registration Failed", text: error.message });
+      } finally {
+        registerBtn.disabled = false;
+        spinner.style.display = 'none';
       }
     };
-
-    document.getElementById('forgotPasswordLink').onclick = () => {
-      let forgotModal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
-      forgotModal.show();
-    };
-
+    
+    // Login form submission
     document.getElementById('loginForm').onsubmit = async function(e) {
       e.preventDefault();
-      let username = loginUsername.value.trim().toLowerCase();
-      let password = loginPassword.value;
-      let snap = await firebase.database().ref("users").orderByChild("username_lowercase").equalTo(username).once("value");
-      if (!snap.exists()) {
-        Swal.fire({ icon: "error", title: "Login Failed", text: "Incorrect username or password." });
-        return;
-      }
-      let user = Object.values(snap.val())[0];
+      
+      const loginBtn = this.querySelector('button[type="submit"]');
+      const spinner = document.getElementById('loginSpinner');
+      
+      // Show loading state
+      loginBtn.disabled = true;
+      spinner.style.display = 'inline-block';
+      
+      let username = document.getElementById('loginUsername').value.trim().toLowerCase();
+      let password = document.getElementById('loginPassword').value;
+      
       try {
+        // Find user by username
+        let snap = await firebase.database().ref("users").orderByChild("username_lowercase").equalTo(username).once("value");
+        if (!snap.exists()) {
+          Swal.fire({ icon: "error", title: "Login Failed", text: "Incorrect username or password." });
+          loginBtn.disabled = false;
+          spinner.style.display = 'none';
+          return;
+        }
+        
+        let user = Object.values(snap.val())[0];
+        
+        // Check if account is blocked
+        if (user.blocked) {
+          Swal.fire({
+            icon: "error",
+            title: "Account Blocked",
+            text: "Your account has been blocked. Please contact admin for assistance."
+          });
+          loginBtn.disabled = false;
+          spinner.style.display = 'none';
+          return;
+        }
+        
+        // Sign in with email and password
         let userCred = await firebase.auth().signInWithEmailAndPassword(user.email, password);
+        
+        // Check if email is verified
         if(!userCred.user.emailVerified){
           Swal.fire({
             icon: "warning",
@@ -573,59 +1149,106 @@
             confirmButtonText: "OK"
           });
           bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+          loginBtn.disabled = false;
+          spinner.style.display = 'none';
           return;
         }
+        
+        // Successful login
+        Swal.fire({ icon: "success", title: "Logged In!", showConfirmButton: false, timer: 1000 });
+        bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+        this.reset();
+        
       } catch (error) {
         Swal.fire({ icon: "error", title: "Login Failed", text: "Incorrect username or password." });
+      } finally {
+        loginBtn.disabled = false;
+        spinner.style.display = 'none';
+      }
+    };
+    
+    // Forgot password form submission
+    document.getElementById('forgotPasswordForm').onsubmit = async function(e) {
+      e.preventDefault();
+      
+      const emailInput = document.getElementById('resetEmailInput');
+      const email = emailInput.value.trim();
+      
+      if (!email) {
+        Swal.fire({ icon: 'warning', title: 'Email Required', text: 'Please enter your registered email.' });
         return;
       }
-      Swal.fire({ icon: "success", title: "Logged In!", showConfirmButton: false, timer: 1000 });
-      bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+      
+      try {
+        showLoader();
+        await firebase.auth().sendPasswordResetEmail(email);
+        Swal.fire({
+          icon: 'success',
+          title: 'Reset Email Sent',
+          html: 'Check your email inbox for the password reset link.'
+        });
+        bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
+        emailInput.value = '';
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to send reset email',
+          text: error.message
+        });
+      } finally {
+        hideLoader();
+      }
     };
-
+    
+    // Show user dashboard
     async function showDashboard(userObj, uid) {
       currentUserUID = uid;
+      currentUserData = userObj;
       showNavLoggedIn(userObj);
       document.getElementById('homeSection').style.display = 'none';
       document.getElementById('dashboard').style.display = '';
       document.getElementById('profileName').textContent = userObj.fullName;
       document.getElementById('profileAvatar').src = userObj.avatar || "https://i.pravatar.cc/100?u="+encodeURIComponent(userObj.username);
       document.getElementById('profileUsername').innerHTML = 
-  "@" + userObj.username + 
-  (userObj.isVerified ? ' <span class="badge bg-success ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : '');
+        "@" + userObj.username + 
+        (userObj.isVerified ? ' <span class="verified-badge" title="Verified User" aria-label="Verified User"><i class="bi bi-check"></i></span>' : '');
+      
+      document.getElementById('profilePhone').textContent = "📱 " + (userObj.phone || "Not provided");
       document.getElementById('profileRoleBADGE').textContent = userObj.role === "cash" ? "Cash User" : "Credit Card Holder";
-      // After user data is fetched from Firebase in dashboard setup, add this:
-
-if(userObj.blocked){
-  // Hide or disable all interactive dashboard content
-  document.getElementById('dashboardContent').innerHTML = `
-    <div class="alert alert-danger text-center" role="alert" style="font-weight:700; font-size:1.1rem; margin-top:40px;">
-      Your account is blocked due to some reason.<br/>
-      Please contact admin to unblock your account.
-      <div class="mt-3">
-        <button id="contactAdminBlockedBtn" class="btn btn-primary btn-lg" aria-label="Contact Admin to unblock your account">
-          Contact Admin
-        </button>
-      </div>
-    </div>
-  `;
-
-  // Disable profile editing or other content displays
-  document.getElementById('profileCardDetails').style.display = 'none';
-  document.getElementById('verificationRequestContainer').style.display = 'none';
-
-  // Contact admin button click handler
-  document.getElementById('contactAdminBlockedBtn').onclick = () => {
-    const phone = '918969467256'; // Admin WhatsApp number
-    const msg = `Hello Admin, I am ${userObj.username} and my account is blocked. Please assist me with unblocking.`;
-    const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
-    window.open(url, '_blank');
-  };
-
-  // Stop any further dashboard loading by returning here
-  return;
-}
-
+      
+      // Update user stats
+      document.getElementById('userCardCount').textContent = userObj.cardPostings ? userObj.cardPostings.length : 0;
+      document.getElementById('userConnections').textContent = userObj.connections || 0;
+      document.getElementById('memberSince').textContent = userObj.createdAt ? new Date(userObj.createdAt).toLocaleDateString() : '-';
+      
+      // Check if account is blocked
+      if(userObj.blocked){
+        document.getElementById('dashboardContent').innerHTML = `
+          <div class="alert alert-danger text-center" role="alert" style="font-weight:700; font-size:1.1rem; margin-top:40px;">
+            Your account is blocked due to some reason.<br/>
+            Please contact admin to unblock your account.
+            <div class="mt-3">
+              <button id="contactAdminBlockedBtn" class="btn btn-primary btn-lg" aria-label="Contact Admin to unblock your account">
+                Contact Admin
+              </button>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('profileCardDetails').style.display = 'none';
+        document.getElementById('verificationRequestContainer').style.display = 'none';
+        
+        document.getElementById('contactAdminBlockedBtn').onclick = () => {
+          const phone = '918969467256';
+          const msg = `Hello Admin, I am ${userObj.username} and my account is blocked. Please assist me with unblocking.`;
+          const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
+          window.open(url, '_blank');
+        };
+        
+        return;
+      }
+      
+      // Check email verification
       const verificationWarning = document.getElementById('emailVerificationWarning');
       verificationWarning.style.display = 'none';
       const currentUser = firebase.auth().currentUser;
@@ -637,224 +1260,284 @@ if(userObj.blocked){
         document.getElementById('verificationRequestContainer').innerHTML = "";
         return;
       }
+      
       document.getElementById('profileCardDetails').innerHTML = "";
-      // Verification button for CARD HOLDERS only
+      
+      // Verification button for ALL users
       const vrc = document.getElementById('verificationRequestContainer');
-      if (userObj.role === "card") {
-  if (userObj.isVerified) {
-    vrc.innerHTML = `
-      <button class="btn btn-secondary fw-bold w-100" type="button" disabled aria-label="Verified user">
-        <i class="bi bi-check-circle-fill me-2"></i>Verified
-      </button>
-    `;
-  } else {
-    vrc.innerHTML = `
-      <button id="requestVerificationBtn" class="btn btn-success fw-bold w-100" type="button">
-        <i class="bi bi-shield-check me-2"></i>Request Verification
-      </button>
-    `;
-    document.getElementById('requestVerificationBtn').onclick = function() {
-      const phone = "918969467256";
-      const msg = "Hello Admin, I am " + userObj.username + " and would like to start the credit card holder verification process. Please guide me.";
-      const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
-      window.open(url, "_blank");
-    };
-  }
-} else {
-  vrc.innerHTML = "";
-}
-
-if(userObj.role === "cash" && !userObj.blocked) {
-  document.getElementById('dashboardContent').innerHTML = `
-    <h5 class="mb-3 text-center text-primary">Available Credit Card Postings</h5>
-    <input type="search" id="cardSearchInput" class="form-control mb-4" placeholder="Search cards by bank or username" aria-label="Search credit card postings" />
-    <div id="creditCardHolderCards" class="d-flex flex-wrap gap-3 justify-content-center"></div>
-  `;
-
-  const cardsContainer = document.getElementById('creditCardHolderCards');
-  const cardSearchInput = document.getElementById('cardSearchInput');
-
-  const snapshot = await firebase.database().ref("users").orderByChild("role").equalTo("card").once("value");
-  const cardUsers = snapshot.exists() ? snapshot.val() : {};
-
-  const allCards = [];
-
-  Object.entries(cardUsers).forEach(([cardUid, cardUser]) => {
-    if(cardUser.blocked) return; // omit blocked
-    const postings = cardUser.cardPostings || [];
-    postings.forEach(card => {
-      allCards.push({
-        fullName: cardUser.fullName,
-        username: cardUser.username,
-        isVerified: cardUser.isVerified,
-        bank: card.bank,
-        amount: card.amount
-      });
-    });
-  });
-
-  function renderCards(cards) {
-    if(cards.length === 0) {
-      cardsContainer.innerHTML = `<p class="text-center text-muted w-100">No credit card postings match your search.</p>`;
-      return;
-    }
-    const html = cards.map(card => `
-      <div class="credit-card-info p-3 rounded shadow-sm" role="region" aria-label="Credit card info of ${card.username} bank ${card.bank}" style="min-width: 260px; max-width: 300px;">
-        <div><strong>${card.username}</strong> ${card.isVerified ? '<span class="badge bg-primary ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : ''}</div>
-        <div>Bank: ${card.bank}</div>
-        <div>Card Limit: ₹${Number(card.amount).toLocaleString()}</div>
-        <button class="btn btn-sm btn-success mt-2 w-100" onclick="contactAdmin('${card.username}', '${card.bank}', ${card.amount})" aria-label="Contact admin about card at ${card.bank} from ${card.username}">
-          Contact Admin
-        </button>
-      </div>
-    `).join('');
-    cardsContainer.innerHTML = html;
-  }
-
-  renderCards(allCards);
-
-  cardSearchInput.addEventListener('input', () => {
-    const filter = cardSearchInput.value.trim().toLowerCase();
-    const filtered = allCards.filter(card => 
-      card.username.toLowerCase().includes(filter) ||
-      card.bank.toLowerCase().includes(filter) ||
-      card.fullName.toLowerCase().includes(filter)
-    );
-    renderCards(filtered);
-  });
-
-  window.contactAdmin = (username, bank, cardLimit) => {
-    Swal.fire({
-      title: 'Contact Admin',
-      icon: 'info',
-      html:
-        `<p><b>User:</b> ${username}</p>` +
-        `<p><b>Card Bank:</b> ${bank}</p>` +
-        `<p><b>Card Limit:</b> ₹${cardLimit.toLocaleString()}</p>` +
-        `<p>Proceed to connect via WhatsApp with the admin to facilitate your request.</p>`,
-      showCancelButton: true,
-      confirmButtonText: 'Contact Admin',
-      focusConfirm: false,
-    }).then(result => {
-      if(result.isConfirmed) {
-        let url = `https://wa.me/918969467256?text=` +
-          encodeURIComponent(
-            `Request to connect with Credit Card Holder username: ${username}, Bank: ${bank}, Card Limit: ₹${cardLimit}`
-          );
-        window.open(url, "_blank");
+      if (userObj.isVerified) {
+        vrc.innerHTML = `
+          <button class="btn btn-secondary fw-bold w-100" type="button" disabled aria-label="Verified user">
+            <i class="bi bi-check-circle-fill me-2"></i>Verified
+          </button>
+        `;
+      } else {
+        vrc.innerHTML = `
+          <button id="requestVerificationBtn" class="btn btn-success fw-bold w-100" type="button">
+            <i class="bi bi-shield-check me-2"></i>Request Verification
+          </button>
+        `;
+        document.getElementById('requestVerificationBtn').onclick = function() {
+          const phone = "918969467256";
+          const roleText = userObj.role === "cash" ? "cash user" : "credit card holder";
+          const msg = "Hello Admin, I am " + userObj.username + " and would like to start the " + roleText + " verification process. Please guide me.";
+          const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
+          window.open(url, "_blank");
+        };
       }
-    });
-  };
-} else if(userObj.role === "card") {
-        document.getElementById('dashboardContent').innerHTML = `
-          <div class="card shadow">
-            <div class="card-body">
-              <h5 class="card-title fw-bold mb-3">Manage Your Credit Card Postings</h5>
-              <div id="postedCards" role="list" aria-label="Your credit card postings"></div>
-              <hr />
-              <h6 class="fw-semibold mb-3">Add New Card Posting</h6>
-              <form id="newCardForm" aria-label="Add new credit card form">
-                <div class="mb-3">
-                  <input type="text" class="form-control" id="newCardBank" placeholder="Bank Name" required aria-required="true" />
+      
+      // Load appropriate dashboard content based on user role
+      if(userObj.role === "cash") {
+        loadCashUserDashboard();
+      } else if(userObj.role === "card") {
+        loadCardHolderDashboard(userObj);
+      }
+    }
+    
+    // Load dashboard for cash users
+    async function loadCashUserDashboard() {
+      document.getElementById('dashboardContent').innerHTML = `
+        <h5 class="mb-3 text-center text-primary">Available Credit Card Postings</h5>
+        <div class="input-group mb-4">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="search" id="cardSearchInput" class="form-control" placeholder="Search cards by bank or username" aria-label="Search credit card postings" />
+        </div>
+        <div id="creditCardHolderCards" class="d-flex flex-wrap gap-3 justify-content-center"></div>
+      `;
+      
+      const cardsContainer = document.getElementById('creditCardHolderCards');
+      const cardSearchInput = document.getElementById('cardSearchInput');
+      
+      try {
+        const snapshot = await firebase.database().ref("users").orderByChild("role").equalTo("card").once("value");
+        const cardUsers = snapshot.exists() ? snapshot.val() : {};
+        
+        const allCards = [];
+        
+        Object.entries(cardUsers).forEach(([cardUid, cardUser]) => {
+          if(cardUser.blocked) return; // omit blocked users
+          const postings = cardUser.cardPostings || [];
+          postings.forEach(card => {
+            allCards.push({
+              uid: cardUid,
+              fullName: cardUser.fullName,
+              username: cardUser.username,
+              avatar: cardUser.avatar || "https://i.pravatar.cc/100?u=" + encodeURIComponent(cardUser.username),
+              isVerified: cardUser.isVerified,
+              bank: card.bank,
+              amount: card.amount
+            });
+          });
+        });
+        
+        function renderCards(cards) {
+          if(cards.length === 0) {
+            cardsContainer.innerHTML = `<p class="text-center text-muted w-100">No credit card postings match your search.</p>`;
+            return;
+          }
+          
+          const html = cards.map(card => `
+            <div class="credit-card-info p-3 rounded shadow-sm" role="region" aria-label="Credit card info of ${card.username} bank ${card.bank}" style="min-width: 260px; max-width: 300px;">
+              <div class="card-user-info">
+                <img src="${card.avatar}" class="card-user-avatar" alt="${card.username}'s avatar">
+                <div class="card-user-details">
+                  <div class="card-user-name">
+                    ${card.username} 
+                    ${card.isVerified ? '<span class="verified-badge" title="Verified User" aria-label="Verified User"><i class="bi bi-check"></i></span>' : ''}
+                  </div>
                 </div>
-                <div class="mb-3">
-                  <input type="number" class="form-control" id="newCardAmount" placeholder="Limit Amount (₹)" required min="1" aria-required="true" />
-                </div>
-                <button class="btn btn-primary w-100 fw-bold" type="submit">Add Card</button>
-              </form>
+              </div>
+              <div>Bank: ${card.bank}</div>
+              <div>Card Limit: ₹${Number(card.amount).toLocaleString()}</div>
+              <button class="btn btn-sm btn-success mt-2 w-100" onclick="contactAdmin('${card.username}', '${card.bank}', ${card.amount})" aria-label="Contact admin about card at ${card.bank} from ${card.username}">
+                <i class="bi bi-whatsapp me-1"></i>Contact Admin
+              </button>
+            </div>
+          `).join('');
+          
+          cardsContainer.innerHTML = html;
+        }
+        
+        renderCards(allCards);
+        
+        cardSearchInput.addEventListener('input', () => {
+          const filter = cardSearchInput.value.trim().toLowerCase();
+          const filtered = allCards.filter(card => 
+            card.username.toLowerCase().includes(filter) ||
+            card.bank.toLowerCase().includes(filter) ||
+            card.fullName.toLowerCase().includes(filter)
+          );
+          renderCards(filtered);
+        });
+        
+      } catch (error) {
+        console.error("Error loading card data:", error);
+        cardsContainer.innerHTML = `<p class="text-center text-danger w-100">Error loading card data. Please try again later.</p>`;
+      }
+    }
+    
+    // Load dashboard for card holders
+    async function loadCardHolderDashboard(userObj) {
+      document.getElementById('dashboardContent').innerHTML = `
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title fw-bold mb-3"><i class="bi bi-credit-card me-2"></i>Manage Your Credit Card Postings</h5>
+            <div id="postedCards" role="list" aria-label="Your credit card postings"></div>
+            <hr />
+            <h6 class="fw-semibold mb-3"><i class="bi bi-plus-circle me-2"></i>Add New Card Posting</h6>
+            <form id="newCardForm" aria-label="Add new credit card form">
+              <div class="mb-3">
+                <label for="newCardBank" class="form-label">Bank Name</label>
+                <input type="text" class="form-control" id="newCardBank" placeholder="e.g., HDFC, SBI, ICICI" required aria-required="true" />
+              </div>
+              <div class="mb-3">
+                <label for="newCardAmount" class="form-label">Limit Amount (₹)</label>
+                <input type="number" class="form-control" id="newCardAmount" placeholder="e.g., 50000" required min="1" aria-required="true" />
+              </div>
+              <button class="btn btn-primary w-100 fw-bold" type="submit">
+                <i class="bi bi-plus-circle me-2"></i>Add Card
+              </button>
+            </form>
+          </div>
+        </div>
+        
+        <div class="card shadow mt-4">
+          <div class="card-body">
+            <h5 class="card-title fw-bold mb-3"><i class="bi bi-clock-history me-2"></i>Recent Activity</h5>
+            <div class="transaction-history">
+              <div class="transaction-item">
+                <div>No recent activity</div>
+                <span class="badge bg-secondary">New</span>
+              </div>
             </div>
           </div>
-        `;
-        const postedCardsDiv = document.getElementById('postedCards');
-        function renderCards(cards) {
-          if(!cards || cards.length === 0) {
-            postedCardsDiv.innerHTML = "<p class='text-muted'>You have no credit card postings yet.</p>";
-            return;
-          }
-          postedCardsDiv.innerHTML = '';
-          cards.forEach((card, idx) => {
-            let cardHtml = document.createElement('div');
-            cardHtml.className = 'credit-card-info mb-2 position-relative';
-            cardHtml.setAttribute('role', 'listitem');
-            cardHtml.setAttribute('aria-label', `Card from bank ${card.bank} with limit ₹${card.amount.toLocaleString()}`);
-            cardHtml.innerHTML = `
-              <div><b>Bank:</b> ${card.bank}</div>
-              <div><b>Limit:</b> ₹${Number(card.amount).toLocaleString()}</div>
-              <div class="actions position-absolute top-0 end-0 me-3 mt-3">
-                <button class="btn btn-sm btn-outline-primary me-1" title="Edit Card" aria-label="Edit card button bank ${card.bank}" onclick="editCard(${idx})">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" title="Delete Card" aria-label="Delete card button bank ${card.bank}" onclick="deleteCard(${idx})">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            `;
-            postedCardsDiv.appendChild(cardHtml);
-          });
+        </div>
+      `;
+      
+      const postedCardsDiv = document.getElementById('postedCards');
+      let cardPostings = userObj.cardPostings || [];
+      
+      function renderCards(cards) {
+        if(!cards || cards.length === 0) {
+          postedCardsDiv.innerHTML = "<p class='text-muted'><i class='bi bi-info-circle me-2'></i>You have no credit card postings yet.</p>";
+          return;
         }
-        let cardPostings = userObj.cardPostings || [];
-        renderCards(cardPostings);
-        document.getElementById('newCardForm').onsubmit = async function(e) {
-          e.preventDefault();
-          let bank = newCardBank.value.trim();
-          let amount = newCardAmount.value.trim();
-          if(!bank || !amount) {
-            Swal.fire({icon:"warning", title:"Missing fields", text:"Please fill all fields."});
-            return;
-          }
-          if(isNaN(amount) || Number(amount) < 1){
-            Swal.fire({icon:"error", title:"Invalid amount", text:"Limit amount must be a positive number."});
-            return;
-          }
+        
+        postedCardsDiv.innerHTML = '';
+        cards.forEach((card, idx) => {
+          let cardHtml = document.createElement('div');
+          cardHtml.className = 'credit-card-info mb-2 position-relative';
+          cardHtml.setAttribute('role', 'listitem');
+          cardHtml.setAttribute('aria-label', `Card from bank ${card.bank} with limit ₹${card.amount.toLocaleString()}`);
+          cardHtml.innerHTML = `
+            <div><b>Bank:</b> ${card.bank}</div>
+            <div><b>Limit:</b> ₹${Number(card.amount).toLocaleString()}</div>
+            <div class="actions position-absolute top-0 end-0 me-3 mt-3">
+              <button class="btn btn-sm btn-outline-primary me-1" title="Edit Card" aria-label="Edit card button bank ${card.bank}" onclick="editCard(${idx})">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" title="Delete Card" aria-label="Delete card button bank ${card.bank}" onclick="deleteCard(${idx})">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          `;
+          postedCardsDiv.appendChild(cardHtml);
+        });
+      }
+      
+      renderCards(cardPostings);
+      
+      document.getElementById('newCardForm').onsubmit = async function(e) {
+        e.preventDefault();
+        
+        let bank = document.getElementById('newCardBank').value.trim();
+        let amount = document.getElementById('newCardAmount').value.trim();
+        
+        if(!bank || !amount) {
+          Swal.fire({icon:"warning", title:"Missing fields", text:"Please fill all fields."});
+          return;
+        }
+        
+        if(isNaN(amount) || Number(amount) < 1){
+          Swal.fire({icon:"error", title:"Invalid amount", text:"Limit amount must be a positive number."});
+          return;
+        }
+        
+        try {
           cardPostings.push({ bank, amount: Number(amount) });
           await firebase.database().ref("users/" + currentUserUID).update({ cardPostings });
           renderCards(cardPostings);
-          newCardBank.value = "";
-          newCardAmount.value = "";
+          document.getElementById('newCardBank').value = "";
+          document.getElementById('newCardAmount').value = "";
+          
+          // Update user stats
+          document.getElementById('userCardCount').textContent = cardPostings.length;
+          
           Swal.fire({ icon: "success", title: "Card added!", timer: 1200, showConfirmButton: false });
-        };
-        window.editCard = async function(idx) {
-          let card = cardPostings[idx];
-          const { value: formValues } = await Swal.fire({
-            title: 'Edit Credit Card Posting',
-            html:
-              `<input id="swalBank" class="swal2-input" placeholder="Bank Name" value="${card.bank}">` +
-              `<input id="swalAmount" class="swal2-input" placeholder="Limit Amount" type="number" min="1" value="${card.amount}">`,
-            focusConfirm: false,
-            preConfirm: () => {
-              return {
-                bank: document.getElementById('swalBank').value.trim(),
-                amount: document.getElementById('swalAmount').value.trim()
-              }
+        } catch (error) {
+          Swal.fire({ icon: "error", title: "Error", text: "Failed to add card. Please try again." });
+        }
+      };
+      
+      window.editCard = async function(idx) {
+        let card = cardPostings[idx];
+        const { value: formValues } = await Swal.fire({
+          title: 'Edit Credit Card Posting',
+          html:
+            `<input id="swalBank" class="swal2-input" placeholder="Bank Name" value="${card.bank}">` +
+            `<input id="swalAmount" class="swal2-input" placeholder="Limit Amount" type="number" min="1" value="${card.amount}">`,
+          focusConfirm: false,
+          preConfirm: () => {
+            return {
+              bank: document.getElementById('swalBank').value.trim(),
+              amount: document.getElementById('swalAmount').value.trim()
             }
-          });
-          if (!formValues || !formValues.bank || !formValues.amount || Number(formValues.amount) < 1) {
-            Swal.fire({ icon: "error", title: "Invalid Input", text: "Both Bank and a valid positive Amount are required." });
-            return;
           }
+        });
+        
+        if (!formValues || !formValues.bank || !formValues.amount || Number(formValues.amount) < 1) {
+          Swal.fire({ icon: "error", title: "Invalid Input", text: "Both Bank and a valid positive Amount are required." });
+          return;
+        }
+        
+        try {
           cardPostings[idx] = { bank: formValues.bank, amount: Number(formValues.amount) };
           await firebase.database().ref("users/" + currentUserUID).update({ cardPostings });
           renderCards(cardPostings);
           Swal.fire({ icon: "success", title: "Card updated!", timer: 1000, showConfirmButton: false });
-        };
-        window.deleteCard = async function(idx) {
-          const result = await Swal.fire({
-            title: 'Confirm Delete',
-            text: "Are you sure you want to delete this card posting?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it',
-            cancelButtonText: 'Cancel'
-          });
-          if (result.isConfirmed) {
+        } catch (error) {
+          Swal.fire({ icon: "error", title: "Error", text: "Failed to update card. Please try again." });
+        }
+      };
+      
+      window.deleteCard = async function(idx) {
+        const result = await Swal.fire({
+          title: 'Confirm Delete',
+          text: "Are you sure you want to delete this card posting?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it',
+          cancelButtonText: 'Cancel'
+        });
+        
+        if (result.isConfirmed) {
+          try {
             cardPostings.splice(idx, 1);
             await firebase.database().ref("users/" + currentUserUID).update({ cardPostings });
             renderCards(cardPostings);
+            
+            // Update user stats
+            document.getElementById('userCardCount').textContent = cardPostings.length;
+            
             Swal.fire({ icon: 'success', title: 'Deleted!', timer: 1000, showConfirmButton: false });
+          } catch (error) {
+            Swal.fire({ icon: "error", title: "Error", text: "Failed to delete card. Please try again." });
           }
-        };
-      }
+        }
+      };
     }
+    
+    // Contact admin function
     window.contactAdmin = function(username, bank, cardLimit, neededAmount) {
       Swal.fire({
         title: 'Contact Admin',
@@ -878,58 +1561,64 @@ if(userObj.role === "cash" && !userObj.blocked) {
         }
       });
     };
-    function logout() {
-      firebase.auth().signOut();
-    }
-    firebase.auth().onAuthStateChanged(async (user) => {
-  showLoader();
-  if (user) {
-    let snap = await firebase.database().ref("users/" + user.uid).once("value");
-    if (snap.exists()) {
-      await user.reload();
-      await showDashboard(snap.val(), user.uid);
-    }
-  } else {
-    showNavLoggedOut();
-    document.getElementById('dashboard').style.display = "none";
-    document.getElementById('homeSection').style.display = "";
-  }
-  hideLoader();
-});
-    document.getElementById('forgotPasswordForm').onsubmit = async function(e) {
-      e.preventDefault();
-      const emailInput = document.getElementById('resetEmailInput');
-      const email = emailInput.value.trim();
-      if (!email) {
-        Swal.fire({ icon: 'warning', title: 'Email Required', text: 'Please enter your registered email.' });
-        return;
-      }
-      try {
-        await firebase.auth().sendPasswordResetEmail(email);
-        Swal.fire({
-          icon: 'success',
-          title: 'Reset Email Sent',
-          html: 'Check your email inbox for the password reset link.'
-        });
-        bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
-        emailInput.value = '';
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed to send reset email',
-          text: error.message
-        });
-      }
-    };
-    firebase.database().ref("users/" + uid).update({ isVerified: true });
     
+    // Show navigation for logged in users
+    function showNavLoggedIn(userObj) {
+      document.getElementById('navLoggedOut').style.display = 'none';
+      document.getElementById('navLoggedIn').style.display = '';
+      document.getElementById('navUsername').textContent = userObj.username;
+      document.getElementById('navAvatar').src = userObj.avatar || "https://i.pravatar.cc/70?u=" + encodeURIComponent(userObj.username);
+      document.getElementById('navRole').textContent = userObj.role === "cash" ? "Cash User" : "Credit Card Holder";
+    }
+    
+    // Show navigation for logged out users
+    function showNavLoggedOut() {
+      document.getElementById('navLoggedOut').style.display = '';
+      document.getElementById('navLoggedIn').style.display = 'none';
+    }
+    
+    // Logout function
+    function logout() {
+      Swal.fire({
+        title: 'Logout',
+        text: 'Are you sure you want to logout?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, logout',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          firebase.auth().signOut();
+        }
+      });
+    }
+    
+    // Show loader
     function showLoader() {
-  document.getElementById('loader').style.display = 'flex';
-}
-
-function hideLoader() {
-  document.getElementById('loader').style.display = 'none';
-}
+      document.getElementById('loader').style.display = 'flex';
+    }
+    
+    // Hide loader
+    function hideLoader() {
+      document.getElementById('loader').style.display = 'none';
+    }
+    
+    // Firebase auth state change listener
+    firebase.auth().onAuthStateChanged(async (user) => {
+      showLoader();
+      if (user) {
+        let snap = await firebase.database().ref("users/" + user.uid).once("value");
+        if (snap.exists()) {
+          await user.reload();
+          await showDashboard(snap.val(), user.uid);
+        }
+      } else {
+        showNavLoggedOut();
+        document.getElementById('dashboard').style.display = "none";
+        document.getElementById('homeSection').style.display = "";
+      }
+      hideLoader();
+    });
   </script>
 </body>
 </html>
