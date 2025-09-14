@@ -664,48 +664,88 @@ if(userObj.blocked){
   vrc.innerHTML = "";
 }
 
-      if (userObj.role === "cash") {
-        document.getElementById('dashboardContent').innerHTML = `
-          <div class="card shadow mb-3">
-            <div class="card-body">
-              <h5 class="card-title fw-bold mb-3">Find Credit Card Holders</h5>
-              <form id="searchCardForm" class="mb-3" aria-label="Search credit card holders form">
-                <input type="text" class="form-control mb-2" id="searchBank" placeholder="Bank Name (optional)" aria-label="Bank name input"/>
-                <input type="number" min="1" class="form-control mb-2" id="searchAmount" placeholder="Amount Needed (optional)" aria-label="Amount needed input"/>
-                <button class="btn btn-primary w-100 fw-bold" type="submit" aria-label="Search button">Search</button>
-              </form>
-              <div id="searchResults" tabindex="0" aria-live="polite" aria-atomic="true"></div>
-            </div>
-          </div>`;
-        document.getElementById('searchCardForm').onsubmit = async function(ev) {
-          ev.preventDefault();
-          let bank = searchBank.value.trim().toLowerCase();
-          let amount = Number(searchAmount.value) || 0;
-          lastSearchRequestedAmount = amount;
-          let snap = await firebase.database().ref("users").orderByChild("role").equalTo("card").once("value");
-          let html = "";
-          Object.entries(snap.val() || {}).forEach(([cardUid, u]) => {
-            if ((!bank || (u.cardPostings || []).some(p => p.bank.toLowerCase().includes(bank))) &&
-                (!amount || (u.cardPostings || []).some(p => Number(p.amount) >= amount))) {
-              u.cardPostings.forEach(card => {
-                if ((!bank || card.bank.toLowerCase().includes(bank)) &&
-                    (!amount || Number(card.amount) >= amount)) {
-                  html += `<div class="credit-card-info" role="region" aria-label="Credit card info of ${u.username} bank ${card.bank}">
-  <b>${u.username}</b> 
-  ${u.isVerified ? '<span class="badge bg-primary ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : ''}
-  (Bank: ${card.bank})<br/>
-  Card Limit: ₹${card.amount.toLocaleString()}<br/>
-  <button class="btn btn-sm btn-success mt-2" onclick="contactAdmin('${u.username}', '${card.bank}', ${card.amount}, ${amount})" aria-label="Contact admin about card at ${card.bank} from ${u.username}">
-    Contact Admin
-  </button>
-</div>`;
-                }
-              });
-            }
-          });
-          document.getElementById("searchResults").innerHTML = html || "<p class='text-muted'>No matching credit card holders found.</p>";
-        };
-      } else if(userObj.role === "card") {
+if(userObj.role === "cash" && !userObj.blocked) {
+  document.getElementById('dashboardContent').innerHTML = `
+    <h5 class="mb-3 text-center text-primary">Available Credit Card Postings</h5>
+    <input type="search" id="cardSearchInput" class="form-control mb-4" placeholder="Search cards by bank or username" aria-label="Search credit card postings" />
+    <div id="creditCardHolderCards" class="d-flex flex-wrap gap-3 justify-content-center"></div>
+  `;
+
+  const cardsContainer = document.getElementById('creditCardHolderCards');
+  const cardSearchInput = document.getElementById('cardSearchInput');
+
+  const snapshot = await firebase.database().ref("users").orderByChild("role").equalTo("card").once("value");
+  const cardUsers = snapshot.exists() ? snapshot.val() : {};
+
+  const allCards = [];
+
+  Object.entries(cardUsers).forEach(([cardUid, cardUser]) => {
+    if(cardUser.blocked) return; // omit blocked
+    const postings = cardUser.cardPostings || [];
+    postings.forEach(card => {
+      allCards.push({
+        fullName: cardUser.fullName,
+        username: cardUser.username,
+        isVerified: cardUser.isVerified,
+        bank: card.bank,
+        amount: card.amount
+      });
+    });
+  });
+
+  function renderCards(cards) {
+    if(cards.length === 0) {
+      cardsContainer.innerHTML = `<p class="text-center text-muted w-100">No credit card postings match your search.</p>`;
+      return;
+    }
+    const html = cards.map(card => `
+      <div class="credit-card-info p-3 rounded shadow-sm" role="region" aria-label="Credit card info of ${card.username} bank ${card.bank}" style="min-width: 260px; max-width: 300px;">
+        <div><strong>${card.username}</strong> ${card.isVerified ? '<span class="badge bg-primary ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : ''}</div>
+        <div>Bank: ${card.bank}</div>
+        <div>Card Limit: ₹${Number(card.amount).toLocaleString()}</div>
+        <button class="btn btn-sm btn-success mt-2 w-100" onclick="contactAdmin('${card.username}', '${card.bank}', ${card.amount})" aria-label="Contact admin about card at ${card.bank} from ${card.username}">
+          Contact Admin
+        </button>
+      </div>
+    `).join('');
+    cardsContainer.innerHTML = html;
+  }
+
+  renderCards(allCards);
+
+  cardSearchInput.addEventListener('input', () => {
+    const filter = cardSearchInput.value.trim().toLowerCase();
+    const filtered = allCards.filter(card => 
+      card.username.toLowerCase().includes(filter) ||
+      card.bank.toLowerCase().includes(filter) ||
+      card.fullName.toLowerCase().includes(filter)
+    );
+    renderCards(filtered);
+  });
+
+  window.contactAdmin = (username, bank, cardLimit) => {
+    Swal.fire({
+      title: 'Contact Admin',
+      icon: 'info',
+      html:
+        `<p><b>User:</b> ${username}</p>` +
+        `<p><b>Card Bank:</b> ${bank}</p>` +
+        `<p><b>Card Limit:</b> ₹${cardLimit.toLocaleString()}</p>` +
+        `<p>Proceed to connect via WhatsApp with the admin to facilitate your request.</p>`,
+      showCancelButton: true,
+      confirmButtonText: 'Contact Admin',
+      focusConfirm: false,
+    }).then(result => {
+      if(result.isConfirmed) {
+        let url = `https://wa.me/918969467256?text=` +
+          encodeURIComponent(
+            `Request to connect with Credit Card Holder username: ${username}, Bank: ${bank}, Card Limit: ₹${cardLimit}`
+          );
+        window.open(url, "_blank");
+      }
+    });
+  };
+} else if(userObj.role === "card") {
         document.getElementById('dashboardContent').innerHTML = `
           <div class="card shadow">
             <div class="card-body">
