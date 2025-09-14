@@ -628,7 +628,7 @@
                     (!amount || Number(card.amount) >= amount)) {
                   html += `<div class="credit-card-info" role="region" aria-label="Credit card info of ${u.username} bank ${card.bank}">
   <b>${u.username}</b> 
-  ${u.isVerified ? '<span class="badge bg-primary ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : ''}
+  ${u.isVerified ? '<span class="badge bg-success ms-1" title="Verified User" aria-label="Verified User"><i class="bi bi-check-circle-fill"></i></span>' : ''}
   (Bank: ${card.bank})<br/>
   Card Limit: ₹${card.amount.toLocaleString()}<br/>
   <button class="btn btn-sm btn-success mt-2" onclick="contactAdmin('${u.username}', '${card.bank}', ${card.amount}, ${amount})" aria-label="Contact admin about card at ${card.bank} from ${u.username}">
