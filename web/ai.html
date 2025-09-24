@@ -4,26 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemini AI Chat</title>
-    <!-- Google Material Symbols -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Highlight.js for code syntax highlighting -->
+    <!-- Highlight.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <style>
-        /* Import Google Font - Poppins */
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+            font-family: "Jost", sans-serif;
         }
         
         :root {
-            /* Dark mode colors */
             --text-color: #e3e3e3;
             --subheading-color: #828282;
             --placeholder-color: #a6a6a6;
@@ -33,10 +31,13 @@
             --sidebar-color: #1e1e1e;
             --accent-color: #4285f4;
             --accent-gradient: linear-gradient(to right, #4285f4, #d96570);
+            --border-color: #444;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --error-color: #f44336;
         }
         
         .light_mode {
-            /* Light mode colors */
             --text-color: #222;
             --subheading-color: #a0a0a0;
             --placeholder-color: #6c6c6c;
@@ -44,6 +45,7 @@
             --secondary-color: #e9eef6;
             --secondary-hover-color: #dbe1ea;
             --sidebar-color: #f5f7fa;
+            --border-color: #ddd;
         }
         
         body {
@@ -56,14 +58,15 @@
         
         /* Sidebar Styles */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: var(--sidebar-color);
-            border-right: 1px solid var(--secondary-color);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             transition: width 0.3s ease;
             overflow: hidden;
             flex-shrink: 0;
+            z-index: 10;
         }
         
         .sidebar.collapsed {
@@ -71,16 +74,17 @@
         }
         
         .sidebar-header {
-            padding: 1.5rem;
+            padding: 1.25rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+            min-height: 70px;
         }
         
         .sidebar-header h2 {
             color: var(--text-color);
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
@@ -91,10 +95,11 @@
             border: none;
             color: var(--text-color);
             cursor: pointer;
-            font-size: 1.5rem;
-            padding: 0.5rem;
+            font-size: 1.25rem;
+            padding: 0.4rem;
             border-radius: 50%;
             transition: background 0.2s ease;
+            flex-shrink: 0;
         }
         
         .toggle-sidebar:hover {
@@ -114,10 +119,16 @@
             gap: 0.5rem;
             font-weight: 500;
             transition: transform 0.2s ease;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
         
         .new-chat-btn:hover {
             transform: translateY(-2px);
+        }
+        
+        .new-chat-btn span {
+            font-size: 1.2rem;
         }
         
         .chat-history {
@@ -128,10 +139,12 @@
         
         .history-date {
             color: var(--subheading-color);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             margin: 1rem 0 0.5rem;
             padding: 0 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .history-item {
@@ -147,6 +160,8 @@
             text-decoration: none;
             white-space: nowrap;
             overflow: hidden;
+            font-size: 0.9rem;
+            position: relative;
         }
         
         .history-item:hover {
@@ -160,12 +175,42 @@
         
         .history-item .icon {
             flex-shrink: 0;
+            font-size: 1.1rem;
         }
         
         .history-item .title {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            flex: 1;
+        }
+        
+        .delete-session {
+            display: none;
+            margin-left: auto;
+            font-size: 1rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        .history-item:hover .delete-session {
+            display: block;
+        }
+        
+        .delete-session:hover {
+            opacity: 1;
+        }
+        
+        .sidebar.collapsed .history-item .title,
+        .sidebar.collapsed .history-date,
+        .sidebar.collapsed .new-chat-btn span:last-child,
+        .sidebar.collapsed .sidebar-header h2 {
+            display: none;
+        }
+        
+        .sidebar.collapsed .new-chat-btn {
+            justify-content: center;
+            padding: 0.75rem;
         }
         
         /* Main Content Styles */
@@ -177,88 +222,29 @@
         }
         
         .header {
-            padding: 1.5rem 2rem 0;
-            transition: margin 0.3s ease;
+            padding: 2rem 2rem 0;
+            transition: all 0.3s ease;
         }
         
         .header.hidden {
             display: none;
         }
         
-        .header :where(.title, .subtitle) {
-            color: var(--text-color);
-            font-weight: 500;
-            line-height: 4rem;
-        }
-        
         .header .title {
             width: fit-content;
-            font-size: 3rem;
+            font-size: 2.5rem;
             background-clip: text;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
         
         .header .subtitle {
-            font-size: 2.6rem;
+            font-size: 1.5rem;
             color: var(--subheading-color);
-        }
-        
-        .suggestion-list {
-            width: 100%;
-            list-style: none;
-            display: flex;
-            gap: 1.25rem;
-            margin-top: 2rem;
-            overflow: hidden;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            padding-bottom: 1rem;
-        }
-        
-        .suggestion-list::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .suggestion-list .suggestion {
-            cursor: pointer;
-            padding: 1.25rem;
-            width: 222px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            border-radius: 0.75rem;
-            justify-content: space-between;
-            background: var(--secondary-color);
-            transition: 0.2s ease;
-            border: 1px solid transparent;
-        }
-        
-        .suggestion-list .suggestion:hover {
-            background: var(--secondary-hover-color);
-            border-color: var(--accent-color);
-        }
-        
-        .suggestion-list .suggestion :where(.text, .icon) {
             font-weight: 400;
-            color: var(--text-color);
-        }
-        
-        .suggestion-list .suggestion .icon {
-            width: 42px;
-            height: 42px;
-            display: flex;
-            font-size: 1.3rem;
-            margin-top: 2.5rem;
-            align-self: flex-end;
-            align-items: center;
-            border-radius: 50%;
-            justify-content: center;
-            color: var(--text-color);
-            background: var(--primary-color);
         }
         
         /* Chat Container */
@@ -299,13 +285,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .chat-list .message.incoming {
-            margin-top: 1.5rem;
-        }
-        
         .chat-list .message .message-content {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             width: 100%;
             align-items: flex-start;
         }
@@ -319,6 +301,7 @@
             background: var(--secondary-color);
             max-width: 80%;
             word-wrap: break-word;
+            font-size: 0.9rem;
         }
         
         .chat-list .message.outgoing .text {
@@ -328,8 +311,13 @@
         }
         
         .chat-list .message.error .text {
-            color: #e55865;
-            background: rgba(229, 88, 101, 0.1);
+            color: var(--error-color);
+            background: rgba(244, 67, 54, 0.1);
+        }
+        
+        .chat-list .message.warning .text {
+            color: var(--warning-color);
+            background: rgba(255, 152, 0, 0.1);
         }
         
         .chat-list .message.loading .text {
@@ -337,8 +325,8 @@
         }
         
         .chat-list .message .avatar {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             object-fit: cover;
             border-radius: 50%;
             align-self: flex-start;
@@ -355,22 +343,27 @@
             }
         }
         
+        .chat-list .message .actions {
+            display: flex;
+            gap: 0.25rem;
+            margin-left: 0.5rem;
+            align-self: flex-start;
+            flex-shrink: 0;
+        }
+        
         .chat-list .message .icon {
             color: var(--text-color);
             cursor: pointer;
-            height: 35px;
-            width: 35px;
+            height: 32px;
+            width: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: none;
-            font-size: 1.25rem;
-            margin-left: 0.5rem;
+            font-size: 1.1rem;
             visibility: hidden;
             transition: background 0.2s ease;
-            align-self: flex-start;
-            flex-shrink: 0;
         }
         
         .chat-list .message .icon.hide {
@@ -387,7 +380,7 @@
         
         .chat-list .message .loading-indicator {
             display: none;
-            gap: 0.8rem;
+            gap: 0.6rem;
             width: 100%;
             flex-direction: column;
         }
@@ -397,7 +390,7 @@
         }
         
         .chat-list .message .loading-indicator .loading-bar {
-            height: 11px;
+            height: 8px;
             width: 100%;
             border-radius: 0.135rem;
             background-position: -800px 0;
@@ -421,7 +414,7 @@
         /* Code Block Styles */
         .code-block {
             position: relative;
-            margin: 1rem 0;
+            margin: 0.75rem 0;
             border-radius: 0.5rem;
             overflow: hidden;
             background: #1e1e1e;
@@ -434,7 +427,7 @@
             padding: 0.5rem 1rem;
             background: #2d2d2d;
             color: #ccc;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         
         .code-language {
@@ -449,7 +442,7 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
             border-radius: 0.25rem;
             transition: background 0.2s ease;
@@ -467,7 +460,7 @@
         
         .code-block code {
             font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         /* Typing Area */
@@ -475,7 +468,7 @@
             padding: 1rem 2rem;
             background: var(--primary-color);
             transition: padding 0.3s ease;
-            border-top: 1px solid var(--secondary-color);
+            border-top: 1px solid var(--border-color);
         }
         
         .typing-area :where(.typing-form, .action-buttons) {
@@ -485,7 +478,7 @@
         
         .typing-form .input-wrapper {
             width: 100%;
-            min-height: 56px;
+            min-height: 50px;
             display: flex;
             position: relative;
             align-items: center;
@@ -497,14 +490,15 @@
             border: none;
             outline: none;
             resize: none;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--text-color);
-            padding: 1.1rem 4rem 1.1rem 1.5rem;
+            padding: 0.9rem 3.5rem 0.9rem 1.25rem;
             border-radius: 100px;
             background: var(--secondary-color);
             transition: background 0.2s ease;
             max-height: 120px;
             overflow-y: auto;
+            font-family: "Jost", sans-serif;
         }
         
         .typing-form .typing-input:focus {
@@ -516,13 +510,13 @@
         }
         
         .typing-area .icon {
-            width: 56px;
-            height: 56px;
+            width: 50px;
+            height: 50px;
             flex-shrink: 0;
             cursor: pointer;
             border-radius: 50%;
             display: flex;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--text-color);
             align-items: center;
             justify-content: center;
@@ -561,7 +555,7 @@
         
         .typing-area .disclaimer-text {
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-top: 1rem;
             color: var(--placeholder-color);
         }
@@ -590,7 +584,7 @@
             max-width: 500px;
             width: 90%;
             color: var(--text-color);
-            border: 1px solid var(--secondary-color);
+            border: 1px solid var(--border-color);
             animation: modalFadeIn 0.3s ease;
         }
         
@@ -601,27 +595,30 @@
         
         #apiKeyModal h4 {
             margin-bottom: 0.5rem;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 600;
         }
         
         #apiKeyModal p {
             color: var(--subheading-color);
             margin-bottom: 1.5rem;
+            font-size: 0.95rem;
         }
         
         #apiKeyInput {
             width: 100%;
             padding: 0.75rem 1rem;
             border-radius: 8px;
-            border: 1px solid var(--secondary-color);
+            border: 1px solid var(--border-color);
             background: var(--secondary-color);
             color: var(--text-color);
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-bottom: 1rem;
             transition: border-color 0.2s ease;
+            font-family: "Jost", sans-serif;
         }
         
         #apiKeyInput:focus {
@@ -636,10 +633,11 @@
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
             transition: transform 0.2s ease;
             width: 100%;
+            font-family: "Jost", sans-serif;
         }
         
         #apiKeyModal button:hover {
@@ -683,105 +681,44 @@
         }
         
         .empty-state .material-symbols-rounded {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
             opacity: 0.5;
         }
         
-        /* Responsive media query code for small screen */
-        @media (max-width: 768px) {
-            .sidebar {
-                position: absolute;
-                height: 100%;
-                z-index: 100;
-                transform: translateX(-100%);
-            }
-            
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            
-            .sidebar.collapsed {
-                width: 280px;
-            }
-            
-            .header {
-                padding: 1rem;
-            }
-            
-            .header :is(.title, .subtitle) {
-                font-size: 2rem;
-                line-height: 2.6rem;
-            }
-            
-            .header .subtitle {
-                font-size: 1.7rem;
-            }
-            
-            .typing-area {
-                padding: 1rem;
-            }
-            
-            .typing-area :where(.typing-form, .action-buttons) {
-                gap: 0.4rem;
-            }
-            
-            .typing-form .input-wrapper {
-                height: 50px;
-            }
-            
-            .typing-form .typing-input {
-                padding: 1.1rem 3.5rem 1.1rem 1.2rem;
-            }
-            
-            .typing-area .icon {
-                height: 50px;
-                width: 50px;
-            }
-            
-            .typing-area .disclaimer-text {
-                font-size: 0.75rem;
-                margin-top: 0.5rem;
-            }
-            
-            .chat-list .message .text {
-                max-width: 75%;
-            }
-            
-            .chat-list {
-                padding: 1rem;
-            }
-            
-            #apiKeyModal {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
+        .empty-state p {
+            font-size: 1rem;
         }
         
-        @media (max-width: 480px) {
-            .header {
-                margin-top: 3vh;
-                padding: 0.5rem;
-            }
-            
-            .suggestion-list {
-                margin-top: 5vh;
-            }
-            
-            .suggestion-list .suggestion {
-                width: 200px;
-                padding: 1rem;
-            }
-            
-            .chat-list {
-                padding: 1rem 0.5rem 10rem;
-            }
-            
-            .chat-list .message .text {
-                max-width: 70%;
-            }
+        /* AI Status Indicator */
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--secondary-color);
+            border-radius: 1rem;
+            margin: 0 2rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-color);
         }
         
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+        }
+        
+        .status-indicator.warning {
+            background: var(--warning-color);
+        }
+        
+        .status-indicator.error {
+            background: var(--error-color);
+        }
+        
+        /* Mobile styles */
         .mobile-menu-btn {
             display: none;
             position: fixed;
@@ -800,16 +737,293 @@
             cursor: pointer;
         }
         
-        @media (max-width: 768px) {
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .header {
+                padding: 1.5rem 1.5rem 0;
+            }
+            
+            .chat-list {
+                padding: 1rem 1.5rem;
+            }
+            
+            .typing-area {
+                padding: 1rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                position: fixed;
+                height: 100%;
+                transform: translateX(-100%);
+                z-index: 100;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+            
+            .sidebar.collapsed {
+                width: 220px;
+            }
+            
+            .header {
+                padding: 1.5rem 1rem 0;
+            }
+            
+            .header .title {
+                font-size: 2rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .chat-list {
+                padding: 1rem;
+            }
+            
+            .typing-area {
+                padding: 1rem;
+            }
+            
+            .ai-status {
+                margin: 0 1rem 1rem;
+            }
+            
             .mobile-menu-btn {
                 display: flex;
             }
+        }
+        
+        @media (max-width: 768px) {
+            .header .title {
+                font-size: 1.8rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .chat-list .message .text {
+                max-width: 85%;
+                font-size: 0.85rem;
+            }
+            
+            .typing-area :where(.typing-form, .action-buttons) {
+                gap: 0.5rem;
+            }
+            
+            .typing-form .input-wrapper {
+                height: 46px;
+            }
+            
+            .typing-form .typing-input {
+                padding: 0.9rem 3rem 0.9rem 1rem;
+            }
+            
+            .typing-area .icon {
+                height: 46px;
+                width: 46px;
+                font-size: 1.1rem;
+            }
+            
+            .typing-area .disclaimer-text {
+                font-size: 0.75rem;
+                margin-top: 0.75rem;
+            }
+            
+            #apiKeyModal {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                padding: 1rem 1rem 0;
+            }
+            
+            .header .title {
+                font-size: 1.6rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .chat-list {
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .chat-list .message .text {
+                max-width: 80%;
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .chat-list .message .avatar {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .typing-area {
+                padding: 0.75rem;
+            }
+            
+            .typing-form .typing-input {
+                font-size: 0.85rem;
+                padding: 0.8rem 2.8rem 0.8rem 0.9rem;
+            }
+            
+            .typing-area .icon {
+                height: 42px;
+                width: 42px;
+                font-size: 1rem;
+            }
+            
+            .empty-state {
+                padding: 2rem 1rem;
+            }
+            
+            .empty-state .material-symbols-rounded {
+                font-size: 3rem;
+            }
+            
+            .ai-status {
+                margin: 0 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .header .title {
+                font-size: 1.4rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1rem;
+            }
+            
+            .chat-list .message .text {
+                max-width: 75%;
+            }
+            
+            .typing-area .action-buttons {
+                flex-direction: column;
+            }
+            
+            .typing-area .icon {
+                height: 38px;
+                width: 38px;
+            }
+        }
+        
+        /* Portrait mode on mobile */
+        @media (max-height: 700px) and (orientation: portrait) {
+            .header {
+                padding: 1rem 1rem 0;
+            }
+            
+            .header .title {
+                font-size: 1.6rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .chat-list {
+                padding: 0.5rem 1rem;
+            }
+            
+            .typing-area {
+                padding: 0.75rem 1rem;
+            }
+        }
+        
+        /* Landscape mode on mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                display: none;
+            }
+            
+            .chat-list {
+                padding: 0.5rem 1rem;
+            }
+            
+            .typing-area {
+                padding: 0.5rem 1rem;
+            }
+            
+            .typing-form .input-wrapper {
+                min-height: 40px;
+            }
+            
+            .typing-area .icon {
+                height: 40px;
+                width: 40px;
+            }
+        }
+        
+        /* Retry and error handling */
+        .retry-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .retry-button:hover {
+            opacity: 0.9;
+        }
+        
+        .fallback-notice {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--warning-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
     </style>
 </head>
 <body class="light_mode">
     <!-- Mobile Menu Button -->
     <button class="mobile-menu-btn material-symbols-rounded">menu</button>
+    
+    <!-- Overlay for mobile sidebar -->
+    <div class="overlay" id="sidebarOverlay"></div>
     
     <!-- Sidebar -->
     <div class="sidebar">
@@ -834,33 +1048,20 @@
         <header class="header">
             <h1 class="title">Hello, there</h1>
             <p class="subtitle">How can I help you today?</p>
-            <!-- Suggestion list -->
-            <ul class="suggestion-list">
-              <li class="suggestion">
-                <h4 class="text">Help me plan a game night with my 5 best friends for under $100.</h4>
-                <span class="icon material-symbols-rounded">draw</span>
-              </li>
-              <li class="suggestion">
-                <h4 class="text">What are the best tips to improve my public speaking skills?</h4>
-                <span class="icon material-symbols-rounded">lightbulb</span>
-              </li>
-              <li class="suggestion">
-                <h4 class="text">Can you help me find the latest news on web development?</h4>
-                <span class="icon material-symbols-rounded">explore</span>
-              </li>
-              <li class="suggestion">
-                <h4 class="text">Write JavaScript code to sum all elements in an array.</h4>
-                <span class="icon material-symbols-rounded">code</span>
-              </li>
-            </ul>
         </header>
+        <br>
+        <!-- AI Status Indicator -->
+        <div class="ai-status" id="aiStatus">
+            <span class="status-indicator" id="statusIndicator"></span>
+            <span id="statusText">Connected to Gemini AI</span>
+        </div>
         
         <!-- Chat Container -->
         <div class="chat-container">
             <div class="chat-list" id="chatList">
                 <div class="empty-state">
                     <span class="material-symbols-rounded">chat</span>
-                    <p>No messages yet. Try a suggestion above or type your own message!</p>
+                    <p>No messages yet. Start a conversation by typing a message!</p>
                 </div>
             </div>
             
@@ -873,7 +1074,6 @@
                 </div>
                 <div class="action-buttons">
                   <span id="theme-toggle-button" class="icon material-symbols-rounded" title="Toggle theme">dark_mode</span>
-                  <span id="delete-chat-button" class="icon material-symbols-rounded" title="Clear chat">delete</span>
                   <span id="api-key-button" class="icon material-symbols-rounded" title="API Key settings">key</span>
                 </div>
               </form>
@@ -906,9 +1106,7 @@
         // DOM elements
         const typingForm = document.querySelector(".typing-form");
         const chatContainer = document.querySelector(".chat-list");
-        const suggestions = document.querySelectorAll(".suggestion");
         const toggleThemeButton = document.querySelector("#theme-toggle-button");
-        const deleteChatButton = document.querySelector("#delete-chat-button");
         const apiKeyButton = document.querySelector("#api-key-button");
         const userInput = document.getElementById("userInput");
         const sendButton = document.getElementById("send-message-button");
@@ -918,6 +1116,10 @@
         const chatHistory = document.getElementById("chatHistory");
         const header = document.querySelector(".header");
         const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+        const sidebarOverlay = document.getElementById("sidebarOverlay");
+        const aiStatus = document.getElementById("aiStatus");
+        const statusIndicator = document.getElementById("statusIndicator");
+        const statusText = document.getElementById("statusText");
         
         // State variables
         let userMessage = null;
@@ -925,15 +1127,73 @@
         let messages = []; // Current chat messages
         let chatSessions = {}; // All chat sessions organized by date
         let currentChatId = null; // ID of the current chat session
+        let currentAI = 'gemini'; // Current AI service being used
+        let geminiFailedAttempts = 0; // Count of consecutive Gemini failures
         
         // API configuration
         const getApiKey = () => localStorage.getItem('geminiApiKey');
-        const API_URL = () => `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${getApiKey()}`;
+        const GEMINI_API_URL = () => `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${getApiKey()}`;
+        
+        // Free AI service endpoints (mock for demonstration)
+        const FREE_AI_SERVICES = {
+            openAssistant: {
+                name: "OpenAssistant",
+                url: "https://api.open-assistant.io/chat",
+                // This is a mock implementation since we don't have a real free API
+            },
+            huggingFace: {
+                name: "Hugging Face",
+                url: "https://api-inference.huggingface.co/models/",
+                // This is a mock implementation
+            }
+        };
         
         // Auto-resize textarea
         function autoResize(textarea) {
             textarea.style.height = 'auto';
             textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+        
+        // Update AI status indicator
+        function updateAIStatus(status, message) {
+            statusIndicator.className = 'status-indicator';
+            if (status === 'connected') {
+                statusIndicator.classList.add('success');
+                statusText.textContent = message || `Connected to ${currentAI === 'gemini' ? 'Gemini AI' : FREE_AI_SERVICES[currentAI].name}`;
+            } else if (status === 'warning') {
+                statusIndicator.classList.add('warning');
+                statusText.textContent = message;
+            } else if (status === 'error') {
+                statusIndicator.classList.add('error');
+                statusText.textContent = message;
+            }
+        }
+        
+        // Switch to a free AI service
+        function switchToFreeAI(reason) {
+            if (currentAI === 'gemini') {
+                // Try to switch to a free AI
+                const freeAIs = Object.keys(FREE_AI_SERVICES);
+                if (freeAIs.length > 0) {
+                    currentAI = freeAIs[0];
+                    updateAIStatus('warning', `Switched to ${FREE_AI_SERVICES[currentAI].name} (${reason})`);
+                    
+                    // Show notification to user
+                    const notice = document.createElement('div');
+                    notice.className = 'fallback-notice';
+                    notice.innerHTML = `<span class="material-symbols-rounded">warning</span> 
+                                       Gemini AI is unavailable. Using ${FREE_AI_SERVICES[currentAI].name} instead.`;
+                    chatContainer.appendChild(notice);
+                    
+                    setTimeout(() => {
+                        notice.style.opacity = '0';
+                        setTimeout(() => notice.remove(), 300);
+                    }, 5000);
+                    
+                    return true;
+                }
+            }
+            return false;
         }
         
         // Generate a unique ID for chat sessions
@@ -958,7 +1218,6 @@
         
         // Extract and format code blocks in the message
         function formatCodeBlocks(text) {
-            // Regular expression to match code blocks with optional language specification
             const codeBlockRegex = /```(\w+)?\s*([\s\S]*?)```/g;
             
             let formattedText = text;
@@ -966,21 +1225,17 @@
             let codeBlocks = [];
             let index = 0;
             
-            // Find all code blocks
             while ((match = codeBlockRegex.exec(text)) !== null) {
                 const language = match[1] || 'text';
                 const code = match[2].trim();
                 
-                // Generate a unique ID for this code block
                 const blockId = `code-block-${index++}`;
                 
-                // Replace the code block with a placeholder
                 formattedText = formattedText.replace(
                     match[0], 
                     `<div class="code-block" id="${blockId}"></div>`
                 );
                 
-                // Store the code block data for later processing
                 codeBlocks.push({
                     id: blockId,
                     language: language,
@@ -1012,7 +1267,6 @@
                 }
             });
             
-            // Re-run highlight.js to apply syntax highlighting
             hljs.highlightAll();
         }
         
@@ -1061,11 +1315,10 @@
             chatHistory.innerHTML = '';
             
             if (Object.keys(chatSessions).length === 0) {
-                chatHistory.innerHTML = '<div class="empty-state" style="padding: 1rem;"><p>No chat history yet</p></div>';
+                chatHistory.innerHTML = '<div class="empty-state" style="padding: 1rem; font-size: 0.9rem;"><p>No chat history yet</p></div>';
                 return;
             }
             
-            // Group chats by date
             const dates = {};
             Object.values(chatSessions).forEach(chat => {
                 const date = new Date(chat.timestamp);
@@ -1078,10 +1331,8 @@
                 dates[dateKey].push(chat);
             });
             
-            // Sort dates in descending order (newest first)
             const sortedDates = Object.keys(dates).sort((a, b) => new Date(b) - new Date(a));
             
-            // Render chats grouped by date
             sortedDates.forEach(dateKey => {
                 const date = new Date(dateKey);
                 const dateHeader = document.createElement('div');
@@ -1089,10 +1340,8 @@
                 dateHeader.textContent = formatDate(date);
                 chatHistory.appendChild(dateHeader);
                 
-                // Sort chats by timestamp (newest first)
                 dates[dateKey].sort((a, b) => b.timestamp - a.timestamp);
                 
-                // Render each chat
                 dates[dateKey].forEach(chat => {
                     const chatItem = document.createElement('a');
                     chatItem.className = 'history-item';
@@ -1103,10 +1352,16 @@
                     chatItem.innerHTML = `
                         <span class="icon material-symbols-rounded">chat</span>
                         <span class="title">${chat.title || 'New Chat'}</span>
+                        <span class="material-symbols-rounded delete-session">delete</span>
                     `;
                     
                     chatItem.addEventListener('click', (e) => {
-                        e.preventDefault();
+                        if (e.target.classList.contains('delete-session')) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            deleteChatSession(chat.id);
+                            return;
+                        }
                         loadChat(chat.id);
                     });
                     
@@ -1115,12 +1370,44 @@
             });
         }
         
+        // Delete a specific chat session
+        function deleteChatSession(chatId) {
+            Swal.fire({
+                title: 'Delete this chat?',
+                text: 'This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                confirmButtonColor: '#d33',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    delete chatSessions[chatId];
+                    
+                    if (currentChatId === chatId) {
+                        const remainingChats = Object.keys(chatSessions);
+                        if (remainingChats.length > 0) {
+                            const mostRecentChat = Object.values(chatSessions).reduce((latest, chat) => {
+                                return chat.timestamp > latest.timestamp ? chat : latest;
+                            });
+                            loadChat(mostRecentChat.id);
+                        } else {
+                            createNewChat();
+                        }
+                    }
+                    
+                    saveChatSessions();
+                    renderChatHistory();
+                    Swal.fire('Deleted!', 'Chat session has been deleted.', 'success');
+                }
+            });
+        }
+        
         // Create a new chat session
         function createNewChat() {
             currentChatId = generateChatId();
             messages = [];
             
-            // Create a new chat session
             chatSessions[currentChatId] = {
                 id: currentChatId,
                 title: 'New Chat',
@@ -1131,8 +1418,7 @@
             saveChatSessions();
             renderChatHistory();
             
-            // Clear the chat container and show empty state
-            chatContainer.innerHTML = '<div class="empty-state"><span class="material-symbols-rounded">chat</span><p>No messages yet. Try a suggestion above or type your own message!</p></div>';
+            chatContainer.innerHTML = '<div class="empty-state"><span class="material-symbols-rounded">chat</span><p>No messages yet. Start a conversation by typing a message!</p></div>';
             header.classList.remove('hidden');
         }
         
@@ -1142,32 +1428,32 @@
                 currentChatId = chatId;
                 messages = [...chatSessions[chatId].messages];
                 
-                // Re-render the chat history to update active state
                 renderChatHistory();
                 
-                // Reconstruct the chat UI
                 chatContainer.innerHTML = '';
                 
                 if (messages.length === 0) {
-                    chatContainer.innerHTML = '<div class="empty-state"><span class="material-symbols-rounded">chat</span><p>No messages yet. Try a suggestion above or type your own message!</p></div>';
+                    chatContainer.innerHTML = '<div class="empty-state"><span class="material-symbols-rounded">chat</span><p>No messages yet. Start a conversation by typing a message!</p></div>';
                     header.classList.remove('hidden');
                 } else {
-                    messages.forEach(msg => {
+                    messages.forEach((msg, index) => {
                         const type = msg.role === 'user' ? 'outgoing' : 'incoming';
-                        const avatarSrc = type === 'outgoing' ? 'https://i.postimg.cc/L8hd043C/images.png' : 'https://i.postimg.cc/hP2WrQTQ/Gemini-August-Release-SS-width-1300.jpg';
+                        const avatarSrc = type === 'outgoing' ? 'https://i.postimg.cc/L8hd043C/images.png' : 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Google-gemini-icon.svg/2048px-Google-gemini-icon.svg.png';
                         
-                        // Format code blocks if present
                         const { formattedText, codeBlocks } = formatCodeBlocks(msg.content);
                         
                         const html = `<div class="message-content">
                                         <img class="avatar" src="${avatarSrc}" alt="${type === 'outgoing' ? 'User' : 'Gemini'} avatar">
                                         <div class="text">${formattedText.replace(/\n/g, '<br>')}</div>
                                     </div>
-                                    <span onClick="copyMessage(this)" class="icon material-symbols-rounded" title="Copy message">content_copy</span>`;
+                                    <div class="actions">
+                                        ${type === 'incoming' && index === messages.length - 1 ? 
+                                            `<span onClick="regenerateResponse()" class="icon material-symbols-rounded" title="Regenerate response">refresh</span>` : ''}
+                                        <span onClick="copyMessage(this)" class="icon material-symbols-rounded" title="Copy message">content_copy</span>
+                                    </div>`;
                         const div = createMessageElement(html, type);
                         chatContainer.appendChild(div);
                         
-                        // Render code blocks after the message is added to DOM
                         if (codeBlocks.length > 0) {
                             setTimeout(() => {
                                 renderCodeBlocks(codeBlocks);
@@ -1180,38 +1466,62 @@
                 
                 chatContainer.scrollTo(0, chatContainer.scrollHeight);
                 
-                // Close sidebar on mobile
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 992) {
                     sidebar.classList.remove('open');
+                    sidebarOverlay.classList.remove('active');
                 }
             }
+        }
+        
+        // Regenerate the last AI response
+        function regenerateResponse() {
+            if (isResponseGenerating || messages.length < 2) return;
+            
+            let lastUserMessageIndex = -1;
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === 'user') {
+                    lastUserMessageIndex = i;
+                    break;
+                }
+            }
+            
+            if (lastUserMessageIndex === -1) return;
+            
+            messages = messages.slice(0, lastUserMessageIndex + 1);
+            
+            chatSessions[currentChatId].messages = messages;
+            saveChatSessions();
+            
+            loadChat(currentChatId);
+            
+            userMessage = messages[messages.length - 1].content;
+            isResponseGenerating = true;
+            
+            setTimeout(showLoadingAnimation, 500);
         }
         
         // Load theme and initialize the app
         const initializeApp = () => {
             const isLightMode = (localStorage.getItem("themeColor") === "light_mode");
             
-            // Apply the stored theme
             document.body.classList.toggle("light_mode", isLightMode);
             toggleThemeButton.innerText = isLightMode ? "dark_mode" : "light_mode";
             toggleThemeButton.setAttribute('title', isLightMode ? 'Switch to dark mode' : 'Switch to light mode');
             
-            // Load chat sessions
             loadChatSessions();
             
-            // If there are existing chats, load the most recent one
             const chatIds = Object.keys(chatSessions);
             if (chatIds.length > 0) {
-                // Find the most recent chat
                 const mostRecentChat = Object.values(chatSessions).reduce((latest, chat) => {
                     return chat.timestamp > latest.timestamp ? chat : latest;
                 });
                 
                 loadChat(mostRecentChat.id);
             } else {
-                // Create a new chat if none exist
                 createNewChat();
             }
+            
+            updateAIStatus('connected');
         }
         
         // Create a new message element and return it
@@ -1227,21 +1537,17 @@
             const words = text.split(' ');
             let currentWordIndex = 0;
             const typingInterval = setInterval(() => {
-                // Append each word to the text element with a space
                 textElement.innerHTML += (currentWordIndex === 0 ? '' : ' ') + words[currentWordIndex++];
                 incomingMessageDiv.querySelector(".icon").classList.add("hide");
                 
-                // If all words are displayed
                 if (currentWordIndex === words.length) {
                     clearInterval(typingInterval);
                     isResponseGenerating = false;
                     incomingMessageDiv.querySelector(".icon").classList.remove("hide");
                     
-                    // Add to messages and update chat session
                     messages.push({ role: 'model', content: text });
                     chatSessions[currentChatId].messages = messages;
                     
-                    // Update chat title if it's the first response
                     if (messages.length === 2) {
                         const firstMessage = messages[0].content;
                         chatSessions[currentChatId].title = firstMessage.length > 30 
@@ -1252,15 +1558,18 @@
                     saveChatSessions();
                     renderChatHistory();
                     
-                    // Format code blocks if present
                     const { formattedText, codeBlocks } = formatCodeBlocks(text);
                     textElement.innerHTML = formattedText.replace(/\n/g, '<br>');
                     
-                    // Render code blocks
                     if (codeBlocks.length > 0) {
                         setTimeout(() => {
                             renderCodeBlocks(codeBlocks);
                         }, 0);
+                    }
+                    
+                    // Reset Gemini failure count on successful response
+                    if (currentAI === 'gemini') {
+                        geminiFailedAttempts = 0;
                     }
                 }
                 
@@ -1268,48 +1577,134 @@
             }, 50);
         }
         
-        // Fetch response from the API based on user message
-        const generateAPIResponse = async (incomingMessageDiv) => {
-            const textElement = incomingMessageDiv.querySelector(".text"); // Getting text element
-            try {
-                if (!getApiKey()) throw new Error('API key not set. Please enter it.');
-                
-                // Build full history for context
-                const contents = messages.map(msg => ({ role: msg.role, parts: [{ text: msg.content }] }));
-                contents.push({ role: "user", parts: [{ text: userMessage }] });
-                
-                // Send a POST request to the API with the user's message
-                const response = await fetch(API_URL(), {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents }),
-                });
-                
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.error?.message || 'API request failed');
-                
-                // Get the API response text
-                const apiResponse = data.candidates[0].content.parts[0].text;
-                showTypingEffect(apiResponse, textElement, incomingMessageDiv); // Show typing effect
-            } catch (error) { // Handle error
-                isResponseGenerating = false;
-                textElement.innerText = error.message;
-                textElement.parentElement.closest(".message").classList.add("error");
-                Swal.fire({
-                    icon: 'error',
-                    title: 'API Error',
-                    text: error.message,
-                    confirmButtonText: 'OK'
-                });
-            } finally {
-                incomingMessageDiv.classList.remove("loading");
+        // Mock free AI response (in a real app, this would call an actual API)
+        const generateFreeAIResponse = async (prompt) => {
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
+            
+            // Simple mock responses based on prompt content
+            if (prompt.toLowerCase().includes('hello') || prompt.toLowerCase().includes('hi')) {
+                return "Hello! I'm an AI assistant. How can I help you today?";
+            } else if (prompt.toLowerCase().includes('weather')) {
+                return "I don't have real-time weather data, but I can help you find weather information if you tell me your location.";
+            } else if (prompt.toLowerCase().includes('code') || prompt.toLowerCase().includes('program')) {
+                return "Here's a simple example of code:\n\n```python\nprint('Hello, World!')\n```\n\nThis is a basic Python program that prints a message.";
+            } else if (prompt.toLowerCase().includes('joke')) {
+                const jokes = [
+                    "Why don't scientists trust atoms? Because they make up everything!",
+                    "Why did the scarecrow win an award? Because he was outstanding in his field!",
+                    "Why don't eggs tell jokes? They'd crack each other up!"
+                ];
+                return jokes[Math.floor(Math.random() * jokes.length)];
+            } else {
+                return `I understand you're asking about "${prompt}". As a free AI assistant, I have limited capabilities compared to premium services like Gemini, but I'll do my best to help. Could you provide more details about what you're looking for?`;
             }
+        };
+        
+        // Fetch response from the API with retry logic and fallback
+        const generateAPIResponse = async (incomingMessageDiv, retryCount = 0) => {
+            const textElement = incomingMessageDiv.querySelector(".text");
+            try {
+                if (currentAI === 'gemini') {
+                    if (!getApiKey()) throw new Error('API key not set. Please enter it.');
+                    
+                    const contents = messages.map(msg => ({ role: msg.role, parts: [{ text: msg.content }] }));
+                    contents.push({ role: "user", parts: [{ text: userMessage }] });
+                    
+                    const response = await fetch(GEMINI_API_URL(), {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ contents }),
+                    });
+                    
+                    const data = await response.json();
+                    if (!response.ok) {
+                        if (response.status === 429 || response.status >= 500) {
+                            geminiFailedAttempts++;
+                            if (geminiFailedAttempts >= 2 && switchToFreeAI('server issues')) {
+                                // Switch to free AI and retry
+                                return generateAPIResponse(incomingMessageDiv, 0);
+                            }
+                            throw new Error('server_overload');
+                        }
+                        throw new Error(data.error?.message || 'API request failed');
+                    }
+                    
+                    const apiResponse = data.candidates[0].content.parts[0].text;
+                    showTypingEffect(apiResponse, textElement, incomingMessageDiv);
+                } else {
+                    // Use free AI service
+                    const response = await generateFreeAIResponse(userMessage);
+                    showTypingEffect(response, textElement, incomingMessageDiv);
+                }
+            } catch (error) {
+                if (error.message === 'server_overload' && retryCount < 3) {
+                    const delay = Math.pow(2, retryCount) * 1000;
+                    setTimeout(() => {
+                        generateAPIResponse(incomingMessageDiv, retryCount + 1);
+                    }, delay);
+                    return;
+                }
+                
+                isResponseGenerating = false;
+                
+                if (error.message === 'server_overload') {
+                    textElement.innerHTML = `Server is currently overloaded. Please try again in a moment. 
+                       <button class="retry-button" onclick="retryLastMessage()">
+                         <span class="material-symbols-rounded" style="font-size: 16px;">refresh</span>
+                         Retry
+                       </button>`;
+                    textElement.parentElement.closest(".message").classList.add("error");
+                    updateAIStatus('error', 'Gemini AI is overloaded');
+                } else {
+                    textElement.innerHTML = error.message;
+                    textElement.parentElement.closest(".message").classList.add("error");
+                    
+                    if (error.message.includes('API key') && switchToFreeAI('invalid API key')) {
+                        updateAIStatus('warning', `Using ${FREE_AI_SERVICES[currentAI].name} (invalid Gemini key)`);
+                        // Retry with free AI
+                        isResponseGenerating = true;
+                        setTimeout(() => generateAPIResponse(incomingMessageDiv, 0), 500);
+                        return;
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'API Error',
+                            text: error.message,
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+            } finally {
+                if (error && error.message !== 'server_overload') {
+                    incomingMessageDiv.classList.remove("loading");
+                }
+            }
+        }
+        
+        // Retry the last message
+        function retryLastMessage() {
+            if (messages.length === 0) return;
+            
+            const lastUserMessage = messages.filter(msg => msg.role === 'user').pop();
+            if (!lastUserMessage) return;
+            
+            userMessage = lastUserMessage.content;
+            isResponseGenerating = true;
+            
+            const errorMessage = chatContainer.querySelector('.message.error');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+            
+            setTimeout(showLoadingAnimation, 500);
         }
         
         // Show a loading animation while waiting for the API response
         const showLoadingAnimation = () => {
+            const aiName = currentAI === 'gemini' ? 'Gemini' : FREE_AI_SERVICES[currentAI].name;
             const html = `<div class="message-content">
-                            <img class="avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Google-gemini-icon.svg/2048px-Google-gemini-icon.svg.png" alt="Gemini avatar">
+                            <img class="avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Google-gemini-icon.svg/2048px-Google-gemini-icon.svg.png" alt="${aiName} avatar">
                             <p class="text"></p>
                             <div class="loading-indicator">
                                 <div class="loading-bar"></div>
@@ -1317,7 +1712,9 @@
                                 <div class="loading-bar"></div>
                             </div>
                         </div>
-                        <span class="icon material-symbols-rounded hide">content_copy</span>`;
+                        <div class="actions">
+                            <span class="icon material-symbols-rounded hide">content_copy</span>
+                        </div>`;
             const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
             chatContainer.appendChild(incomingMessageDiv);
             chatContainer.scrollTo(0, chatContainer.scrollHeight);
@@ -1326,7 +1723,7 @@
         
         // Copy message text to the clipboard
         const copyMessage = (copyButton) => {
-            const messageText = copyButton.parentElement.querySelector(".text").innerText;
+            const messageText = copyButton.parentElement.parentElement.querySelector(".text").innerText;
             navigator.clipboard.writeText(messageText);
             const originalIcon = copyButton.innerText;
             copyButton.innerText = "done";
@@ -1345,12 +1742,10 @@
             isResponseGenerating = true;
             messages.push({ role: 'user', content: userMessage });
             
-            // Remove empty state if it exists
             if (chatContainer.querySelector('.empty-state')) {
                 chatContainer.innerHTML = '';
             }
             
-            // Hide header when first message is sent
             if (messages.length === 1) {
                 header.classList.add('hidden');
             }
@@ -1359,7 +1754,9 @@
                             <img class="avatar" src="https://i.postimg.cc/L8hd043C/images.png" alt="User avatar">
                             <p class="text">${userMessage.replace(/\n/g, '<br>')}</p>
                         </div>
-                        <span onClick="copyMessage(this)" class="icon material-symbols-rounded" title="Copy message">content_copy</span>`;
+                        <div class="actions">
+                            <span onClick="copyMessage(this)" class="icon material-symbols-rounded" title="Copy message">content_copy</span>
+                        </div>`;
             const outgoingMessageDiv = createMessageElement(html, "outgoing");
             chatContainer.appendChild(outgoingMessageDiv);
             
@@ -1376,41 +1773,6 @@
             localStorage.setItem("themeColor", isLightMode ? "light_mode" : "dark_mode");
             toggleThemeButton.innerText = isLightMode ? "dark_mode" : "light_mode";
             toggleThemeButton.setAttribute('title', isLightMode ? 'Switch to dark mode' : 'Switch to light mode');
-        });
-        
-        // Delete all chats from local storage when button is clicked
-        deleteChatButton.addEventListener("click", () => {
-            if (Object.keys(chatSessions).length === 0) {
-                Swal.fire('No chats!', 'There are no chats to delete.', 'info');
-                return;
-            }
-            
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This will delete all your chat history!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete everything!',
-                confirmButtonColor: '#d33',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    chatSessions = {};
-                    currentChatId = null;
-                    saveChatSessions();
-                    createNewChat();
-                    renderChatHistory();
-                    Swal.fire('Deleted!', 'All chats have been cleared.', 'success');
-                }
-            });
-        });
-        
-        // Set userMessage and handle outgoing chat when a suggestion is clicked
-        suggestions.forEach(suggestion => {
-            suggestion.addEventListener("click", () => {
-                userMessage = suggestion.querySelector(".text").innerText;
-                handleOutgoingChat();
-            });
         });
         
         // Prevent default form submission and handle outgoing chat
@@ -1441,6 +1803,12 @@
             userInput.disabled = false;
             sendButton.disabled = false;
             userInput.focus();
+            
+            // Reset to Gemini AI when a new key is set
+            currentAI = 'gemini';
+            geminiFailedAttempts = 0;
+            updateAIStatus('connected', 'Connected to Gemini AI');
+            
             Swal.fire('Success!', 'Ready to chat with Gemini!', 'success');
         }
         
@@ -1458,6 +1826,9 @@
             toggleSidebarBtn.textContent = sidebar.classList.contains('collapsed') 
                 ? 'chevron_right' 
                 : 'chevron_left';
+            toggleSidebarBtn.setAttribute('title', sidebar.classList.contains('collapsed') 
+                ? 'Expand sidebar' 
+                : 'Collapse sidebar');
         });
         
         // Create new chat when new chat button is clicked
@@ -1466,16 +1837,13 @@
         // Toggle mobile sidebar
         mobileMenuBtn.addEventListener('click', () => {
             sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
         });
         
         // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && 
-                !sidebar.contains(e.target) && 
-                !mobileMenuBtn.contains(e.target) && 
-                sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-            }
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
         });
         
         // On Load
