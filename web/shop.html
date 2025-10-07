@@ -251,6 +251,7 @@
             object-fit: cover;
             width: 100%;
             transition: var(--transition);
+            cursor: pointer;
         }
         
         .product-card:hover .product-image {
@@ -319,6 +320,11 @@
             font-weight: 700;
             margin-bottom: 10px;
             color: var(--dark-color);
+            cursor: pointer;
+        }
+        
+        .product-title:hover {
+            color: var(--primary-color);
         }
         
         .product-description {
@@ -468,6 +474,74 @@
             transform: translateY(-2px);
         }
         
+        /* Checkout Section */
+        .checkout-section {
+            padding: 80px 0;
+            background: var(--light-bg);
+            min-height: 100vh;
+        }
+        
+        .checkout-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .checkout-summary {
+            background: var(--light-bg);
+            padding: 30px;
+            height: 100%;
+        }
+        
+        .checkout-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .checkout-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        
+        .checkout-form .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .checkout-form .form-control {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .checkout-form .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(244, 51, 151, 0.25);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
         /* Cart Sidebar */
         .cart-sidebar {
             position: fixed;
@@ -607,6 +681,19 @@
         .section.active {
             display: block;
         }
+        
+        .back-button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .back-button:hover {
+            color: var(--secondary-color);
+        }
     </style>
 </head>
 <body>
@@ -692,6 +779,9 @@
         <div class="container py-5">
             <div class="row">
                 <div class="col-12">
+                    <button class="back-button" onclick="showSection('home')">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Home
+                    </button>
                     <h2 class="section-title">All Products</h2>
                 </div>
             </div>
@@ -704,8 +794,132 @@
     <!-- Product View Section -->
     <section id="product-view-section" class="section">
         <div class="container py-5">
+            <button class="back-button" onclick="goBack()">
+                <i class="fas fa-arrow-left me-2"></i>Back to Products
+            </button>
             <div class="row" id="product-view-container">
                 <!-- Single product view will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Section -->
+    <section id="checkout-section" class="section">
+        <div class="checkout-section">
+            <div class="container">
+                <button class="back-button" onclick="showSection('home')">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                </button>
+                <h2 class="section-title">Checkout</h2>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="checkout-container">
+                            <div class="p-4">
+                                <h4 class="mb-4">Shipping Information</h4>
+                                <form id="checkoutForm" class="checkout-form">
+                                    <div class="form-section">
+                                        <h5 class="form-section-title">Personal Details</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="customerName" class="form-label">Full Name *</label>
+                                                <input type="text" class="form-control" id="customerName" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="customerPhone" class="form-label">Phone Number *</label>
+                                                <input type="tel" class="form-control" id="customerPhone" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label for="customerEmail" class="form-label">Email Address *</label>
+                                                <input type="email" class="form-control" id="customerEmail" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-section">
+                                        <h5 class="form-section-title">Shipping Address</h5>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label for="customerAddress" class="form-label">Full Address *</label>
+                                                <textarea class="form-control" id="customerAddress" rows="3" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="customerPincode" class="form-label">PIN Code *</label>
+                                                <input type="text" class="form-control" id="customerPincode" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="customerCity" class="form-label">City *</label>
+                                                <input type="text" class="form-control" id="customerCity" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label for="customerState" class="form-label">State *</label>
+                                                <input type="text" class="form-control" id="customerState" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-section">
+                                        <h5 class="form-section-title">Payment Method</h5>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="cod" checked>
+                                            <label class="form-check-label" for="cod">
+                                                Cash on Delivery
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="card" value="card">
+                                            <label class="form-check-label" for="card">
+                                                Credit/Debit Card
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="upi" value="upi">
+                                            <label class="form-check-label" for="upi">
+                                                UPI Payment
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-shopping-bag me-2"></i>Place Order
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="checkout-summary">
+                            <h4 class="mb-4">Order Summary</h4>
+                            <div id="checkout-items">
+                                <!-- Checkout items will be loaded here -->
+                            </div>
+                            <div class="mt-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span id="subtotal">₹0</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Shipping:</span>
+                                    <span>₹50</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Tax:</span>
+                                    <span id="tax">₹0</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between fw-bold fs-5">
+                                    <span>Total:</span>
+                                    <span id="checkout-total">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -724,8 +938,8 @@
                 <span>Total:</span>
                 <span id="cartTotal">₹0</span>
             </div>
-            <button class="btn btn-primary w-100" onclick="checkout()">
-                <i class="fas fa-shopping-bag me-2"></i>Checkout
+            <button class="btn btn-primary w-100" onclick="proceedToCheckout()">
+                <i class="fas fa-shopping-bag me-2"></i>Proceed to Checkout
             </button>
         </div>
     </div>
@@ -758,6 +972,7 @@
         let allProducts = [];
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let currentView = 'home';
+        let previousSection = 'home';
 
         // DOM Elements
         const cartToggle = document.getElementById('cartToggle');
@@ -767,6 +982,7 @@
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
         const cartBadge = document.querySelector('.cart-badge');
+        const checkoutForm = document.getElementById('checkoutForm');
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
@@ -778,6 +994,9 @@
             cartToggle.addEventListener('click', toggleCart);
             closeCart.addEventListener('click', toggleCart);
             overlay.addEventListener('click', toggleCart);
+            
+            // Checkout form submission
+            checkoutForm.addEventListener('submit', handleCheckout);
         });
 
         // Handle URL Parameters
@@ -786,23 +1005,35 @@
             const section = urlParams.get('section');
             const productId = urlParams.get('product');
             
-            if (section === 'home') {
+            console.log('URL Params:', { section, productId }); // Debug log
+            
+            if (section === 'home' || !section) {
                 showSection('home');
             } else if (section === 'products') {
                 showSection('products');
-            } else if (productId) {
-                showProductView(productId);
-            } else {
-                showSection('home');
+            } else if (section === 'checkout') {
+                showSection('checkout');
+            }
+            
+            if (productId) {
+                // Small delay to ensure products are loaded
+                setTimeout(() => {
+                    showProductView(productId);
+                }, 500);
             }
         }
 
         // Update URL without reloading
         function updateURL(section = null, productId = null) {
             const url = new URL(window.location);
+            
             if (section) {
                 url.searchParams.set('section', section);
-                url.searchParams.delete('product');
+                if (productId) {
+                    url.searchParams.set('product', productId);
+                } else {
+                    url.searchParams.delete('product');
+                }
             } else if (productId) {
                 url.searchParams.set('product', productId);
                 url.searchParams.delete('section');
@@ -810,36 +1041,67 @@
                 url.searchParams.delete('section');
                 url.searchParams.delete('product');
             }
+            
             window.history.pushState({}, '', url);
+            console.log('Updated URL:', url.toString()); // Debug log
         }
 
         // Show/Hide Sections
         function showSection(sectionName) {
+            console.log('Showing section:', sectionName); // Debug log
+            
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
             
             // Show target section
-            document.getElementById(`${sectionName}-section`).classList.add('active');
-            
-            // Update navigation
+            const targetSection = document.getElementById(`${sectionName}-section`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                currentView = sectionName;
+                
+                // Update URL
+                updateURL(sectionName);
+                
+                // Update navigation
+                updateNavigation(sectionName);
+            }
+        }
+
+        // Update Navigation
+        function updateNavigation(sectionName) {
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
-            document.querySelector(`[onclick="showSection('${sectionName}')"]`).classList.add('active');
             
-            // Update URL
-            updateURL(sectionName);
-            
-            currentView = sectionName;
+            const navLink = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
+            if (navLink) {
+                navLink.classList.add('active');
+            }
         }
 
         // Show Product View
         function showProductView(productId) {
+            console.log('Showing product view for:', productId); // Debug log
+            
+            previousSection = currentView;
             showSection('product-view');
             updateURL(null, productId);
-            displayProductView(productId);
+            
+            // Small delay to ensure section is visible
+            setTimeout(() => {
+                displayProductView(productId);
+            }, 100);
+        }
+
+        // Go Back
+        function goBack() {
+            if (previousSection === 'products' || previousSection === 'home') {
+                showSection(previousSection);
+            } else {
+                showSection('home');
+            }
         }
 
         // Toggle Cart Sidebar
@@ -930,17 +1192,17 @@
                                  onclick="showProductView('${product.id}')">
                             <div class="product-badge">Hot</div>
                             <div class="product-actions">
-                                <button class="action-btn" onclick="addToCart('${product.id}')">
+                                <button class="action-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
                                     <i class="fas fa-cart-plus"></i>
                                 </button>
-                                <button class="action-btn" onclick="shareProduct('${product.id}', '${product.name}')">
+                                <button class="action-btn" onclick="event.stopPropagation(); shareProduct('${product.id}', '${product.name}')">
                                     <i class="fas fa-share-alt"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="product-info">
                             <div class="product-category">${product.category || 'General'}</div>
-                            <h3 class="product-title">${product.name}</h3>
+                            <h3 class="product-title" onclick="showProductView('${product.id}')">${product.name}</h3>
                             <p class="product-description">${product.description || 'No description available.'}</p>
                             <div class="product-price">
                                 <div>
@@ -952,7 +1214,7 @@
                                     <span>${product.rating || '4.0'}</span>
                                 </div>
                             </div>
-                            <button class="btn btn-add-to-cart" onclick="addToCart('${product.id}')">
+                            <button class="btn btn-add-to-cart" onclick="event.stopPropagation(); addToCart('${product.id}')">
                                 <i class="fas fa-cart-plus me-2"></i>Add to Cart
                             </button>
                         </div>
@@ -967,7 +1229,13 @@
             const container = document.getElementById('product-view-container');
             
             if (!product) {
-                container.innerHTML = '<div class="col-12 text-center"><h3>Product not found</h3></div>';
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <h3>Product not found</h3>
+                        <p>The product you're looking for doesn't exist.</p>
+                        <button class="btn btn-primary" onclick="showSection('products')">Browse Products</button>
+                    </div>
+                `;
                 return;
             }
             
@@ -1074,6 +1342,9 @@
             // Update badge
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartBadge.textContent = totalItems;
+            
+            // Update checkout summary
+            updateCheckoutSummary();
         }
 
         // Update Cart Item Quantity
@@ -1098,10 +1369,12 @@
         // Update Quantity in Product View
         function updateQuantity(change) {
             const input = document.getElementById('productQuantity');
-            let quantity = parseInt(input.value) + change;
-            if (quantity < 1) quantity = 1;
-            if (quantity > 10) quantity = 10;
-            input.value = quantity;
+            if (input) {
+                let quantity = parseInt(input.value) + change;
+                if (quantity < 1) quantity = 1;
+                if (quantity > 10) quantity = 10;
+                input.value = quantity;
+            }
         }
 
         // Buy Now
@@ -1111,36 +1384,124 @@
                            parseInt(document.getElementById('productQuantity').value) : 1;
             
             if (product) {
-                // Add to cart first
-                addToCart(productId);
-                // Then proceed to checkout
-                checkout();
+                // Clear cart and add only this product
+                cart = [{
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.images?.[0],
+                    quantity: quantity
+                }];
+                updateCart();
+                proceedToCheckout();
             }
         }
 
-        // Checkout
-        function checkout() {
+        // Proceed to Checkout
+        function proceedToCheckout() {
             if (cart.length === 0) {
                 Swal.fire('Your cart is empty!', 'Add some products to proceed.', 'warning');
                 return;
             }
             
             toggleCart(); // Close cart sidebar
+            showSection('checkout');
+        }
+
+        // Update Checkout Summary
+        function updateCheckoutSummary() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.18; // 18% tax
+            const total = subtotal + tax + 50; // +50 shipping
             
-            // Show order form (you can implement your existing order form here)
-            Swal.fire({
-                title: 'Proceed to Checkout',
-                text: `Total: ${cartTotal.textContent}`,
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Continue',
-                cancelButtonText: 'Continue Shopping'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Implement your order form logic here
-                    alert('Redirecting to checkout...');
-                }
-            });
+            document.getElementById('subtotal').textContent = `₹${subtotal}`;
+            document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('checkout-total').textContent = `₹${total.toFixed(2)}`;
+            
+            // Update checkout items
+            const checkoutItems = document.getElementById('checkout-items');
+            checkoutItems.innerHTML = cart.map(item => `
+                <div class="checkout-item">
+                    <img src="${item.image}" class="checkout-item-image" alt="${item.name}">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">${item.name}</h6>
+                        <p class="mb-0 text-muted">Quantity: ${item.quantity}</p>
+                        <p class="mb-0 fw-bold">₹${item.price * item.quantity}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Handle Checkout
+        function handleCheckout(event) {
+            event.preventDefault();
+            
+            if (cart.length === 0) {
+                Swal.fire('Error!', 'Your cart is empty.', 'error');
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                email: document.getElementById('customerEmail').value,
+                address: document.getElementById('customerAddress').value,
+                pincode: document.getElementById('customerPincode').value,
+                city: document.getElementById('customerCity').value,
+                state: document.getElementById('customerState').value,
+                paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
+            };
+            
+            // Validate form
+            if (!formData.name || !formData.phone || !formData.email || !formData.address || 
+                !formData.pincode || !formData.city || !formData.state) {
+                Swal.fire('Error!', 'Please fill all required fields.', 'error');
+                return;
+            }
+            
+            // Process order
+            processOrder(formData);
+        }
+
+        // Process Order
+        function processOrder(formData) {
+            const orderId = 'ORD' + Date.now();
+            const orderData = {
+                ...formData,
+                orderId: orderId,
+                items: cart,
+                total: document.getElementById('checkout-total').textContent,
+                orderDate: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            // Save to Firebase
+            database.ref('orders/' + orderId).set(orderData)
+                .then(() => {
+                    // Clear cart
+                    cart = [];
+                    updateCart();
+                    
+                    Swal.fire({
+                        title: 'Order Placed Successfully!',
+                        html: `
+                            <div class="text-center">
+                                <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem;"></i>
+                                <p>Thank you for your order, <strong>${formData.name}</strong>!</p>
+                                <p>Your order ID is: <strong>${orderId}</strong></p>
+                                <p>We will contact you at <strong>${formData.phone}</strong> for confirmation.</p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonText: 'Continue Shopping'
+                    }).then(() => {
+                        showSection('home');
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error saving order:', error);
+                    Swal.fire('Error!', 'There was a problem placing your order. Please try again.', 'error');
+                });
         }
 
         // Filter by Category
@@ -1172,7 +1533,7 @@
         function loadSampleProducts() {
             allProducts = [
                 {
-                    id: '1',
+                    id: 'sample-1',
                     name: "Wireless Bluetooth Headphones",
                     description: "High-quality sound with noise cancellation feature. Perfect for music lovers.",
                     price: 1999,
@@ -1182,7 +1543,7 @@
                     images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"]
                 },
                 {
-                    id: '2',
+                    id: 'sample-2',
                     name: "Women's Floral Dress",
                     description: "Beautiful floral print dress for summer occasions. Made with high-quality fabric.",
                     price: 899,
@@ -1190,6 +1551,26 @@
                     category: "Fashion",
                     rating: 4.2,
                     images: ["https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"]
+                },
+                {
+                    id: 'sample-3',
+                    name: "Smart Watch",
+                    description: "Track your fitness and stay connected with this feature-packed smartwatch.",
+                    price: 2499,
+                    originalPrice: 3499,
+                    category: "Electronics",
+                    rating: 4.3,
+                    images: ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"]
+                },
+                {
+                    id: 'sample-4',
+                    name: "Running Shoes",
+                    description: "Comfortable and durable running shoes for your active lifestyle.",
+                    price: 1299,
+                    originalPrice: 1799,
+                    category: "Sports",
+                    rating: 4.4,
+                    images: ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"]
                 }
             ];
             
