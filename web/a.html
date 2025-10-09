@@ -50,6 +50,7 @@
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, rgba(244, 51, 151, 0.9), rgba(255, 107, 107, 0.8));
+            padding: 20px;
         }
         
         .login-card {
@@ -91,18 +92,30 @@
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            z-index: 100;
+            z-index: 1000;
         }
         
         .sidebar-header {
             padding: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .sidebar-header h3 {
             color: white;
             font-weight: 700;
             margin-bottom: 0;
+        }
+        
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
         }
         
         .sidebar-menu {
@@ -262,6 +275,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .add-product-btn {
@@ -482,8 +497,8 @@
             margin-right: 15px;
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
             .sidebar {
                 width: 70px;
                 overflow: visible;
@@ -506,9 +521,102 @@
             .main-content {
                 margin-left: 70px;
             }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            .sidebar.open {
+                max-height: 500px;
+            }
+            
+            .sidebar-toggle {
+                display: block;
+            }
+            
+            .sidebar-header h3 {
+                display: block;
+            }
+            
+            .menu-item {
+                justify-content: flex-start;
+                padding: 12px 20px;
+            }
+            
+            .menu-item span {
+                display: block;
+            }
+            
+            .menu-item i {
+                margin-right: 10px;
+                font-size: 1rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
             
             .stats-cards {
                 grid-template-columns: 1fr;
+            }
+            
+            .products-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .add-product-btn {
+                width: 100%;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .logout-btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 25px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .chart-container, .recent-orders {
+                padding: 15px;
+            }
+            
+            .table-responsive {
+                font-size: 0.85rem;
+            }
+            
+            .action-btns {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
             }
         }
         
@@ -542,6 +650,12 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* Focus fix for tag inputs */
+        .tag-input:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(244, 51, 151, 0.25);
+        }
     </style>
 </head>
 <body>
@@ -566,9 +680,12 @@
     <!-- Admin Panel -->
     <div id="admin-panel" class="admin-container" style="display: none;">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>XYZVERSE Admin</h3>
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
             <div class="sidebar-menu">
                 <a href="#" class="menu-item active" data-section="dashboard">
@@ -708,6 +825,7 @@
                                         <option value="Beauty">Beauty</option>
                                         <option value="Sports">Sports</option>
                                         <option value="Books">Books</option>
+                                        <option value="Food & Grocery">Food & Grocery</option>
                                     </select>
                                 </div>
                             </div>
@@ -770,7 +888,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <button type="submit" class="btn btn-primary" id="save-product-btn">Save Product</button>
                             <button type="button" class="btn btn-secondary" id="cancel-product-btn">Cancel</button>
                         </div>
@@ -856,15 +974,15 @@
     <script>
         // Firebase Configuration
         const firebaseConfig = {
-apiKey: "AIzaSyC3i-_KOmxZMHws-0kSV75MilJ2Jcw4jvc",
-authDomain: "shubh-laabh-1428.firebaseapp.com",
-databaseURL: "https://shubh-laabh-1428-default-rtdb.firebaseio.com",
-projectId: "shubh-laabh-1428",
-storageBucket: "shubh-laabh-1428.firebasestorage.app",
-messagingSenderId: "847726971029",
-appId: "1:847726971029:web:466aa341492b3e6a56739c",
-measurementId: "G-XBM845C616"
-};
+            apiKey: "AIzaSyC3i-_KOmxZMHws-0kSV75MilJ2Jcw4jvc",
+            authDomain: "shubh-laabh-1428.firebaseapp.com",
+            databaseURL: "https://shubh-laabh-1428-default-rtdb.firebaseio.com",
+            projectId: "shubh-laabh-1428",
+            storageBucket: "shubh-laabh-1428.firebasestorage.app",
+            messagingSenderId: "847726971029",
+            appId: "1:847726971029:web:466aa341492b3e6a56739c",
+            measurementId: "G-XBM845C616"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -901,6 +1019,8 @@ measurementId: "G-XBM845C616"
         const ordersTable = document.getElementById('orders-table');
         const recentOrdersTable = document.getElementById('recent-orders-table');
         const orderDetailsModal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
@@ -934,6 +1054,11 @@ measurementId: "G-XBM845C616"
                     e.preventDefault();
                     const section = this.getAttribute('data-section');
                     showSection(section);
+                    
+                    // Close sidebar on mobile after selection
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('open');
+                    }
                 });
             });
             
@@ -969,6 +1094,21 @@ measurementId: "G-XBM845C616"
                     e.preventDefault();
                     addImage(this.value.trim());
                     this.value = '';
+                }
+            });
+            
+            // Sidebar toggle for mobile
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && 
+                    !sidebar.contains(e.target) && 
+                    !sidebarToggle.contains(e.target) &&
+                    sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
                 }
             });
         }
@@ -1302,6 +1442,14 @@ measurementId: "G-XBM845C616"
             if (size && !sizes.includes(size)) {
                 sizes.push(size);
                 updateSizesDisplay();
+                
+                // Focus back on size input after adding
+                setTimeout(() => {
+                    const newSizeInput = document.getElementById('size-input');
+                    if (newSizeInput) {
+                        newSizeInput.focus();
+                    }
+                }, 10);
             }
         }
 
@@ -1347,6 +1495,14 @@ measurementId: "G-XBM845C616"
             if (color && !colors.includes(color)) {
                 colors.push(color);
                 updateColorsDisplay();
+                
+                // Focus back on color input after adding
+                setTimeout(() => {
+                    const newColorInput = document.getElementById('color-input');
+                    if (newColorInput) {
+                        newColorInput.focus();
+                    }
+                }, 10);
             }
         }
 
