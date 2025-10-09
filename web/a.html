@@ -497,48 +497,25 @@
             margin-right: 15px;
         }
         
-        /* Mobile Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-                overflow: visible;
-            }
-            
-            .sidebar-header h3, .menu-item span {
-                display: none;
-            }
-            
-            .menu-item {
-                justify-content: center;
-                padding: 15px;
-            }
-            
-            .menu-item i {
-                margin-right: 0;
-                font-size: 1.2rem;
-            }
-            
-            .main-content {
-                margin-left: 70px;
-            }
-        }
-        
+        /* Mobile Responsive - FIXED */
         @media (max-width: 768px) {
             .admin-container {
                 flex-direction: column;
             }
             
             .sidebar {
-                position: relative;
+                position: fixed;
                 width: 100%;
                 height: auto;
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease;
+                z-index: 1000;
             }
             
             .sidebar.open {
                 max-height: 500px;
+                overflow-y: auto;
             }
             
             .sidebar-toggle {
@@ -656,6 +633,28 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.2rem rgba(244, 51, 151, 0.25);
         }
+        
+        /* Mobile header with menu button */
+        .mobile-header {
+            display: none;
+            background: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-header {
+                display: flex;
+            }
+            
+            .header {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -684,7 +683,7 @@
             <div class="sidebar-header">
                 <h3>XYZVERSE Admin</h3>
                 <button class="sidebar-toggle" id="sidebar-toggle">
-                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="sidebar-menu">
@@ -705,6 +704,18 @@
 
         <!-- Main Content -->
         <div class="main-content">
+            <!-- Mobile Header -->
+            <div class="mobile-header">
+                <button class="btn btn-primary" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i> Menu
+                </button>
+                <h1 id="mobile-page-title">Dashboard</h1>
+                <button class="logout-btn" id="mobile-logout-btn">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+            </div>
+
+            <!-- Regular Header -->
             <div class="header">
                 <h1 id="page-title">Dashboard</h1>
                 <button class="logout-btn" id="logout-btn">
@@ -1001,7 +1012,9 @@
         const adminPanel = document.getElementById('admin-panel');
         const loginForm = document.getElementById('login-form');
         const logoutBtn = document.getElementById('logout-btn');
+        const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
         const pageTitle = document.getElementById('page-title');
+        const mobilePageTitle = document.getElementById('mobile-page-title');
         const adminSections = document.querySelectorAll('.admin-section');
         const menuItems = document.querySelectorAll('.menu-item');
         const productFormContainer = document.getElementById('product-form-container');
@@ -1021,6 +1034,7 @@
         const orderDetailsModal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
@@ -1045,8 +1059,9 @@
             // Login form
             loginForm.addEventListener('submit', handleLogin);
             
-            // Logout button
+            // Logout buttons
             logoutBtn.addEventListener('click', handleLogout);
+            mobileLogoutBtn.addEventListener('click', handleLogout);
             
             // Menu items
             menuItems.forEach(item => {
@@ -1097,16 +1112,21 @@
                 }
             });
             
-            // Sidebar toggle for mobile
+            // Mobile menu toggle
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.add('open');
+            });
+            
+            // Sidebar close button
             sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('open');
+                sidebar.classList.remove('open');
             });
             
             // Close sidebar when clicking outside on mobile
             document.addEventListener('click', function(e) {
                 if (window.innerWidth <= 768 && 
                     !sidebar.contains(e.target) && 
-                    !sidebarToggle.contains(e.target) &&
+                    !mobileMenuToggle.contains(e.target) &&
                     sidebar.classList.contains('open')) {
                     sidebar.classList.remove('open');
                 }
@@ -1165,8 +1185,10 @@
                 }
             });
             
-            // Update page title
-            pageTitle.textContent = getSectionTitle(sectionName);
+            // Update page titles
+            const sectionTitle = getSectionTitle(sectionName);
+            pageTitle.textContent = sectionTitle;
+            mobilePageTitle.textContent = sectionTitle;
             
             currentSection = sectionName;
             
