@@ -29,10 +29,10 @@
     
     <style>
         :root {
-            --primary-color: #f43397;
-            --secondary-color: #ff6b6b;
-            --accent-color: #4ecdc4;
-            --dark-color: #2c3e50;
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #00d2ff;
+            --dark-color: #1e1e2d;
             --light-bg: #f8f9fa;
             --dark-text: #333;
             --light-text: #6c757d;
@@ -130,7 +130,7 @@
         
         .search-input:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(244, 51, 151, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
         }
         
         .search-btn {
@@ -155,7 +155,7 @@
         
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, rgba(244, 51, 151, 0.9), rgba(255, 107, 107, 0.8)),
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.8)),
                         url('https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
@@ -294,12 +294,11 @@
         }
         
         .product-image {
-            height: 250px;
-            object-fit: cover;
             width: 100%;
+            height: 100%;
+            object-fit: cover;
             transition: var(--transition);
             cursor: pointer;
-            pointer-events: none; /* Fix: Prevent image from blocking carousel controls */
         }
         
         .product-card:hover .product-image {
@@ -453,8 +452,9 @@
         
         .product-view-image img {
             width: 100%;
-            height: 500px;
+            height: 100%;
             object-fit: cover;
+            cursor: pointer;
         }
         
         .product-details {
@@ -587,7 +587,7 @@
         
         .checkout-form .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(244, 51, 151, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
         }
         
         .form-section {
@@ -853,16 +853,18 @@
             position: relative;
             overflow: hidden;
             border-radius: var(--border-radius);
+            height: 100%;
         }
         
         .carousel-slides {
             display: flex;
             transition: transform 0.5s ease;
+            height: 100%;
         }
         
         .carousel-slide {
             min-width: 100%;
-            height: 250px;
+            height: 100%;
         }
         
         .carousel-slide img {
@@ -886,7 +888,7 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            z-index: 10; /* Increased z-index to ensure buttons are above image */
+            z-index: 10;
         }
         
         .carousel-btn:hover {
@@ -908,7 +910,7 @@
             transform: translateX(-50%);
             display: flex;
             gap: 8px;
-            z-index: 10; /* Increased z-index */
+            z-index: 10;
         }
         
         .carousel-indicator {
@@ -924,7 +926,7 @@
             background: white;
         }
         
-        /* Fullscreen Image Viewer - Fixed */
+        /* Fullscreen Image Viewer - Enhanced */
         .fullscreen-image-viewer {
             position: fixed;
             top: 0;
@@ -953,6 +955,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
         
         .fullscreen-image {
@@ -960,25 +963,45 @@
             max-height: 100%;
             object-fit: contain;
             border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .fullscreen-image.zoomed {
+            cursor: grab;
+        }
+        
+        .fullscreen-image.zoomed:active {
+            cursor: grabbing;
         }
         
         .close-fullscreen {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: none;
+            background: rgba(0, 0, 0, 0.5);
             border: none;
             color: white;
             font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             z-index: 2;
+            transition: var(--transition);
+        }
+        
+        .close-fullscreen:hover {
+            background: rgba(0, 0, 0, 0.7);
         }
         
         .fullscreen-carousel-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
             border: none;
             color: white;
             width: 50px;
@@ -993,7 +1016,7 @@
         }
         
         .fullscreen-carousel-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.7);
         }
         
         .fullscreen-prev {
@@ -1002,6 +1025,35 @@
         
         .fullscreen-next {
             right: 20px;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+        
+        .zoom-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        
+        .zoom-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
         }
         
         /* Shimmer Effect */
@@ -1153,9 +1205,38 @@
         }
         
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
             .hero-title {
                 font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .product-view-image, 
+            .product-view-image img {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
             }
             
             .cart-sidebar {
@@ -1165,6 +1246,10 @@
             
             .product-view-title {
                 font-size: 2rem;
+            }
+            
+            .product-view-price {
+                font-size: 1.7rem;
             }
             
             .fixed-cart-btn {
@@ -1177,6 +1262,49 @@
             .product-view-image, 
             .product-view-image img {
                 height: 350px;
+            }
+            
+            .fullscreen-carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .close-fullscreen {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section {
+                padding: 80px 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .product-view-title {
+                font-size: 1.7rem;
+            }
+            
+            .product-view-price {
+                font-size: 1.5rem;
+            }
+            
+            .product-view-image, 
+            .product-view-image img {
+                height: 300px;
+            }
+            
+            .search-container {
+                max-width: 100%;
             }
         }
         
@@ -1191,7 +1319,7 @@
         .spinner {
             width: 50px;
             height: 50px;
-            border: 5px solid rgba(244, 51, 151, 0.2);
+            border: 5px solid rgba(106, 17, 203, 0.2);
             border-radius: 50%;
             border-top-color: var(--primary-color);
             animation: spin 1s linear infinite;
@@ -1579,6 +1707,17 @@
         <button class="fullscreen-carousel-btn fullscreen-next" id="fullscreenNext">
             <i class="fas fa-chevron-right"></i>
         </button>
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomIn">
+                <i class="fas fa-search-plus"></i>
+            </button>
+            <button class="zoom-btn" id="zoomOut">
+                <i class="fas fa-search-minus"></i>
+            </button>
+            <button class="zoom-btn" id="resetZoom">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
         <div class="fullscreen-image-container">
             <img src="" alt="" class="fullscreen-image" id="fullscreenImage">
         </div>
@@ -1618,6 +1757,10 @@
         let currentFullscreenImageIndex = 0;
         let isBuyNowFlow = false;
         let tempOrder = null;
+        let isZoomed = false;
+        let zoomLevel = 1;
+        let isDragging = false;
+        let startX, startY, scrollLeft, scrollTop;
 
         // DOM Elements
         const cartToggle = document.getElementById('cartToggle');
@@ -1639,6 +1782,9 @@
         const closeFullscreen = document.getElementById('closeFullscreen');
         const fullscreenPrev = document.getElementById('fullscreenPrev');
         const fullscreenNext = document.getElementById('fullscreenNext');
+        const zoomIn = document.getElementById('zoomIn');
+        const zoomOut = document.getElementById('zoomOut');
+        const resetZoom = document.getElementById('resetZoom');
         const trackOrderInput = document.getElementById('trackOrderInput');
         const trackOrderBtn = document.getElementById('trackOrderBtn');
 
@@ -1693,6 +1839,11 @@
             fullscreenPrev.addEventListener('click', showPrevFullscreenImage);
             fullscreenNext.addEventListener('click', showNextFullscreenImage);
             
+            // Zoom controls
+            zoomIn.addEventListener('click', zoomInImage);
+            zoomOut.addEventListener('click', zoomOutImage);
+            resetZoom.addEventListener('click', resetZoomImage);
+            
             // Close fullscreen on overlay click
             fullscreenImageViewer.addEventListener('click', function(e) {
                 if (e.target === fullscreenImageViewer) {
@@ -1707,6 +1858,9 @@
                     trackOrderById();
                 }
             });
+            
+            // Initialize carousels
+            initializeCarousels();
         });
 
         // Handle URL Parameters
@@ -2011,8 +2165,6 @@
                 `;
             } else {
                 featuredContainer.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
-                // Initialize carousels after rendering
-                setTimeout(initializeCarousels, 100);
             }
         }
 
@@ -2030,8 +2182,6 @@
                 `;
             } else {
                 productsContainer.innerHTML = allProducts.map(product => createProductCard(product)).join('');
-                // Initialize carousels after rendering
-                setTimeout(initializeCarousels, 100);
             }
         }
 
@@ -2089,18 +2239,16 @@
         // Create Image Carousel - Fixed
         function createImageCarousel(images, productId, productName) {
             const carouselId = `carousel-${productId}`;
-            const isProductView = productId.startsWith('view-');
             
             return `
                 <div class="carousel-container" id="${carouselId}">
                     <div class="carousel-slides">
                         ${images.map((image, index) => `
-                            <div class="carousel-slide" style="height: 250px">
+                            <div class="carousel-slide">
                                 <img src="${image}" 
                                      class="product-image" 
                                      alt="${productName}"
-                                     style="height: 250px"
-                                     onclick="${isProductView ? `openFullscreenImageViewer('${productId.replace('view-', '')}', ${index})` : 'showProductView(\'' + productId + '\')'}">
+                                     onclick="showProductView('${productId}')">
                             </div>
                         `).join('')}
                     </div>
@@ -2195,11 +2343,6 @@
 
         // Fullscreen Image Viewer
         function openFullscreenImageViewer(productId, imageIndex) {
-            // Only allow in product view section
-            if (currentView !== 'product-view') {
-                return;
-            }
-            
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
             
@@ -2214,21 +2357,146 @@
             fullscreenImage.src = currentProductImages[imageIndex];
             fullscreenImageViewer.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Reset zoom when opening
+            resetZoomImage();
+            
+            // Add event listeners for zoom and drag
+            setupImageZoomAndDrag();
         }
 
         function closeFullscreenViewer() {
             fullscreenImageViewer.classList.remove('active');
             document.body.style.overflow = 'auto';
+            
+            // Remove event listeners
+            removeImageZoomAndDrag();
         }
 
         function showPrevFullscreenImage() {
             currentFullscreenImageIndex = (currentFullscreenImageIndex - 1 + currentProductImages.length) % currentProductImages.length;
             fullscreenImage.src = currentProductImages[currentFullscreenImageIndex];
+            resetZoomImage();
         }
 
         function showNextFullscreenImage() {
             currentFullscreenImageIndex = (currentFullscreenImageIndex + 1) % currentProductImages.length;
             fullscreenImage.src = currentProductImages[currentFullscreenImageIndex];
+            resetZoomImage();
+        }
+
+        // Zoom Functions
+        function zoomInImage() {
+            if (zoomLevel < 3) {
+                zoomLevel += 0.25;
+                applyZoom();
+            }
+        }
+
+        function zoomOutImage() {
+            if (zoomLevel > 0.5) {
+                zoomLevel -= 0.25;
+                applyZoom();
+            }
+        }
+
+        function resetZoomImage() {
+            zoomLevel = 1;
+            applyZoom();
+            
+            // Reset image position
+            fullscreenImage.style.transform = 'translate(0, 0)';
+        }
+
+        function applyZoom() {
+            fullscreenImage.style.transform = `scale(${zoomLevel})`;
+            
+            if (zoomLevel > 1) {
+                fullscreenImage.classList.add('zoomed');
+                isZoomed = true;
+            } else {
+                fullscreenImage.classList.remove('zoomed');
+                isZoomed = false;
+            }
+        }
+
+        // Setup image zoom and drag functionality
+        function setupImageZoomAndDrag() {
+            // Mouse events
+            fullscreenImage.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', dragImage);
+            document.addEventListener('mouseup', stopDrag);
+            
+            // Touch events for mobile
+            fullscreenImage.addEventListener('touchstart', startDragTouch);
+            document.addEventListener('touchmove', dragImageTouch);
+            document.addEventListener('touchend', stopDrag);
+        }
+
+        function removeImageZoomAndDrag() {
+            // Remove mouse events
+            fullscreenImage.removeEventListener('mousedown', startDrag);
+            document.removeEventListener('mousemove', dragImage);
+            document.removeEventListener('mouseup', stopDrag);
+            
+            // Remove touch events
+            fullscreenImage.removeEventListener('touchstart', startDragTouch);
+            document.removeEventListener('touchmove', dragImageTouch);
+            document.removeEventListener('touchend', stopDrag);
+        }
+
+        function startDrag(e) {
+            if (!isZoomed) return;
+            
+            isDragging = true;
+            startX = e.pageX - fullscreenImage.offsetLeft;
+            startY = e.pageY - fullscreenImage.offsetTop;
+            scrollLeft = fullscreenImage.scrollLeft;
+            scrollTop = fullscreenImage.scrollTop;
+            
+            e.preventDefault();
+        }
+
+        function startDragTouch(e) {
+            if (!isZoomed) return;
+            
+            isDragging = true;
+            const touch = e.touches[0];
+            startX = touch.pageX - fullscreenImage.offsetLeft;
+            startY = touch.pageY - fullscreenImage.offsetTop;
+            scrollLeft = fullscreenImage.scrollLeft;
+            scrollTop = fullscreenImage.scrollTop;
+            
+            e.preventDefault();
+        }
+
+        function dragImage(e) {
+            if (!isDragging || !isZoomed) return;
+            
+            e.preventDefault();
+            const x = e.pageX - fullscreenImage.offsetLeft;
+            const y = e.pageY - fullscreenImage.offsetTop;
+            const walkX = (x - startX) * 2;
+            const walkY = (y - startY) * 2;
+            
+            fullscreenImage.style.transform = `scale(${zoomLevel}) translate(${walkX}px, ${walkY}px)`;
+        }
+
+        function dragImageTouch(e) {
+            if (!isDragging || !isZoomed) return;
+            
+            e.preventDefault();
+            const touch = e.touches[0];
+            const x = touch.pageX - fullscreenImage.offsetLeft;
+            const y = touch.pageY - fullscreenImage.offsetTop;
+            const walkX = (x - startX) * 2;
+            const walkY = (y - startY) * 2;
+            
+            fullscreenImage.style.transform = `scale(${zoomLevel}) translate(${walkX}px, ${walkY}px)`;
+        }
+
+        function stopDrag() {
+            isDragging = false;
         }
 
         // Display Product View
@@ -2257,7 +2525,7 @@
             container.innerHTML = `
                 <div class="col-md-6">
                     <div class="product-view-image">
-                        ${createImageCarousel(images, `view-${product.id}`, product.name)}
+                        ${createProductViewCarousel(images, product.id, product.name)}
                     </div>
                     <!-- Moved buttons below the image carousel -->
                     <div class="d-flex mt-4">
@@ -2286,6 +2554,43 @@
                             <p><strong>Category:</strong> ${product.category || 'General'}</p>
                             <p><strong>Rating:</strong> ⭐ ${product.rating || '4.0'}/5</p>
                         </div>
+                    </div>
+                </div>
+            `;
+            
+            // Initialize the product view carousel
+            setTimeout(() => {
+                initializeCarousels();
+            }, 100);
+        }
+
+        // Create Product View Carousel
+        function createProductViewCarousel(images, productId, productName) {
+            const carouselId = `product-view-carousel-${productId}`;
+            
+            return `
+                <div class="carousel-container" id="${carouselId}">
+                    <div class="carousel-slides">
+                        ${images.map((image, index) => `
+                            <div class="carousel-slide">
+                                <img src="${image}" 
+                                     class="product-image" 
+                                     alt="${productName}"
+                                     onclick="openFullscreenImageViewer('${productId}', ${index})">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); prevSlide('${carouselId}')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn carousel-next" onclick="event.stopPropagation(); nextSlide('${carouselId}')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="carousel-indicators">
+                        ${images.map((_, index) => `
+                            <div class="carousel-indicator ${index === 0 ? 'active' : ''}" 
+                                 onclick="event.stopPropagation(); goToSlide('${carouselId}', ${index})"></div>
+                        `).join('')}
                     </div>
                 </div>
             `;
@@ -3010,8 +3315,6 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
-                    // Initialize carousels after rendering
-                    setTimeout(initializeCarousels, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found for "${query}"`;
@@ -3054,8 +3357,6 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
-                    // Initialize carousels after rendering
-                    setTimeout(initializeCarousels, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found in "${category}" category`;
