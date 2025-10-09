@@ -299,6 +299,7 @@
             width: 100%;
             transition: var(--transition);
             cursor: pointer;
+            pointer-events: none; /* Fix: Prevent image from blocking carousel controls */
         }
         
         .product-card:hover .product-image {
@@ -847,7 +848,7 @@
             font-size: 1.2rem;
         }
         
-        /* Image Carousel */
+        /* Image Carousel - Fixed */
         .carousel-container {
             position: relative;
             overflow: hidden;
@@ -885,7 +886,7 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            z-index: 2;
+            z-index: 10; /* Increased z-index to ensure buttons are above image */
         }
         
         .carousel-btn:hover {
@@ -907,7 +908,7 @@
             transform: translateX(-50%);
             display: flex;
             gap: 8px;
-            z-index: 2;
+            z-index: 10; /* Increased z-index */
         }
         
         .carousel-indicator {
@@ -1594,15 +1595,15 @@
     <script>
         // Firebase Configuration
         const firebaseConfig = {
-    apiKey: "AIzaSyC3i-_KOmxZMHws-0kSV75MilJ2Jcw4jvc",
-    authDomain: "shubh-laabh-1428.firebaseapp.com",
-    databaseURL: "https://shubh-laabh-1428-default-rtdb.firebaseio.com",
-    projectId: "shubh-laabh-1428",
-    storageBucket: "shubh-laabh-1428.firebasestorage.app",
-    messagingSenderId: "847726971029",
-    appId: "1:847726971029:web:466aa341492b3e6a56739c",
-    measurementId: "G-XBM845C616"
-};
+            apiKey: "AIzaSyC3i-_KOmxZMHws-0kSV75MilJ2Jcw4jvc",
+            authDomain: "shubh-laabh-1428.firebaseapp.com",
+            databaseURL: "https://shubh-laabh-1428-default-rtdb.firebaseio.com",
+            projectId: "shubh-laabh-1428",
+            storageBucket: "shubh-laabh-1428.firebasestorage.app",
+            messagingSenderId: "847726971029",
+            appId: "1:847726971029:web:466aa341492b3e6a56739c",
+            measurementId: "G-XBM845C616"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -2010,6 +2011,8 @@
                 `;
             } else {
                 featuredContainer.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
+                // Initialize carousels after rendering
+                setTimeout(initializeCarousels, 100);
             }
         }
 
@@ -2027,6 +2030,8 @@
                 `;
             } else {
                 productsContainer.innerHTML = allProducts.map(product => createProductCard(product)).join('');
+                // Initialize carousels after rendering
+                setTimeout(initializeCarousels, 100);
             }
         }
 
@@ -2081,44 +2086,56 @@
             `;
         }
 
-        // Create Image Carousel
+        // Create Image Carousel - Fixed
         function createImageCarousel(images, productId, productName) {
             const carouselId = `carousel-${productId}`;
             const isProductView = productId.startsWith('view-');
-            const carouselHeight = isProductView ? '500px' : '250px';
             
             return `
                 <div class="carousel-container" id="${carouselId}">
                     <div class="carousel-slides">
                         ${images.map((image, index) => `
-                            <div class="carousel-slide" style="height: ${carouselHeight}">
+                            <div class="carousel-slide" style="height: 250px">
                                 <img src="${image}" 
                                      class="product-image" 
                                      alt="${productName}"
-                                     style="height: ${carouselHeight}"
-                                     onclick="${isProductView ? `openFullscreenImageViewer('${productId.replace('view-', '')}', ${index})` : 'void(0)'}">
+                                     style="height: 250px"
+                                     onclick="${isProductView ? `openFullscreenImageViewer('${productId.replace('view-', '')}', ${index})` : 'showProductView(\'' + productId + '\')'}">
                             </div>
                         `).join('')}
                     </div>
-                    <button class="carousel-btn carousel-prev" onclick="prevSlide('${carouselId}')">
+                    <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); prevSlide('${carouselId}')">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button class="carousel-btn carousel-next" onclick="nextSlide('${carouselId}')">
+                    <button class="carousel-btn carousel-next" onclick="event.stopPropagation(); nextSlide('${carouselId}')">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                     <div class="carousel-indicators">
                         ${images.map((_, index) => `
                             <div class="carousel-indicator ${index === 0 ? 'active' : ''}" 
-                                 onclick="goToSlide('${carouselId}', ${index})"></div>
+                                 onclick="event.stopPropagation(); goToSlide('${carouselId}', ${index})"></div>
                         `).join('')}
                     </div>
                 </div>
             `;
         }
 
+        // Initialize Carousels
+        function initializeCarousels() {
+            document.querySelectorAll('.carousel-container').forEach(carousel => {
+                // Set initial transform if not set
+                const slides = carousel.querySelector('.carousel-slides');
+                if (!slides.style.transform) {
+                    slides.style.transform = 'translateX(0%)';
+                }
+            });
+        }
+
         // Carousel Functions
         function prevSlide(carouselId) {
             const carousel = document.getElementById(carouselId);
+            if (!carousel) return;
+            
             const slides = carousel.querySelector('.carousel-slides');
             const indicators = carousel.querySelectorAll('.carousel-indicator');
             const slideCount = slides.children.length;
@@ -2131,6 +2148,8 @@
 
         function nextSlide(carouselId) {
             const carousel = document.getElementById(carouselId);
+            if (!carousel) return;
+            
             const slides = carousel.querySelector('.carousel-slides');
             const indicators = carousel.querySelectorAll('.carousel-indicator');
             const slideCount = slides.children.length;
@@ -2143,6 +2162,8 @@
 
         function goToSlide(carouselId, index) {
             const carousel = document.getElementById(carouselId);
+            if (!carousel) return;
+            
             const slides = carousel.querySelector('.carousel-slides');
             const indicators = carousel.querySelectorAll('.carousel-indicator');
             
@@ -2152,6 +2173,8 @@
 
         function getCurrentSlideIndex(carouselId) {
             const carousel = document.getElementById(carouselId);
+            if (!carousel) return 0;
+            
             const slides = carousel.querySelector('.carousel-slides');
             const transform = slides.style.transform;
             if (!transform) return 0;
@@ -2170,7 +2193,7 @@
             });
         }
 
-        // Fullscreen Image Viewer - Fixed to prevent image overflow
+        // Fullscreen Image Viewer
         function openFullscreenImageViewer(productId, imageIndex) {
             // Only allow in product view section
             if (currentView !== 'product-view') {
@@ -2987,6 +3010,8 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+                    // Initialize carousels after rendering
+                    setTimeout(initializeCarousels, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found for "${query}"`;
@@ -3029,6 +3054,8 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+                    // Initialize carousels after rendering
+                    setTimeout(initializeCarousels, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found in "${category}" category`;
