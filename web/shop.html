@@ -97,22 +97,6 @@
             border-radius: 2px;
         }
         
-        .cart-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--secondary-color);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
         /* Search Bar */
         .search-container {
             position: relative;
@@ -151,6 +135,28 @@
         
         .search-btn:hover {
             background: var(--secondary-color);
+        }
+        
+        /* Mobile Search Icon */
+        .mobile-search-icon {
+            display: none;
+            margin-right: 10px;
+        }
+        
+        .mobile-search-container {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .mobile-search-container.active {
+            display: block;
         }
         
         /* Hero Section */
@@ -482,40 +488,58 @@
             margin-bottom: 30px;
         }
         
-        .quantity-selector {
-            display: flex;
-            align-items: center;
+        /* Color and Size Options */
+        .options-container {
             margin-bottom: 30px;
         }
         
-        .quantity-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--light-bg);
-            border: none;
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .color-swatches {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             cursor: pointer;
+            border: 2px solid transparent;
             transition: var(--transition);
         }
         
-        .quantity-btn:hover {
-            background: var(--primary-color);
-            color: white;
+        .color-swatch.active {
+            border-color: var(--primary-color);
+            transform: scale(1.1);
         }
         
-        .quantity-input {
-            width: 70px;
-            text-align: center;
-            margin: 0 15px;
-            border: 2px solid var(--light-bg);
+        .size-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .size-option {
+            padding: 8px 15px;
+            border: 2px solid #e9ecef;
             border-radius: 8px;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 1.1rem;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        
+        .size-option.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
         }
         
         .btn-buy-now {
@@ -854,6 +878,7 @@
             overflow: hidden;
             border-radius: var(--border-radius);
             height: 100%;
+            touch-action: pan-y pinch-zoom;
         }
         
         .carousel-slides {
@@ -865,6 +890,7 @@
         .carousel-slide {
             min-width: 100%;
             height: 100%;
+            flex-shrink: 0;
         }
         
         .carousel-slide img {
@@ -1098,27 +1124,6 @@
             width: 80%;
         }
         
-        /* Color Swatches */
-        .color-swatches {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .color-swatch {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: var(--transition);
-        }
-        
-        .color-swatch.active {
-            border-color: var(--primary-color);
-            transform: scale(1.1);
-        }
-        
         /* Track Order Section */
         .track-order-section {
             padding: 80px 0;
@@ -1227,6 +1232,14 @@
             .product-view-image, 
             .product-view-image img {
                 height: 400px;
+            }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .mobile-search-icon {
+                display: block;
             }
         }
         
@@ -1359,6 +1372,11 @@
         <div class="container">
             <a class="navbar-brand active" href="#" onclick="showSection('home')">XYZVERSE</a>
             
+            <!-- Mobile Search Icon -->
+            <div class="mobile-search-icon">
+                <i class="fas fa-search" id="mobileSearchToggle"></i>
+            </div>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -1386,15 +1404,16 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link position-relative" href="#" id="cartToggle">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge">0</span>
-                        </a>
-                    </li>
-                </ul>
+            </div>
+            
+            <!-- Mobile Search Container -->
+            <div class="mobile-search-container" id="mobileSearchContainer">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="mobileSearchInput" placeholder="Search products...">
+                    <button class="btn btn-primary" type="button" id="mobileSearchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
@@ -1761,15 +1780,18 @@
         let zoomLevel = 1;
         let isDragging = false;
         let startX, startY, scrollLeft, scrollTop;
+        let currentCarouselId = null;
+        let carouselPositions = {};
+        let isCarouselTouching = false;
+        let touchStartX = 0;
+        let touchEndX = 0;
 
         // DOM Elements
-        const cartToggle = document.getElementById('cartToggle');
         const cartSidebar = document.getElementById('cartSidebar');
         const closeCart = document.getElementById('closeCart');
         const overlay = document.getElementById('overlay');
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
-        const cartBadge = document.querySelector('.cart-badge');
         const fixedCartBtn = document.getElementById('fixedCartBtn');
         const fixedCartBadge = document.querySelector('.fixed-cart-badge');
         const checkoutForm = document.getElementById('checkoutForm');
@@ -1787,6 +1809,10 @@
         const resetZoom = document.getElementById('resetZoom');
         const trackOrderInput = document.getElementById('trackOrderInput');
         const trackOrderBtn = document.getElementById('trackOrderBtn');
+        const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+        const mobileSearchContainer = document.getElementById('mobileSearchContainer');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
 
         // Color mapping for color swatches
         const colorMap = {
@@ -1818,10 +1844,9 @@
             handleURLParameters();
             
             // Cart event listeners
-            cartToggle.addEventListener('click', toggleCart);
+            fixedCartBtn.addEventListener('click', toggleCart);
             closeCart.addEventListener('click', toggleCart);
             overlay.addEventListener('click', toggleCart);
-            fixedCartBtn.addEventListener('click', toggleCart);
             
             // Checkout form submission
             checkoutForm.addEventListener('submit', handleCheckout);
@@ -1831,6 +1856,15 @@
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     handleSearch();
+                }
+            });
+            
+            // Mobile search functionality
+            mobileSearchToggle.addEventListener('click', toggleMobileSearch);
+            mobileSearchBtn.addEventListener('click', handleMobileSearch);
+            mobileSearchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleMobileSearch();
                 }
             });
             
@@ -1863,6 +1897,20 @@
             initializeCarousels();
         });
 
+        // Toggle Mobile Search
+        function toggleMobileSearch() {
+            mobileSearchContainer.classList.toggle('active');
+        }
+
+        // Handle Mobile Search
+        function handleMobileSearch() {
+            const query = mobileSearchInput.value.trim();
+            if (query) {
+                showSearchResults(query);
+                mobileSearchContainer.classList.remove('active');
+            }
+        }
+
         // Handle URL Parameters
         function handleURLParameters() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1888,10 +1936,28 @@
             }
             
             if (productId) {
-                // Small delay to ensure products are loaded
+                // Wait for products to load
+                const checkProductLoaded = setInterval(() => {
+                    if (allProducts.length > 0) {
+                        clearInterval(checkProductLoaded);
+                        const product = allProducts.find(p => p.id === productId);
+                        if (product) {
+                            showProductView(productId);
+                        } else {
+                            console.error('Product not found:', productId);
+                            // Show error message
+                            showSection('home');
+                            setTimeout(() => {
+                                showToast('Product not found');
+                            }, 500);
+                        }
+                    }
+                }, 100);
+                
+                // Timeout after 5 seconds
                 setTimeout(() => {
-                    showProductView(productId);
-                }, 500);
+                    clearInterval(checkProductLoaded);
+                }, 5000);
             }
         }
 
@@ -1954,6 +2020,11 @@
                 } else if (sectionName === 'categories') {
                     displayAllCategories();
                 }
+                
+                // Initialize carousels after section change
+                setTimeout(() => {
+                    initializeCarousels();
+                }, 100);
             }
         }
 
@@ -2165,6 +2236,11 @@
                 `;
             } else {
                 featuredContainer.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
+                
+                // Initialize carousels after products are loaded
+                setTimeout(() => {
+                    initializeCarousels();
+                }, 100);
             }
         }
 
@@ -2182,6 +2258,11 @@
                 `;
             } else {
                 productsContainer.innerHTML = allProducts.map(product => createProductCard(product)).join('');
+                
+                // Initialize carousels after products are loaded
+                setTimeout(() => {
+                    initializeCarousels();
+                }, 100);
             }
         }
 
@@ -2268,13 +2349,64 @@
             `;
         }
 
-        // Initialize Carousels
+        // Initialize Carousels with Touch Support
         function initializeCarousels() {
             document.querySelectorAll('.carousel-container').forEach(carousel => {
+                const carouselId = carousel.id;
+                
                 // Set initial transform if not set
                 const slides = carousel.querySelector('.carousel-slides');
                 if (!slides.style.transform) {
                     slides.style.transform = 'translateX(0%)';
+                }
+                
+                // Initialize position tracking
+                if (!carouselPositions[carouselId]) {
+                    carouselPositions[carouselId] = 0;
+                }
+                
+                // Add touch event listeners
+                slides.addEventListener('touchstart', handleTouchStart, { passive: true });
+                slides.addEventListener('touchmove', handleTouchMove, { passive: true });
+                slides.addEventListener('touchend', handleTouchEnd);
+                
+                function handleTouchStart(e) {
+                    isCarouselTouching = true;
+                    currentCarouselId = carouselId;
+                    touchStartX = e.touches[0].clientX;
+                }
+                
+                function handleTouchMove(e) {
+                    if (!isCarouselTouching || currentCarouselId !== carouselId) return;
+                    
+                    touchEndX = e.touches[0].clientX;
+                    const diff = touchStartX - touchEndX;
+                    
+                    // Apply temporary transform during swipe
+                    const currentPosition = carouselPositions[carouselId];
+                    slides.style.transform = `translateX(calc(-${currentPosition * 100}% - ${diff}px))`;
+                }
+                
+                function handleTouchEnd() {
+                    if (!isCarouselTouching || currentCarouselId !== carouselId) return;
+                    
+                    isCarouselTouching = false;
+                    const diff = touchStartX - touchEndX;
+                    const slideCount = slides.children.length;
+                    
+                    // Determine if swipe was significant enough to change slide
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            // Swipe left - next slide
+                            nextSlide(carouselId);
+                        } else {
+                            // Swipe right - previous slide
+                            prevSlide(carouselId);
+                        }
+                    } else {
+                        // Return to current slide
+                        goToSlide(carouselId, carouselPositions[carouselId]);
+                    }
                 }
             });
         }
@@ -2287,9 +2419,10 @@
             const slides = carousel.querySelector('.carousel-slides');
             const indicators = carousel.querySelectorAll('.carousel-indicator');
             const slideCount = slides.children.length;
-            const currentIndex = getCurrentSlideIndex(carouselId);
+            const currentIndex = carouselPositions[carouselId] || 0;
             const newIndex = (currentIndex - 1 + slideCount) % slideCount;
             
+            carouselPositions[carouselId] = newIndex;
             slides.style.transform = `translateX(-${newIndex * 100}%)`;
             updateIndicators(indicators, newIndex);
         }
@@ -2301,9 +2434,10 @@
             const slides = carousel.querySelector('.carousel-slides');
             const indicators = carousel.querySelectorAll('.carousel-indicator');
             const slideCount = slides.children.length;
-            const currentIndex = getCurrentSlideIndex(carouselId);
+            const currentIndex = carouselPositions[carouselId] || 0;
             const newIndex = (currentIndex + 1) % slideCount;
             
+            carouselPositions[carouselId] = newIndex;
             slides.style.transform = `translateX(-${newIndex * 100}%)`;
             updateIndicators(indicators, newIndex);
         }
@@ -2315,20 +2449,9 @@
             const slides = carousel.querySelector('.carousel-slides');
             const indicators = carousel.querySelectorAll('.carousel-indicator');
             
+            carouselPositions[carouselId] = index;
             slides.style.transform = `translateX(-${index * 100}%)`;
             updateIndicators(indicators, index);
-        }
-
-        function getCurrentSlideIndex(carouselId) {
-            const carousel = document.getElementById(carouselId);
-            if (!carousel) return 0;
-            
-            const slides = carousel.querySelector('.carousel-slides');
-            const transform = slides.style.transform;
-            if (!transform) return 0;
-            
-            const match = transform.match(/translateX\(-(\d+)%/);
-            return match ? parseInt(match[1]) / 100 : 0;
         }
 
         function updateIndicators(indicators, activeIndex) {
@@ -2522,6 +2645,10 @@
                 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
             ];
             
+            // Get size and color options
+            const sizes = product.sizes || [];
+            const colors = product.colors || [];
+            
             container.innerHTML = `
                 <div class="col-md-6">
                     <div class="product-view-image">
@@ -2532,7 +2659,7 @@
                         <button class="btn btn-buy-now flex-fill me-2" onclick="buyNow('${product.id}')">
                             <i class="fas fa-bolt me-2"></i>Buy Now
                         </button>
-                        <button class="btn btn-add-to-cart flex-fill ms-2" onclick="addToCart('${product.id}')">
+                        <button class="btn btn-primary flex-fill ms-2" onclick="addToCart('${product.id}')">
                             <i class="fas fa-cart-plus me-2"></i>Add to Cart
                         </button>
                     </div>
@@ -2543,12 +2670,29 @@
                         <div class="product-view-price">₹${product.price}</div>
                         <p class="product-view-description">${product.description || 'No description available.'}</p>
                         
-                        <div class="quantity-selector">
-                            <span class="me-3"><strong>Quantity:</strong></span>
-                            <button class="quantity-btn" onclick="updateQuantity(-1)">-</button>
-                            <input type="number" class="quantity-input" id="productQuantity" value="1" min="1" max="10">
-                            <button class="quantity-btn" onclick="updateQuantity(1)">+</button>
-                        </div>
+                        <!-- Color Options -->
+                        ${colors.length > 0 ? `
+                            <div class="options-container">
+                                <div class="option-title">Color</div>
+                                <div class="color-swatches" id="colorOptions">
+                                    ${colors.map(color => `
+                                        <div class="color-swatch" data-color="${color}" title="${color}" style="background-color: ${colorMap[color] || color};"></div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <!-- Size Options -->
+                        ${sizes.length > 0 ? `
+                            <div class="options-container">
+                                <div class="option-title">Size</div>
+                                <div class="size-options" id="sizeOptions">
+                                    ${sizes.map(size => `
+                                        <div class="size-option" data-size="${size}">${size}</div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
                         
                         <div class="product-meta mt-4">
                             <p><strong>Category:</strong> ${product.category || 'General'}</p>
@@ -2557,6 +2701,33 @@
                     </div>
                 </div>
             `;
+            
+            // Add event listeners for color and size selection
+            setTimeout(() => {
+                const colorSwatches = document.querySelectorAll('.color-swatch');
+                colorSwatches.forEach(swatch => {
+                    swatch.addEventListener('click', function() {
+                        colorSwatches.forEach(s => s.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+                
+                const sizeOptions = document.querySelectorAll('.size-option');
+                sizeOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        sizeOptions.forEach(o => o.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+                
+                // Select first options by default if available
+                if (colorSwatches.length > 0) {
+                    colorSwatches[0].classList.add('active');
+                }
+                if (sizeOptions.length > 0) {
+                    sizeOptions[0].classList.add('active');
+                }
+            }, 100);
             
             // Initialize the product view carousel
             setTimeout(() => {
@@ -2631,9 +2802,9 @@
                 sizeOptions = `
                     <div class="mb-3">
                         <label class="form-label">Select Size *</label>
-                        <div class="d-flex flex-wrap gap-2" id="sizeOptions">
+                        <div class="d-flex flex-wrap gap-2" id="popupSizeOptions">
                             ${product.sizes.map(size => `
-                                <button type="button" class="btn btn-outline-primary size-option" data-size="${size}">${size}</button>
+                                <button type="button" class="btn btn-outline-primary size-option-popup" data-size="${size}">${size}</button>
                             `).join('')}
                         </div>
                         <div class="text-danger mt-1" id="sizeError" style="display: none;">Please select a size</div>
@@ -2645,7 +2816,7 @@
                 colorOptions = `
                     <div class="mb-3">
                         <label class="form-label">Select Color *</label>
-                        <div class="color-swatches" id="colorOptions">
+                        <div class="color-swatches" id="popupColorOptions">
                             ${product.colors.map(color => `
                                 <div class="color-swatch" data-color="${color}" title="${color}" style="background-color: ${colorMap[color] || color};"></div>
                             `).join('')}
@@ -2672,7 +2843,7 @@
                 showCancelButton: true,
                 confirmButtonText: isBuyNow ? 'Buy Now' : 'Add to Cart',
                 preConfirm: () => {
-                    const selectedSize = document.querySelector('.size-option.active')?.dataset.size || '';
+                    const selectedSize = document.querySelector('.size-option-popup.active')?.dataset.size || '';
                     const selectedColor = document.querySelector('.color-swatch.active')?.dataset.color || '';
                     const quantity = parseInt(document.getElementById('popupQuantity').value);
                     
@@ -2715,10 +2886,10 @@
             
             // Add event listeners to size and color options
             setTimeout(() => {
-                document.querySelectorAll('.size-option').forEach(btn => {
+                document.querySelectorAll('.size-option-popup').forEach(btn => {
                     btn.addEventListener('click', function() {
-                        document.querySelectorAll('.size-option').forEach(b => b.classList.remove('active', 'btn-primary'));
-                        document.querySelectorAll('.size-option').forEach(b => b.classList.add('btn-outline-primary'));
+                        document.querySelectorAll('.size-option-popup').forEach(b => b.classList.remove('active', 'btn-primary'));
+                        document.querySelectorAll('.size-option-popup').forEach(b => b.classList.add('btn-outline-primary'));
                         this.classList.remove('btn-outline-primary');
                         this.classList.add('active', 'btn-primary');
                         document.getElementById('sizeError').style.display = 'none';
@@ -2749,6 +2920,17 @@
                         input.value = value + 1;
                     }
                 });
+                
+                // Select first options by default if available
+                const firstSizeOption = document.querySelector('.size-option-popup');
+                if (firstSizeOption) {
+                    firstSizeOption.click();
+                }
+                
+                const firstColorOption = document.querySelector('.color-swatch');
+                if (firstColorOption) {
+                    firstColorOption.click();
+                }
             }, 100);
         }
 
@@ -2787,8 +2969,7 @@
             if (!product) return;
             
             const existingItem = cart.find(item => item.id === productId);
-            const quantity = document.getElementById('productQuantity') ? 
-                           parseInt(document.getElementById('productQuantity').value) : 1;
+            const quantity = 1;
             
             if (existingItem) {
                 existingItem.quantity += quantity;
@@ -2841,7 +3022,6 @@
             
             // Update badges
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartBadge.textContent = totalItems;
             fixedCartBadge.textContent = totalItems;
             
             // Update checkout summary
@@ -2875,22 +3055,10 @@
             updateCart();
         }
 
-        // Update Quantity in Product View
-        function updateQuantity(change) {
-            const input = document.getElementById('productQuantity');
-            if (input) {
-                let quantity = parseInt(input.value) + change;
-                if (quantity < 1) quantity = 1;
-                if (quantity > 10) quantity = 10;
-                input.value = quantity;
-            }
-        }
-
         // Buy Now - Redirect to checkout page for single product
         function buyNow(productId) {
             const product = allProducts.find(p => p.id === productId);
-            const quantity = document.getElementById('productQuantity') ? 
-                           parseInt(document.getElementById('productQuantity').value) : 1;
+            const quantity = 1;
             
             if (product) {
                 // Check if product has options
@@ -3315,6 +3483,11 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+                    
+                    // Initialize carousels after search results are loaded
+                    setTimeout(() => {
+                        initializeCarousels();
+                    }, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found for "${query}"`;
@@ -3357,6 +3530,11 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+                    
+                    // Initialize carousels after category results are loaded
+                    setTimeout(() => {
+                        initializeCarousels();
+                    }, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found in "${category}" category`;
