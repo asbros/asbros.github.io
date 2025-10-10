@@ -31,7 +31,7 @@
         :root { --primary-color: #2e7d32; --secondary-color: #4caf50; --accent-color: #81c784; --dark-color: #1b1b1b; --light-bg: #f5f5f5; --dark-text: #333; --light-text: #757575; --success-color: #4caf50; --warning-color: #ff9800; --border-radius: 8px; --box-shadow: 0 4px 12px rgba(0,0,0,0.1); --transition: all 0.3s ease; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Jost', sans-serif; background-color: var(--light-bg); color: var(--dark-text); line-height: 1.6; }
-        .navbar { background: rgba(255, 255, 255, 0.95) !important; backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: var(--transition); }
+        .navbar { background: rgba(255, 255, 255, 0.6) !important; backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: var(--transition); }
         .navbar-brand { font-weight: 800; color: var(--primary-color) !important; font-size: 1.8rem; letter-spacing: -0.5px; }
         .nav-link { font-weight: 600; color: var(--dark-color) !important; transition: var(--transition); position: relative; }
         .nav-link:hover { color: var(--primary-color) !important; }
@@ -51,7 +51,7 @@
         .hero-subtitle { font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9; }
         .btn-hero { background: white; color: var(--primary-color); border: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
-        .featured-section { padding: 80px 0; background: white; }
+        .featured-section { padding: 60px 0; background: white; }
         .section-title { font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 3rem; color: var(--dark-color); position: relative; }
         .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary-color); border-radius: 2px; }
         .categories-section { padding: 80px 0; background: var(--light-bg); }
@@ -69,10 +69,6 @@
         .product-card:hover .product-actions { opacity: 1; }
         .action-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: none; display: flex; align-items: center; justify-content: center; color: var(--dark-color); transition: var(--transition); box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size: 0.8rem; }
         .action-btn:hover { background: var(--primary-color); color: white; transform: scale(1.1); }
-        .wishlist-btn { color: #ccc; transition: var(--transition); }
-        .wishlist-btn.active { color: #e74c3c; animation: heartBeat 0.6s; }
-        .wishlist-btn:hover { color: #e74c3c; transform: scale(1.1); }
-        @keyframes heartBeat { 0% { transform: scale(1); } 25% { transform: scale(1.3); } 50% { transform: scale(1); } 75% { transform: scale(1.3); } 100% { transform: scale(1); } }
         .product-info { padding: 20px; }
         .product-category { color: var(--light-text); font-size: 0.9rem; margin-bottom: 5px; }
         .product-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: var(--dark-color); cursor: pointer; }
@@ -193,10 +189,6 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; opacity: 0; visibility: hidden; transition: var(--transition); }
         .overlay.active { opacity: 1; visibility: visible; }
         .discount-badge { background: #e74c3c; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-left: 10px; }
-        .stock-status { font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; }
-        .in-stock { color: var(--success-color); }
-        .out-of-stock { color: #e74c3c; }
-        .low-stock { color: var(--warning-color); }
         .quantity-selector { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
         .quantity-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #ddd; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
         .quantity-btn:hover { background: #f5f5f5; }
@@ -221,6 +213,11 @@
         .shipping-price { color: var(--primary-color); font-weight: 600; }
         .modal-policy .modal-content { border-radius: var(--border-radius); }
         .modal-policy .modal-header { background: var(--primary-color); color: white; }
+        .product-view-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .product-view-action-btn { width: 40px; height: 40px; border-radius: 50%; background: white; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; color: var(--dark-color); transition: var(--transition); cursor: pointer; }
+        .product-view-action-btn:hover { background: var(--primary-color); color: white; transform: scale(1.1); }
+        .display-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .display-option { padding: 8px 15px; border: 1px solid #e9ecef; border-radius: 8px; background: #f9f9f9; font-weight: 600; }
         @media (max-width: 1200px) { .hero-title { font-size: 3rem; } .section-title { font-size: 2.2rem; } }
         @media (max-width: 992px) { .hero-title { font-size: 2.5rem; } .section-title { font-size: 2rem; } .product-view-image, .product-view-image img { height: 400px; } .search-container { display: none; } .mobile-search-icon { display: block; } }
         @media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; } .cart-sidebar { width: 100%; right: -100%; } .product-view-title { font-size: 2rem; } .product-view-price { font-size: 1.7rem; } .fixed-cart-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; } .product-view-image, .product-view-image img { height: 350px; } .fullscreen-carousel-btn { width: 40px; height: 40px; font-size: 1.2rem; } .close-fullscreen { width: 40px; height: 40px; font-size: 1.5rem; } }
@@ -232,17 +229,19 @@
         .section.active { display: block; }
         .back-button { background: none; border: none; color: var(--primary-color); font-weight: 600; margin-bottom: 20px; cursor: pointer; }
         .back-button:hover { color: var(--secondary-color); }
+        input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
+        input[type="number"] {-moz-appearance: textfield;}
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
-            <a class="navbar-brand active" href="#" onclick="showSection('home')">Shubh Laabh</a>
+            <a class="navbar-brand active" href="#" onclick="showSection('home');closeMobileMenu();" style="flex: 1;">Shubh Laabh</a>
             
             <!-- Mobile Search Icon -->
             <div class="mobile-search-icon">
-                <i class="fas fa-search" id="mobileSearchToggle"></i>
+                <button style="border: 0;height: 40px;width: 40px;border-radius: 50%;" type="button" id="mobileSearchToggle"><i class="fas fa-search"></i></button>
             </div>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -251,9 +250,9 @@
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <a class="nav-link" href="#" onclick="showSection('home'); closeMobileMenu();">Home</a>
-                    </li>
+                    </li>-->
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="showSection('products'); closeMobileMenu();">Products</a>
                     </li>
@@ -262,9 +261,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="showSection('orders'); closeMobileMenu();">My Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('wishlist'); closeMobileMenu();">Wishlist</a>
                     </li>
                 </ul>
                 
@@ -356,23 +352,6 @@
             </div>
             <div class="row g-4" id="products-container">
                 <!-- All products will be loaded here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Wishlist Section -->
-    <section id="wishlist-section" class="section">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-12">
-                    <button class="back-button" onclick="showSection('home')">
-                        <i class="fas fa-arrow-left me-2"></i>Back to Home
-                    </button>
-                    <h2 class="section-title">My Wishlist</h2>
-                </div>
-            </div>
-            <div class="row g-4" id="wishlist-container">
-                <!-- Wishlist items will be loaded here -->
             </div>
         </div>
     </section>
@@ -491,7 +470,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="customerPhone" class="form-label">Phone Number *</label>
-                                                <input type="tel" class="form-control" id="customerPhone" required>
+                                                <input type="number" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits." class="form-control" id="customerPhone" required>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -513,7 +492,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="customerPincode" class="form-label">PIN Code *</label>
-                                                <input type="text" class="form-control" id="customerPincode" required>
+                                                <input type="number" maxlength="6" pattern="\d{6}" title="Please enter exactly 6 digits." class="form-control" id="customerPincode" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="customerCity" class="form-label">City *</label>
@@ -560,7 +539,7 @@
                                         </div>
                                     </div>
                                     
-                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <button type="submit" class="btn btn-success btn-lg w-100">
                                         <i class="fas fa-shopping-bag me-2"></i>Place Order
                                     </button>
                                 </form>
@@ -736,7 +715,7 @@
                 <span>Total:</span>
                 <span id="cartTotal">₹0</span>
             </div>
-            <button class="btn btn-primary w-100" onclick="proceedToCheckout()">
+            <button class="btn btn-success w-100" onclick="proceedToCheckout()">
                 <i class="fas fa-shopping-bag me-2"></i>Checkout
             </button>
         </div>
@@ -809,7 +788,6 @@
         // Global Variables
         let allProducts = [];
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
         let newsletterSubscribers = JSON.parse(localStorage.getItem('newsletterSubscribers')) || [];
         let currentView = 'home';
         let previousSection = 'home';
@@ -891,7 +869,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadProducts();
             updateCartUI();
-            updateWishlistUI();
             handleURLParameters();
             
             // Cart event listeners
@@ -948,6 +925,14 @@
             initializeCarousels();
         });
 
+        // Auto scroll to top when showing sections
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
         // Close mobile menu
         function closeMobileMenu() {
             const navbarCollapse = document.getElementById('navbarNav');
@@ -988,8 +973,6 @@
                 showSection('checkout');
             } else if (section === 'orders') {
                 showSection('orders');
-            } else if (section === 'wishlist') {
-                showSection('wishlist');
             } else if (section === 'search') {
                 if (searchQuery) {
                     searchInput.value = searchQuery;
@@ -1076,14 +1059,15 @@
                     loadOrders();
                 } else if (sectionName === 'categories') {
                     displayAllCategories();
-                } else if (sectionName === 'wishlist') {
-                    displayWishlist();
                 }
                 
                 // Initialize carousels after section change
                 setTimeout(() => {
                     initializeCarousels();
                 }, 100);
+                
+                // Auto scroll to top
+                scrollToTop();
             }
         }
 
@@ -1109,15 +1093,21 @@
             setTimeout(() => {
                 displayProductView(productId);
             }, 100);
+            
+            // Auto scroll to top
+            scrollToTop();
         }
 
         // Go Back
         function goBack() {
-            if (previousSection === 'products' || previousSection === 'home' || previousSection === 'categories' || previousSection === 'search' || previousSection === 'wishlist') {
+            if (previousSection === 'products' || previousSection === 'home' || previousSection === 'categories' || previousSection === 'search') {
                 showSection(previousSection);
             } else {
                 showSection('home');
             }
+            
+            // Auto scroll to top
+            scrollToTop();
         }
 
         // Toggle Cart Sidebar
@@ -1323,7 +1313,6 @@
                 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
             ];
             
-            const isInWishlist = wishlist.some(item => item.id === product.id);
             const discount = product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
             
             return `
@@ -1333,9 +1322,6 @@
                             ${createImageCarousel(images, product.id, product.name)}
                             <div class="product-badge">${discount > 0 ? discount + '% OFF' : 'Hot'}</div>
                             <div class="product-actions">
-                                <button class="action-btn wishlist-btn ${isInWishlist ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">
-                                    <i class="fas fa-heart"></i>
-                                </button>
                                 <button class="action-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
                                     <i class="fas fa-cart-plus"></i>
                                 </button>
@@ -1347,9 +1333,6 @@
                         <div class="product-info">
                             <div class="product-category">${product.category || 'General'}</div>
                             <h3 class="product-title" onclick="showProductView('${product.id}')">${product.name}</h3>
-                            <div class="stock-status ${getStockStatusClass(product.stock)}">
-                                ${getStockStatusText(product.stock)}
-                            </div>
                             <div class="product-price">
                                 <div>
                                     <span class="price-current">₹${product.price}</span>
@@ -1372,22 +1355,6 @@
                     </div>
                 </div>
             `;
-        }
-
-        // Get Stock Status Class
-        function getStockStatusClass(stock) {
-            if (stock === undefined || stock === null) return 'in-stock';
-            if (stock === 0) return 'out-of-stock';
-            if (stock < 10) return 'low-stock';
-            return 'in-stock';
-        }
-
-        // Get Stock Status Text
-        function getStockStatusText(stock) {
-            if (stock === undefined || stock === null) return 'In Stock';
-            if (stock === 0) return 'Out of Stock';
-            if (stock < 10) return `Only ${stock} left`;
-            return 'In Stock';
         }
 
         // Create Image Carousel
@@ -1728,13 +1695,12 @@
                     <div class="product-view-image">
                         ${createProductViewCarousel(images, product.id, product.name)}
                     </div>
-                    <!-- Moved buttons below the image carousel -->
-                    <div class="d-flex mt-4">
-                        <button class="btn btn-buy-now flex-fill me-2" onclick="buyNow('${product.id}')">
-                            <i class="fas fa-bolt me-2"></i>Buy Now
+                    <div class="product-view-actions">
+                        <button class="product-view-action-btn" onclick="addToCart('${product.id}')">
+                            <i class="fas fa-cart-plus"></i>
                         </button>
-                        <button class="btn btn-primary flex-fill ms-2" onclick="addToCart('${product.id}')">
-                            <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                        <button class="product-view-action-btn" onclick="shareProduct('${product.id}', '${product.name}')">
+                            <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
                 </div>
@@ -1746,18 +1712,15 @@
                             ${product.originalPrice ? `<span class="price-original ms-2">₹${product.originalPrice}</span>` : ''}
                             ${discount > 0 ? `<span class="discount-badge">${discount}% OFF</span>` : ''}
                         </div>
-                        <div class="stock-status ${getStockStatusClass(product.stock)} mb-3">
-                            ${getStockStatusText(product.stock)}
-                        </div>
                         <p class="product-view-description">${product.description || 'No description available.'}</p>
                         
                         <!-- Color Options -->
                         ${colors.length > 0 ? `
                             <div class="options-container">
-                                <div class="option-title">Color</div>
-                                <div class="color-swatches" id="colorOptions">
+                                <div class="option-title">Available Colors</div>
+                                <div class="display-options">
                                     ${colors.map(color => `
-                                        <div class="color-swatch" data-color="${color}" title="${color}" style="background-color: ${colorMap[color] || color};"></div>
+                                        <div class="display-option">${color}</div>
                                     `).join('')}
                                 </div>
                             </div>
@@ -1766,75 +1729,30 @@
                         <!-- Size Options -->
                         ${sizes.length > 0 ? `
                             <div class="options-container">
-                                <div class="option-title">Size</div>
-                                <div class="size-options" id="sizeOptions">
+                                <div class="option-title">Available Sizes</div>
+                                <div class="display-options">
                                     ${sizes.map(size => `
-                                        <div class="size-option" data-size="${size}">${size}</div>
+                                        <div class="display-option">${size}</div>
                                     `).join('')}
                                 </div>
                             </div>
                         ` : ''}
                         
-                        <!-- Quantity Selector -->
-                        <div class="quantity-selector">
-                            <span class="me-3"><strong>Quantity:</strong></span>
-                            <button type="button" class="quantity-btn" id="quantityMinus">-</button>
-                            <input type="number" class="quantity-input" id="quantityInput" value="1" min="1" max="${product.stock || 10}">
-                            <button type="button" class="quantity-btn" id="quantityPlus">+</button>
-                        </div>
-                        
                         <div class="product-meta mt-4">
                             <p><strong>Category:</strong> ${product.category || 'General'}</p>
-                            <p><strong>Rating:</strong> ⭐ ${product.rating || '4.0'}/5</p>
+                        </div>
+                        
+                        <div class="d-flex mt-4">
+                            <button class="btn btn-buy-now flex-fill me-2" onclick="buyNow('${product.id}')">
+                                <i class="fas fa-bolt me-2"></i>Buy Now
+                            </button>
+                            <button class="btn btn-primary flex-fill ms-2" onclick="addToCart('${product.id}')">
+                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             `;
-            
-            // Add event listeners for color and size selection
-            setTimeout(() => {
-                const colorSwatches = document.querySelectorAll('.color-swatch');
-                colorSwatches.forEach(swatch => {
-                    swatch.addEventListener('click', function() {
-                        colorSwatches.forEach(s => s.classList.remove('active'));
-                        this.classList.add('active');
-                    });
-                });
-                
-                const sizeOptions = document.querySelectorAll('.size-option');
-                sizeOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        sizeOptions.forEach(o => o.classList.remove('active'));
-                        this.classList.add('active');
-                    });
-                });
-                
-                // Quantity controls
-                document.getElementById('quantityMinus').addEventListener('click', function() {
-                    const input = document.getElementById('quantityInput');
-                    let value = parseInt(input.value);
-                    if (value > 1) {
-                        input.value = value - 1;
-                    }
-                });
-                
-                document.getElementById('quantityPlus').addEventListener('click', function() {
-                    const input = document.getElementById('quantityInput');
-                    let value = parseInt(input.value);
-                    const max = parseInt(input.max);
-                    if (value < max) {
-                        input.value = value + 1;
-                    }
-                });
-                
-                // Select first options by default if available
-                if (colorSwatches.length > 0) {
-                    colorSwatches[0].classList.add('active');
-                }
-                if (sizeOptions.length > 0) {
-                    sizeOptions[0].classList.add('active');
-                }
-            }, 100);
             
             // Initialize the product view carousel
             setTimeout(() => {
@@ -2222,6 +2140,9 @@
             toggleCart(); // Close cart sidebar
             showSection('checkout');
             updateCheckoutSummary();
+            
+            // Auto scroll to top
+            scrollToTop();
         }
 
         // Update Checkout Summary
@@ -2610,104 +2531,6 @@
             `;
         }
 
-        // Wishlist Functions
-        function toggleWishlist(productId) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!product) return;
-            
-            const existingIndex = wishlist.findIndex(item => item.id === productId);
-            
-            if (existingIndex !== -1) {
-                // Remove from wishlist
-                wishlist.splice(existingIndex, 1);
-                showToast(`${product.name} removed from wishlist`);
-                
-                // Animate the wishlist button
-                const wishlistBtn = document.querySelector(`[onclick="toggleWishlist('${productId}')"]`);
-                if (wishlistBtn) {
-                    wishlistBtn.classList.remove('active');
-                    wishlistBtn.style.animation = 'none';
-                    setTimeout(() => {
-                        wishlistBtn.style.animation = 'heartBeat 0.6s';
-                    }, 10);
-                }
-            } else {
-                // Add to wishlist
-                wishlist.push({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.images?.[0]
-                });
-                showToast(`${product.name} added to wishlist`);
-                
-                // Animate the wishlist button
-                const wishlistBtn = document.querySelector(`[onclick="toggleWishlist('${productId}')"]`);
-                if (wishlistBtn) {
-                    wishlistBtn.classList.add('active');
-                    wishlistBtn.style.animation = 'none';
-                    setTimeout(() => {
-                        wishlistBtn.style.animation = 'heartBeat 0.6s';
-                    }, 10);
-                }
-            }
-            
-            updateWishlist();
-        }
-
-        function updateWishlist() {
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-            updateWishlistUI();
-        }
-
-        function updateWishlistUI() {
-            // Update wishlist count in navigation if needed
-        }
-
-        function displayWishlist() {
-            const wishlistContainer = document.getElementById('wishlist-container');
-            
-            if (wishlist.length === 0) {
-                wishlistContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="fas fa-heart fa-3x text-muted mb-3"></i>
-                        <h3>Your Wishlist is Empty</h3>
-                        <p class="text-muted">Add products you like to your wishlist for easy access later.</p>
-                        <button class="btn btn-primary" onclick="showSection('products')">Browse Products</button>
-                    </div>
-                `;
-            } else {
-                wishlistContainer.innerHTML = wishlist.map(product => `
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="product-card">
-                            <div class="product-image-container">
-                                <img src="${product.image}" class="product-image" alt="${product.name}">
-                                <div class="product-actions">
-                                    <button class="action-btn wishlist-btn active" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">
-                                        <i class="fas fa-heart"></i>
-                                    </button>
-                                    <button class="action-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
-                                        <i class="fas fa-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-title" onclick="showProductView('${product.id}')">${product.name}</h3>
-                                <div class="product-price">
-                                    <span class="price-current">₹${product.price}</span>
-                                </div>
-                                <div class="product-actions-bottom">
-                                    <button class="btn btn-cart" onclick="event.stopPropagation(); addToCart('${product.id}')">
-                                        <i class="fas fa-cart-plus me-2"></i>Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
         // Newsletter Functions
         function subscribeNewsletter() {
             const email = document.getElementById('newsletterEmail').value.trim();
@@ -2830,6 +2653,9 @@
                 
                 resultsCount.textContent = `${filteredProducts.length} results found for "${query}"`;
             }, 1000);
+            
+            // Auto scroll to top
+            scrollToTop();
         }
 
         // Filter by Category - Redirect to search section
@@ -2877,6 +2703,9 @@
                 
                 resultsCount.textContent = `${filteredProducts.length} results found in "${category}" category`;
             }, 1000);
+            
+            // Auto scroll to top
+            scrollToTop();
         }
 
         // Share Product
