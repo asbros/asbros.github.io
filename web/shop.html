@@ -76,7 +76,6 @@
         .product-price { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
         .price-current { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
         .price-original { font-size: 1rem; color: var(--light-text); text-decoration: line-through; }
-        .product-rating { color: var(--warning-color); font-size: 0.9rem; }
         .product-actions-bottom { display: flex; gap: 10px; }
         .btn-cart, .btn-buy { flex: 1; padding: 10px; border: none; border-radius: 25px; font-weight: 600; transition: var(--transition); }
         .btn-cart { background: var(--primary-color); color: white; }
@@ -198,10 +197,6 @@
         .footer a { color: #ccc; transition: var(--transition); text-decoration: none; cursor: pointer; }
         .footer a:hover { color: white; }
         .footer-bottom { border-top: 1px solid #444; padding-top: 20px; margin-top: 40px; text-align: center; color: #ccc; }
-        .newsletter-form { display: flex; margin-top: 15px; }
-        .newsletter-input { flex: 1; padding: 10px 15px; border: none; border-radius: 4px 0 0 4px; }
-        .newsletter-btn { background: var(--primary-color); color: white; border: none; padding: 0 20px; border-radius: 0 4px 4px 0; cursor: pointer; transition: var(--transition); }
-        .newsletter-btn:hover { background: var(--secondary-color); }
         .coupon-section { background: #f9f9f9; border-radius: var(--border-radius); padding: 20px; margin-bottom: 20px; }
         .coupon-input { flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 4px 0 0 4px; }
         .coupon-btn { background: var(--primary-color); color: white; border: none; padding: 0 20px; border-radius: 0 4px 4px 0; cursor: pointer; transition: var(--transition); }
@@ -218,19 +213,32 @@
         .product-view-action-btn:hover { background: var(--primary-color); color: white; transform: scale(1.1); }
         .display-options { display: flex; gap: 10px; flex-wrap: wrap; }
         .display-option { padding: 8px 15px; border: 1px solid #e9ecef; border-radius: 8px; background: #f9f9f9; font-weight: 600; }
+        .product-view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .share-btn { background: var(--primary-color); color: white; border: none; padding: 10px 15px; border-radius: 25px; font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .share-btn:hover { background: var(--secondary-color); transform: translateY(-2px); }
+        .product-view-buttons { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-add-to-cart { background: var(--primary-color); color: white; border: none; padding: 15px 30px; border-radius: 25px; font-weight: 700; font-size: 1.1rem; transition: var(--transition); flex: 1; }
+        .btn-add-to-cart:hover { background: var(--secondary-color); transform: translateY(-2px); }
+        .track-cancel-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-cancel-order { background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; transition: var(--transition); }
+        .btn-cancel-order:hover { background: #c82333; transform: translateY(-2px); }
+        .btn-cancel-order:disabled { background: #6c757d; cursor: not-allowed; transform: none; }
         @media (max-width: 1200px) { .hero-title { font-size: 3rem; } .section-title { font-size: 2.2rem; } }
         @media (max-width: 992px) { .hero-title { font-size: 2.5rem; } .section-title { font-size: 2rem; } .product-view-image, .product-view-image img { height: 400px; } .search-container { display: none; } .mobile-search-icon { display: block; } }
-        @media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; } .cart-sidebar { width: 100%; right: -100%; } .product-view-title { font-size: 2rem; } .product-view-price { font-size: 1.7rem; } .fixed-cart-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; } .product-view-image, .product-view-image img { height: 350px; } .fullscreen-carousel-btn { width: 40px; height: 40px; font-size: 1.2rem; } .close-fullscreen { width: 40px; height: 40px; font-size: 1.5rem; } }
-        @media (max-width: 576px) { .hero-title { font-size: 1.8rem; } .hero-section { padding: 80px 0; } .section-title { font-size: 1.8rem; } .product-view-title { font-size: 1.7rem; } .product-view-price { font-size: 1.5rem; } .product-view-image, .product-view-image img { height: 300px; } .search-container { max-width: 100%; } }
+        @media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; } .cart-sidebar { width: 100%; right: -100%; } .product-view-title { font-size: 2rem; } .product-view-price { font-size: 1.7rem; } .fixed-cart-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; } .product-view-image, .product-view-image img { height: 350px; } .fullscreen-carousel-btn { width: 40px; height: 40px; font-size: 1.2rem; } .close-fullscreen { width: 40px; height: 40px; font-size: 1.5rem; } .product-view-header { flex-direction: column; align-items: flex-start; gap: 15px; } .product-view-buttons { flex-direction: column; } }
+        @media (max-width: 576px) { .hero-title { font-size: 1.8rem; } .hero-section { padding: 80px 0; } .section-title { font-size: 1.8rem; } .product-view-title { font-size: 1.7rem; } .product-view-price { font-size: 1.5rem; } .product-view-image, .product-view-image img { height: 300px; } .search-container { max-width: 100%; } .track-cancel-buttons { flex-direction: column; } }
         .loading { display: flex; justify-content: center; align-items: center; height: 300px; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(46, 125, 50, 0.2); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .section { display: none; }
         .section.active { display: block; }
-        .back-button { background: none; border: none; color: var(--primary-color); font-weight: 600; margin-bottom: 20px; cursor: pointer; }
+        .back-button { background: none; border: none; color: var(--primary-color); font-weight: 600; margin-bottom: 20px; cursor: pointer; display: flex; align-items: center; }
         .back-button:hover { color: var(--secondary-color); }
         input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
         input[type="number"] {-moz-appearance: textfield;}
+        .invalid-feedback { display: none; width: 100%; margin-top: 0.25rem; font-size: 0.875rem; color: #dc3545; }
+        .was-validated .form-control:invalid { border-color: #dc3545; }
+        .was-validated .form-control:valid { border-color: #198754; }
     </style>
 </head>
 <body>
@@ -250,9 +258,6 @@
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <!--<li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('home'); closeMobileMenu();">Home</a>
-                    </li>-->
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="showSection('products'); closeMobileMenu();">Products</a>
                     </li>
@@ -323,20 +328,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Newsletter Section -->
-        <div class="container my-5">
-            <div class="row justify-content-center">
-                <div class="col-md-8 text-center">
-                    <h3>Subscribe to Our Newsletter</h3>
-                    <p class="text-muted">Get the latest updates on new products and upcoming sales</p>
-                    <div class="newsletter-form">
-                        <input type="email" class="newsletter-input" id="newsletterEmail" placeholder="Your email address">
-                        <button class="newsletter-btn" onclick="subscribeNewsletter()">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Products Section -->
@@ -376,9 +367,14 @@
     <!-- Product View Section -->
     <section id="product-view-section" class="section">
         <div class="container py-5">
-            <button class="back-button" onclick="goBack()">
-                <i class="fas fa-arrow-left me-2"></i>Back to Products
-            </button>
+            <div class="product-view-header">
+                <button class="back-button" onclick="goBack()">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Products
+                </button>
+                <button class="share-btn" id="productShareBtn">
+                    <i class="fas fa-share-alt me-1"></i>Share
+                </button>
+            </div>
             <div class="row" id="product-view-container">
                 <!-- Single product view will be loaded here -->
             </div>
@@ -460,23 +456,26 @@
                         <div class="checkout-container">
                             <div class="p-4">
                                 <h4 class="mb-4">Shipping Information</h4>
-                                <form id="checkoutForm" class="checkout-form">
+                                <form id="checkoutForm" class="checkout-form needs-validation" novalidate>
                                     <div class="form-section">
                                         <h5 class="form-section-title">Personal Details</h5>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="customerName" class="form-label">Full Name *</label>
                                                 <input type="text" class="form-control" id="customerName" required>
+                                                <div class="invalid-feedback">Please enter your full name.</div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="customerPhone" class="form-label">Phone Number *</label>
-                                                <input type="number" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits." class="form-control" id="customerPhone" required>
+                                                <input type="tel" class="form-control" id="customerPhone" pattern="[0-9]{10}" required>
+                                                <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
                                                 <label for="customerEmail" class="form-label">Email Address *</label>
                                                 <input type="email" class="form-control" id="customerEmail" required>
+                                                <div class="invalid-feedback">Please enter a valid email address.</div>
                                             </div>
                                         </div>
                                     </div>
@@ -487,22 +486,26 @@
                                             <div class="col-12">
                                                 <label for="customerAddress" class="form-label">Full Address *</label>
                                                 <textarea class="form-control" id="customerAddress" rows="3" required></textarea>
+                                                <div class="invalid-feedback">Please enter your complete address.</div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="customerPincode" class="form-label">PIN Code *</label>
-                                                <input type="number" maxlength="6" pattern="\d{6}" title="Please enter exactly 6 digits." class="form-control" id="customerPincode" required>
+                                                <input type="text" class="form-control" id="customerPincode" pattern="[0-9]{6}" required>
+                                                <div class="invalid-feedback">Please enter a valid 6-digit PIN code.</div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="customerCity" class="form-label">City *</label>
                                                 <input type="text" class="form-control" id="customerCity" required>
+                                                <div class="invalid-feedback">Please enter your city.</div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
                                                 <label for="customerState" class="form-label">State *</label>
                                                 <input type="text" class="form-control" id="customerState" required>
+                                                <div class="invalid-feedback">Please enter your state.</div>
                                             </div>
                                         </div>
                                     </div>
@@ -513,18 +516,10 @@
                                             <div class="shipping-option">
                                                 <div>
                                                     <input type="radio" id="standardShipping" name="shippingMethod" value="standard" checked>
-                                                    <label for="standardShipping" class="shipping-name">Standard Shipping</label>
+                                                    <label for="standardShipping" class="shipping-name">Standard Delivery</label>
                                                     <p class="mb-0 text-muted">Delivery in 5-7 business days</p>
                                                 </div>
-                                                <span class="shipping-price">Free</span>
-                                            </div>
-                                            <div class="shipping-option">
-                                                <div>
-                                                    <input type="radio" id="expressShipping" name="shippingMethod" value="express">
-                                                    <label for="expressShipping" class="shipping-name">Express Shipping</label>
-                                                    <p class="mb-0 text-muted">Delivery in 2-3 business days</p>
-                                                </div>
-                                                <span class="shipping-price">₹99</span>
+                                                <span class="shipping-price">₹50</span>
                                             </div>
                                         </div>
                                     </div>
@@ -570,7 +565,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Shipping:</span>
-                                    <span id="shipping-cost">Free</span>
+                                    <span id="shipping-cost">₹50</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Discount:</span>
@@ -616,11 +611,12 @@
                     </ul>
                 </div>
                 <div class="col-md-3">
-                    <h5>Newsletter</h5>
-                    <p>Subscribe to get special offers and updates</p>
-                    <div class="newsletter-form">
-                        <input type="email" class="newsletter-input" id="footerNewsletterEmail" placeholder="Your email">
-                        <button class="newsletter-btn" onclick="subscribeNewsletterFooter()">Subscribe</button>
+                    <h5>Stay Connected</h5>
+                    <p>Follow us on social media for updates and offers</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -656,9 +652,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>We offer two shipping options:</p>
-                    <p><strong>Standard Shipping:</strong> Free delivery within 5-7 business days</p>
-                    <p><strong>Express Shipping:</strong> ₹99 for delivery within 2-3 business days</p>
+                    <p>We offer standard shipping:</p>
+                    <p><strong>Standard Delivery:</strong> ₹50 delivery charge within 5-7 business days</p>
                     <p>All orders are processed within 24 hours of placement. You will receive a tracking number once your order ships.</p>
                 </div>
             </div>
@@ -788,7 +783,6 @@
         // Global Variables
         let allProducts = [];
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let newsletterSubscribers = JSON.parse(localStorage.getItem('newsletterSubscribers')) || [];
         let currentView = 'home';
         let previousSection = 'home';
         let currentProductImages = [];
@@ -805,6 +799,30 @@
         let touchStartX = 0;
         let touchEndX = 0;
         let appliedCoupon = null;
+        let currentProductId = null;
+
+        // Color mapping for color swatches
+        const colorMap = {
+            'Black': '#000000',
+            'White': '#ffffff',
+            'Red': '#ff0000',
+            'Blue': '#0000ff',
+            'Green': '#008000',
+            'Yellow': '#ffff00',
+            'Pink': '#ffc0cb',
+            'Purple': '#800080',
+            'Orange': '#ffa500',
+            'Gray': '#808080',
+            'Brown': '#a52a2a',
+            'Navy': '#000080',
+            'Teal': '#008080',
+            'Maroon': '#800000',
+            'Olive': '#808000',
+            'Silver': '#c0c0c0',
+            'Gold': '#ffd700',
+            'Beige': '#f5f5dc',
+            'Charcoal': '#36454f'
+        };
 
         // DOM Elements
         const cartSidebar = document.getElementById('cartSidebar');
@@ -833,37 +851,7 @@
         const mobileSearchContainer = document.getElementById('mobileSearchContainer');
         const mobileSearchInput = document.getElementById('mobileSearchInput');
         const mobileSearchBtn = document.getElementById('mobileSearchBtn');
-
-        // Color mapping for color swatches
-        const colorMap = {
-            'Black': '#000000',
-            'White': '#ffffff',
-            'Red': '#ff0000',
-            'Blue': '#0000ff',
-            'Green': '#008000',
-            'Yellow': '#ffff00',
-            'Pink': '#ffc0cb',
-            'Purple': '#800080',
-            'Orange': '#ffa500',
-            'Gray': '#808080',
-            'Brown': '#a52a2a',
-            'Navy': '#000080',
-            'Teal': '#008080',
-            'Maroon': '#800000',
-            'Olive': '#808000',
-            'Silver': '#c0c0c0',
-            'Gold': '#ffd700',
-            'Beige': '#f5f5dc',
-            'Charcoal': '#36454f'
-        };
-
-        // Available coupons
-        const coupons = {
-            'WELCOME10': { discount: 10, type: 'percentage' },
-            'SAVE20': { discount: 20, type: 'percentage' },
-            'FREESHIP': { discount: 99, type: 'fixed', shipping: true },
-            'FLAT50': { discount: 50, type: 'fixed' }
-        };
+        const productShareBtn = document.getElementById('productShareBtn');
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
@@ -918,6 +906,16 @@
             trackOrderInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     trackOrderById();
+                }
+            });
+            
+            // Product share button
+            productShareBtn.addEventListener('click', function() {
+                if (currentProductId) {
+                    const product = allProducts.find(p => p.id === currentProductId);
+                    if (product) {
+                        shareProduct(currentProductId, product.name);
+                    }
                 }
             });
             
@@ -1088,6 +1086,7 @@
             previousSection = currentView;
             showSection('product-view');
             updateURL(null, productId);
+            currentProductId = productId;
             
             // Small delay to ensure section is visible
             setTimeout(() => {
@@ -1337,10 +1336,6 @@
                                 <div>
                                     <span class="price-current">₹${product.price}</span>
                                     ${product.originalPrice ? `<span class="price-original ms-2">₹${product.originalPrice}</span>` : ''}
-                                </div>
-                                <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <span>${product.rating || '4.0'}</span>
                                 </div>
                             </div>
                             <div class="product-actions-bottom">
@@ -1695,12 +1690,12 @@
                     <div class="product-view-image">
                         ${createProductViewCarousel(images, product.id, product.name)}
                     </div>
-                    <div class="product-view-actions">
-                        <button class="product-view-action-btn" onclick="addToCart('${product.id}')">
-                            <i class="fas fa-cart-plus"></i>
+                    <div class="product-view-buttons">
+                        <button class="btn btn-add-to-cart" onclick="addToCart('${product.id}')">
+                            <i class="fas fa-cart-plus me-2"></i>Add to Cart
                         </button>
-                        <button class="product-view-action-btn" onclick="shareProduct('${product.id}', '${product.name}')">
-                            <i class="fas fa-share-alt"></i>
+                        <button class="btn btn-buy-now" onclick="buyNow('${product.id}')">
+                            <i class="fas fa-bolt me-2"></i>Buy Now
                         </button>
                     </div>
                 </div>
@@ -1718,9 +1713,12 @@
                         ${colors.length > 0 ? `
                             <div class="options-container">
                                 <div class="option-title">Available Colors</div>
-                                <div class="display-options">
+                                <div class="color-swatches">
                                     ${colors.map(color => `
-                                        <div class="display-option">${color}</div>
+                                        <div class="color-swatch" 
+                                             title="${color}" 
+                                             style="background-color: ${colorMap[color] || color}; cursor: default;">
+                                        </div>
                                     `).join('')}
                                 </div>
                             </div>
@@ -1740,15 +1738,6 @@
                         
                         <div class="product-meta mt-4">
                             <p><strong>Category:</strong> ${product.category || 'General'}</p>
-                        </div>
-                        
-                        <div class="d-flex mt-4">
-                            <button class="btn btn-buy-now flex-fill me-2" onclick="buyNow('${product.id}')">
-                                <i class="fas fa-bolt me-2"></i>Buy Now
-                            </button>
-                            <button class="btn btn-primary flex-fill ms-2" onclick="addToCart('${product.id}')">
-                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -1802,194 +1791,8 @@
             }, 3000);
         }
 
-        // Add to Cart with Size/Color Selection
+        // Add to Cart
         function addToCart(productId) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!product) return;
-            
-            // Check if product has size or color options
-            const hasOptions = (product.sizes && product.sizes.length > 0) || 
-                              (product.colors && product.colors.length > 0);
-            
-            if (hasOptions) {
-                showSizeColorPopup(product, false);
-            } else {
-                addToCartDirect(productId);
-            }
-        }
-
-        // Show Size/Color Selection Popup
-        function showSizeColorPopup(product, isBuyNow = false) {
-            let sizeOptions = '';
-            let colorOptions = '';
-            
-            if (product.sizes && product.sizes.length > 0) {
-                sizeOptions = `
-                    <div class="mb-3">
-                        <label class="form-label">Select Size *</label>
-                        <div class="d-flex flex-wrap gap-2" id="popupSizeOptions">
-                            ${product.sizes.map(size => `
-                                <button type="button" class="btn btn-outline-primary size-option-popup" data-size="${size}">${size}</button>
-                            `).join('')}
-                        </div>
-                        <div class="text-danger mt-1" id="sizeError" style="display: none;">Please select a size</div>
-                    </div>
-                `;
-            }
-            
-            if (product.colors && product.colors.length > 0) {
-                colorOptions = `
-                    <div class="mb-3">
-                        <label class="form-label">Select Color *</label>
-                        <div class="color-swatches" id="popupColorOptions">
-                            ${product.colors.map(color => `
-                                <div class="color-swatch" data-color="${color}" title="${color}" style="background-color: ${colorMap[color] || color};"></div>
-                            `).join('')}
-                        </div>
-                        <div class="text-danger mt-1" id="colorError" style="display: none;">Please select a color</div>
-                    </div>
-                `;
-            }
-            
-            Swal.fire({
-                title: `Select Options for ${product.name}`,
-                html: `
-                    <div class="text-start">
-                        ${sizeOptions}
-                        ${colorOptions}
-                        <div class="quantity-selector mt-3">
-                            <span class="me-3"><strong>Quantity:</strong></span>
-                            <button type="button" class="quantity-btn" id="popupMinus">-</button>
-                            <input type="number" class="quantity-input" id="popupQuantity" value="1" min="1" max="10">
-                            <button type="button" class="quantity-btn" id="popupPlus">+</button>
-                        </div>
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: isBuyNow ? 'Buy Now' : 'Add to Cart',
-                preConfirm: () => {
-                    const selectedSize = document.querySelector('.size-option-popup.active')?.dataset.size || '';
-                    const selectedColor = document.querySelector('.color-swatch.active')?.dataset.color || '';
-                    const quantity = parseInt(document.getElementById('popupQuantity').value);
-                    
-                    // Validate required fields
-                    let isValid = true;
-                    
-                    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
-                        document.getElementById('sizeError').style.display = 'block';
-                        isValid = false;
-                    } else {
-                        document.getElementById('sizeError').style.display = 'none';
-                    }
-                    
-                    if (product.colors && product.colors.length > 0 && !selectedColor) {
-                        document.getElementById('colorError').style.display = 'block';
-                        isValid = false;
-                    } else {
-                        document.getElementById('colorError').style.display = 'none';
-                    }
-                    
-                    if (!isValid) {
-                        return false;
-                    }
-                    
-                    return {
-                        size: selectedSize,
-                        color: selectedColor,
-                        quantity: quantity
-                    };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    if (isBuyNow) {
-                        buyNowWithOptions(product.id, result.value.size, result.value.color, result.value.quantity);
-                    } else {
-                        addToCartWithOptions(product.id, result.value.size, result.value.color, result.value.quantity);
-                    }
-                }
-            });
-            
-            // Add event listeners to size and color options
-            setTimeout(() => {
-                document.querySelectorAll('.size-option-popup').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        document.querySelectorAll('.size-option-popup').forEach(b => b.classList.remove('active', 'btn-primary'));
-                        document.querySelectorAll('.size-option-popup').forEach(b => b.classList.add('btn-outline-primary'));
-                        this.classList.remove('btn-outline-primary');
-                        this.classList.add('active', 'btn-primary');
-                        document.getElementById('sizeError').style.display = 'none';
-                    });
-                });
-                
-                document.querySelectorAll('.color-swatch').forEach(swatch => {
-                    swatch.addEventListener('click', function() {
-                        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-                        this.classList.add('active');
-                        document.getElementById('colorError').style.display = 'none';
-                    });
-                });
-                
-                // Quantity controls
-                document.getElementById('popupMinus').addEventListener('click', function() {
-                    const input = document.getElementById('popupQuantity');
-                    let value = parseInt(input.value);
-                    if (value > 1) {
-                        input.value = value - 1;
-                    }
-                });
-                
-                document.getElementById('popupPlus').addEventListener('click', function() {
-                    const input = document.getElementById('popupQuantity');
-                    let value = parseInt(input.value);
-                    if (value < 10) {
-                        input.value = value + 1;
-                    }
-                });
-                
-                // Select first options by default if available
-                const firstSizeOption = document.querySelector('.size-option-popup');
-                if (firstSizeOption) {
-                    firstSizeOption.click();
-                }
-                
-                const firstColorOption = document.querySelector('.color-swatch');
-                if (firstColorOption) {
-                    firstColorOption.click();
-                }
-            }, 100);
-        }
-
-        // Add to Cart with Selected Options
-        function addToCartWithOptions(productId, size, color, quantity) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!product) return;
-            
-            const existingItem = cart.find(item => 
-                item.id === productId && 
-                item.size === size && 
-                item.color === color
-            );
-            
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.images?.[0],
-                    size: size,
-                    color: color,
-                    quantity: quantity
-                });
-            }
-            
-            updateCart();
-            showToast(`${product.name} added to cart!`);
-        }
-
-        // Add to Cart Directly (without options)
-        function addToCartDirect(productId) {
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
             
@@ -2026,14 +1829,12 @@
                     <img src="${item.image}" class="cart-item-image" alt="${item.name}">
                     <div class="cart-item-details">
                         <h6 class="cart-item-title">${item.name}</h6>
-                        ${item.size ? `<p class="mb-1 small">Size: ${item.size}</p>` : ''}
-                        ${item.color ? `<p class="mb-1 small">Color: ${item.color}</p>` : ''}
                         <div class="cart-item-price">₹${item.price} x ${item.quantity}</div>
                         <div class="d-flex align-items-center mt-2">
-                            <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', '${item.size || ''}', '${item.color || ''}', -1)">-</button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', -1)">-</button>
                             <span class="mx-2">${item.quantity}</span>
-                            <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', '${item.size || ''}', '${item.color || ''}', 1)">+</button>
-                            <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeFromCart('${item.id}', '${item.size || ''}', '${item.color || ''}')">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', 1)">+</button>
+                            <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeFromCart('${item.id}')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -2054,16 +1855,12 @@
         }
 
         // Update Cart Item Quantity
-        function updateCartItemQuantity(productId, size, color, change) {
-            const item = cart.find(item => 
-                item.id === productId && 
-                item.size === size && 
-                item.color === color
-            );
+        function updateCartItemQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
             if (item) {
                 item.quantity += change;
                 if (item.quantity <= 0) {
-                    removeFromCart(productId, size, color);
+                    removeFromCart(productId);
                 } else {
                     updateCart();
                 }
@@ -2071,12 +1868,8 @@
         }
 
         // Remove from Cart
-        function removeFromCart(productId, size, color) {
-            cart = cart.filter(item => 
-                !(item.id === productId && 
-                item.size === size && 
-                item.color === color)
-            );
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
             updateCart();
         }
 
@@ -2086,48 +1879,19 @@
             const quantity = 1;
             
             if (product) {
-                // Check if product has options
-                const hasOptions = (product.sizes && product.sizes.length > 0) || 
-                                  (product.colors && product.colors.length > 0);
+                // Create temporary order for buy now without affecting cart
+                tempOrder = [{
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.images?.[0],
+                    quantity: quantity
+                }];
                 
-                if (hasOptions) {
-                    showSizeColorPopup(product, true);
-                } else {
-                    // Create temporary order for buy now without affecting cart
-                    tempOrder = [{
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        image: product.images?.[0],
-                        quantity: quantity
-                    }];
-                    
-                    isBuyNowFlow = true;
-                    // Redirect to checkout page
-                    proceedToCheckout();
-                }
+                isBuyNowFlow = true;
+                // Redirect to checkout page
+                proceedToCheckout();
             }
-        }
-
-        // Buy Now with Options - Redirect to checkout page for single product
-        function buyNowWithOptions(productId, size, color, quantity) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!product) return;
-            
-            // Create temporary order for buy now without affecting cart
-            tempOrder = [{
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.images?.[0],
-                size: size,
-                color: color,
-                quantity: quantity
-            }];
-            
-            isBuyNowFlow = true;
-            // Redirect to checkout page
-            proceedToCheckout();
         }
 
         // Proceed to Checkout
@@ -2150,31 +1914,21 @@
             const items = isBuyNowFlow ? tempOrder : cart;
             const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // Calculate shipping cost
-            const shippingMethod = document.querySelector('input[name="shippingMethod"]:checked');
-            const shippingCost = shippingMethod && shippingMethod.value === 'express' ? 99 : 0;
+            // Fixed shipping cost
+            const shippingCost = 50;
             
             // Calculate discount
             let discount = 0;
             if (appliedCoupon) {
-                const coupon = coupons[appliedCoupon];
-                if (coupon.type === 'percentage') {
-                    discount = (subtotal * coupon.discount) / 100;
-                } else {
-                    discount = coupon.discount;
-                }
-                
-                // If coupon provides free shipping, set shipping cost to 0
-                if (coupon.shipping) {
-                    document.getElementById('shipping-cost').textContent = 'Free';
-                    discount += shippingCost;
-                }
+                // Coupon will be validated from Firebase in applyCoupon function
+                // For now, we'll use the discount value that was set
+                discount = appliedCoupon.discountValue || 0;
             }
             
             const total = subtotal + shippingCost - discount;
             
             document.getElementById('subtotal').textContent = `₹${subtotal}`;
-            document.getElementById('shipping-cost').textContent = shippingCost === 0 ? 'Free' : `₹${shippingCost}`;
+            document.getElementById('shipping-cost').textContent = `₹${shippingCost}`;
             document.getElementById('discount').textContent = `-₹${discount}`;
             document.getElementById('checkout-total').textContent = `₹${total}`;
             
@@ -2185,8 +1939,6 @@
                     <img src="${item.image}" class="checkout-item-image" alt="${item.name}">
                     <div class="flex-grow-1">
                         <h6 class="mb-1">${item.name}</h6>
-                        ${item.size ? `<p class="mb-1 small">Size: ${item.size}</p>` : ''}
-                        ${item.color ? `<p class="mb-1 small">Color: ${item.color}</p>` : ''}
                         <p class="mb-0 text-muted">Quantity: ${item.quantity}</p>
                         <p class="mb-0 fw-bold">₹${item.price * item.quantity}</p>
                     </div>
@@ -2194,25 +1946,55 @@
             `).join('');
         }
 
-        // Apply Coupon
+        // Apply Coupon - Check from Firebase
         function applyCoupon() {
             const couponCode = document.getElementById('couponCode').value.toUpperCase();
             const couponMessage = document.getElementById('couponMessage');
             
-            if (coupons[couponCode]) {
-                appliedCoupon = couponCode;
-                couponMessage.innerHTML = `<span class="text-success">Coupon applied successfully!</span>`;
-                updateCheckoutSummary();
-            } else {
-                appliedCoupon = null;
-                couponMessage.innerHTML = `<span class="text-danger">Invalid coupon code. Please try again.</span>`;
-                updateCheckoutSummary();
+            if (!couponCode) {
+                couponMessage.innerHTML = `<span class="text-danger">Please enter a coupon code.</span>`;
+                return;
             }
+            
+            // Show loading
+            couponMessage.innerHTML = `<span class="text-muted">Checking coupon...</span>`;
+            
+            // Check coupon in Firebase
+            database.ref('coupons/' + couponCode).once('value')
+                .then((snapshot) => {
+                    const coupon = snapshot.val();
+                    
+                    if (coupon && coupon.active) {
+                        appliedCoupon = {
+                            code: couponCode,
+                            discountValue: coupon.discountValue,
+                            type: coupon.type
+                        };
+                        
+                        couponMessage.innerHTML = `<span class="text-success">Coupon applied successfully! Discount: ₹${coupon.discountValue}</span>`;
+                        updateCheckoutSummary();
+                    } else {
+                        appliedCoupon = null;
+                        couponMessage.innerHTML = `<span class="text-danger">Invalid or expired coupon code.</span>`;
+                        updateCheckoutSummary();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error checking coupon:', error);
+                    appliedCoupon = null;
+                    couponMessage.innerHTML = `<span class="text-danger">Error checking coupon. Please try again.</span>`;
+                    updateCheckoutSummary();
+                });
         }
 
         // Handle Checkout
         function handleCheckout(event) {
             event.preventDefault();
+            
+            // Validate form
+            if (!validateCheckoutForm()) {
+                return;
+            }
             
             const items = isBuyNowFlow ? tempOrder : cart;
             
@@ -2229,19 +2011,49 @@
                 pincode: document.getElementById('customerPincode').value,
                 city: document.getElementById('customerCity').value,
                 state: document.getElementById('customerState').value,
-                shippingMethod: document.querySelector('input[name="shippingMethod"]:checked').value,
-                paymentMethod: 'cod' // Only cash on delivery
+                shippingMethod: 'standard',
+                paymentMethod: 'cod'
             };
-            
-            // Validate form
-            if (!formData.name || !formData.phone || !formData.email || !formData.address || 
-                !formData.pincode || !formData.city || !formData.state) {
-                Swal.fire('Error!', 'Please fill all required fields.', 'error');
-                return;
-            }
             
             // Process order
             processOrder(formData, items);
+        }
+
+        // Validate Checkout Form
+        function validateCheckoutForm() {
+            const form = document.getElementById('checkoutForm');
+            
+            // Check if form is valid
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return false;
+            }
+            
+            // Custom validation for phone number (10 digits)
+            const phoneInput = document.getElementById('customerPhone');
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phoneInput.value)) {
+                phoneInput.classList.add('is-invalid');
+                phoneInput.nextElementSibling.textContent = 'Please enter a valid 10-digit phone number.';
+                return false;
+            } else {
+                phoneInput.classList.remove('is-invalid');
+                phoneInput.classList.add('is-valid');
+            }
+            
+            // Custom validation for pincode (6 digits)
+            const pincodeInput = document.getElementById('customerPincode');
+            const pincodePattern = /^[0-9]{6}$/;
+            if (!pincodePattern.test(pincodeInput.value)) {
+                pincodeInput.classList.add('is-invalid');
+                pincodeInput.nextElementSibling.textContent = 'Please enter a valid 6-digit PIN code.';
+                return false;
+            } else {
+                pincodeInput.classList.remove('is-invalid');
+                pincodeInput.classList.add('is-valid');
+            }
+            
+            return true;
         }
 
         // Process Order
@@ -2252,23 +2064,13 @@
             // Calculate order total
             const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // Calculate shipping cost
-            const shippingCost = formData.shippingMethod === 'express' ? 99 : 0;
+            // Fixed shipping cost
+            const shippingCost = 50;
             
             // Calculate discount
             let discount = 0;
             if (appliedCoupon) {
-                const coupon = coupons[appliedCoupon];
-                if (coupon.type === 'percentage') {
-                    discount = (subtotal * coupon.discount) / 100;
-                } else {
-                    discount = coupon.discount;
-                }
-                
-                // If coupon provides free shipping, set shipping cost to 0
-                if (coupon.shipping) {
-                    discount += shippingCost;
-                }
+                discount = appliedCoupon.discountValue || 0;
             }
             
             const total = subtotal + shippingCost - discount;
@@ -2295,7 +2097,7 @@
                 orderId: orderId,
                 items: items,
                 subtotal: `₹${subtotal}`,
-                shipping: formData.shippingMethod === 'express' ? '₹99' : 'Free',
+                shipping: `₹${shippingCost}`,
                 discount: `₹${discount}`,
                 total: `₹${total}`,
                 orderDate: orderDate,
@@ -2325,6 +2127,7 @@
                                 <p>Thank you for your order, <strong>${formData.name}</strong>!</p>
                                 <p>Your order ID is: <strong>${orderId}</strong></p>
                                 <p>We will contact you at <strong>${formData.phone}</strong> for confirmation.</p>
+                                <button class="btn btn-primary mt-3" onclick="trackOrderById('${orderId}')">Track Your Order</button>
                             </div>
                         `,
                         icon: 'success',
@@ -2374,7 +2177,6 @@
                             return {
                                 ...order,
                                 status: firebaseOrder ? firebaseOrder.status : 'unknown',
-                                // Add any other details you want from Firebase
                                 items: firebaseOrder ? firebaseOrder.items : []
                             };
                         })
@@ -2391,7 +2193,7 @@
                 // Wait for all Firebase queries to complete
                 Promise.all(orderPromises).then(ordersWithStatus => {
                     ordersContainer.innerHTML = ordersWithStatus.map(order => `
-                        <div class="order-card" onclick="showOrderDetails('${order.orderId}')">
+                        <div class="order-card">
                             <div class="order-header">
                                 <div>
                                     <h5 class="order-id">Order #${order.orderId}</h5>
@@ -2403,51 +2205,46 @@
                                 <p><strong>Products:</strong> ${order.productNames}</p>
                             </div>
                             <div class="order-total">Total: ${order.total}</div>
+                            <div class="track-cancel-buttons">
+                                <button class="btn btn-outline-primary btn-sm" onclick="trackOrderById('${order.orderId}')">
+                                    <i class="fas fa-truck me-1"></i>Track Order
+                                </button>
+                                <button class="btn btn-cancel-order btn-sm" onclick="cancelOrder('${order.orderId}')" ${order.status !== 'pending' ? 'disabled' : ''}>
+                                    <i class="fas fa-times me-1"></i>Cancel Order
+                                </button>
+                            </div>
                         </div>
                     `).join('');
                 });
             }
         }
 
-        // Show Order Details from Firebase
-        function showOrderDetails(orderId) {
-            database.ref('orders/' + orderId).once('value')
-                .then(snapshot => {
-                    const order = snapshot.val();
-                    
-                    if (!order) {
-                        Swal.fire('Error!', 'Order not found.', 'error');
-                        return;
-                    }
-                    
-                    Swal.fire({
-                        title: `Order #${order.orderId}`,
-                        html: `
-                            <div class="text-start">
-                                <p><strong>Order Date:</strong> ${new Date(order.orderDate).toLocaleDateString()}</p>
-                                <p><strong>Status:</strong> <span class="order-status status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span></p>
-                                <p><strong>Subtotal:</strong> ${order.subtotal}</p>
-                                <p><strong>Shipping:</strong> ${order.shipping}</p>
-                                <p><strong>Discount:</strong> ${order.discount}</p>
-                                <p><strong>Total:</strong> ${order.total}</p>
-                                <p><strong>Shipping Address:</strong> ${order.address}, ${order.city}, ${order.state} - ${order.pincode}</p>
-                                <p><strong>Contact:</strong> ${order.phone}, ${order.email}</p>
-                                <p><strong>Products:</strong> ${order.productNames}</p>
-                            </div>
-                        `,
-                        confirmButtonText: 'OK',
-                        showCancelButton: true,
-                        cancelButtonText: 'Track Order'
-                    }).then((result) => {
-                        if (result.isCanceled) {
-                            trackOrderById(orderId);
-                        }
+        // Cancel Order
+        function cancelOrder(orderId) {
+            Swal.fire({
+                title: 'Cancel Order?',
+                text: 'Are you sure you want to cancel this order? This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Cancel Order',
+                cancelButtonText: 'Keep Order'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Update order status in Firebase
+                    database.ref('orders/' + orderId).update({
+                        status: 'cancelled'
+                    })
+                    .then(() => {
+                        showToast('Order cancelled successfully');
+                        // Reload orders to reflect the change
+                        loadOrders();
+                    })
+                    .catch((error) => {
+                        console.error('Error cancelling order:', error);
+                        showToast('Error cancelling order');
                     });
-                })
-                .catch(error => {
-                    console.error('Error fetching order details:', error);
-                    Swal.fire('Error!', 'Could not load order details.', 'error');
-                });
+                }
+            });
         }
 
         // Track Order by ID from Firebase
@@ -2531,70 +2328,21 @@
             `;
         }
 
-        // Newsletter Functions
-        function subscribeNewsletter() {
-            const email = document.getElementById('newsletterEmail').value.trim();
-            if (!email) {
-                showToast('Please enter your email address');
-                return;
+        // Share Product
+        function shareProduct(productId, productName) {
+            const shareUrl = `${window.location.origin}${window.location.pathname}?product=${productId}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: productName,
+                    text: `Check out ${productName} on Shubh Laabh`,
+                    url: shareUrl
+                });
+            } else {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    showToast('Product link copied to clipboard');
+                });
             }
-            
-            if (!isValidEmail(email)) {
-                showToast('Please enter a valid email address');
-                return;
-            }
-            
-            // Check if already subscribed
-            if (newsletterSubscribers.includes(email)) {
-                showToast('You are already subscribed to our newsletter');
-                return;
-            }
-            
-            // Add to subscribers
-            newsletterSubscribers.push(email);
-            localStorage.setItem('newsletterSubscribers', JSON.stringify(newsletterSubscribers));
-            
-            showToast('Thank you for subscribing to our newsletter!');
-            document.getElementById('newsletterEmail').value = '';
-        }
-
-        function subscribeNewsletterFooter() {
-            const email = document.getElementById('footerNewsletterEmail').value.trim();
-            if (!email) {
-                showToast('Please enter your email address');
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showToast('Please enter a valid email address');
-                return;
-            }
-            
-            // Check if already subscribed
-            if (newsletterSubscribers.includes(email)) {
-                showToast('You are already subscribed to our newsletter');
-                return;
-            }
-            
-            // Add to subscribers
-            newsletterSubscribers.push(email);
-            localStorage.setItem('newsletterSubscribers', JSON.stringify(newsletterSubscribers));
-            
-            showToast('Thank you for subscribing to our newsletter!');
-            document.getElementById('footerNewsletterEmail').value = '';
-        }
-
-        function isValidEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        // Notify subscribers when new product is added
-        function notifySubscribers(product) {
-            // In a real application, this would send emails to all subscribers
-            // For this demo, we'll just log and show a toast
-            console.log(`Notifying ${newsletterSubscribers.length} subscribers about new product: ${product.name}`);
-            showToast(`Newsletter subscribers notified about new product: ${product.name}`);
         }
 
         // Search Functionality
@@ -2706,23 +2454,6 @@
             
             // Auto scroll to top
             scrollToTop();
-        }
-
-        // Share Product
-        function shareProduct(productId, productName) {
-            const shareUrl = `${window.location.origin}${window.location.pathname}?product=${productId}`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: productName,
-                    text: `Check out ${productName} on Shubh Laabh`,
-                    url: shareUrl
-                });
-            } else {
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    showToast('Product link copied to clipboard');
-                });
-            }
         }
 
         // Handle browser back/forward buttons
