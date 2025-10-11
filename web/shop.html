@@ -153,21 +153,6 @@
         .carousel-indicators { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; }
         .carousel-indicator { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: var(--transition); }
         .carousel-indicator.active { background: white; }
-        .fullscreen-image-viewer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 1070; opacity: 0; visibility: hidden; transition: var(--transition); }
-        .fullscreen-image-viewer.active { opacity: 1; visibility: visible; }
-        .fullscreen-image-container { max-width: 95vw; max-height: 95vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .fullscreen-image { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; transition: transform 0.3s ease; }
-        .fullscreen-image.zoomed { cursor: grab; }
-        .fullscreen-image.zoomed:active { cursor: grabbing; }
-        .close-fullscreen { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.5); border: none; color: white; font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: var(--transition); }
-        .close-fullscreen:hover { background: rgba(0,0,0,0.7); }
-        .fullscreen-carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); border: none; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); font-size: 1.5rem; }
-        .fullscreen-carousel-btn:hover { background: rgba(0,0,0,0.7); }
-        .fullscreen-prev { left: 20px; }
-        .fullscreen-next { right: 20px; }
-        .zoom-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 2; }
-        .zoom-btn { background: rgba(0,0,0,0.5); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); font-size: 1.2rem; }
-        .zoom-btn:hover { background: rgba(0,0,0,0.7); }
         .shimmer { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--border-radius); }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .shimmer-card { height: 400px; margin-bottom: 30px; }
@@ -225,7 +210,7 @@
         .btn-cancel-order:disabled { background: #6c757d; cursor: not-allowed; transform: none; }
         @media (max-width: 1200px) { .hero-title { font-size: 3rem; } .section-title { font-size: 2.2rem; } }
         @media (max-width: 992px) { .hero-title { font-size: 2.5rem; } .section-title { font-size: 2rem; } .product-view-image, .product-view-image img { height: 400px; } .search-container { display: none; } .mobile-search-icon { display: block; } }
-        @media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; } .cart-sidebar { width: 100%; right: -100%; } .product-view-title { font-size: 2rem; } .product-view-price { font-size: 1.7rem; } .fixed-cart-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; } .product-view-image, .product-view-image img { height: 350px; } .fullscreen-carousel-btn { width: 40px; height: 40px; font-size: 1.2rem; } .close-fullscreen { width: 40px; height: 40px; font-size: 1.5rem; } .product-view-header { flex-direction: column; align-items: flex-start; gap: 15px; } .product-view-buttons { flex-direction: column; } }
+        @media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; } .cart-sidebar { width: 100%; right: -100%; } .product-view-title { font-size: 2rem; } .product-view-price { font-size: 1.7rem; } .fixed-cart-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; } .product-view-image, .product-view-image img { height: 350px; } .product-view-header { flex-direction: column; align-items: flex-start; gap: 15px; } .product-view-buttons { flex-direction: column; } }
         @media (max-width: 576px) { .hero-title { font-size: 1.8rem; } .hero-section { padding: 80px 0; } .section-title { font-size: 1.8rem; } .product-view-title { font-size: 1.7rem; } .product-view-price { font-size: 1.5rem; } .product-view-image, .product-view-image img { height: 300px; } .search-container { max-width: 100%; } .track-cancel-buttons { flex-direction: column; } }
         .loading { display: flex; justify-content: center; align-items: center; height: 300px; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(46, 125, 50, 0.2); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s linear infinite; }
@@ -239,6 +224,47 @@
         .invalid-feedback { display: none; width: 100%; margin-top: 0.25rem; font-size: 0.875rem; color: #dc3545; }
         .was-validated .form-control:invalid { border-color: #dc3545; }
         .was-validated .form-control:valid { border-color: #198754; }
+        
+        /* Swal popup customization */
+        .swal2-popup .swal2-content {
+            text-align: left;
+        }
+        .swal-option-group {
+            margin-bottom: 20px;
+        }
+        .swal-option-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .swal-quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .swal-quantity-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .swal-quantity-btn:hover {
+            background: #f5f5f5;
+        }
+        .swal-quantity-input {
+            width: 60px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -728,33 +754,6 @@
         <span id="toastMessage">Product added to cart!</span>
     </div>
 
-    <!-- Fullscreen Image Viewer -->
-    <div class="fullscreen-image-viewer" id="fullscreenImageViewer">
-        <button class="close-fullscreen" id="closeFullscreen">
-            <i class="fas fa-times"></i>
-        </button>
-        <button class="fullscreen-carousel-btn fullscreen-prev" id="fullscreenPrev">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="fullscreen-carousel-btn fullscreen-next" id="fullscreenNext">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-        <div class="zoom-controls">
-            <button class="zoom-btn" id="zoomIn">
-                <i class="fas fa-search-plus"></i>
-            </button>
-            <button class="zoom-btn" id="zoomOut">
-                <i class="fas fa-search-minus"></i>
-            </button>
-            <button class="zoom-btn" id="resetZoom">
-                <i class="fas fa-sync-alt"></i>
-            </button>
-        </div>
-        <div class="fullscreen-image-container">
-            <img src="" alt="" class="fullscreen-image" id="fullscreenImage">
-        </div>
-    </div>
-
     <div class="overlay" id="overlay"></div>
 
     <!-- Scripts -->
@@ -785,21 +784,15 @@
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let currentView = 'home';
         let previousSection = 'home';
-        let currentProductImages = [];
-        let currentFullscreenImageIndex = 0;
         let isBuyNowFlow = false;
         let tempOrder = null;
-        let isZoomed = false;
-        let zoomLevel = 1;
-        let isDragging = false;
-        let startX, startY, scrollLeft, scrollTop;
-        let currentCarouselId = null;
-        let carouselPositions = {};
-        let isCarouselTouching = false;
-        let touchStartX = 0;
-        let touchEndX = 0;
         let appliedCoupon = null;
         let currentProductId = null;
+        let pendingProductAction = null; // 'addToCart' or 'buyNow'
+        let pendingProductId = null;
+        let selectedOptions = {};
+        let selectedQuantity = 1;
+        let carouselPositions = {};
 
         // Color mapping for color swatches
         const colorMap = {
@@ -837,14 +830,6 @@
         const searchBtn = document.getElementById('searchBtn');
         const toastNotification = document.getElementById('toastNotification');
         const toastMessage = document.getElementById('toastMessage');
-        const fullscreenImageViewer = document.getElementById('fullscreenImageViewer');
-        const fullscreenImage = document.getElementById('fullscreenImage');
-        const closeFullscreen = document.getElementById('closeFullscreen');
-        const fullscreenPrev = document.getElementById('fullscreenPrev');
-        const fullscreenNext = document.getElementById('fullscreenNext');
-        const zoomIn = document.getElementById('zoomIn');
-        const zoomOut = document.getElementById('zoomOut');
-        const resetZoom = document.getElementById('resetZoom');
         const trackOrderInput = document.getElementById('trackOrderInput');
         const trackOrderBtn = document.getElementById('trackOrderBtn');
         const mobileSearchToggle = document.getElementById('mobileSearchToggle');
@@ -884,23 +869,6 @@
                 }
             });
             
-            // Fullscreen image viewer
-            closeFullscreen.addEventListener('click', closeFullscreenViewer);
-            fullscreenPrev.addEventListener('click', showPrevFullscreenImage);
-            fullscreenNext.addEventListener('click', showNextFullscreenImage);
-            
-            // Zoom controls
-            zoomIn.addEventListener('click', zoomInImage);
-            zoomOut.addEventListener('click', zoomOutImage);
-            resetZoom.addEventListener('click', resetZoomImage);
-            
-            // Close fullscreen on overlay click
-            fullscreenImageViewer.addEventListener('click', function(e) {
-                if (e.target === fullscreenImageViewer) {
-                    closeFullscreenViewer();
-                }
-            });
-            
             // Track order functionality
             trackOrderBtn.addEventListener('click', trackOrderById);
             trackOrderInput.addEventListener('keypress', function(e) {
@@ -918,9 +886,6 @@
                     }
                 }
             });
-            
-            // Initialize carousels
-            initializeCarousels();
         });
 
         // Auto scroll to top when showing sections
@@ -1401,31 +1366,18 @@
                 }
                 
                 // Add touch event listeners
-                slides.addEventListener('touchstart', handleTouchStart, { passive: true });
-                slides.addEventListener('touchmove', handleTouchMove, { passive: true });
-                slides.addEventListener('touchend', handleTouchEnd);
+                let touchStartX = 0;
+                let touchEndX = 0;
                 
-                function handleTouchStart(e) {
-                    isCarouselTouching = true;
-                    currentCarouselId = carouselId;
+                slides.addEventListener('touchstart', function(e) {
                     touchStartX = e.touches[0].clientX;
-                }
+                }, { passive: true });
                 
-                function handleTouchMove(e) {
-                    if (!isCarouselTouching || currentCarouselId !== carouselId) return;
-                    
+                slides.addEventListener('touchmove', function(e) {
                     touchEndX = e.touches[0].clientX;
-                    const diff = touchStartX - touchEndX;
-                    
-                    // Apply temporary transform during swipe
-                    const currentPosition = carouselPositions[carouselId];
-                    slides.style.transform = `translateX(calc(-${currentPosition * 100}% - ${diff}px))`;
-                }
+                }, { passive: true });
                 
-                function handleTouchEnd() {
-                    if (!isCarouselTouching || currentCarouselId !== carouselId) return;
-                    
-                    isCarouselTouching = false;
+                slides.addEventListener('touchend', function() {
                     const diff = touchStartX - touchEndX;
                     const slideCount = slides.children.length;
                     
@@ -1438,11 +1390,8 @@
                             // Swipe right - previous slide
                             prevSlide(carouselId);
                         }
-                    } else {
-                        // Return to current slide
-                        goToSlide(carouselId, carouselPositions[carouselId]);
                     }
-                }
+                });
             });
         }
 
@@ -1497,164 +1446,6 @@
                     indicator.classList.remove('active');
                 }
             });
-        }
-
-        // Fullscreen Image Viewer
-        function openFullscreenImageViewer(productId, imageIndex) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!product) return;
-            
-            currentProductImages = product.images || [
-                'https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
-            ];
-            
-            currentFullscreenImageIndex = imageIndex;
-            fullscreenImage.src = currentProductImages[imageIndex];
-            fullscreenImageViewer.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Reset zoom when opening
-            resetZoomImage();
-            
-            // Add event listeners for zoom and drag
-            setupImageZoomAndDrag();
-        }
-
-        function closeFullscreenViewer() {
-            fullscreenImageViewer.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            // Remove event listeners
-            removeImageZoomAndDrag();
-        }
-
-        function showPrevFullscreenImage() {
-            currentFullscreenImageIndex = (currentFullscreenImageIndex - 1 + currentProductImages.length) % currentProductImages.length;
-            fullscreenImage.src = currentProductImages[currentFullscreenImageIndex];
-            resetZoomImage();
-        }
-
-        function showNextFullscreenImage() {
-            currentFullscreenImageIndex = (currentFullscreenImageIndex + 1) % currentProductImages.length;
-            fullscreenImage.src = currentProductImages[currentFullscreenImageIndex];
-            resetZoomImage();
-        }
-
-        // Zoom Functions
-        function zoomInImage() {
-            if (zoomLevel < 3) {
-                zoomLevel += 0.25;
-                applyZoom();
-            }
-        }
-
-        function zoomOutImage() {
-            if (zoomLevel > 0.5) {
-                zoomLevel -= 0.25;
-                applyZoom();
-            }
-        }
-
-        function resetZoomImage() {
-            zoomLevel = 1;
-            applyZoom();
-            
-            // Reset image position
-            fullscreenImage.style.transform = 'translate(0, 0)';
-        }
-
-        function applyZoom() {
-            fullscreenImage.style.transform = `scale(${zoomLevel})`;
-            
-            if (zoomLevel > 1) {
-                fullscreenImage.classList.add('zoomed');
-                isZoomed = true;
-            } else {
-                fullscreenImage.classList.remove('zoomed');
-                isZoomed = false;
-            }
-        }
-
-        // Setup image zoom and drag functionality
-        function setupImageZoomAndDrag() {
-            // Mouse events
-            fullscreenImage.addEventListener('mousedown', startDrag);
-            document.addEventListener('mousemove', dragImage);
-            document.addEventListener('mouseup', stopDrag);
-            
-            // Touch events for mobile
-            fullscreenImage.addEventListener('touchstart', startDragTouch);
-            document.addEventListener('touchmove', dragImageTouch);
-            document.addEventListener('touchend', stopDrag);
-        }
-
-        function removeImageZoomAndDrag() {
-            // Remove mouse events
-            fullscreenImage.removeEventListener('mousedown', startDrag);
-            document.removeEventListener('mousemove', dragImage);
-            document.removeEventListener('mouseup', stopDrag);
-            
-            // Remove touch events
-            fullscreenImage.removeEventListener('touchstart', startDragTouch);
-            document.removeEventListener('touchmove', dragImageTouch);
-            document.removeEventListener('touchend', stopDrag);
-        }
-
-        function startDrag(e) {
-            if (!isZoomed) return;
-            
-            isDragging = true;
-            startX = e.pageX - fullscreenImage.offsetLeft;
-            startY = e.pageY - fullscreenImage.offsetTop;
-            scrollLeft = fullscreenImage.scrollLeft;
-            scrollTop = fullscreenImage.scrollTop;
-            
-            e.preventDefault();
-        }
-
-        function startDragTouch(e) {
-            if (!isZoomed) return;
-            
-            isDragging = true;
-            const touch = e.touches[0];
-            startX = touch.pageX - fullscreenImage.offsetLeft;
-            startY = touch.pageY - fullscreenImage.offsetTop;
-            scrollLeft = fullscreenImage.scrollLeft;
-            scrollTop = fullscreenImage.scrollTop;
-            
-            e.preventDefault();
-        }
-
-        function dragImage(e) {
-            if (!isDragging || !isZoomed) return;
-            
-            e.preventDefault();
-            const x = e.pageX - fullscreenImage.offsetLeft;
-            const y = e.pageY - fullscreenImage.offsetTop;
-            const walkX = (x - startX) * 2;
-            const walkY = (y - startY) * 2;
-            
-            fullscreenImage.style.transform = `scale(${zoomLevel}) translate(${walkX}px, ${walkY}px)`;
-        }
-
-        function dragImageTouch(e) {
-            if (!isDragging || !isZoomed) return;
-            
-            e.preventDefault();
-            const touch = e.touches[0];
-            const x = touch.pageX - fullscreenImage.offsetLeft;
-            const y = touch.pageY - fullscreenImage.offsetTop;
-            const walkX = (x - startX) * 2;
-            const walkY = (y - startY) * 2;
-            
-            fullscreenImage.style.transform = `scale(${zoomLevel}) translate(${walkX}px, ${walkY}px)`;
-        }
-
-        function stopDrag() {
-            isDragging = false;
         }
 
         // Display Product View
@@ -1760,8 +1551,7 @@
                             <div class="carousel-slide">
                                 <img src="${image}" 
                                      class="product-image" 
-                                     alt="${productName}"
-                                     onclick="openFullscreenImageViewer('${productId}', ${index})">
+                                     alt="${productName}">
                             </div>
                         `).join('')}
                     </div>
@@ -1791,13 +1581,157 @@
             }, 3000);
         }
 
-        // Add to Cart
+        // Add to Cart with Options
         function addToCart(productId) {
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
             
-            const existingItem = cart.find(item => item.id === productId);
-            const quantity = 1;
+            // Check if product has options
+            const hasOptions = (product.sizes && product.sizes.length > 0) || 
+                              (product.colors && product.colors.length > 0);
+            
+            if (hasOptions) {
+                // Show options popup
+                pendingProductAction = 'addToCart';
+                pendingProductId = productId;
+                showOptionsPopup(product);
+            } else {
+                // Add directly to cart
+                addToCartDirect(productId);
+            }
+        }
+
+        // Show Options Popup (SweetAlert2)
+        function showOptionsPopup(product) {
+            let htmlContent = '';
+            
+            // Size options
+            if (product.sizes && product.sizes.length > 0) {
+                htmlContent += `
+                    <div class="swal-option-group">
+                        <label class="swal-option-label">Size</label>
+                        <div class="size-options">
+                            ${product.sizes.map(size => `
+                                <div class="size-option" onclick="selectOptionInPopup('size', '${size}', this)">${size}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Color options
+            if (product.colors && product.colors.length > 0) {
+                htmlContent += `
+                    <div class="swal-option-group">
+                        <label class="swal-option-label">Color</label>
+                        <div class="color-swatches">
+                            ${product.colors.map(color => `
+                                <div class="color-swatch" 
+                                     title="${color}" 
+                                     style="background-color: ${colorMap[color] || color};"
+                                     onclick="selectOptionInPopup('color', '${color}', this)">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Quantity selector
+            htmlContent += `
+                <div class="swal-option-group">
+                    <label class="swal-option-label">Quantity</label>
+                    <div class="swal-quantity-selector">
+                        <button type="button" class="swal-quantity-btn" onclick="updateQuantityInPopup(-1)">-</button>
+                        <input type="number" class="swal-quantity-input" id="swalQuantityInput" value="1" min="1" max="10">
+                        <button type="button" class="swal-quantity-btn" onclick="updateQuantityInPopup(1)">+</button>
+                    </div>
+                </div>
+            `;
+            
+            Swal.fire({
+                title: `Select Options for ${product.name}`,
+                html: htmlContent,
+                showCancelButton: true,
+                confirmButtonText: 'Add to Cart',
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    return validateOptionsSelection(product);
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Close popup and proceed with the action
+                    if (pendingProductAction === 'addToCart') {
+                        addToCartDirect(pendingProductId, selectedOptions, selectedQuantity);
+                    } else if (pendingProductAction === 'buyNow') {
+                        buyNowDirect(pendingProductId, selectedOptions, selectedQuantity);
+                    }
+                    
+                    // Reset pending action
+                    pendingProductAction = null;
+                    pendingProductId = null;
+                }
+            });
+            
+            selectedOptions = {}; // Reset selected options
+            selectedQuantity = 1; // Reset quantity
+        }
+
+        // Select Option in Popup
+        function selectOptionInPopup(type, value, element) {
+            // Update UI to show selected option
+            const options = document.querySelectorAll(`.${type}-option, .color-swatch`);
+            options.forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            element.classList.add('active');
+            
+            // Store the selected option
+            selectedOptions[type] = value;
+        }
+
+        // Update Quantity in Popup
+        function updateQuantityInPopup(change) {
+            const quantityInput = document.getElementById('swalQuantityInput');
+            let newQuantity = parseInt(quantityInput.value) + change;
+            
+            if (newQuantity < 1) newQuantity = 1;
+            if (newQuantity > 10) newQuantity = 10;
+            
+            quantityInput.value = newQuantity;
+            selectedQuantity = newQuantity;
+        }
+
+        // Validate Options Selection
+        function validateOptionsSelection(product) {
+            // Check if all required options are selected
+            const hasSizes = product.sizes && product.sizes.length > 0;
+            const hasColors = product.colors && product.colors.length > 0;
+            
+            if (hasSizes && !selectedOptions.size) {
+                Swal.showValidationMessage('Please select a size');
+                return false;
+            }
+            
+            if (hasColors && !selectedOptions.color) {
+                Swal.showValidationMessage('Please select a color');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Add to Cart Direct (after options selection)
+        function addToCartDirect(productId, options = {}, quantity = 1) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => 
+                item.id === productId && 
+                item.size === options.size && 
+                item.color === options.color
+            );
             
             if (existingItem) {
                 existingItem.quantity += quantity;
@@ -1807,7 +1741,9 @@
                     name: product.name,
                     price: product.price,
                     image: product.images?.[0],
-                    quantity: quantity
+                    quantity: quantity,
+                    size: options.size,
+                    color: options.color
                 });
             }
             
@@ -1824,23 +1760,33 @@
         // Update Cart UI
         function updateCartUI() {
             // Update cart items
-            cartItems.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <img src="${item.image}" class="cart-item-image" alt="${item.name}">
-                    <div class="cart-item-details">
-                        <h6 class="cart-item-title">${item.name}</h6>
-                        <div class="cart-item-price">₹${item.price} x ${item.quantity}</div>
-                        <div class="d-flex align-items-center mt-2">
-                            <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', -1)">-</button>
-                            <span class="mx-2">${item.quantity}</span>
-                            <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', 1)">+</button>
-                            <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeFromCart('${item.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
+            cartItems.innerHTML = cart.map(item => {
+                let optionsText = '';
+                if (item.size) optionsText += `Size: ${item.size} `;
+                if (item.color) {
+                    const colorHex = colorMap[item.color] || item.color;
+                    optionsText += `<span class="color-indicator" style="display: inline-block; width: 15px; height: 15px; background-color: ${colorHex}; border-radius: 50%; margin-right: 5px;"></span>`;
+                }
+                
+                return `
+                    <div class="cart-item">
+                        <img src="${item.image}" class="cart-item-image" alt="${item.name}">
+                        <div class="cart-item-details">
+                            <h6 class="cart-item-title">${item.name}</h6>
+                            ${optionsText ? `<p class="text-muted mb-1">${optionsText}</p>` : ''}
+                            <div class="cart-item-price">₹${item.price} x ${item.quantity}</div>
+                            <div class="d-flex align-items-center mt-2">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', '${item.size}', '${item.color}', -1)">-</button>
+                                <span class="mx-2">${item.quantity}</span>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="updateCartItemQuantity('${item.id}', '${item.size}', '${item.color}', 1)">+</button>
+                                <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeFromCart('${item.id}', '${item.size}', '${item.color}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
             
             // Update total
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -1855,12 +1801,17 @@
         }
 
         // Update Cart Item Quantity
-        function updateCartItemQuantity(productId, change) {
-            const item = cart.find(item => item.id === productId);
+        function updateCartItemQuantity(productId, size, color, change) {
+            const item = cart.find(item => 
+                item.id === productId && 
+                item.size === size && 
+                item.color === color
+            );
+            
             if (item) {
                 item.quantity += change;
                 if (item.quantity <= 0) {
-                    removeFromCart(productId);
+                    removeFromCart(productId, size, color);
                 } else {
                     updateCart();
                 }
@@ -1868,15 +1819,39 @@
         }
 
         // Remove from Cart
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
+        function removeFromCart(productId, size, color) {
+            cart = cart.filter(item => 
+                !(item.id === productId && 
+                item.size === size && 
+                item.color === color)
+            );
             updateCart();
         }
 
         // Buy Now - Redirect to checkout page for single product
         function buyNow(productId) {
             const product = allProducts.find(p => p.id === productId);
-            const quantity = 1;
+            
+            if (product) {
+                // Check if product has options
+                const hasOptions = (product.sizes && product.sizes.length > 0) || 
+                                  (product.colors && product.colors.length > 0);
+                
+                if (hasOptions) {
+                    // Show options popup
+                    pendingProductAction = 'buyNow';
+                    pendingProductId = productId;
+                    showOptionsPopup(product);
+                } else {
+                    // Buy directly
+                    buyNowDirect(productId);
+                }
+            }
+        }
+
+        // Buy Now Direct (after options selection)
+        function buyNowDirect(productId, options = {}, quantity = 1) {
+            const product = allProducts.find(p => p.id === productId);
             
             if (product) {
                 // Create temporary order for buy now without affecting cart
@@ -1885,7 +1860,9 @@
                     name: product.name,
                     price: product.price,
                     image: product.images?.[0],
-                    quantity: quantity
+                    quantity: quantity,
+                    size: options.size,
+                    color: options.color
                 }];
                 
                 isBuyNowFlow = true;
@@ -1934,16 +1911,26 @@
             
             // Update checkout items
             const checkoutItems = document.getElementById('checkout-items');
-            checkoutItems.innerHTML = items.map(item => `
-                <div class="checkout-item">
-                    <img src="${item.image}" class="checkout-item-image" alt="${item.name}">
-                    <div class="flex-grow-1">
-                        <h6 class="mb-1">${item.name}</h6>
-                        <p class="mb-0 text-muted">Quantity: ${item.quantity}</p>
-                        <p class="mb-0 fw-bold">₹${item.price * item.quantity}</p>
+            checkoutItems.innerHTML = items.map(item => {
+                let optionsText = '';
+                if (item.size) optionsText += `Size: ${item.size} `;
+                if (item.color) {
+                    const colorHex = colorMap[item.color] || item.color;
+                    optionsText += `<span class="color-indicator" style="display: inline-block; width: 15px; height: 15px; background-color: ${colorHex}; border-radius: 50%; margin-right: 5px;"></span>`;
+                }
+                
+                return `
+                    <div class="checkout-item">
+                        <img src="${item.image}" class="checkout-item-image" alt="${item.name}">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">${item.name}</h6>
+                            ${optionsText ? `<p class="mb-0 text-muted">${optionsText}</p>` : ''}
+                            <p class="mb-0 text-muted">Quantity: ${item.quantity}</p>
+                            <p class="mb-0 fw-bold">₹${item.price * item.quantity}</p>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Apply Coupon - Check from Firebase
@@ -2085,7 +2072,8 @@
                 orderId: orderId,
                 orderDate: orderDate,
                 productNames: productNames,
-                total: `₹${total}`
+                total: `₹${total}`,
+                status: status
             };
             
             // Save to localStorage
@@ -2192,29 +2180,36 @@
                 
                 // Wait for all Firebase queries to complete
                 Promise.all(orderPromises).then(ordersWithStatus => {
-                    ordersContainer.innerHTML = ordersWithStatus.map(order => `
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div>
-                                    <h5 class="order-id">Order #${order.orderId}</h5>
-                                    <p class="text-muted mb-0">Placed on ${new Date(order.orderDate).toLocaleDateString()}</p>
+                    ordersContainer.innerHTML = ordersWithStatus.map(order => {
+                        // Don't show track and cancel buttons for cancelled orders
+                        const showButtons = order.status !== 'cancelled';
+                        
+                        return `
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div>
+                                        <h5 class="order-id">Order #${order.orderId}</h5>
+                                        <p class="text-muted mb-0">Placed on ${new Date(order.orderDate).toLocaleDateString()}</p>
+                                    </div>
+                                    <span class="order-status status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
                                 </div>
-                                <span class="order-status status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
+                                <div class="order-items">
+                                    <p><strong>Products:</strong> ${order.productNames}</p>
+                                </div>
+                                <div class="order-total">Total: ${order.total}</div>
+                                ${showButtons ? `
+                                    <div class="track-cancel-buttons">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="trackOrderById('${order.orderId}')">
+                                            <i class="fas fa-truck me-1"></i>Track Order
+                                        </button>
+                                        <button class="btn btn-cancel-order btn-sm" onclick="cancelOrder('${order.orderId}')" ${order.status !== 'pending' ? 'disabled' : ''}>
+                                            <i class="fas fa-times me-1"></i>Cancel Order
+                                        </button>
+                                    </div>
+                                ` : ''}
                             </div>
-                            <div class="order-items">
-                                <p><strong>Products:</strong> ${order.productNames}</p>
-                            </div>
-                            <div class="order-total">Total: ${order.total}</div>
-                            <div class="track-cancel-buttons">
-                                <button class="btn btn-outline-primary btn-sm" onclick="trackOrderById('${order.orderId}')">
-                                    <i class="fas fa-truck me-1"></i>Track Order
-                                </button>
-                                <button class="btn btn-cancel-order btn-sm" onclick="cancelOrder('${order.orderId}')" ${order.status !== 'pending' ? 'disabled' : ''}>
-                                    <i class="fas fa-times me-1"></i>Cancel Order
-                                </button>
-                            </div>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
                 });
             }
         }
@@ -2235,6 +2230,14 @@
                         status: 'cancelled'
                     })
                     .then(() => {
+                        // Update localStorage
+                        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                        const orderIndex = orders.findIndex(order => order.orderId === orderId);
+                        if (orderIndex !== -1) {
+                            orders[orderIndex].status = 'cancelled';
+                            localStorage.setItem('orders', JSON.stringify(orders));
+                        }
+                        
                         showToast('Order cancelled successfully');
                         // Reload orders to reflect the change
                         loadOrders();
@@ -2247,7 +2250,7 @@
             });
         }
 
-        // Track Order by ID from Firebase
+        // Track Order by ID from Firebase - FIXED
         function trackOrderById(orderId = null) {
             const orderIdToTrack = orderId || trackOrderInput.value.trim();
             
@@ -2256,22 +2259,43 @@
                 return;
             }
             
+            // Show loading
+            showSection('track-order');
+            document.getElementById('track-order-container').innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner mb-3"></div>
+                    <p>Loading order details...</p>
+                </div>
+            `;
+            
             database.ref('orders/' + orderIdToTrack).once('value')
                 .then(snapshot => {
                     const order = snapshot.val();
                     
                     if (!order) {
-                        Swal.fire('Error!', 'Order not found. Please check your order ID.', 'error');
+                        document.getElementById('track-order-container').innerHTML = `
+                            <div class="text-center py-5">
+                                <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                                <h3>Order Not Found</h3>
+                                <p class="text-muted">The order ID you entered doesn't exist. Please check and try again.</p>
+                                <button class="btn btn-primary" onclick="showSection('orders')">Back to Orders</button>
+                            </div>
+                        `;
                         return;
                     }
                     
-                    // Show track order section
-                    showSection('track-order');
                     displayOrderTracking(order);
                 })
                 .catch(error => {
                     console.error('Error fetching order:', error);
-                    Swal.fire('Error!', 'Could not load order details.', 'error');
+                    document.getElementById('track-order-container').innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                            <h3>Error Loading Order</h3>
+                            <p class="text-muted">There was a problem loading the order details. Please try again.</p>
+                            <button class="btn btn-primary" onclick="showSection('orders')">Back to Orders</button>
+                        </div>
+                    `;
                 });
         }
 
@@ -2284,7 +2308,8 @@
                 { status: 'pending', label: 'Order Placed', icon: 'shopping-bag' },
                 { status: 'confirmed', label: 'Order Confirmed', icon: 'check-circle' },
                 { status: 'shipped', label: 'Shipped', icon: 'shipping-fast' },
-                { status: 'delivered', label: 'Delivered', icon: 'box-open' }
+                { status: 'delivered', label: 'Delivered', icon: 'box-open' },
+                { status: 'cancelled', label: 'Cancelled', icon: 'times-circle' }
             ];
             
             // Find current status index
@@ -2303,20 +2328,17 @@
                             ${allStatuses.map((status, index) => {
                                 const isCompleted = index <= currentStatusIndex;
                                 const isActive = index === currentStatusIndex;
+                                const isCancelled = order.status === 'cancelled';
                                 
                                 return `
-                                    <div class="timeline-step ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''}">
+                                    <div class="timeline-step ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''} ${isCancelled && status.status === 'cancelled' ? 'active' : ''}">
                                         <div class="timeline-icon">
                                             <i class="fas fa-${status.icon}"></i>
                                         </div>
                                         <div class="timeline-content">
                                             <h6 class="mb-1">${status.label}</h6>
                                             <p class="timeline-date mb-0">
-                                                ${isCompleted ? 
-                                                    new Date(new Date(order.orderDate).getTime() + (index * 24 * 60 * 60 * 1000)).toLocaleDateString() + 
-                                                    ' ' + new Date(new Date(order.orderDate).getTime() + (index * 24 * 60 * 60 * 1000)).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                                                    : 'Pending'
-                                                }
+                                                ${isCompleted ? 'Completed' : 'Pending'}
                                             </p>
                                         </div>
                                     </div>
