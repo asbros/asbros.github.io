@@ -24,6 +24,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -143,17 +146,6 @@
         .toast-notification { position: fixed; bottom: 20px; left: 20px; background: var(--success-color); color: white; padding: 15px 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); z-index: 1060; transform: translateY(100px); opacity: 0; transition: var(--transition); display: flex; align-items: center; }
         .toast-notification.show { transform: translateY(0); opacity: 1; }
         .toast-icon { margin-right: 10px; font-size: 1.2rem; }
-        .carousel-container { position: relative; overflow: hidden; border-radius: var(--border-radius); height: 100%; touch-action: pan-y pinch-zoom; }
-        .carousel-slides { display: flex; transition: transform 0.5s ease; height: 100%; }
-        .carousel-slide { min-width: 100%; height: 100%; flex-shrink: 0; }
-        .carousel-slide img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.7); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); z-index: 10; }
-        .carousel-btn:hover { background: white; }
-        .carousel-prev { left: 10px; }
-        .carousel-next { right: 10px; }
-        .carousel-indicators { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; }
-        .carousel-indicator { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: var(--transition); }
-        .carousel-indicator.active { background: white; }
         .shimmer { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--border-radius); }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .shimmer-card { height: 400px; margin-bottom: 30px; }
@@ -326,9 +318,271 @@
             font-weight: 700;
             font-size: 1.1rem;
         }
+        
+        /* SWIPER CAROUSEL STYLES - Only for product view */
+        .swiper {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--border-radius);
+        }
+        
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        
+        .swiper-button-next, .swiper-button-prev {
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .swiper-pagination-bullet {
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 1;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background: white;
+        }
+        
+        /* Product view swiper adjustments */
+        .product-view-image .swiper {
+            height: 500px;
+        }
+        
+        @media (max-width: 768px) {
+            .product-view-image .swiper {
+                height: 350px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .product-view-image .swiper {
+                height: 300px;
+            }
+        }
+        
+        /* IMAGE LIGHTBOX STYLES */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            width: auto;
+            height: auto;
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 1101;
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 1101;
+        }
+        
+        .lightbox-nav:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .lightbox-prev {
+            left: 20px;
+        }
+        
+        .lightbox-next {
+            right: 20px;
+        }
+        
+        .lightbox-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 1101;
+        }
+        
+        /* Full Screen Loading Screen */
+        .fullscreen-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .fullscreen-loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .loading-logo {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 2rem;
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Track Order Button */
+        .track-order-toggle {
+            margin-bottom: 20px;
+        }
+        
+        .track-order-form {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .track-order-form.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
+    <!-- Full Screen Loading Screen -->
+    <div class="fullscreen-loading" id="fullscreenLoading">
+        <div class="loading-content">
+            <div class="loading-logo">Shubh Laabh</div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Loading amazing products...</div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="imageLightbox">
+        <button class="lightbox-close" id="lightboxClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="lightbox-content">
+            <img class="lightbox-image" id="lightboxImage" src="" alt="">
+        </div>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
@@ -495,14 +749,17 @@
                 </button>
                 <h2 class="section-title">My Orders</h2>
                 
-                <!-- Track Order Form -->
+                <!-- Track Order Form - Hidden by default -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Track Your Order</h5>
-                        <div class="track-order-form">
-                            <div class="input-group">
+                        <button class="btn btn-outline-primary track-order-toggle" id="showTrackOrderForm">
+                            <i class="fas fa-truck me-1"></i>Track Order by ID
+                        </button>
+                        <div class="track-order-form" id="trackOrderForm">
+                            <div class="input-group mt-3">
                                 <input type="text" class="form-control" id="trackOrderInput" placeholder="Enter Order ID">
-                                <button class="btn btn-primary" style="display: none;" type="button" id="trackOrderBtn">Track Order</button>
+                                <button class="btn btn-primary" type="button" id="trackOrderBtn">Track Order</button>
                             </div>
                         </div>
                     </div>
@@ -554,7 +811,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="customerPhone" class="form-label">Phone Number *</label>
-                                                <input type="tel" class="form-control" id="customerPhone" pattern="[0-9]{10}" required>
+                                                <input type="number" class="form-control" id="customerPhone" pattern="[0-9]{10}" required>
                                                 <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div>
                                             </div>
                                         </div>
@@ -579,7 +836,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="customerPincode" class="form-label">PIN Code *</label>
-                                                <input type="text" class="form-control" id="customerPincode" pattern="[0-9]{6}" required>
+                                                <input type="number" class="form-control" id="customerPincode" pattern="[0-9]{6}" required>
                                                 <div class="invalid-feedback">Please enter a valid 6-digit PIN code.</div>
                                             </div>
                                             <div class="col-md-6">
@@ -820,6 +1077,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
@@ -853,7 +1111,10 @@
         let pendingProductId = null;
         let selectedOptions = {};
         let selectedQuantity = 1;
-        let carouselPositions = {};
+        let swiperInstances = {};
+        let isPageLoaded = false;
+        let lightboxImages = [];
+        let lightboxCurrentIndex = 0;
 
         // Color mapping for color swatches
         const colorMap = {
@@ -898,12 +1159,25 @@
         const mobileSearchInput = document.getElementById('mobileSearchInput');
         const mobileSearchBtn = document.getElementById('mobileSearchBtn');
         const productShareBtn = document.getElementById('productShareBtn');
+        const fullscreenLoading = document.getElementById('fullscreenLoading');
+        const loadingText = document.getElementById('loadingText');
+        const showTrackOrderForm = document.getElementById('showTrackOrderForm');
+        const trackOrderForm = document.getElementById('trackOrderForm');
+        const imageLightbox = document.getElementById('imageLightbox');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxCounter = document.getElementById('lightboxCounter');
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
+            // Show loading screen initially
+            showLoadingScreen('Loading amazing products...');
+            
+            // Load products and initialize the app
             loadProducts();
             updateCartUI();
-            handleURLParameters();
             
             // Cart event listeners
             fixedCartBtn.addEventListener('click', toggleCart);
@@ -938,6 +1212,11 @@
                 }
             });
             
+            // Show track order form button
+            showTrackOrderForm.addEventListener('click', function() {
+                trackOrderForm.classList.toggle('active');
+            });
+            
             // Product share button
             productShareBtn.addEventListener('click', function() {
                 if (currentProductId) {
@@ -947,7 +1226,83 @@
                     }
                 }
             });
+            
+            // Lightbox event listeners
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxPrev.addEventListener('click', showPrevImage);
+            lightboxNext.addEventListener('click', showNextImage);
+            
+            // Close lightbox on overlay click
+            imageLightbox.addEventListener('click', function(e) {
+                if (e.target === imageLightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            // Keyboard navigation for lightbox
+            document.addEventListener('keydown', function(e) {
+                if (imageLightbox.classList.contains('active')) {
+                    if (e.key === 'Escape') {
+                        closeLightbox();
+                    } else if (e.key === 'ArrowLeft') {
+                        showPrevImage();
+                    } else if (e.key === 'ArrowRight') {
+                        showNextImage();
+                    }
+                }
+            });
+            
+            // Handle URL parameters after a short delay to ensure DOM is ready
+            setTimeout(() => {
+                handleURLParameters();
+            }, 500);
         });
+
+        // Lightbox Functions
+        function openLightbox(images, index = 0) {
+            lightboxImages = images;
+            lightboxCurrentIndex = index;
+            lightboxImage.src = lightboxImages[lightboxCurrentIndex];
+            updateLightboxCounter();
+            imageLightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeLightbox() {
+            imageLightbox.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        function showNextImage() {
+            lightboxCurrentIndex = (lightboxCurrentIndex + 1) % lightboxImages.length;
+            lightboxImage.src = lightboxImages[lightboxCurrentIndex];
+            updateLightboxCounter();
+        }
+
+        function showPrevImage() {
+            lightboxCurrentIndex = (lightboxCurrentIndex - 1 + lightboxImages.length) % lightboxImages.length;
+            lightboxImage.src = lightboxImages[lightboxCurrentIndex];
+            updateLightboxCounter();
+        }
+
+        function updateLightboxCounter() {
+            lightboxCounter.textContent = `${lightboxCurrentIndex + 1} / ${lightboxImages.length}`;
+        }
+
+        // Show Loading Screen
+        function showLoadingScreen(message = 'Loading...') {
+            loadingText.textContent = message;
+            fullscreenLoading.classList.remove('hidden');
+        }
+
+        // Hide Loading Screen
+        function hideLoadingScreen() {
+            // Add a small delay for better UX
+            setTimeout(() => {
+                fullscreenLoading.classList.add('hidden');
+                isPageLoaded = true;
+            }, 500);
+        }
 
         // Auto scroll to top when showing sections
         function scrollToTop() {
@@ -982,49 +1337,105 @@
             }
         }
 
-        // Handle URL Parameters
+        // Handle URL Parameters - IMPROVED with conditional checks for all sections
         function handleURLParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const section = urlParams.get('section');
             const productId = urlParams.get('product');
             const searchQuery = urlParams.get('q');
+            const orderId = urlParams.get('orderId');
             
-            if (section === 'home' || !section) {
-                showSection('home');
-            } else if (section === 'products') {
-                showSection('products');
-            } else if (section === 'checkout') {
-                showSection('checkout');
-            } else if (section === 'orders') {
-                showSection('orders');
-            } else if (section === 'search') {
-                if (searchQuery) {
-                    searchInput.value = searchQuery;
-                    showSearchResults(searchQuery);
-                }
+            // Show loading screen for initial load
+            if (!isPageLoaded) {
+                showLoadingScreen('Loading content...');
             }
             
+            // Check for orderId parameter for direct tracking
+            if (orderId) {
+                // If orderId is present in URL, track that order
+                trackOrderById(orderId);
+                return;
+            }
+            
+            // Check for product parameter
             if (productId) {
-                // Wait for products to load
+                // Wait for products to load then show product view
                 const checkProductLoaded = setInterval(() => {
                     if (allProducts.length > 0) {
                         clearInterval(checkProductLoaded);
                         const product = allProducts.find(p => p.id === productId);
                         if (product) {
                             showProductView(productId);
+                            hideLoadingScreen();
                         } else {
                             showSection('home');
+                            hideLoadingScreen();
                             setTimeout(() => {
                                 showToast('Product not found');
                             }, 500);
                         }
                     }
                 }, 100);
-                
-                // Timeout after 5 seconds
-                setTimeout(() => {
-                    clearInterval(checkProductLoaded);
-                }, 5000);
+                return;
+            }
+            
+            // Check for search query
+            if (searchQuery) {
+                showSection('search');
+                searchInput.value = searchQuery;
+                showSearchResults(searchQuery);
+                hideLoadingScreen();
+                return;
+            }
+            
+            // Check for section parameter with conditional statements for all sections
+            if (section === 'home' || !section) {
+                showSection('home');
+                // We'll hide the loading screen after products are loaded in loadProducts()
+            } else if (section === 'products') {
+                showSection('products');
+                // Check if products are already loaded
+                if (allProducts.length > 0) {
+                    hideLoadingScreen();
+                } else {
+                    // Wait for products to load
+                    const checkProductsLoaded = setInterval(() => {
+                        if (allProducts.length > 0) {
+                            clearInterval(checkProductsLoaded);
+                            hideLoadingScreen();
+                        }
+                    }, 100);
+                }
+            } else if (section === 'categories') {
+                showSection('categories');
+                // Check if products are already loaded
+                if (allProducts.length > 0) {
+                    hideLoadingScreen();
+                } else {
+                    // Wait for products to load
+                    const checkProductsLoaded = setInterval(() => {
+                        if (allProducts.length > 0) {
+                            clearInterval(checkProductsLoaded);
+                            hideLoadingScreen();
+                        }
+                    }, 100);
+                }
+            } else if (section === 'checkout') {
+                showSection('checkout');
+                hideLoadingScreen();
+            } else if (section === 'orders') {
+                showSection('orders');
+                hideLoadingScreen();
+            } else if (section === 'track-order') {
+                showSection('track-order');
+                hideLoadingScreen();
+            } else if (section === 'search') {
+                showSection('search');
+                hideLoadingScreen();
+            } else {
+                // Default to home section for any unknown section
+                showSection('home');
+                // We'll hide the loading screen after products are loaded in loadProducts()
             }
         }
 
@@ -1085,9 +1496,9 @@
                     displayAllCategories();
                 }
                 
-                // Initialize carousels after section change
+                // Initialize swipers after section change (only for product view)
                 setTimeout(() => {
-                    initializeCarousels();
+                    initializeSwipers();
                 }, 100);
                 
                 // Auto scroll to top
@@ -1157,6 +1568,9 @@
                         displayCategories();
                         displayFeaturedProducts();
                         displayAllProducts();
+                        
+                        // Hide loading screen after products are loaded
+                        hideLoadingScreen();
                     } else {
                         // No products found in Firebase
                         const featuredContainer = document.getElementById('featured-products');
@@ -1177,6 +1591,9 @@
                                 <p class="text-muted">There are no products in the store at the moment.</p>
                             </div>
                         `;
+                        
+                        // Hide loading screen
+                        hideLoadingScreen();
                     }
                 })
                 .catch((error) => {
@@ -1200,6 +1617,9 @@
                             <p class="text-muted">There was a problem loading products. Please try again later.</p>
                         </div>
                     `;
+                    
+                    // Hide loading screen
+                    hideLoadingScreen();
                 });
         }
 
@@ -1299,11 +1719,6 @@
                 `;
             } else {
                 featuredContainer.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
-                
-                // Initialize carousels after products are loaded
-                setTimeout(() => {
-                    initializeCarousels();
-                }, 100);
             }
         }
 
@@ -1321,15 +1736,10 @@
                 `;
             } else {
                 productsContainer.innerHTML = allProducts.map(product => createProductCard(product)).join('');
-                
-                // Initialize carousels after products are loaded
-                setTimeout(() => {
-                    initializeCarousels();
-                }, 100);
             }
         }
 
-        // Create Product Card HTML
+        // Create Product Card HTML with Single Image (No Carousel)
         function createProductCard(product) {
             const images = product.images || [
                 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
@@ -1344,7 +1754,11 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product-card">
                         <div class="product-image-container">
-                            ${createImageCarousel(images, product.id, product.name)}
+                            <img src="${images[0]}" 
+                                 class="product-image" 
+                                 alt="${product.name}"
+                                 onclick="showProductView('${product.id}')"
+                                 loading="lazy">
                             <div class="product-badge">${discount > 0 ? discount + '% OFF' : 'Hot'}</div>
                             <div class="product-actions">
                                 <button class="action-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
@@ -1378,136 +1792,30 @@
             `;
         }
 
-        // Create Image Carousel
-        function createImageCarousel(images, productId, productName) {
-            const carouselId = `carousel-${productId}`;
-            
-            return `
-                <div class="carousel-container" id="${carouselId}">
-                    <div class="carousel-slides">
-                        ${images.map((image, index) => `
-                            <div class="carousel-slide">
-                                <img src="${image}" 
-                                     class="product-image" 
-                                     alt="${productName}"
-                                     onclick="showProductView('${productId}')">
-                            </div>
-                        `).join('')}
-                    </div>
-                    <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); prevSlide('${carouselId}')">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="carousel-btn carousel-next" onclick="event.stopPropagation(); nextSlide('${carouselId}')">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <div class="carousel-indicators">
-                        ${images.map((_, index) => `
-                            <div class="carousel-indicator ${index === 0 ? 'active' : ''}" 
-                                 onclick="event.stopPropagation(); goToSlide('${carouselId}', ${index})"></div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Initialize Carousels with Touch Support
-        function initializeCarousels() {
-            document.querySelectorAll('.carousel-container').forEach(carousel => {
-                const carouselId = carousel.id;
-                
-                // Initialize position tracking if not already done
-                if (!carouselPositions[carouselId]) {
-                    carouselPositions[carouselId] = 0;
-                }
-                
-                // Set initial transform
-                const slides = carousel.querySelector('.carousel-slides');
-                slides.style.transform = `translateX(-${carouselPositions[carouselId] * 100}%)`;
-                
-                // Add touch event listeners
-                let touchStartX = 0;
-                let touchEndX = 0;
-                
-                slides.addEventListener('touchstart', function(e) {
-                    touchStartX = e.touches[0].clientX;
-                }, { passive: true });
-                
-                slides.addEventListener('touchmove', function(e) {
-                    touchEndX = e.touches[0].clientX;
-                }, { passive: true });
-                
-                slides.addEventListener('touchend', function() {
-                    const diff = touchStartX - touchEndX;
-                    const slideCount = slides.children.length;
-                    
-                    // Determine if swipe was significant enough to change slide
-                    if (Math.abs(diff) > 50) {
-                        if (diff > 0) {
-                            // Swipe left - next slide
-                            nextSlide(carouselId);
-                        } else {
-                            // Swipe right - previous slide
-                            prevSlide(carouselId);
-                        }
-                    }
+        // Initialize Swipers (only for product view)
+        function initializeSwipers() {
+            // Initialize product view swiper
+            const productViewSwiper = document.getElementById('product-view-swiper');
+            if (productViewSwiper && !swiperInstances['product-view-swiper']) {
+                swiperInstances['product-view-swiper'] = new Swiper('#product-view-swiper', {
+                    loop: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                    },
                 });
-            });
+            }
         }
 
-        // Carousel Functions - FIXED
-        function prevSlide(carouselId) {
-            const carousel = document.getElementById(carouselId);
-            if (!carousel) return;
-            
-            const slides = carousel.querySelector('.carousel-slides');
-            const indicators = carousel.querySelectorAll('.carousel-indicator');
-            const slideCount = slides.children.length;
-            const currentIndex = carouselPositions[carouselId] || 0;
-            const newIndex = (currentIndex - 1 + slideCount) % slideCount;
-            
-            carouselPositions[carouselId] = newIndex;
-            slides.style.transform = `translateX(-${newIndex * 100}%)`;
-            updateIndicators(indicators, newIndex);
-        }
-
-        function nextSlide(carouselId) {
-            const carousel = document.getElementById(carouselId);
-            if (!carousel) return;
-            
-            const slides = carousel.querySelector('.carousel-slides');
-            const indicators = carousel.querySelectorAll('.carousel-indicator');
-            const slideCount = slides.children.length;
-            const currentIndex = carouselPositions[carouselId] || 0;
-            const newIndex = (currentIndex + 1) % slideCount;
-            
-            carouselPositions[carouselId] = newIndex;
-            slides.style.transform = `translateX(-${newIndex * 100}%)`;
-            updateIndicators(indicators, newIndex);
-        }
-
-        function goToSlide(carouselId, index) {
-            const carousel = document.getElementById(carouselId);
-            if (!carousel) return;
-            
-            const slides = carousel.querySelector('.carousel-slides');
-            const indicators = carousel.querySelectorAll('.carousel-indicator');
-            
-            carouselPositions[carouselId] = index;
-            slides.style.transform = `translateX(-${index * 100}%)`;
-            updateIndicators(indicators, index);
-        }
-
-        function updateIndicators(indicators, activeIndex) {
-            indicators.forEach((indicator, index) => {
-                if (index === activeIndex) {
-                    indicator.classList.add('active');
-                } else {
-                    indicator.classList.remove('active');
-                }
-            });
-        }
-
-        // Display Product View
+        // Display Product View with Swiper Carousel and Lightbox
         function displayProductView(productId) {
             const product = allProducts.find(p => p.id === productId);
             const container = document.getElementById('product-view-container');
@@ -1538,7 +1846,24 @@
             container.innerHTML = `
                 <div class="col-md-6">
                     <div class="product-view-image">
-                        ${createProductViewCarousel(images, product.id, product.name)}
+                        <div class="swiper" id="product-view-swiper">
+                            <div class="swiper-wrapper">
+                                ${images.map((image, index) => `
+                                    <div class="swiper-slide">
+                                        <img src="${image}" 
+                                             class="product-image" 
+                                             alt="${product.name}"
+                                             loading="lazy"
+                                             onclick="openLightbox(['${images.join("','")}'], ${index})">
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination"></div>
+                            <!-- Navigation buttons -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
                     <div class="product-view-buttons">
                         <button class="btn btn-add-to-cart" style="flex: 1;" onclick="addToCart('${product.id}')">
@@ -1593,41 +1918,10 @@
                 </div>
             `;
             
-            // Initialize the product view carousel
+            // Initialize the product view swiper
             setTimeout(() => {
-                initializeCarousels();
+                initializeSwipers();
             }, 100);
-        }
-
-        // Create Product View Carousel
-        function createProductViewCarousel(images, productId, productName) {
-            const carouselId = `product-view-carousel-${productId}`;
-            
-            return `
-                <div class="carousel-container" id="${carouselId}">
-                    <div class="carousel-slides">
-                        ${images.map((image, index) => `
-                            <div class="carousel-slide">
-                                <img src="${image}" 
-                                     class="product-image" 
-                                     alt="${productName}">
-                            </div>
-                        `).join('')}
-                    </div>
-                    <button class="carousel-btn carousel-prev" onclick="event.stopPropagation(); prevSlide('${carouselId}')">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="carousel-btn carousel-next" onclick="event.stopPropagation(); nextSlide('${carouselId}')">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <div class="carousel-indicators">
-                        ${images.map((_, index) => `
-                            <div class="carousel-indicator ${index === 0 ? 'active' : ''}" 
-                                 onclick="event.stopPropagation(); goToSlide('${carouselId}', ${index})"></div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
         }
 
         // Show Toast Notification
@@ -2555,11 +2849,6 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
-                    
-                    // Initialize carousels after search results are loaded
-                    setTimeout(() => {
-                        initializeCarousels();
-                    }, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found for "${query}"`;
@@ -2605,11 +2894,6 @@
                     `;
                 } else {
                     searchResults.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
-                    
-                    // Initialize carousels after category results are loaded
-                    setTimeout(() => {
-                        initializeCarousels();
-                    }, 100);
                 }
                 
                 resultsCount.textContent = `${filteredProducts.length} results found in "${category}" category`;
