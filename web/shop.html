@@ -252,8 +252,6 @@
   .fullscreen-loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color)); display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease; }
   .fullscreen-loading.hidden { opacity: 0; visibility: hidden; }
   .loading-content { text-align: center; color: white; }
-  .loading-logo { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 2rem; box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; }
-  .loading-logo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
   .track-order-toggle { margin-bottom: 20px; }
   .track-order-form { display: none; margin-top: 20px; }
   .track-order-form.active { display: block; }
@@ -265,9 +263,7 @@
  <!-- Full Screen Loading Screen -->
  <div class="fullscreen-loading" id="fullscreenLoading">
   <div class="loading-content">
-   <div class="loading-logo">
-    <h3 style="color: #fff">Shubh Labh</h3>
-   </div>
+    <h1 style="color: #fff">Shubh Labh</h1>
   </div>
  </div>
 
