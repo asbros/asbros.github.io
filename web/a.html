@@ -438,6 +438,34 @@
       display: none;
   }
   
+  .upload-container {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+  }
+  
+  .status {
+      margin-top: 10px;
+      font-style: italic;
+      color: #666;
+  }
+  
+  .progress {
+      margin-top: 10px;
+      height: 5px;
+      background-color: #f0f0f0;
+      border-radius: 2px;
+      overflow: hidden;
+  }
+  
+  .progress-bar {
+      height: 100%;
+      background-color: #4CAF50;
+      width: 0%;
+      transition: width 0.3s;
+  }
+  
   /* Mobile Styles */
   @media (max-width: 992px) {
       .sidebar {
@@ -658,32 +686,6 @@
           font-size: 0.8rem;
       }
   }
-  .upload-container {
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-  }
-  .status {
-      margin-top: 10px;
-      font-style: italic;
-      color: #666;
-  }
-  
-  .progress {
-      margin-top: 10px;
-      height: 5px;
-      background-color: #f0f0f0;
-      border-radius: 2px;
-      overflow: hidden;
-  }
-  
-  .progress-bar {
-      height: 100%;
-      background-color: #4CAF50;
-      width: 0%;
-      transition: width 0.3s;
-  }
  </style>
 </head>
 
@@ -887,18 +889,16 @@
        </div>
       </div>
       <div class="mb-3">
-       <label for="product-images" class="form-label">Product Images (URLs, one per line)</label>
-<div class="upload-container">
-  <input type="file" id="fileInput" multiple accept="image/*" oninput="uploadImages()">
-  <br>
-  <!--<button id="uploadBtn">Upload Images</button>-->
-  <div class="progress" id="progressContainer" style="display: none;">
-   <div class="progress-bar" id="progressBar"></div>
-  </div>
-
-  <div class="status" id="status"></div>
- </div>
-       <textarea class="form-control" id="product-images" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg" oninput="updateImagePreview()"></textarea>
+       <label for="product-images" class="form-label">Product Images</label>
+       <div class="upload-container">
+        <input type="file" id="fileInput" multiple accept="image/*">
+        <button type="button" class="btn btn-sm btn-admin mt-2" id="uploadBtn">Upload Images</button>
+        <div class="progress mt-2" id="progressContainer" style="display: none;">
+         <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="status" id="status"></div>
+       </div>
+       <textarea class="form-control mt-2" id="product-images" rows="3" placeholder="Image URLs will appear here after upload"></textarea>
        <div class="image-preview-container" id="image-preview-container">
         <!-- Image previews will be shown here -->
        </div>
@@ -1315,6 +1315,7 @@
   const cancelAddProductBtn = document.getElementById('cancel-add-product');
   const exportProductsBtn = document.getElementById('export-products-btn');
   const importProductsForm = document.getElementById('import-products-form');
+  const uploadBtn = document.getElementById('uploadBtn');
   
   // Admin data
   let adminPassword = localStorage.getItem('adminPassword') || 'as';
@@ -1419,6 +1420,9 @@
       
       // Export products button
       exportProductsBtn.addEventListener('click', exportProductsToJSON);
+      
+      // Image upload button
+      uploadBtn.addEventListener('click', uploadImages);
   });
   
   // Handle Login
@@ -2056,6 +2060,8 @@
               Swal.fire('Error!', 'There was a problem adding the product.', 'error');
           });
   }
+  
+  // Upload Images Function
   async function uploadImages() {
       const fileInput = document.getElementById('fileInput');
       const files = fileInput.files;
