@@ -2100,7 +2100,7 @@
               const data = await response.json();
               
               if (data.success) {
-                  const imageUrl = data.medium.url;
+                  const imageUrl = data.data.medium.url;
                   uploadedLinks.push(imageUrl);
                   linksArea.value += imageUrl + '\n';
                   updateImagePreview();
