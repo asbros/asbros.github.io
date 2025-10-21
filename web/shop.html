@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,10 +9,11 @@
  <meta name="keywords" content="Shubh Labh, online shopping, ecommerce, fashion, electronics">
  <meta property="og:title" content="Shubh Labh">
  <meta property="og:description" content="All you need is here. A secure, one-click (or guest) checkout process that gets you your goods faster.">
- <meta property="og:image" content="https://i.postimg.cc/d1y2KJSc/cropped-circle-image.png">
- <meta property="og:url" content="https://shubhlabh.github.io/">
+ <meta property="og:image" content="https://i.postimg.cc/FzqghVQ0/download.png">
+ <meta property="og:url" content="https://Shubh Labh.github.io/">
  <meta property="og:type" content="website">
- <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/d1y2KJSc/cropped-circle-image.png">
+ <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/FzqghVQ0/download.png">
+ <link href='https://asbros.github.io/as.webmanifest' rel='manifest'/>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +21,7 @@
  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
  <style>
-  :root { --primary-color: #2e7d32; --secondary-color: #4caf50; --accent-color: #81c784; --dark-color: #1b1b1b; --light-bg: #f5f5f5; --dark-text: #333; --light-text: #757575; --success-color: #4caf50; --warning-color: #ff9800; --border-radius: 8px; --box-shadow: 0 4px 12px rgba(0,0,0,0.4); --transition: all 0.3s ease; }
+  :root { --primary-color: #2e7d32; --secondary-color: #4caf50; --accent-color: #81c784; --dark-color: #1b1b1b; --light-bg: #f5f5f5; --dark-text: #333; --light-text: #757575; --success-color: #4caf50; --warning-color: #ff9800; --border-radius: 8px; --box-shadow: 0 4px 12px rgba(0,0,0,0.4); --transition: all 0.3s ease;  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   button{cursor: pointer;}
   body { font-family: 'Jost', sans-serif; background-color: var(--light-bg); color: var(--dark-text); line-height: 1.6; }
@@ -131,8 +131,8 @@
   .cart-item-price { color: var(--primary-color); font-weight: 700; }
   .cart-footer { padding: 20px; }
   .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
-.fixed-what-btn { position: fixed; bottom: 105px; right: 35px; width: 50px; height: 50px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--box-shadow); z-index: 1000; cursor: pointer; transition: var(--transition);}
-  .fixed-what-btn:hover { background: var(--secondary-color); transform: scale(1.1); }
+.fixed-what-btn { position: fixed; bottom: 105px; right: 35px; width: 50px; height: 50px; border-radius: 50%; background: #2e7d32; color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--box-shadow); z-index: 1000; cursor: pointer; transition: var(--transition);}
+  .fixed-what-btn:hover { transform: scale(1.1); }
   .fixed-cart-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--box-shadow); z-index: 1000; cursor: pointer; transition: var(--transition); animation: pulse 2s infinite; }
   .fixed-cart-btn:hover { background: var(--secondary-color); transform: scale(1.1); }
   .fixed-cart-badge { position: absolute; top: -5px; right: -5px; background: var(--secondary-color); color: white; border-radius: 50%; width: 24px; height: 24px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
@@ -170,10 +170,10 @@
   .footer a:hover { color: white; }
   .footer-bottom { border-top: 1px solid #444; padding-top: 20px; margin-top: 40px; text-align: center; color: #ccc; }
   .coupon-section { background: #f9f9f9; border-radius: var(--border-radius); padding: 20px; margin-bottom: 20px; }
-  .coupon-input { flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 4px 0 0 4px; }
-  .coupon-btn { background: var(--primary-color); color: white; border: none; padding: 0 20px; border-radius: 0 4px 4px 0; cursor: pointer; transition: var(--transition); }
+  .coupon-input { flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 4px 0 0 4px; width: 100%;}
+  .coupon-btn { background: var(--primary-color); color: white; border: none; padding: 10px 15px; border-radius: 0 4px 4px 0; cursor: pointer; transition: var(--transition); }
   .coupon-btn:hover { background: var(--secondary-color); }
-  .remove-coupon-btn { background: #dc3545; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; transition: var(--transition); margin-left: 10px; }
+  .remove-coupon-btn { background: #dc3545; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; transition: var(--transition); margin-top: 5px; }
   .remove-coupon-btn:hover { background: #c82333; }
   .shipping-options { margin-bottom: 20px; }
   .shipping-option { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
@@ -197,11 +197,11 @@
   .btn-cancel-order { background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; transition: var(--transition); }
   .btn-cancel-order:hover { background: #c82333; transform: translateY(-2px); }
   .btn-cancel-order:disabled { background: #6c757d; cursor: not-allowed; transform: none; }
-  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); } }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(250, 105, 105, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); } }
   @media (max-width: 1200px) { .hero-title { font-size: 3rem; } .section-title { font-size: 2.2rem; } }
   @media (max-width: 992px) { .hero-title { font-size: 2.5rem; } .section-title { font-size: 2rem; } .product-view-image, .product-view-image img { height: 400px; } .search-container { display: none; } .mobile-search-icon { display: block; } }
-  @media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; } .cart-sidebar { width: 100%; right: -100%; } .product-view-title { font-size: 2rem; } .product-view-price { font-size: 1.7rem; } .fixed-what-btn { bottom: 75px; right: 25px; width: 40px; height: 40px; } .fixed-cart-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; } .product-view-image, .product-view-image img { height: 350px; } .product-view-header { flex-direction: row; align-items: center; gap: 15px; } .product-view-buttons { flex-direction: column; } .coupon-section .d-flex { flex-direction: column; } .coupon-input { border-radius: 4px; margin-bottom: 10px; } .coupon-btn { border-radius: 4px; padding: 10px; } }
-  @media (max-width: 576px) { .hero-title { font-size: 1.8rem; } .hero-section { padding: 30px 0; } .section-title { font-size: 1.8rem; } .product-view-title { font-size: 1.7rem; } .product-view-price { font-size: 1.5rem; } .product-view-image, .product-view-image img { height: 300px; } .search-container { max-width: 100%; } .track-cancel-buttons { flex-direction: column; } }
+  @media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1.1rem; } .cart-sidebar { width: 100%; right: -100%; } .product-view-title { font-size: 2rem; } .product-view-price { font-size: 1.7rem; } .fixed-what-btn { bottom: 85px; right: 25px;} .fixed-cart-btn { bottom: 20px; right: 20px; } .product-view-image, .product-view-image img { height: 400px; } .product-view-header { flex-direction: row; align-items: center; gap: 15px; } .product-view-buttons { flex-direction: column; } .coupon-section .d-flex { flex-direction: column; } .coupon-input { border-radius: 4px; margin-bottom: 10px; } .coupon-btn { border-radius: 4px; padding: 10px; } }
+  @media (max-width: 576px) { .hero-title { font-size: 1.8rem; } .hero-section { padding: 30px 0; } .section-title { font-size: 1.8rem; } .product-view-title { font-size: 1.7rem; } .product-view-price { font-size: 1.5rem; } .product-view-image, .product-view-image img { height: 400px; } .search-container { max-width: 100%; } .track-cancel-buttons { flex-direction: column; } }
   .loading { display: flex; justify-content: center; align-items: center; height: 300px; }
   .spinner { width: 50px; height: 50px; border: 5px solid rgba(211, 47, 47, 0.2); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s linear infinite; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -242,8 +242,8 @@
   .swiper-pagination-bullet { background: rgba(255, 255, 255, 0.6); opacity: 1; }
   .swiper-pagination-bullet-active { background: white; }
   .product-view-image .swiper { height: 500px; }
-  @media (max-width: 768px) { .product-view-image .swiper { height: 350px; } }
-  @media (max-width: 576px) { .product-view-image .swiper { height: 300px; } }
+  @media (max-width: 768px) { .product-view-image .swiper { height: 400px; } }
+  @media (max-width: 576px) { .product-view-image .swiper { height: 400px; } }
   .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; justify-content: center; align-items: center; z-index: 1100; opacity: 0; visibility: hidden; transition: var(--transition); }
   .lightbox.active { opacity: 1; visibility: visible; }
   .lightbox-content { position: relative; max-width: 90%; max-height: 90%; width: auto; height: auto; }
@@ -607,7 +607,7 @@
        <!-- Coupon Section -->
        <div class="coupon-section">
         <h6>Apply Coupon</h6>
-        <div class="d-flex">
+        <div>
          <input type="text" class="coupon-input" id="couponCode" placeholder="Enter coupon code">
          <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
          <button class="remove-coupon-btn" id="removeCouponBtn" style="display: none;" onclick="removeCoupon()">Remove</button>
@@ -693,7 +693,7 @@
     </div>
     <div class="modal-body">
      <p>If you have any questions or concerns, please feel free to contact us:</p>
-     <p><strong>Email:</strong> support@shubhlabh.com</p>
+     <p><strong>Email:</strong> support@Shubh Labh.com</p>
      <p><strong>Phone:</strong> +91-9876543210</p>
      <p><strong>Address:</strong> 123 Business Street, City, State - 123456</p>
     </div>
@@ -810,6 +810,7 @@
       measurementId: "G-XBM845C616"
   };
   
+  
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
@@ -862,6 +863,7 @@
   const cartItems = document.getElementById('cartItems');
   const cartTotal = document.getElementById('cartTotal');
   const fixedCartBtn = document.getElementById('fixedCartBtn');
+  const fixedWhatBtn = document.getElementById('fixedWhatBtn');
   const fixedCartBadge = document.querySelector('.fixed-cart-badge');
   const checkoutForm = document.getElementById('checkoutForm');
   const searchInput = document.getElementById('searchInput');
@@ -892,6 +894,10 @@
       // Load products and initialize the app
       loadProducts();
       updateCartUI();
+      
+      fixedWhatBtn.addEventListener('click',function(){
+          window.open("https://api.whatsapp.com/send/?phone=919430084948","_blank");
+      })
       
       // Cart event listeners
       fixedCartBtn.addEventListener('click', toggleCart);
@@ -1990,6 +1996,8 @@
       }
       
       //toggleCart(); // Close cart sidebar
+      cartSidebar.classList.remove('open');
+      overlay.classList.remove('active');
       showSection('checkout');
       updateCheckoutSummary();
       
