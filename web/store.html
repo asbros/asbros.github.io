@@ -1,187 +1,639 @@
 <!DOCTYPE html>
-<html dir='ltr' lang='en-GB' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
-
+<html lang="en">
 <head>
- <title>AS STORE</title>
- <meta charset='UTF-8' />
- <meta content='width=device-width, user-scalable=no' name='viewport' />
- <link href='https://asbros.github.io/css/main.css' rel='stylesheet' />
- <script charset='utf-8' src='https://asbros.github.io/popup.js/popup.js' type='text/javascript'></script>
-  <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
- <style type='text/css'>
-  *{transition: all 0.3s;font-family: 'Jost';user-select: none;}
-  body{margin:0;padding:0;}
-  .app-list-container{
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-  padding-bottom: 20px;
-  }
-  .app-list{
-   color: #111;
-   font-size: 20px;
-  }
-  .app{
-  width:146px;
-  height:200px;
-  display:inline-block;
-  margin: 10px;
-  margin-top:12px;
-  margin-bottom:13px;
-  }
-  .app-img{
-  width:100px;
-  height:100px;
-  margin-top:5px;
-  margin-bottom:10px;
-  border-radius:20px;
-  }
-  .app-span{
-  width:100%;
-  text-align: center;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  margin-top:5px;
-  margin-bottom:10px;
-  }
-  .footer{
-  background: #333;
-  }
-  body.dark{
-  background-color: rgb(42,43,46) !important;
-  }
-  .dark .header{
-  background-color: #282828 !important;
-  color: #fff;
-  }
-  .dark .header svg{
-  fill: #fff;
-  }
-  .dark .app{
-  background-color: #3d3d3d !important;
-  color: #fff;
-  }
-  .dark .app-list{
-   color: #fff;
-  }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer-to-Peer Video Call</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        :root {
+            --primary-color: #3b82f6; /* Blue-500 */
+            --danger-color: #ef4444; /* Red-500 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark BG */
+        }
+        .card {
+            background-color: #1f2937; /* Darker Card BG */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        .video-container {
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            position: relative;
+            background-color: #000;
+        }
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5rem;
+            object-fit: cover;
+            transform: scaleX(-1); /* Flip local video horizontally for mirror effect */
+        }
+        .status-message {
+            transition: all 0.3s ease;
+        }
+        #call-id-input {
+            height: 40px;
+            border-radius: 9999px 0 0 9999px; /* Rounded left only */
+            border: 2px solid #374151; /* Gray-700 */
+            padding-left: 1.5rem;
+        }
+        #join-call-btn {
+            height: 40px;
+            border-radius: 0 9999px 9999px 0; /* Rounded right only */
+            margin-left: -1px; /* Overlap border */
+        }
+        .host-input {
+            width: 100%; /* Full width on mobile */
+        }
+        @media (min-width: 640px) {
+            .host-input {
+                 width: auto; /* Auto width on desktop */
+            }
+        }
+    </style>
 </head>
+<body class="p-4 sm:p-8 flex justify-center items-center min-h-screen">
 
-<body class='no-select bg-light-blue'>
- <!-- Header -->
- <div class='pad-15 bg-white flex header' style='align-items:center; position:fixed;top:0;width:100%;'>
-  <span class='bold f-20' style='flex: 1;margin-left: 3px;margin-top: 2px;'>&#10083;&#65039; AS Store</span>
-  <button class='s-40 circle btn right' id='light' onclick='theme("light")' style='background:transparent;display: flex;align-items: center;display:none;position:fixed;right:60px;'><svg fill='#000' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-    <path clip-rule='evenodd' d='M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z' fill-rule='evenodd'></path>
-   </svg>
-  </button>
-  <button class='s-40 circle btn right' id='dark' onclick='theme("dark")' style='background:transparent;display: flex;align-items: center;position:fixed;right:60px;'><svg fill='#000' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-    <path d='M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z'></path>
-   </svg>
-  </button>
-  <button class='s-40 circle btn right' style='background:transparent;display: flex;align-items: center;position:fixed;right:12px;'><svg fill='#000' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-    <path clip-rule='evenodd' d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z' fill-rule='evenodd'></path>
-   </svg>
-  </button>
- </div>
- <div style='border-bottom:1px solid #999;position:fixed;top:60px;width:100%;'></div>
- <br /><br /><br />
- <!-- All app lists here -->
- <div class='app-list-container'>
-  <div class='app-list' style="text-align: center">
-      Loading Apps...
-  </div>
- </div>
- <!-- Footer -->
- <div style='border-top:1px solid #111;'></div>
- <div class='pad-10 footer' style='align-items:center;text-align:center;'>
-  <a style="text-decoration: none;font-size: 21px;" href="https://asbros.github.io/" class='white footer-credit'>AS BROTHERS </a>&#10083;&#65039;
- </div>
- <script>
- var apps;
- var list = document.querySelector(".app-list");
- fetch("https://api.npoint.io/5891e8b90caf3c2bdbc6")
- .then(response => response.json())
- .then((data) => {
-   apps = data;
-   list.innerHTML = "";
- apps.forEach((x,n) => {
-   var app = x;
-   var adv = createElem("div");
-   adv.setAttribute("class","shadow pad-10 bg-white w-200 app radius-5");
-   var advd = createElem("div");
-   advd.setAttribute("style","display: flex;flex-direction:column;align-items:center;");
-   var aimg = createElem("img");
-   aimg.setAttribute("class","app-img block");
-   aimg.setAttribute("src",app.icon);
-   var atle = createElem("div");
-   atle.setAttribute("class","app-span f-20 block");
-   atle.innerText = app.name;
-   var adbtn = createElem("button");
-   adbtn.setAttribute("class","btn w-full pad-7 white bg-blue f-18 radius-5 app-info");
-  
-  adbtn.setAttribute("data-n",n);
-   adbtn.addEventListener("click",function(){
-     openAppInfo(this.getAttribute("data-n"));
-   });
-   var asvg = createElem("svg");
-   asvg.setAttribute("style","height: 23px;width: 25px;margin-right: 5px;margin-left: -8px;fill: #fff;");
-   asvg.setAttribute("viewBox","0 0 20 20");
-   var apath = createElem("path");
-   apath.setAttribute("clip-rule","evenodd");
-   apath.setAttribute("d","M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z");
-   apath.setAttribute("fill-rule","evenodd");
-   asvg.appendChild(apath);
-   adbtn.innerHTML = asvg.outerHTML+"Download";
-   advd.appendChild(aimg);
-   advd.appendChild(atle);
-   advd.appendChild(adbtn);
-   adv.appendChild(advd);
-   list.appendChild(adv);
-  });
- });
-  
-  function openAppInfo(n){
-   var data = apps[n];
-   as.popup({
-     icon: data.icon,
-     title: data.name,
-     text: data.about,
-     closeBtn: false,
-     closeIcon: true,
-     titleSize: 22,
-     buttons: [{
-      html: 'Download apk',type: "success",click: function(){
-  window.open(data.url,"_blank");
-       }
-      }]
-   });
-  }
-  
-  function createElem(n){
-    return document.createElement(n);
-  }
-   function setTheme(){
-    var theme = localStorage.getItem("theme");
-    if(theme == "dark"){
-     document.body.classList.add("dark");
-    document.getElementById("dark").style.display = "none";
-  
-  document.getElementById("light").style.display = "flex";
-    }
-    if(theme == "light"){
-   document.body.classList.remove("dark");
-    document.getElementById("light").style.display = "none";
-    document.getElementById("dark").style.display = "flex";
-    }
-   }
-   function theme(n){
-    localStorage.setItem("theme",n);
-    setTheme();
-   }
-    setTheme();
- </script>
+    <div id="app-container" class="w-full max-w-6xl card rounded-xl p-4 sm:p-8">
+        <h1 class="text-3xl font-bold text-white mb-6 text-center">Gemini Video Call</h1>
+        
+        <!-- Status and Controls -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+            <div id="status-display" class="status-message text-lg font-medium text-gray-400 mb-4 sm:mb-0">
+                <i class="fas fa-video mr-2"></i> Ready to connect.
+            </div>
+            
+            <div id="controls" class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
+                
+                <!-- Gemini LLM Feature Button -->
+                <button id="prep-call-btn" 
+                    class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-full shadow-lg transition duration-200 focus:outline-none focus:ring-4 focus:ring-purple-500/50 w-full sm:w-auto host-input">
+                    <i class="fas fa-magic mr-2"></i> ✨ Call Prep
+                </button>
+                
+                <!-- Input field for joining a call -->
+                <div id="join-input-group" class="hidden flex items-stretch w-full sm:w-auto host-input">
+                    <input type="text" id="call-id-input" placeholder="Enter Call ID" maxlength="6" 
+                           class="px-3 py-2 text-gray-900 placeholder-gray-500 bg-gray-200 border-r-0 uppercase w-full sm:w-32 focus:outline-none"/>
+                    <button id="join-call-btn" disabled 
+                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg transition duration-200 focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+                        <i class="fas fa-users"></i> Join
+                    </button>
+                </div>
+
+                <button id="host-call-btn" 
+                    class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full shadow-lg transition duration-200 focus:outline-none focus:ring-4 focus:ring-green-500/50 w-full sm:w-auto host-input">
+                    <i class="fas fa-phone mr-2"></i> Host New Call
+                </button>
+
+                <button id="end-call-btn" disabled 
+                    class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-lg transition duration-200 opacity-50 cursor-not-allowed focus:outline-none focus:ring-4 focus:ring-red-500/50 w-full sm:w-auto host-input">
+                    <i class="fas fa-phone-slash mr-2"></i> End Call
+                </button>
+            </div>
+        </div>
+        
+        <!-- Video Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Local Video Stream -->
+            <div class="relative">
+                <div class="video-container">
+                    <video id="local-video" autoplay muted playsinline></video>
+                </div>
+                <div class="absolute bottom-2 left-2 bg-gray-900/70 text-white text-xs px-3 py-1 rounded-full">
+                    You (Local)
+                </div>
+                <div id="local-placeholder" class="absolute inset-0 flex flex-col justify-center items-center text-gray-500 text-sm">
+                    <i class="fas fa-user text-6xl mb-3"></i>
+                    <p>Camera is off or loading...</p>
+                </div>
+            </div>
+
+            <!-- Remote Video Stream -->
+            <div class="relative">
+                <div class="video-container">
+                    <!-- NOTE: Remote video will not function without a real signaling server and peer connection -->
+                    <video id="remote-video" autoplay playsinline></video>
+                </div>
+                <div class="absolute bottom-2 left-2 bg-gray-900/70 text-white text-xs px-3 py-1 rounded-full">
+                    Remote Peer
+                </div>
+                <div id="remote-placeholder" class="absolute inset-0 flex flex-col justify-center items-center text-gray-500 text-sm">
+                    <i class="fas fa-users text-6xl mb-3"></i>
+                    <p>Waiting for connection...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mute/Unmute Control (Only applies to local stream) -->
+        <div class="mt-8 flex justify-center">
+            <button id="toggle-audio-btn" disabled
+                class="flex items-center space-x-2 px-5 py-2 rounded-full text-white font-semibold transition duration-200 bg-gray-700 opacity-50 cursor-not-allowed">
+                <i id="audio-icon" class="fas fa-microphone"></i>
+                <span id="audio-text">Mute</span>
+            </button>
+        </div>
+
+        <!-- Custom Alert/Message Box -->
+        <div id="message-box" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-2xl max-w-sm w-full">
+                <h3 id="message-title" class="text-xl font-bold text-red-600 mb-3">Error</h3>
+                <p id="message-content" class="text-gray-700 mb-4">An unknown error occurred.</p>
+                <button id="close-message-box" class="w-full py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold">Close</button>
+            </div>
+        </div>
+
+        <!-- Gemini Context Prep Modal -->
+        <div id="gemini-context-modal" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+            <div class="bg-white p-6 rounded-xl shadow-2xl max-w-lg w-full">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-between">
+                    ✨ Call Context Prep
+                    <button id="close-context-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </h3>
+                <p class="text-gray-600 mb-4">Enter the topic or goal of your call to generate a quick preparation summary before you host or join.</p>
+                
+                <input type="text" id="context-topic-input" placeholder="e.g., Q3 Marketing Strategy Review" 
+                       class="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800"/>
+                
+                <button id="generate-context-btn" disabled
+                    class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Generate Prep Notes
+                </button>
+
+                <div id="context-result-area" class="mt-6 p-4 bg-gray-100 rounded-lg border border-gray-200 min-h-[100px] text-gray-700">
+                    <p id="context-result-text">Your prep notes will appear here...</p>
+                    <div id="context-loading-indicator" class="hidden text-center text-blue-500">
+                        <i class="fas fa-spinner fa-spin mr-2"></i> Generating context...
+                    </div>
+                </div>
+
+                <div id="context-citation-area" class="mt-2 text-xs text-gray-500 hidden">
+                    <h4 class="font-bold mb-1">Sources (Gemini Search):</h4>
+                    <ul id="context-citation-list" class="list-disc list-inside space-y-0.5 ml-4"></ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Gemini API Configuration ---
+        const apiKey = ""; // Canvas will provide this at runtime
+        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+        const maxRetries = 3;
+
+        // --- UI Elements ---
+        const localVideo = document.getElementById('local-video');
+        const remoteVideo = document.getElementById('remote-video');
+        const localPlaceholder = document.getElementById('local-placeholder');
+        const remotePlaceholder = document.getElementById('remote-placeholder');
+        
+        // Host/Join elements
+        const hostCallBtn = document.getElementById('host-call-btn');
+        const joinInputGroup = document.getElementById('join-input-group');
+        const callIdInput = document.getElementById('call-id-input');
+        const joinCallBtn = document.getElementById('join-call-btn');
+
+        const endCallBtn = document.getElementById('end-call-btn');
+        const statusDisplay = document.getElementById('status-display');
+        const toggleAudioBtn = document.getElementById('toggle-audio-btn');
+        const audioIcon = document.getElementById('audio-icon');
+        const audioText = document.getElementById('audio-text');
+        const messageBox = document.getElementById('message-box');
+        const closeMessageBox = document.getElementById('close-message-box');
+        const messageTitle = document.getElementById('message-title');
+        const messageContent = document.getElementById('message-content');
+        
+        // New LLM Modal elements
+        const prepCallBtn = document.getElementById('prep-call-btn');
+        const geminiContextModal = document.getElementById('gemini-context-modal');
+        const closeContextModal = document.getElementById('close-context-modal');
+        const contextTopicInput = document.getElementById('context-topic-input');
+        const generateContextBtn = document.getElementById('generate-context-btn');
+        const contextResultText = document.getElementById('context-result-text');
+        const contextLoadingIndicator = document.getElementById('context-loading-indicator');
+        const contextCitationArea = document.getElementById('context-citation-area');
+        const contextCitationList = document.getElementById('context-citation-list');
+        
+        // --- State Variables ---
+        let localStream = null;
+        let isMuted = false;
+        let currentCallId = null;
+
+        // --- Utility Functions ---
+
+        /**
+         * Generates a short, unique ID for the call.
+         * @returns {string} A 6-character alphanumeric ID.
+         */
+        function generateCallId() {
+            return (crypto.randomUUID()).substring(0, 6).toUpperCase();
+        }
+
+        /**
+         * Copies text to the clipboard using the recommended fallback method.
+         * @param {string} text The text to copy.
+         */
+        function copyToClipboard(text) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            tempInput.style.position = 'absolute';
+            tempInput.style.left = '-9999px';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (!successful) {
+                    throw new Error("Copy command failed.");
+                }
+                console.log('Copy successful:', text);
+            } catch (err) {
+                console.error('Unable to copy:', err);
+            } finally {
+                document.body.removeChild(tempInput);
+            }
+        }
+
+        /**
+         * Retrieves the call ID from the URL query parameters.
+         * @returns {string | null} The call ID or null.
+         */
+        function getCallIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            return id ? id.toUpperCase() : null;
+        }
+
+        /**
+         * Displays a custom error/info message instead of using alert().
+         * @param {string} title
+         * @param {string} content
+         * @param {string} type ('success', 'error', 'info')
+         */
+        function showMessage(title, content, type = 'error') {
+            messageTitle.textContent = title;
+            messageContent.innerHTML = content;
+
+            messageTitle.className = 'text-xl font-bold mb-3';
+            messageTitle.classList.remove('text-red-600', 'text-green-600', 'text-blue-600');
+            if (type === 'error') {
+                messageTitle.classList.add('text-red-600');
+            } else if (type === 'success') {
+                messageTitle.classList.add('text-green-600');
+            } else {
+                messageTitle.classList.add('text-blue-600');
+            }
+
+            messageBox.classList.remove('hidden');
+            messageBox.classList.add('flex');
+        }
+
+        // Close message box handler
+        closeMessageBox.addEventListener('click', () => {
+            messageBox.classList.remove('flex');
+            messageBox.classList.add('hidden');
+        });
+
+        /**
+         * Updates the UI buttons and status message based on the current state.
+         */
+        function updateUI(state, callId = '') {
+            hostCallBtn.disabled = true;
+            joinCallBtn.disabled = true;
+            endCallBtn.disabled = true;
+            toggleAudioBtn.disabled = true;
+            
+            // Default styling reset for buttons
+            [hostCallBtn, joinCallBtn, endCallBtn, toggleAudioBtn].forEach(btn => {
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'bg-red-600', 'hover:bg-red-700', 'bg-green-600', 'hover:bg-green-700');
+            });
+
+            if (state === 'idle-host') {
+                statusDisplay.innerHTML = '<i class="fas fa-video mr-2"></i> Ready to **host** a new call.';
+                hostCallBtn.disabled = false;
+                hostCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                hostCallBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                joinInputGroup.classList.remove('hidden');
+                hostCallBtn.classList.remove('hidden');
+                joinCallBtn.disabled = callIdInput.value.length !== 6;
+                joinCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                joinCallBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                localPlaceholder.classList.remove('hidden');
+                remotePlaceholder.classList.remove('hidden');
+
+            } else if (state === 'idle-join') {
+                statusDisplay.innerHTML = `<i class="fas fa-video mr-2"></i> Ready to **join** call: <span class="text-white font-mono">${callId}</span>.`;
+                hostCallBtn.classList.add('hidden');
+                joinInputGroup.classList.remove('hidden');
+                joinCallBtn.disabled = false; 
+                joinCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                joinCallBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                callIdInput.value = callId;
+                localPlaceholder.classList.remove('hidden');
+                remotePlaceholder.classList.remove('hidden');
+
+            } else if (state === 'calling') {
+                statusDisplay.innerHTML = `<i class="fas fa-sync-alt fa-spin mr-2 text-yellow-500"></i> Connecting. Call ID: <span class="text-white font-mono">${callId}</span> (Need Signaling Server)`;
+                endCallBtn.disabled = false;
+                endCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                endCallBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                joinInputGroup.classList.add('hidden');
+                hostCallBtn.classList.add('hidden');
+                localPlaceholder.classList.add('hidden');
+                
+            } else if (state === 'connected') {
+                statusDisplay.innerHTML = `<i class="fas fa-phone mr-2 text-green-500"></i> Connected! Call ID: <span class="text-white font-mono">${callId}</span>`;
+                endCallBtn.disabled = false;
+                endCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                endCallBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                toggleAudioBtn.disabled = false;
+                toggleAudioBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                toggleAudioBtn.classList.add(isMuted ? 'bg-red-600' : 'bg-blue-600', isMuted ? 'hover:bg-red-700' : 'hover:bg-blue-700');
+            }
+        }
+        
+        /**
+         * Core function to access media and start stream.
+         */
+        async function initializeLocalMedia(callId, isHost) {
+            currentCallId = callId;
+            if (localStream) return;
+
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
+                localVideo.srcObject = localStream;
+                localVideo.onloadedmetadata = () => {
+                    localVideo.play();
+                };
+
+                updateUI('calling', callId);
+
+                // Simulate successful connection
+                setTimeout(() => {
+                    updateUI('connected', callId);
+                    remotePlaceholder.classList.add('hidden');
+                    remoteVideo.srcObject = localStream; // Mock remote stream
+                    
+                    if (isHost) {
+                         const joinUrl = `${window.location.origin}${window.location.pathname}?id=${callId}`;
+                         copyToClipboard(joinUrl);
+                         showMessage("Link Copied!", `Share this ID: <span class="text-blue-500 font-mono font-bold">${callId}</span>.<br>The join link has been copied to your clipboard.`, 'success');
+                    } else {
+                         showMessage("Joined Call!", `You have successfully joined call ID: <span class="text-blue-500 font-mono font-bold">${callId}</span>.`, 'success');
+                    }
+                }, 2000);
+
+            } catch (error) {
+                console.error("Error accessing media devices:", error);
+                if (error.name === "NotAllowedError" || error.name === "PermissionDeniedError") {
+                    showMessage("Permission Denied", "Please grant access to your camera and microphone to continue.", 'error');
+                } else if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
+                    showMessage("Device Not Found", "No camera or microphone devices were detected on your system.", 'error');
+                } else {
+                    showMessage("Media Error", `Could not start local stream: ${error.message}`, 'error');
+                }
+                const initialId = getCallIdFromUrl();
+                updateUI(initialId ? 'idle-join' : 'idle-host', initialId);
+            }
+        }
+
+        /**
+         * Logic for the first person starting a call.
+         */
+        async function hostCall() {
+            if (localStream) return showMessage("Call in Progress", "End current call first.", 'info');
+
+            const newCallId = generateCallId();
+            await initializeLocalMedia(newCallId, true);
+        }
+
+        /**
+         * Logic for a second person joining a call.
+         */
+        async function joinCall(callId) {
+            if (localStream) return showMessage("Call in Progress", "End current call first.", 'info');
+            
+            const cleanId = (callId || '').toUpperCase().trim();
+            if (!cleanId || cleanId.length !== 6) {
+                return showMessage("Invalid ID", "Please enter a valid 6-character Call ID.", 'error');
+            }
+
+            await initializeLocalMedia(cleanId, false);
+        }
+
+        /**
+         * Stops all tracks in the local stream and resets the state.
+         */
+        function endCall() {
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
+            }
+            localVideo.srcObject = null;
+            remoteVideo.srcObject = null;
+            currentCallId = null;
+
+            const initialId = getCallIdFromUrl();
+            updateUI(initialId ? 'idle-join' : 'idle-host', initialId);
+
+            isMuted = false;
+            audioIcon.className = 'fas fa-microphone';
+            audioText.textContent = 'Mute';
+        }
+
+        /**
+         * Toggles the audio track's enabled state.
+         */
+        function toggleAudio() {
+            if (!localStream) return;
+
+            const audioTrack = localStream.getAudioTracks()[0];
+            if (audioTrack) {
+                isMuted = !isMuted;
+                audioTrack.enabled = !isMuted;
+                
+                if (isMuted) {
+                    audioIcon.className = 'fas fa-microphone-slash';
+                    audioText.textContent = 'Unmute';
+                    toggleAudioBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    toggleAudioBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                } else {
+                    audioIcon.className = 'fas fa-microphone';
+                    audioText.textContent = 'Mute';
+                    toggleAudioBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    toggleAudioBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                }
+            }
+        }
+        
+        // --- New Gemini API Functionality ---
+
+        /**
+         * Implements exponential backoff for API calls.
+         */
+        async function fetchWithBackoff(fetcher, maxRetries) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetcher();
+                    if (response.status === 429 && i < maxRetries - 1) {
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue;
+                    }
+                    if (!response.ok) {
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error(`Attempt ${i + 1} failed:`, error);
+                    if (i === maxRetries - 1) throw error;
+                }
+            }
+        }
+
+        /**
+         * Calls the Gemini API to generate meeting context based on the topic.
+         * @param {string} topic 
+         */
+        async function generateContext(topic) {
+            contextResultText.innerHTML = 'Your prep notes will appear here...';
+            contextLoadingIndicator.classList.remove('hidden');
+            generateContextBtn.disabled = true;
+            contextCitationArea.classList.add('hidden');
+            contextCitationList.innerHTML = '';
+
+            const systemPrompt = "You are a concise and professional meeting preparation assistant. Your goal is to provide a brief (max 150 words), professional, and actionable summary to prepare someone for a video call on a given topic. Focus on key objectives and things to review. Use clear, non-jargon language and format your response in professional markdown.";
+            const userQuery = `Generate a preparatory summary for a call with the topic: "${topic}"`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                tools: [{ "google_search": {} }], 
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+            };
+
+            try {
+                const responseJson = await fetchWithBackoff(() => fetch(`${apiUrl}?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }), maxRetries);
+
+                const candidate = responseJson.candidates?.[0];
+                
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    let generatedText = candidate.content.parts[0].text;
+                    
+                    // Simple markdown to HTML conversion for display
+                    generatedText = generatedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    generatedText = generatedText.replace(/\n\s*-\s/g, '<br>&bull; ');
+                    generatedText = generatedText.replace(/\n/g, '<br><br>');
+
+                    contextResultText.innerHTML = generatedText;
+
+                    // Extract and display sources (citations)
+                    const groundingMetadata = candidate.groundingMetadata;
+                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                        const sources = groundingMetadata.groundingAttributions
+                            .map(attribution => ({
+                                uri: attribution.web?.uri,
+                                title: attribution.web?.title,
+                            }))
+                            .filter(source => source.uri && source.title);
+
+                        if (sources.length > 0) {
+                            contextCitationArea.classList.remove('hidden');
+                            sources.forEach(source => {
+                                const listItem = document.createElement('li');
+                                listItem.innerHTML = `<a href="${source.uri}" target="_blank" class="text-blue-500 hover:underline">${source.title}</a>`;
+                                contextCitationList.appendChild(listItem);
+                            });
+                        }
+                    }
+
+                } else {
+                    contextResultText.textContent = "Error: Could not generate context. The response was empty or malformed.";
+                }
+
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                contextResultText.textContent = "Sorry, an error occurred while connecting to the AI assistant. Please try again.";
+            } finally {
+                contextLoadingIndicator.classList.add('hidden');
+                generateContextBtn.disabled = false;
+            }
+        }
+
+        // --- Event Listeners and Initial Setup ---
+        
+        hostCallBtn.addEventListener('click', hostCall);
+        endCallBtn.addEventListener('click', endCall);
+        toggleAudioBtn.addEventListener('click', toggleAudio);
+        joinCallBtn.addEventListener('click', () => {
+            joinCall(callIdInput.value);
+        });
+        callIdInput.addEventListener('input', () => {
+            const cleanId = callIdInput.value.toUpperCase().trim();
+            callIdInput.value = cleanId;
+            joinCallBtn.disabled = cleanId.length !== 6;
+            joinCallBtn.classList.toggle('opacity-50', cleanId.length !== 6);
+            joinCallBtn.classList.toggle('cursor-not-allowed', cleanId.length !== 6);
+        });
+
+        // LLM Modal Listeners
+        prepCallBtn.addEventListener('click', () => {
+            geminiContextModal.classList.remove('hidden');
+            geminiContextModal.classList.add('flex');
+            contextResultText.innerHTML = 'Enter a topic (e.g., "Review Q4 product roadmap") and click "Generate Prep Notes".';
+            contextCitationArea.classList.add('hidden');
+            contextCitationList.innerHTML = '';
+        });
+
+        closeContextModal.addEventListener('click', () => {
+            geminiContextModal.classList.remove('flex');
+            geminiContextModal.classList.add('hidden');
+        });
+
+        generateContextBtn.addEventListener('click', () => {
+            const topic = contextTopicInput.value.trim();
+            if (topic) {
+                generateContext(topic);
+            } else {
+                contextResultText.textContent = "Please enter a topic to generate context.";
+            }
+        });
+
+        contextTopicInput.addEventListener('input', () => {
+            generateContextBtn.disabled = contextTopicInput.value.trim().length === 0;
+            generateContextBtn.classList.toggle('opacity-50', contextTopicInput.value.trim().length === 0);
+            generateContextBtn.classList.toggle('cursor-not-allowed', contextTopicInput.value.trim().length === 0);
+        });
+
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialCallId = getCallIdFromUrl();
+            if (initialCallId) {
+                updateUI('idle-join', initialCallId);
+            } else {
+                updateUI('idle-host');
+            }
+        });
+    </script>
 </body>
-
 </html>
