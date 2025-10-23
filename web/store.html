@@ -3,637 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peer-to-Peer Video Call</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-    <style>
-        :root {
-            --primary-color: #3b82f6; /* Blue-500 */
-            --danger-color: #ef4444; /* Red-500 */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Dark BG */
-        }
-        .card {
-            background-color: #1f2937; /* Darker Card BG */
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-        }
-        .video-container {
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            position: relative;
-            background-color: #000;
-        }
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 0.5rem;
-            object-fit: cover;
-            transform: scaleX(-1); /* Flip local video horizontally for mirror effect */
-        }
-        .status-message {
-            transition: all 0.3s ease;
-        }
-        #call-id-input {
-            height: 40px;
-            border-radius: 9999px 0 0 9999px; /* Rounded left only */
-            border: 2px solid #374151; /* Gray-700 */
-            padding-left: 1.5rem;
-        }
-        #join-call-btn {
-            height: 40px;
-            border-radius: 0 9999px 9999px 0; /* Rounded right only */
-            margin-left: -1px; /* Overlap border */
-        }
-        .host-input {
-            width: 100%; /* Full width on mobile */
-        }
-        @media (min-width: 640px) {
-            .host-input {
-                 width: auto; /* Auto width on desktop */
-            }
-        }
-    </style>
+    <title>Shared Social Feed</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
-<body class="p-4 sm:p-8 flex justify-center items-center min-h-screen">
-
-    <div id="app-container" class="w-full max-w-6xl card rounded-xl p-4 sm:p-8">
-        <h1 class="text-3xl font-bold text-white mb-6 text-center">Gemini Video Call</h1>
-        
-        <!-- Status and Controls -->
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-            <div id="status-display" class="status-message text-lg font-medium text-gray-400 mb-4 sm:mb-0">
-                <i class="fas fa-video mr-2"></i> Ready to connect.
-            </div>
-            
-            <div id="controls" class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
+<body class="bg-light">
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mb-4 text-primary">Shared Social Feed</h1>
                 
-                <!-- Gemini LLM Feature Button -->
-                <button id="prep-call-btn" 
-                    class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-full shadow-lg transition duration-200 focus:outline-none focus:ring-4 focus:ring-purple-500/50 w-full sm:w-auto host-input">
-                    <i class="fas fa-magic mr-2"></i> ✨ Call Prep
-                </button>
-                
-                <!-- Input field for joining a call -->
-                <div id="join-input-group" class="hidden flex items-stretch w-full sm:w-auto host-input">
-                    <input type="text" id="call-id-input" placeholder="Enter Call ID" maxlength="6" 
-                           class="px-3 py-2 text-gray-900 placeholder-gray-500 bg-gray-200 border-r-0 uppercase w-full sm:w-32 focus:outline-none"/>
-                    <button id="join-call-btn" disabled 
-                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg transition duration-200 focus:outline-none focus:ring-4 focus:ring-blue-500/50">
-                        <i class="fas fa-users"></i> Join
-                    </button>
-                </div>
-
-                <button id="host-call-btn" 
-                    class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full shadow-lg transition duration-200 focus:outline-none focus:ring-4 focus:ring-green-500/50 w-full sm:w-auto host-input">
-                    <i class="fas fa-phone mr-2"></i> Host New Call
-                </button>
-
-                <button id="end-call-btn" disabled 
-                    class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-lg transition duration-200 opacity-50 cursor-not-allowed focus:outline-none focus:ring-4 focus:ring-red-500/50 w-full sm:w-auto host-input">
-                    <i class="fas fa-phone-slash mr-2"></i> End Call
-                </button>
-            </div>
-        </div>
-        
-        <!-- Video Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <!-- Local Video Stream -->
-            <div class="relative">
-                <div class="video-container">
-                    <video id="local-video" autoplay muted playsinline></video>
-                </div>
-                <div class="absolute bottom-2 left-2 bg-gray-900/70 text-white text-xs px-3 py-1 rounded-full">
-                    You (Local)
-                </div>
-                <div id="local-placeholder" class="absolute inset-0 flex flex-col justify-center items-center text-gray-500 text-sm">
-                    <i class="fas fa-user text-6xl mb-3"></i>
-                    <p>Camera is off or loading...</p>
-                </div>
-            </div>
-
-            <!-- Remote Video Stream -->
-            <div class="relative">
-                <div class="video-container">
-                    <!-- NOTE: Remote video will not function without a real signaling server and peer connection -->
-                    <video id="remote-video" autoplay playsinline></video>
-                </div>
-                <div class="absolute bottom-2 left-2 bg-gray-900/70 text-white text-xs px-3 py-1 rounded-full">
-                    Remote Peer
-                </div>
-                <div id="remote-placeholder" class="absolute inset-0 flex flex-col justify-center items-center text-gray-500 text-sm">
-                    <i class="fas fa-users text-6xl mb-3"></i>
-                    <p>Waiting for connection...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mute/Unmute Control (Only applies to local stream) -->
-        <div class="mt-8 flex justify-center">
-            <button id="toggle-audio-btn" disabled
-                class="flex items-center space-x-2 px-5 py-2 rounded-full text-white font-semibold transition duration-200 bg-gray-700 opacity-50 cursor-not-allowed">
-                <i id="audio-icon" class="fas fa-microphone"></i>
-                <span id="audio-text">Mute</span>
-            </button>
-        </div>
-
-        <!-- Custom Alert/Message Box -->
-        <div id="message-box" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-            <div class="bg-white p-6 rounded-lg shadow-2xl max-w-sm w-full">
-                <h3 id="message-title" class="text-xl font-bold text-red-600 mb-3">Error</h3>
-                <p id="message-content" class="text-gray-700 mb-4">An unknown error occurred.</p>
-                <button id="close-message-box" class="w-full py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold">Close</button>
-            </div>
-        </div>
-
-        <!-- Gemini Context Prep Modal -->
-        <div id="gemini-context-modal" class="fixed inset-0 bg-gray-900/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-            <div class="bg-white p-6 rounded-xl shadow-2xl max-w-lg w-full">
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-between">
-                    ✨ Call Context Prep
-                    <button id="close-context-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-                </h3>
-                <p class="text-gray-600 mb-4">Enter the topic or goal of your call to generate a quick preparation summary before you host or join.</p>
-                
-                <input type="text" id="context-topic-input" placeholder="e.g., Q3 Marketing Strategy Review" 
-                       class="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800"/>
-                
-                <button id="generate-context-btn" disabled
-                    class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                    Generate Prep Notes
-                </button>
-
-                <div id="context-result-area" class="mt-6 p-4 bg-gray-100 rounded-lg border border-gray-200 min-h-[100px] text-gray-700">
-                    <p id="context-result-text">Your prep notes will appear here...</p>
-                    <div id="context-loading-indicator" class="hidden text-center text-blue-500">
-                        <i class="fas fa-spinner fa-spin mr-2"></i> Generating context...
+                <!-- User Details Form -->
+                <div id="userForm">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title text-center">Enter Your Details</h2>
+                            <form id="detailsForm">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="bio" placeholder="Your Bio" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Save Details</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-                <div id="context-citation-area" class="mt-2 text-xs text-gray-500 hidden">
-                    <h4 class="font-bold mb-1">Sources (Gemini Search):</h4>
-                    <ul id="context-citation-list" class="list-disc list-inside space-y-0.5 ml-4"></ul>
-                </div>
+                <!-- Profile & Sharing Section (Hidden until details saved) -->
+                <div id="shareSection" class="d-none">
+                    <!-- Profile Card -->
+                    <div id="profile" class="card mb-4">
+                        <div class="card-body text-center">
+                            <h2 class="card-title">Your Profile</h2>
+                            <p class="card-text"><strong>Name:</strong> <span id="displayName"></span></p>
+                            <p class="card-text"><strong>Email:</strong> <span id="displayEmail"></span></p>
+                            <p class="card-text"><strong>Bio:</strong> <span id="displayBio"></span></p>
+                        </div>
+                    </div>
 
+                    <!-- Share Form -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="card-title">Share Images/Videos</h2>
+                            <form id="shareForm">
+                                <div class="mb-3">
+                                    <input type="file" class="form-control" id="mediaFile" accept="image/*,video/*" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">Share Media</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Shared Feed -->
+                    <div id="feed" class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Shared Feed (Visible to All Users)</h2>
+                            <!-- Media items will appear here -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        // --- Gemini API Configuration ---
-        const apiKey = ""; // Canvas will provide this at runtime
-        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-        const maxRetries = 3;
+        // Load saved user details on page load
+        window.onload = function() {
+            const savedUser = JSON.parse(localStorage.getItem('userDetails'));
+            if (savedUser) {
+                showShareSection(savedUser);
+            }
+            // Ensure shared feed has dummy posts if empty (simulates other users)
+            initializeSharedFeed();
+        };
 
-        // --- UI Elements ---
-        const localVideo = document.getElementById('local-video');
-        const remoteVideo = document.getElementById('remote-video');
-        const localPlaceholder = document.getElementById('local-placeholder');
-        const remotePlaceholder = document.getElementById('remote-placeholder');
-        
-        // Host/Join elements
-        const hostCallBtn = document.getElementById('host-call-btn');
-        const joinInputGroup = document.getElementById('join-input-group');
-        const callIdInput = document.getElementById('call-id-input');
-        const joinCallBtn = document.getElementById('join-call-btn');
-
-        const endCallBtn = document.getElementById('end-call-btn');
-        const statusDisplay = document.getElementById('status-display');
-        const toggleAudioBtn = document.getElementById('toggle-audio-btn');
-        const audioIcon = document.getElementById('audio-icon');
-        const audioText = document.getElementById('audio-text');
-        const messageBox = document.getElementById('message-box');
-        const closeMessageBox = document.getElementById('close-message-box');
-        const messageTitle = document.getElementById('message-title');
-        const messageContent = document.getElementById('message-content');
-        
-        // New LLM Modal elements
-        const prepCallBtn = document.getElementById('prep-call-btn');
-        const geminiContextModal = document.getElementById('gemini-context-modal');
-        const closeContextModal = document.getElementById('close-context-modal');
-        const contextTopicInput = document.getElementById('context-topic-input');
-        const generateContextBtn = document.getElementById('generate-context-btn');
-        const contextResultText = document.getElementById('context-result-text');
-        const contextLoadingIndicator = document.getElementById('context-loading-indicator');
-        const contextCitationArea = document.getElementById('context-citation-area');
-        const contextCitationList = document.getElementById('context-citation-list');
-        
-        // --- State Variables ---
-        let localStream = null;
-        let isMuted = false;
-        let currentCallId = null;
-
-        // --- Utility Functions ---
-
-        /**
-         * Generates a short, unique ID for the call.
-         * @returns {string} A 6-character alphanumeric ID.
-         */
-        function generateCallId() {
-            return (crypto.randomUUID()).substring(0, 6).toUpperCase();
-        }
-
-        /**
-         * Copies text to the clipboard using the recommended fallback method.
-         * @param {string} text The text to copy.
-         */
-        function copyToClipboard(text) {
-            const tempInput = document.createElement('textarea');
-            tempInput.value = text;
-            tempInput.style.position = 'absolute';
-            tempInput.style.left = '-9999px';
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (!successful) {
-                    throw new Error("Copy command failed.");
-                }
-                console.log('Copy successful:', text);
-            } catch (err) {
-                console.error('Unable to copy:', err);
-            } finally {
-                document.body.removeChild(tempInput);
+        // Initialize shared feed with dummy posts if empty
+        function initializeSharedFeed() {
+            let sharedFeed = JSON.parse(localStorage.getItem('sharedFeed') || '[]');
+            if (sharedFeed.length === 0) {
+                // Dummy posts from "other users" (using placeholder URLs for demo)
+                const dummies = [
+                    {
+                        userName: 'Alice Johnson',
+                        type: 'image',
+                        data: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+                        timestamp: new Date(Date.now() - 86400000).toISOString(), // Yesterday
+                        name: 'Beautiful Sunset'
+                    },
+                    {
+                        userName: 'Bob Smith',
+                        type: 'video',
+                        data: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4', // Sample video
+                        timestamp: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+                        name: 'Fun Dance Video'
+                    },
+                    {
+                        userName: 'Carol Davis',
+                        type: 'image',
+                        data: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=300&fit=crop',
+                        timestamp: new Date().toISOString(), // Just now
+                        name: 'City Lights'
+                    }
+                ];
+                sharedFeed = dummies;
+                localStorage.setItem('sharedFeed', JSON.stringify(sharedFeed));
+            }
+            // If in share section, display it
+            if (!document.getElementById('userForm').classList.contains('d-none')) {
+                displayFeed(sharedFeed);
             }
         }
 
-        /**
-         * Retrieves the call ID from the URL query parameters.
-         * @returns {string | null} The call ID or null.
-         */
-        function getCallIdFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            return id ? id.toUpperCase() : null;
-        }
+        // Handle user details form
+        document.getElementById('detailsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const bio = document.getElementById('bio').value.trim();
 
-        /**
-         * Displays a custom error/info message instead of using alert().
-         * @param {string} title
-         * @param {string} content
-         * @param {string} type ('success', 'error', 'info')
-         */
-        function showMessage(title, content, type = 'error') {
-            messageTitle.textContent = title;
-            messageContent.innerHTML = content;
-
-            messageTitle.className = 'text-xl font-bold mb-3';
-            messageTitle.classList.remove('text-red-600', 'text-green-600', 'text-blue-600');
-            if (type === 'error') {
-                messageTitle.classList.add('text-red-600');
-            } else if (type === 'success') {
-                messageTitle.classList.add('text-green-600');
-            } else {
-                messageTitle.classList.add('text-blue-600');
+            if (!name || !email) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: 'Name and Email are required.',
+                });
+                return;
             }
 
-            messageBox.classList.remove('hidden');
-            messageBox.classList.add('flex');
-        }
+            const userDetails = { name, email, bio };
+            localStorage.setItem('userDetails', JSON.stringify(userDetails));
 
-        // Close message box handler
-        closeMessageBox.addEventListener('click', () => {
-            messageBox.classList.remove('flex');
-            messageBox.classList.add('hidden');
+            Swal.fire({
+                icon: 'success',
+                title: 'Details Saved!',
+                text: `Welcome, ${name}! You can now share media.`,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                showShareSection(userDetails);
+            });
         });
 
-        /**
-         * Updates the UI buttons and status message based on the current state.
-         */
-        function updateUI(state, callId = '') {
-            hostCallBtn.disabled = true;
-            joinCallBtn.disabled = true;
-            endCallBtn.disabled = true;
-            toggleAudioBtn.disabled = true;
-            
-            // Default styling reset for buttons
-            [hostCallBtn, joinCallBtn, endCallBtn, toggleAudioBtn].forEach(btn => {
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'bg-red-600', 'hover:bg-red-700', 'bg-green-600', 'hover:bg-green-700');
-            });
+        function showShareSection(user) {
+            document.getElementById('userForm').classList.add('d-none');
+            document.getElementById('shareSection').classList.remove('d-none');
 
-            if (state === 'idle-host') {
-                statusDisplay.innerHTML = '<i class="fas fa-video mr-2"></i> Ready to **host** a new call.';
-                hostCallBtn.disabled = false;
-                hostCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                hostCallBtn.classList.add('bg-green-600', 'hover:bg-green-700');
-                joinInputGroup.classList.remove('hidden');
-                hostCallBtn.classList.remove('hidden');
-                joinCallBtn.disabled = callIdInput.value.length !== 6;
-                joinCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                joinCallBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                localPlaceholder.classList.remove('hidden');
-                remotePlaceholder.classList.remove('hidden');
+            // Display profile
+            document.getElementById('displayName').textContent = user.name;
+            document.getElementById('displayEmail').textContent = user.email;
+            document.getElementById('displayBio').textContent = user.bio || 'No bio yet.';
 
-            } else if (state === 'idle-join') {
-                statusDisplay.innerHTML = `<i class="fas fa-video mr-2"></i> Ready to **join** call: <span class="text-white font-mono">${callId}</span>.`;
-                hostCallBtn.classList.add('hidden');
-                joinInputGroup.classList.remove('hidden');
-                joinCallBtn.disabled = false; 
-                joinCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                joinCallBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                callIdInput.value = callId;
-                localPlaceholder.classList.remove('hidden');
-                remotePlaceholder.classList.remove('hidden');
-
-            } else if (state === 'calling') {
-                statusDisplay.innerHTML = `<i class="fas fa-sync-alt fa-spin mr-2 text-yellow-500"></i> Connecting. Call ID: <span class="text-white font-mono">${callId}</span> (Need Signaling Server)`;
-                endCallBtn.disabled = false;
-                endCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                endCallBtn.classList.add('bg-red-600', 'hover:bg-red-700');
-                joinInputGroup.classList.add('hidden');
-                hostCallBtn.classList.add('hidden');
-                localPlaceholder.classList.add('hidden');
-                
-            } else if (state === 'connected') {
-                statusDisplay.innerHTML = `<i class="fas fa-phone mr-2 text-green-500"></i> Connected! Call ID: <span class="text-white font-mono">${callId}</span>`;
-                endCallBtn.disabled = false;
-                endCallBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                endCallBtn.classList.add('bg-red-600', 'hover:bg-red-700');
-                toggleAudioBtn.disabled = false;
-                toggleAudioBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                toggleAudioBtn.classList.add(isMuted ? 'bg-red-600' : 'bg-blue-600', isMuted ? 'hover:bg-red-700' : 'hover:bg-blue-700');
-            }
+            // Load and display shared feed
+            const sharedFeed = JSON.parse(localStorage.getItem('sharedFeed') || '[]');
+            displayFeed(sharedFeed);
         }
-        
-        /**
-         * Core function to access media and start stream.
-         */
-        async function initializeLocalMedia(callId, isHost) {
-            currentCallId = callId;
-            if (localStream) return;
 
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        // Handle media sharing
+        document.getElementById('shareForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('mediaFile');
+            const file = fileInput.files[0];
 
-                localVideo.srcObject = localStream;
-                localVideo.onloadedmetadata = () => {
-                    localVideo.play();
+            if (!file) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No File!',
+                    text: 'Please select an image or video.',
+                });
+                return;
+            }
+
+            // Warn about large files (localStorage limit)
+            if (file.size > 5 * 1024 * 1024) { // 5MB
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Large File!',
+                    text: 'File is large (>5MB). It may not save properly in local storage.',
+                });
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const savedUser = JSON.parse(localStorage.getItem('userDetails'));
+                const mediaData = {
+                    userName: savedUser.name,
+                    type: file.type.startsWith('image') ? 'image' : 'video',
+                    data: e.target.result, // Base64 for user uploads
+                    timestamp: new Date().toISOString(),
+                    name: file.name
                 };
 
-                updateUI('calling', callId);
+                // Add to shared feed
+                let sharedFeed = JSON.parse(localStorage.getItem('sharedFeed') || '[]');
+                sharedFeed.unshift(mediaData); // Add to top
+                localStorage.setItem('sharedFeed', JSON.stringify(sharedFeed));
 
-                // Simulate successful connection
-                setTimeout(() => {
-                    updateUI('connected', callId);
-                    remotePlaceholder.classList.add('hidden');
-                    remoteVideo.srcObject = localStream; // Mock remote stream
-                    
-                    if (isHost) {
-                         const joinUrl = `${window.location.origin}${window.location.pathname}?id=${callId}`;
-                         copyToClipboard(joinUrl);
-                         showMessage("Link Copied!", `Share this ID: <span class="text-blue-500 font-mono font-bold">${callId}</span>.<br>The join link has been copied to your clipboard.`, 'success');
-                    } else {
-                         showMessage("Joined Call!", `You have successfully joined call ID: <span class="text-blue-500 font-mono font-bold">${callId}</span>.`, 'success');
-                    }
-                }, 2000);
+                // Refresh feed display
+                displayFeed(sharedFeed);
 
-            } catch (error) {
-                console.error("Error accessing media devices:", error);
-                if (error.name === "NotAllowedError" || error.name === "PermissionDeniedError") {
-                    showMessage("Permission Denied", "Please grant access to your camera and microphone to continue.", 'error');
-                } else if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
-                    showMessage("Device Not Found", "No camera or microphone devices were detected on your system.", 'error');
-                } else {
-                    showMessage("Media Error", `Could not start local stream: ${error.message}`, 'error');
-                }
-                const initialId = getCallIdFromUrl();
-                updateUI(initialId ? 'idle-join' : 'idle-host', initialId);
-            }
-        }
+                // Reset form
+                fileInput.value = '';
 
-        /**
-         * Logic for the first person starting a call.
-         */
-        async function hostCall() {
-            if (localStream) return showMessage("Call in Progress", "End current call first.", 'info');
-
-            const newCallId = generateCallId();
-            await initializeLocalMedia(newCallId, true);
-        }
-
-        /**
-         * Logic for a second person joining a call.
-         */
-        async function joinCall(callId) {
-            if (localStream) return showMessage("Call in Progress", "End current call first.", 'info');
-            
-            const cleanId = (callId || '').toUpperCase().trim();
-            if (!cleanId || cleanId.length !== 6) {
-                return showMessage("Invalid ID", "Please enter a valid 6-character Call ID.", 'error');
-            }
-
-            await initializeLocalMedia(cleanId, false);
-        }
-
-        /**
-         * Stops all tracks in the local stream and resets the state.
-         */
-        function endCall() {
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-                localStream = null;
-            }
-            localVideo.srcObject = null;
-            remoteVideo.srcObject = null;
-            currentCallId = null;
-
-            const initialId = getCallIdFromUrl();
-            updateUI(initialId ? 'idle-join' : 'idle-host', initialId);
-
-            isMuted = false;
-            audioIcon.className = 'fas fa-microphone';
-            audioText.textContent = 'Mute';
-        }
-
-        /**
-         * Toggles the audio track's enabled state.
-         */
-        function toggleAudio() {
-            if (!localStream) return;
-
-            const audioTrack = localStream.getAudioTracks()[0];
-            if (audioTrack) {
-                isMuted = !isMuted;
-                audioTrack.enabled = !isMuted;
-                
-                if (isMuted) {
-                    audioIcon.className = 'fas fa-microphone-slash';
-                    audioText.textContent = 'Unmute';
-                    toggleAudioBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                    toggleAudioBtn.classList.add('bg-red-600', 'hover:bg-red-700');
-                } else {
-                    audioIcon.className = 'fas fa-microphone';
-                    audioText.textContent = 'Mute';
-                    toggleAudioBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
-                    toggleAudioBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                }
-            }
-        }
-        
-        // --- New Gemini API Functionality ---
-
-        /**
-         * Implements exponential backoff for API calls.
-         */
-        async function fetchWithBackoff(fetcher, maxRetries) {
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetcher();
-                    if (response.status === 429 && i < maxRetries - 1) {
-                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        continue;
-                    }
-                    if (!response.ok) {
-                        throw new Error(`API call failed with status: ${response.status}`);
-                    }
-                    return await response.json();
-                } catch (error) {
-                    console.error(`Attempt ${i + 1} failed:`, error);
-                    if (i === maxRetries - 1) throw error;
-                }
-            }
-        }
-
-        /**
-         * Calls the Gemini API to generate meeting context based on the topic.
-         * @param {string} topic 
-         */
-        async function generateContext(topic) {
-            contextResultText.innerHTML = 'Your prep notes will appear here...';
-            contextLoadingIndicator.classList.remove('hidden');
-            generateContextBtn.disabled = true;
-            contextCitationArea.classList.add('hidden');
-            contextCitationList.innerHTML = '';
-
-            const systemPrompt = "You are a concise and professional meeting preparation assistant. Your goal is to provide a brief (max 150 words), professional, and actionable summary to prepare someone for a video call on a given topic. Focus on key objectives and things to review. Use clear, non-jargon language and format your response in professional markdown.";
-            const userQuery = `Generate a preparatory summary for a call with the topic: "${topic}"`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                tools: [{ "google_search": {} }], 
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Shared!',
+                    text: `Your ${mediaData.type} is now visible to all users!`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             };
+            reader.onerror = function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Upload Failed!',
+                    text: 'Could not read the file. Try again.',
+                });
+            };
+            reader.readAsDataURL(file);
+        });
 
-            try {
-                const responseJson = await fetchWithBackoff(() => fetch(`${apiUrl}?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }), maxRetries);
+        function displayFeed(feed) {
+            const feedBody = document.querySelector('#feed .card-body');
+            feedBody.innerHTML = '<h2 class="card-title">Shared Feed (Visible to All Users)</h2><div id="feedItems"></div>';
+            const feedItems = document.getElementById('feedItems');
 
-                const candidate = responseJson.candidates?.[0];
+            if (feed.length === 0) {
+                feedItems.innerHTML = '<p class="text-muted text-center">No posts yet. Be the first to share!</p>';
+                return;
+            }
+
+            feed.forEach(item => {
+                const mediaItem = document.createElement('div');
+                mediaItem.className = 'card mb-3';
+                const mediaHtml = item.type === 'image' 
+                    ? `<img src="${item.data}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">`
+                    : `<video src="${item.data}" class="card-img-top" controls style="height: 200px; object-fit: cover;"></video>`;
                 
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    let generatedText = candidate.content.parts[0].text;
-                    
-                    // Simple markdown to HTML conversion for display
-                    generatedText = generatedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                    generatedText = generatedText.replace(/\n\s*-\s/g, '<br>&bull; ');
-                    generatedText = generatedText.replace(/\n/g, '<br><br>');
-
-                    contextResultText.innerHTML = generatedText;
-
-                    // Extract and display sources (citations)
-                    const groundingMetadata = candidate.groundingMetadata;
-                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
-                        const sources = groundingMetadata.groundingAttributions
-                            .map(attribution => ({
-                                uri: attribution.web?.uri,
-                                title: attribution.web?.title,
-                            }))
-                            .filter(source => source.uri && source.title);
-
-                        if (sources.length > 0) {
-                            contextCitationArea.classList.remove('hidden');
-                            sources.forEach(source => {
-                                const listItem = document.createElement('li');
-                                listItem.innerHTML = `<a href="${source.uri}" target="_blank" class="text-blue-500 hover:underline">${source.title}</a>`;
-                                contextCitationList.appendChild(listItem);
-                            });
-                        }
-                    }
-
-                } else {
-                    contextResultText.textContent = "Error: Could not generate context. The response was empty or malformed.";
-                }
-
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                contextResultText.textContent = "Sorry, an error occurred while connecting to the AI assistant. Please try again.";
-            } finally {
-                contextLoadingIndicator.classList.add('hidden');
-                generateContextBtn.disabled = false;
-            }
+                mediaItem.innerHTML = `
+                    <div class="card-body">
+                        <h5 class="card-title">${item.name}</h5>
+                        <p class="card-text"><strong>Posted by:</strong> ${item.userName}</p>
+                        <p class="card-text"><small class="text-muted">${new Date(item.timestamp).toLocaleString()}</small></p>
+                        ${mediaHtml}
+                    </div>
+                `;
+                feedItems.appendChild(mediaItem);
+            });
         }
-
-        // --- Event Listeners and Initial Setup ---
-        
-        hostCallBtn.addEventListener('click', hostCall);
-        endCallBtn.addEventListener('click', endCall);
-        toggleAudioBtn.addEventListener('click', toggleAudio);
-        joinCallBtn.addEventListener('click', () => {
-            joinCall(callIdInput.value);
-        });
-        callIdInput.addEventListener('input', () => {
-            const cleanId = callIdInput.value.toUpperCase().trim();
-            callIdInput.value = cleanId;
-            joinCallBtn.disabled = cleanId.length !== 6;
-            joinCallBtn.classList.toggle('opacity-50', cleanId.length !== 6);
-            joinCallBtn.classList.toggle('cursor-not-allowed', cleanId.length !== 6);
-        });
-
-        // LLM Modal Listeners
-        prepCallBtn.addEventListener('click', () => {
-            geminiContextModal.classList.remove('hidden');
-            geminiContextModal.classList.add('flex');
-            contextResultText.innerHTML = 'Enter a topic (e.g., "Review Q4 product roadmap") and click "Generate Prep Notes".';
-            contextCitationArea.classList.add('hidden');
-            contextCitationList.innerHTML = '';
-        });
-
-        closeContextModal.addEventListener('click', () => {
-            geminiContextModal.classList.remove('flex');
-            geminiContextModal.classList.add('hidden');
-        });
-
-        generateContextBtn.addEventListener('click', () => {
-            const topic = contextTopicInput.value.trim();
-            if (topic) {
-                generateContext(topic);
-            } else {
-                contextResultText.textContent = "Please enter a topic to generate context.";
-            }
-        });
-
-        contextTopicInput.addEventListener('input', () => {
-            generateContextBtn.disabled = contextTopicInput.value.trim().length === 0;
-            generateContextBtn.classList.toggle('opacity-50', contextTopicInput.value.trim().length === 0);
-            generateContextBtn.classList.toggle('cursor-not-allowed', contextTopicInput.value.trim().length === 0);
-        });
-
-
-        // Initial setup
-        document.addEventListener('DOMContentLoaded', () => {
-            const initialCallId = getCallIdFromUrl();
-            if (initialCallId) {
-                updateUI('idle-join', initialCallId);
-            } else {
-                updateUI('idle-host');
-            }
-        });
     </script>
 </body>
 </html>
