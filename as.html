@@ -116,7 +116,7 @@
         .shimmer-line.very-short {width: 40%; height: 10px;}
         
         .shimmer-section-card {width: 180px; background: var(--surface-light); border-radius: var(--radius); overflow: hidden;}
-        .shimmer-section-poster {width: 100%; aspect-ratio: 2/3; background: var(--surface);}
+        .shimmer-section-poster {width: 100%; aspect-ratio: 3/4; background: var(--surface);}
         .shimmer-section-info {padding: 0.75rem;}
         .shimmer-section-line {height: 10px; background: var(--surface); border-radius: 4px; margin-bottom: 6px;}
         .shimmer-section-line.short {width: 50%;}
@@ -146,7 +146,7 @@
             .content-meta-small {font-size: 0.65rem;}
             
             /* Smaller section cards */
-            .section-card, .shimmer-section-card {width: 120px;}
+            .section-card, .shimmer-section-card {width: 140px;}
             .section-info {padding: 0.5rem;}
             .section-name {font-size: 0.75rem;}
             .section-meta {font-size: 0.6rem;}
@@ -172,6 +172,9 @@
         
         @media (max-width: 480px) {
             .header {padding: 0.5rem 0.75rem;}
+            .header-content{flex-wrap: wrap;}
+            .logo, .header-actions{flex: 1;}
+            .header-content {flex-direction: row;}
             .main-container {padding: 0.75rem;}
             
             /* Even smaller cards for mobile */
@@ -181,13 +184,14 @@
             .content-meta-small {flex-direction: column; gap: 0.1rem; align-items: flex-start;}
             
             /* Section cards */
-            .section-card, .shimmer-section-card {width: 100px;}
+            .section-card, .shimmer-section-card {width: 140px;}
             .section-info {padding: 0.4rem;}
             .section-name {font-size: 0.7rem;}
             
             /* Player section */
             .player-section {padding: 0.75rem; margin-bottom: 1rem;}
             .player-layout {display: block;}
+            .player-left{margin-bottom: 20px;}
             .content-title {font-size: 1.25rem;}
             .content-meta {gap: 0.5rem;}
             .meta-item {padding: 0.4rem 0.6rem; font-size: 0.8rem;}
@@ -203,12 +207,12 @@
             .footer-links {gap: 1rem;}
         }
         
-        @media (max-width: 360px) {
+        /*@media (max-width: 360px) {
             .player-layout {display: block;}
             .content-grid {grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));}
             .section-card, .shimmer-section-card {width: 90px;}
             .section-name {font-size: 0.65rem;}
-        }
+        }*/
     </style>
 </head>
 <body>
