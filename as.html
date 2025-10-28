@@ -6,103 +6,87 @@
     <title>AS Cineplex</title>
     <meta content='#0f0f0f' name='theme-color'/>
     <meta content='AS Cineplex - Modern Streaming Platform' name='description'/>
-    <meta charset='UTF-8' />
-<meta content='width=device-width, user-scalable=no' name='viewport' />
-<meta content='#000' name='theme-color' />
-<meta content='#000' name='msapplication-navbutton-color' />
-<meta content='#000' name='apple-mobile-web-app-status-bar-style' />
-<meta content='yes' name='apple-mobile-web-app-capable' />
-<meta content='AS Movies Hub' property='og:site_name' />
-<meta content='website' property='og:type' />
-<meta content='AS Movies Hub' property='og:title' />
-<meta content='A 100% free movies, web series and anime streaming website. No ads! Different Servers... and more. Watch online for free and safe.' property='og:description' />
-<meta content='https://asbros.github.io/web/movies' property='og:url' />
-<meta content='AS Movies Hub' name='title' />
-<meta content='A 100% free movies, web series and anime streaming website. No ads! Different Servers... and more. Watch online for free and safe.' name='description' />
-<meta content='AS CINEPLEX, As cineplex, As Cineplex, as cineplex, ascineplex,https://ascineplex.blogspot.com/,ascineplex.blogspot.com,https://asbros.github.io/web/movies,asbros.github.io/web/movies,as movies hub, AS MOVIES HUB,asbros, asbros github,free movies online, free web series online, hdhub4u, moviezilla, filmyzilla, 123movies, yesmovies, movies7, netflix, netmirror, imdb, tmdb, omdb, hindi movies, indian movies, bollywood movies, english movies, hollywood movies, tollywood movies, south movies, watch movies web series and anime online' name='keywords' />
-<meta content='https://i.imgur.com/ZEQdTSH.png' property='og:image' />
-<link href='https://i.imgur.com/ZEQdTSH.png' rel='shortcut icon' type='image/vnd.microsoft.icon' />
-<link href='https://i.imgur.com/ZEQdTSH.png' rel='apple-touch-icon' />
-<link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
     <link href='https://i.imgur.com/ZEQdTSH.png' rel='shortcut icon' type='image/x-icon'/>
-    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {--primary: #e50914; --primary-dark: #b2070f; --primary-glow: rgba(229, 9, 20, 0.3); --secondary: #1a1a1a; --background: #0a0a0a; --surface: rgba(255, 255, 255, 0.05); --surface-light: rgba(255, 255, 255, 0.08); --surface-dark: rgba(0, 0, 0, 0.3); --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.7); --text-muted: rgba(255, 255, 255, 0.5); --border: rgba(255, 255, 255, 0.1); --gradient: linear-gradient(135deg, #e50914 0%, #b2070f 100%); --glass: rgba(255, 255, 255, 0.1); --glass-border: rgba(255, 255, 255, 0.2); --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); --blur: blur(20px); --radius: 16px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
-        * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif;}
-        body {background: var(--background); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 20% 80%, rgba(229, 9, 20, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(229, 9, 20, 0.1) 0%, transparent 50%); min-height: 100vh;}
+        :root {--primary: #e50914; --primary-dark: #b2070f; --primary-glow: rgba(229, 9, 20, 0.3); --secondary: #1a1a1a; --background: #0a0a0a; --surface: rgba(255, 255, 255, 0.05); --surface-light: rgba(255, 255, 255, 0.08); --surface-dark: rgba(0, 0, 0, 0.3); --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.7); --text-muted: rgba(255, 255, 255, 0.5); --border: rgba(255, 255, 255, 0.1); --gradient: linear-gradient(135deg, #e50914 0%, #b2070f 100%); --glass: rgba(255, 255, 255, 0.1); --glass-border: rgba(255, 255, 255, 0.2); --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); --blur: blur(20px); --radius: 16px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); --font-light: 300; --font-regular: 400; --font-medium: 500; --font-semibold: 600; --font-bold: 700; --font-extrabold: 800;}
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;}
+        body {background: var(--background); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; background-image: radial-gradient(circle at 20% 80%, rgba(229, 9, 20, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(229, 9, 20, 0.1) 0%, transparent 50%); min-height: 100vh; font-weight: var(--font-regular); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
         .header {background: rgba(10, 10, 10, 0.8); backdrop-filter: var(--blur); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; padding: 1rem 2rem;}
         .header-content {display: flex; align-items: center; justify-content: space-between; max-width: 1400px; margin: 0 auto;}
-        .logo {display: flex; align-items: center; gap: 0.75rem; text-decoration: none;}
+        .logo {display: flex; align-items: center; gap: 0.75rem; text-decoration: none; font-weight: var(--font-bold); font-size: 1.5rem; color: var(--text-primary);}
         .search-container {display: flex; align-items: center; gap: 1rem; flex: 1; max-width: 600px; margin: 0 2rem;}
-        .type-selector {background: var(--surface); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1rem; font-size: 0.9rem; cursor: pointer; transition: var(--transition); min-width: 120px; backdrop-filter: var(--blur);}
+        .type-selector {background: var(--surface); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1rem; font-size: 0.9rem; cursor: pointer; transition: var(--transition); min-width: 120px; backdrop-filter: var(--blur); font-weight: var(--font-medium);}
         .type-selector:focus {outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-glow);}
-        .search-input {flex: 1; background: var(--surface); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1.5rem; font-size: 0.95rem; transition: var(--transition); backdrop-filter: var(--blur);}
+        .search-input {flex: 1; background: var(--surface); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1.5rem; font-size: 0.95rem; transition: var(--transition); backdrop-filter: var(--blur); font-weight: var(--font-regular);}
         .search-input:focus {outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-glow);}
         .header-actions {display: flex; align-items: center; gap: 1rem;}
         .icon-button {background: var(--surface); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; backdrop-filter: var(--blur);}
         .icon-button:hover {background: var(--surface-light); border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 20px var(--primary-glow);}
-        .main-container {max-width: 1400px; margin: 0 auto; padding: 0 2rem;}
+        .main-container {max-width: 1400px; margin: 0 auto; padding: 2rem;}
         .player-section {background: var(--surface); border-radius: var(--radius); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--glass-shadow); backdrop-filter: var(--blur); border: 1px solid var(--glass-border);}
-        .player-header {display: flex; justify-content: between; align-items: center; margin-bottom: 1.5rem;}
-        .back-button {background: var(--surface-light); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1.5rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; font-weight: 500; backdrop-filter: var(--blur);}
+        .player-header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;}
+        .back-button {background: var(--surface-light); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1.5rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; font-weight: var(--font-semibold); backdrop-filter: var(--blur);}
         .back-button:hover {background: var(--primary); border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 20px var(--primary-glow);}
         .player-layout {display: grid; grid-template-columns: 60% 40%; gap: 2rem; margin-bottom: 2rem;}
         .player-left {display: flex; flex-direction: column; gap: 1.5rem;}
-        .player-right {display: flex; flex-direction: column; gap: 1.5rem;margin-right: 2rem;}
+        .player-right {display: flex; flex-direction: column; gap: 1.5rem;}
         .video-container {position: relative; width: 100%; border-radius: var(--radius); overflow: hidden; background: #000; box-shadow: var(--glass-shadow);}
         #video {width: 100%; aspect-ratio: 16/9; border: none; background: #000;}
         .servers-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem;}
-        .server-button {background: var(--surface-light); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 0.5rem; cursor: pointer; transition: var(--transition); text-align: center; font-weight: 500; font-size: 0.85rem; backdrop-filter: var(--blur);}
+        .server-button {background: var(--surface-light); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 0.5rem; cursor: pointer; transition: var(--transition); text-align: center; font-weight: var(--font-semibold); font-size: 0.85rem; backdrop-filter: var(--blur);}
         .server-button:hover, .server-button.active {background: var(--primary); border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 15px var(--primary-glow);}
-        .content-details {background: var(--surface-light); border-radius: var(--radius); padding: 1.5rem; backdrop-filter: var(--blur); border: 1px solid var(--glass-border);}
-        .content-title {font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #fff 0%, #ccc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-        .content-meta {display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem;}
+        .content-details {background: var(--surface-light); border-radius: var(--radius); padding: 1.5rem; backdrop-filter: var(--blur); border: 1px solid var(--glass-border);margin-right: 2rem;}
+        .content-title {font-size: 2.25rem; font-weight: var(--font-bold); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 1rem; background: linear-gradient(135deg, #fff 0%, #ccc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .content-meta {display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: var(--font-medium);}
         .meta-item {display: flex; align-items: center; gap: 0.5rem; background: var(--surface-dark); padding: 0.5rem 0.75rem; border-radius: 20px; backdrop-filter: var(--blur);}
-        .rating {color: #ffd700; font-weight: 600;}
-        .content-overview {color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;}
+        .rating {color: #ffd700; font-weight: var(--font-semibold);}
+        .content-overview {color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; font-weight: var(--font-regular);}
         .genres {display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;}
-        .genre-tag {background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; backdrop-filter: var(--blur);}
+        .genre-tag {background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: var(--font-medium); backdrop-filter: var(--blur);}
         .cast-section {margin-top: 1rem;}
-        .cast-title {font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;}
+        .cast-title {font-size: 1.25rem; font-weight: var(--font-semibold); margin-bottom: 1rem;}
         .cast-scroll {display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem;}
         .cast-scroll::-webkit-scrollbar {height: 6px;}
         .cast-scroll::-webkit-scrollbar-track {background: var(--surface); border-radius: 3px;}
         .cast-scroll::-webkit-scrollbar-thumb {background: var(--primary); border-radius: 3px;}
         .cast-member {flex: 0 0 auto; width: 100px; text-align: center;}
         .cast-photo {width: 100%; aspect-ratio: 2/3; border-radius: var(--radius); object-fit: cover; margin-bottom: 0.5rem; background: var(--surface); box-shadow: var(--glass-shadow);}
-        .cast-name {font-weight: 600; font-size: 0.8rem; margin-bottom: 0.25rem; line-height: 1.2;}
-        .cast-character {color: var(--text-muted); font-size: 0.75rem; line-height: 1.2;}
+        .cast-name {font-weight: var(--font-semibold); font-size: 0.8rem; margin-bottom: 0.25rem; line-height: 1.2;}
+        .cast-character {color: var(--text-muted); font-size: 0.75rem; line-height: 1.2; font-weight: var(--font-regular);}
         .content-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;}
         .content-card {background: var(--surface); border-radius: var(--radius); overflow: hidden; transition: var(--transition); cursor: pointer; box-shadow: var(--glass-shadow); backdrop-filter: var(--blur); border: 1px solid var(--glass-border); position: relative;}
         .content-card:hover {transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--primary-glow);}
         .content-poster {width: 100%; aspect-ratio: 2/3; object-fit: cover; background: var(--surface-light);}
         .content-info {padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%); position: absolute; bottom: 0; left: 0; right: 0;}
-        .content-name {font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; line-height: 1.3; color: white;}
-        .content-meta-small {display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-secondary);}
+        .content-name {font-weight: var(--font-semibold); margin-bottom: 0.5rem; font-size: 0.9rem; line-height: 1.3; color: white; letter-spacing: -0.01em;}
+        .content-meta-small {display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-secondary); font-weight: var(--font-medium);}
         .content-year {color: var(--text-secondary);}
-        .content-rating {display: flex; align-items: center; gap: 0.25rem; color: #ffd700; font-weight: 600;}
-        .load-more {background: var(--gradient); border: none; border-radius: var(--radius); color: white; padding: 1rem 2rem; font-weight: 600; cursor: pointer; transition: var(--transition); display: block; margin: 2rem auto; min-width: 200px; backdrop-filter: var(--blur); box-shadow: 0 8px 25px var(--primary-glow);}
+        .content-rating {display: flex; align-items: center; gap: 0.25rem; color: #ffd700; font-weight: var(--font-semibold);}
+        .load-more {background: var(--gradient); border: none; border-radius: var(--radius); color: white; padding: 1rem 2rem; font-weight: var(--font-semibold); cursor: pointer; transition: var(--transition); display: block; margin: 2rem auto; min-width: 200px; backdrop-filter: var(--blur); box-shadow: 0 8px 25px var(--primary-glow);}
         .load-more:hover {transform: translateY(-2px); box-shadow: 0 12px 35px var(--primary-glow);}
         .install-prompt {background: var(--surface); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 1rem 1.5rem; position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); z-index: 1001; display: flex; align-items: center; gap: 1rem; transition: var(--transition); box-shadow: var(--glass-shadow); max-width: 400px; width: 90%; backdrop-filter: var(--blur);}
         .install-prompt.show {bottom: 2rem;}
-        .install-text {flex: 1; font-size: 0.9rem;}
-        .install-button {background: var(--primary); border: none; border-radius: var(--radius); color: white; padding: 0.5rem 1rem; font-weight: 500; cursor: pointer; transition: var(--transition);}
+        .install-text {flex: 1; font-size: 0.9rem; font-weight: var(--font-regular);}
+        .install-button {background: var(--primary); border: none; border-radius: var(--radius); color: white; padding: 0.5rem 1rem; font-weight: var(--font-medium); cursor: pointer; transition: var(--transition);}
         .install-button:hover {background: var(--primary-dark);}
         .close-button {background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.25rem; transition: var(--transition);}
         .close-button:hover {color: var(--text-primary);}
         .footer {background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; text-align: center; margin-top: 4rem; backdrop-filter: var(--blur);}
         .footer-content {max-width: 1200px; margin: 0 auto;}
         .footer-links {display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap;}
-        .footer-link {color: var(--text-secondary); text-decoration: none; transition: var(--transition);}
+        .footer-link {color: var(--text-secondary); text-decoration: none; transition: var(--transition); font-weight: var(--font-medium); cursor: pointer;}
         .footer-link:hover {color: var(--primary);}
-        .footer-copyright {color: var(--text-muted); font-size: 0.9rem;}
+        .footer-copyright {color: var(--text-muted); font-size: 0.9rem; font-weight: var(--font-regular);}
         .history-header {text-align: center; margin-bottom: 2rem;}
-        .history-title {font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;}
+        .history-title {font-size: 2.5rem; font-weight: var(--font-extrabold); line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 0.5rem;}
         .history-subtitle {color: var(--text-secondary); margin-bottom: 2rem;}
-        .clear-history {background: var(--surface-light); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1.5rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; margin: 0 auto 2rem; backdrop-filter: var(--blur);}
+        .clear-history {background: var(--surface-light); border: 1px solid var(--glass-border); border-radius: var(--radius); color: var(--text-primary); padding: 0.75rem 1.5rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; margin: 0 auto 2rem; backdrop-filter: var(--blur); font-weight: var(--font-medium);}
         .clear-history:hover {background: var(--primary); border-color: var(--primary); box-shadow: 0 4px 20px var(--primary-glow);}
         .section-header {display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;}
-        .section-title {font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #fff 0%, #ccc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .section-title {font-size: 1.75rem; font-weight: var(--font-bold); line-height: 1.3; letter-spacing: -0.01em; background: linear-gradient(135deg, #fff 0%, #ccc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
         .section-scroll {display: flex; gap: 1rem; overflow-x: auto; padding: 1rem 0; margin: 0 -0.5rem;}
         .section-scroll::-webkit-scrollbar {height: 6px;}
         .section-scroll::-webkit-scrollbar-track {background: var(--surface); border-radius: 3px;}
@@ -111,124 +95,48 @@
         .section-card:hover {transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--primary-glow);}
         .section-poster {width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--surface-light);}
         .section-info {padding: 0.5rem;}
-        .section-name {font-weight: 600; margin-bottom: 0.25rem; font-size: 0.85rem; line-height: 1.3;}
+        .section-name {font-weight: var(--font-semibold); margin-bottom: 0.25rem; font-size: 0.85rem; line-height: 1.3;}
         .section-meta {display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--text-secondary);}
         .search-page {background: var(--surface); border-radius: var(--radius); padding: 2rem; margin-bottom: 2rem; box-shadow: var(--glass-shadow); backdrop-filter: var(--blur); border: 1px solid var(--glass-border);}
         .search-header {text-align: center; margin-bottom: 2rem;}
-        .search-title {font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #fff 0%, #ccc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .search-title {font-size: 2.5rem; font-weight: var(--font-extrabold); line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 0.5rem; background: linear-gradient(135deg, #fff 0%, #ccc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
         .search-subtitle {color: var(--text-secondary); margin-bottom: 2rem;}
         .search-results-info {margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;}
-        
-        /* Shimmer Effects */
         .shimmer {position: relative; overflow: hidden; background: var(--surface-light);}
         .shimmer::before {content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: shimmer 1.5s infinite;}
         @keyframes shimmer {0% {left: -100%;} 100% {left: 100%;}}
-        
         .shimmer-card {background: var(--surface-light); border-radius: var(--radius); overflow: hidden; position: relative;}
         .shimmer-poster {width: 100%; aspect-ratio: 2/3; background: var(--surface);}
         .shimmer-info {padding: 1rem;}
         .shimmer-line {height: 12px; background: var(--surface); border-radius: 4px; margin-bottom: 8px;}
         .shimmer-line.short {width: 60%;}
         .shimmer-line.very-short {width: 40%; height: 10px;}
-        
         .shimmer-section-card {width: 180px; background: var(--surface-light); border-radius: var(--radius); overflow: hidden;}
         .shimmer-section-poster {width: 100%; aspect-ratio: 3/4; background: var(--surface);}
         .shimmer-section-info {padding: 0.75rem;}
         .shimmer-section-line {height: 10px; background: var(--surface); border-radius: 4px; margin-bottom: 6px;}
         .shimmer-section-line.short {width: 50%;}
         .shimmer-section-line.very-short {width: 30%; height: 8px;}
-        
-        /* Loading states */
         .loading {opacity: 0.7; pointer-events: none;}
         
-        /* ===== RESPONSIVE IMPROVEMENTS ===== */
-        @media (max-width: 1024px) {
-            .player-layout {grid-template-columns: 1fr;}
-            .player-right {margin-right: 0;}
-            .content-grid {grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem;}
-            .section-card, .shimmer-section-card {width: 150px;}
-        }
+        /* Modal Styles */
+        .modal-overlay {position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition);}
+        .modal-overlay.active {opacity: 1; visibility: visible;}
+        .modal {background: var(--surface); border-radius: var(--radius); padding: 2rem; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: var(--glass-shadow); backdrop-filter: var(--blur); border: 1px solid var(--glass-border); transform: translateY(20px); transition: var(--transition);}
+        .modal-overlay.active .modal {transform: translateY(0);}
+        .modal-header {display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;}
+        .modal-title {font-size: 1.5rem; font-weight: var(--font-bold); background: linear-gradient(135deg, #fff 0%, #ccc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .modal-close {background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.5rem; transition: var(--transition); border-radius: var(--radius);}
+        .modal-close:hover {color: var(--text-primary); background: var(--surface-light);}
+        .modal-content {color: var(--text-secondary); line-height: 1.7;}
+        .modal-content h3 {color: var(--text-primary); margin: 1.5rem 0 0.5rem; font-weight: var(--font-semibold);}
+        .modal-content p {margin-bottom: 1rem;}
+        .modal-content ul {margin-left: 1.5rem; margin-bottom: 1rem;}
+        .modal-content li {margin-bottom: 0.5rem;}
         
-        @media (max-width: 768px) {
-            .header {padding: 0.75rem 1rem;}
-            .header-content {flex-direction: column; gap: 1rem; padding: 0;}
-            .search-container {margin: 0; width: 100%; order: 3;}
-            .main-container {padding: 1rem;}
-            
-            /* Smaller content cards */
-            .content-grid {grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.75rem;}
-            .content-info {padding: 0.5rem;}
-            .content-name {font-size: 0.75rem; margin-bottom: 0.25rem;}
-            .content-meta-small {font-size: 0.65rem;}
-            
-            /* Smaller section cards */
-            .section-card, .shimmer-section-card {width: 140px;}
-            .section-info {padding: 0.5rem;}
-            .section-name {font-size: 0.75rem;}
-            .section-meta {font-size: 0.6rem;}
-            
-            /* Player section improvements */
-            .player-section {padding: 1rem;}
-            .player-layout {gap: 1rem;}
-            .content-details {padding: 1rem;}
-            .content-title {font-size: 1.5rem;}
-            .content-overview {font-size: 0.9rem;}
-            .servers-grid {grid-template-columns: repeat(2, 1fr);}
-            
-            /* Cast section */
-            .cast-member {width: 80px;}
-            .cast-name {font-size: 0.7rem;}
-            .cast-character {font-size: 0.65rem;}
-            
-            /* Header actions */
-            .header-actions {width: 100%; justify-content: center;}
-        }
-        
-        @media (max-width: 480px) {
-            .header {padding: 0.5rem 0.75rem;}
-            .header-content{flex-wrap: wrap;}
-            .logo, .header-actions{flex: 1;}
-            .header-content {flex-direction: row;}
-            .search-input{width: 100%;}
-            .main-container {padding: 0.75rem;}
-            
-            /* Even smaller cards for mobile */
-            .content-grid {grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 0.5rem;}
-            .content-info {padding: 0.4rem;}
-            .content-name {font-size: 0.7rem; line-height: 1.1;}
-            .content-meta-small {flex-direction: column; gap: 0.1rem; align-items: flex-start;}
-            
-            /* Section cards */
-            .section-card, .shimmer-section-card {width: 140px;}
-            .section-info {padding: 0.4rem;}
-            .section-name {font-size: 0.7rem;}
-            
-            /* Player section */
-            #video{height: 250px;}
-            .player-section {padding: 0.75rem; margin-bottom: 1rem;}
-            .player-layout {display: block;}
-            .player-left{margin-bottom: 20px;}
-            .content-title {font-size: 1.25rem;}
-            .content-meta {gap: 0.5rem;}
-            .meta-item {padding: 0.4rem 0.6rem; font-size: 0.8rem;}
-            .genres {gap: 0.25rem;}
-            .genre-tag {font-size: 0.7rem; padding: 0.2rem 0.5rem;}
-            
-            /* Search page */
-            .search-page {padding: 1rem;}
-            .search-title {font-size: 1.5rem;}
-            
-            /* Footer */
-            .footer {padding: 1.5rem 1rem;}
-            .footer-links {gap: 1rem;}
-        }
-        
-        /*@media (max-width: 360px) {
-            .player-layout {display: block;}
-            .content-grid {grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));}
-            .section-card, .shimmer-section-card {width: 90px;}
-            .section-name {font-size: 0.65rem;}
-        }*/
+        @media (max-width: 1024px) {.player-layout {grid-template-columns: 1fr;} .content-grid {grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem;} .section-card, .shimmer-section-card {width: 150px;}}
+        @media (max-width: 768px) {.header {padding: 0.75rem 1rem;} .header-content {flex-direction: column; gap: 1rem; padding: 0;} .search-container {margin: 0; width: 100%; order: 3;} .main-container {padding: 1rem;} .content-grid {grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.75rem;} .content-info {padding: 0.5rem;} .content-name {font-size: 0.75rem; margin-bottom: 0.25rem;} .content-meta-small {font-size: 0.65rem;} .section-card, .shimmer-section-card {width: 140px;} .section-info {padding: 0.5rem;} .section-name {font-size: 0.75rem;} .section-meta {font-size: 0.6rem;} .player-section {padding: 1rem;} .player-layout {gap: 1rem;} .content-details {padding: 1rem;} .content-title {font-size: 1.5rem;} .content-overview {font-size: 0.9rem;} .servers-grid {grid-template-columns: repeat(2, 1fr);} .cast-member {width: 80px;} .cast-name {font-size: 0.7rem;} .cast-character {font-size: 0.65rem;} .header-actions {width: 100%; justify-content: center;} .modal {padding: 1.5rem;}}
+        @media (max-width: 480px) {.header {padding: 0.5rem 0.75rem;} .header-content{flex-wrap: wrap;} .logo, .header-actions{flex: 1;} .header-content {flex-direction: row;} .search-input{width: 100%;} .main-container {padding: 0.75rem;} .content-grid {grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 0.5rem;} .content-info {padding: 0.4rem;} .content-name {font-size: 0.7rem; line-height: 1.1;} .content-meta-small {flex-direction: column; gap: 0.1rem; align-items: flex-start;} .section-card, .shimmer-section-card {width: 140px;} .section-info {padding: 0.4rem;} .section-name {font-size: 0.7rem;} #video{height: 250px;} .player-section {padding: 0.75rem; margin-bottom: 1rem;} .player-layout {display: block;} .player-left{margin-bottom: 20px;} .content-title {font-size: 1.25rem;} .content-meta {gap: 0.5rem;} .meta-item {padding: 0.4rem 0.6rem; font-size: 0.8rem;} .genres {gap: 0.25rem;} .genre-tag {font-size: 0.7rem; padding: 0.2rem 0.5rem;} .search-page {padding: 1rem;} .search-title {font-size: 1.5rem;} .footer {padding: 1.5rem 1rem;} .footer-links {gap: 1rem;} .modal {padding: 1rem;} .content-details {margin-right: 0;}}
     </style>
 </head>
 <body>
@@ -269,7 +177,7 @@
             <div class="player-layout">
                 <div class="player-left">
                     <div class="video-container">
-                        <iframe id="video" allowfullscreen webkitallowfullscreen="true" mozallowfullscreen="true" sandbox="allow-scripts allow-presentation allow-same-origin allow-top-navigation"></iframe>
+                        <iframe id="video" allowfullscreen webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
                     </div>
                     <div class="servers-grid" id="servers"></div>
                 </div>
@@ -294,19 +202,8 @@
                 <h2 class="section-title">Now Playing</h2>
             </div>
             <div class="section-scroll" id="nowPlayingSection">
-                <!-- Shimmer loading for now playing section -->
-                <div class="shimmer-section-card shimmer">
-                    <div class="shimmer-section-poster"></div>
-                    <div class="shimmer-section-info">
-                        <div class="shimmer-section-line"></div>
-                        <div class="shimmer-section-line short"></div>
-                        <div class="shimmer-section-line very-short"></div>
-                    </div>
-                </div>
-                <!-- More shimmer cards will be added by JavaScript -->
+                <!-- Content will be loaded here -->
             </div>
-
-            <!-- Genre sections will be dynamically created here -->
             <div id="genreSectionsContainer"></div>
         </section>
 
@@ -317,36 +214,8 @@
                 <p class="search-subtitle">Find your favorite movies and TV shows</p>
             </div>
             <div class="search-results-info" id="searchResultsInfo"></div>
-            <div id="searchResultsGrid" class="content-grid">
-                <!-- Shimmer loading for search results -->
-                <div class="shimmer-card shimmer">
-                    <div class="shimmer-poster"></div>
-                    <div class="shimmer-info">
-                        <div class="shimmer-line"></div>
-                        <div class="shimmer-line short"></div>
-                        <div class="shimmer-line very-short"></div>
-                    </div>
-                </div>
-                <!-- More shimmer cards will be added by JavaScript -->
-            </div>
+            <div id="searchResultsGrid" class="content-grid"></div>
             <button id="loadMoreSearch" class="load-more" style="display: none;">Load More Results</button>
-        </section>
-
-        <!-- Content Grid Section -->
-        <section id="contentSection" style="display: none;">
-            <div id="contentGrid" class="content-grid">
-                <!-- Shimmer loading for content grid -->
-                <div class="shimmer-card shimmer">
-                    <div class="shimmer-poster"></div>
-                    <div class="shimmer-info">
-                        <div class="shimmer-line"></div>
-                        <div class="shimmer-line short"></div>
-                        <div class="shimmer-line very-short"></div>
-                    </div>
-                </div>
-                <!-- More shimmer cards will be added by JavaScript -->
-            </div>
-            <button id="loadMore" class="load-more">Load More</button>
         </section>
 
         <!-- History Section -->
@@ -366,14 +235,122 @@
         <div class="footer-content">
             <div class="footer-links">
                 <a href="?page=home" class="footer-link">Home</a>
-                <a href="?page=search" class="footer-link">Search</a>
-                <a href="#" class="footer-link">About</a>
-                <a href="#" class="footer-link">Privacy</a>
-                <a href="#" class="footer-link">Terms</a>
+                <a class="footer-link" id="aboutLink">About</a>
+                <a class="footer-link" id="privacyLink">Privacy</a>
+                <a class="footer-link" id="termsLink">Terms</a>
             </div>
             <div class="footer-copyright">© 2024 AS Cineplex. Powered by TMDB.</div>
         </div>
     </footer>
+
+    <!-- Modal Dialogs -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">About AS Cineplex</h2>
+                <button class="modal-close" id="closeAboutModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-content">
+                <p>AS Cineplex is a modern streaming platform that brings you the latest movies and TV shows from around the world. Our mission is to provide high-quality entertainment to our users with an intuitive and seamless experience.</p>
+                
+                <h3>Features</h3>
+                <ul>
+                    <li>Extensive library of movies and TV series</li>
+                    <li>Multiple server options for reliable streaming</li>
+                    <li>Personalized watch history</li>
+                    <li>Advanced search and filtering</li>
+                    <li>Responsive design for all devices</li>
+                </ul>
+                
+                <h3>Our Team</h3>
+                <p>We are a dedicated team of developers and content curators passionate about bringing the best entertainment experience to our users. Our platform is constantly evolving with new features and improvements.</p>
+                
+                <h3>Contact Us</h3>
+                <p>If you have any questions or feedback, please reach out to us at support@ascineplex.com</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Privacy Policy</h2>
+                <button class="modal-close" id="closePrivacyModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-content">
+                <p>Your privacy is important to us. This Privacy Policy explains how AS Cineplex collects, uses, and protects your information.</p>
+                
+                <h3>Information We Collect</h3>
+                <p>We collect information to provide better services to our users:</p>
+                <ul>
+                    <li>Watch history to personalize your experience</li>
+                    <li>Search queries to improve our content recommendations</li>
+                    <li>Device information for optimizing performance</li>
+                </ul>
+                
+                <h3>How We Use Information</h3>
+                <p>We use the information we collect to:</p>
+                <ul>
+                    <li>Provide, maintain, and improve our services</li>
+                    <li>Develop new features and functionality</li>
+                    <li>Personalize content and recommendations</li>
+                    <li>Analyze usage patterns to enhance user experience</li>
+                </ul>
+                
+                <h3>Information Sharing</h3>
+                <p>We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties. This does not include trusted third parties who assist us in operating our website, conducting our business, or servicing you, so long as those parties agree to keep this information confidential.</p>
+                
+                <h3>Data Security</h3>
+                <p>We implement a variety of security measures to maintain the safety of your personal information. Your watch history is stored locally on your device and is not transmitted to our servers.</p>
+                
+                <h3>Changes to This Policy</h3>
+                <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Terms of Service</h2>
+                <button class="modal-close" id="closeTermsModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-content">
+                <p>Please read these Terms of Service carefully before using AS Cineplex.</p>
+                
+                <h3>Acceptance of Terms</h3>
+                <p>By accessing or using AS Cineplex, you agree to be bound by these Terms of Service and our Privacy Policy. If you disagree with any part of the terms, you may not access our service.</p>
+                
+                <h3>Use License</h3>
+                <p>Permission is granted to temporarily use AS Cineplex for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+                <ul>
+                    <li>Modify or copy the materials</li>
+                    <li>Use the materials for any commercial purpose</li>
+                    <li>Attempt to decompile or reverse engineer any software contained on AS Cineplex</li>
+                    <li>Remove any copyright or other proprietary notations from the materials</li>
+                    <li>Transfer the materials to another person or "mirror" the materials on any other server</li>
+                </ul>
+                
+                <h3>Content</h3>
+                <p>AS Cineplex provides access to movies and TV shows through various third-party sources. We do not host any content on our servers and act solely as an aggregator and player of content available elsewhere on the internet.</p>
+                
+                <h3>Disclaimer</h3>
+                <p>The materials on AS Cineplex are provided on an 'as is' basis. AS Cineplex makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                
+                <h3>Limitations</h3>
+                <p>In no event shall AS Cineplex or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use AS Cineplex, even if AS Cineplex or a AS Cineplex authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+                
+                <h3>Governing Law</h3>
+                <p>These terms and conditions are governed by and construed in accordance with the laws and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
+            </div>
+        </div>
+    </div>
 
     <div id="installPrompt" class="install-prompt">
         <div class="install-text">Install AS Cineplex for better experience</div>
@@ -407,16 +384,13 @@
             { name: "Crime", id: 80 },
             { name: "Drama", id: 18 },
             { name: "Fantasy", id: 14 },
-            { name: "Animation", id: 16 },
-            { name: "History", id: 36 },
-            { name: "War", id: 10752 }
+            { name: "Animation", id: 16 }
         ];
 
         // DOM Elements
         const playerSection = document.getElementById('playerSection');
         const homeSection = document.getElementById('homeSection');
         const searchPageSection = document.getElementById('searchPageSection');
-        const contentSection = document.getElementById('contentSection');
         const historySection = document.getElementById('historySection');
         const contentGrid = document.getElementById('contentGrid');
         const historyGrid = document.getElementById('historyGrid');
@@ -441,6 +415,17 @@
         const installPrompt = document.getElementById('installPrompt');
         const installBtn = document.getElementById('installBtn');
         const closeInstallBtn = document.getElementById('closeInstallBtn');
+
+        // Modal Elements
+        const aboutModal = document.getElementById('aboutModal');
+        const privacyModal = document.getElementById('privacyModal');
+        const termsModal = document.getElementById('termsModal');
+        const aboutLink = document.getElementById('aboutLink');
+        const privacyLink = document.getElementById('privacyLink');
+        const termsLink = document.getElementById('termsLink');
+        const closeAboutModal = document.getElementById('closeAboutModal');
+        const closePrivacyModal = document.getElementById('closePrivacyModal');
+        const closeTermsModal = document.getElementById('closeTermsModal');
 
         // Section containers
         const nowPlayingSection = document.getElementById('nowPlayingSection');
@@ -521,7 +506,6 @@
                 if (searchInput.value) handleSearch();
             });
             
-            // Fixed back button behavior - always goes back in webpage history
             backBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -532,17 +516,54 @@
             searchPageBtn.addEventListener('click', () => updateUrl('search'));
             clearHistoryBtn.addEventListener('click', clearHistory);
             shareBtn.addEventListener('click', shareContent);
-            loadMoreBtn.addEventListener('click', loadMoreContent);
             loadMoreSearchBtn.addEventListener('click', loadMoreSearchResults);
             installBtn.addEventListener('click', installApp);
             closeInstallBtn.addEventListener('click', hideInstallPrompt);
             window.addEventListener('popstate', handlePageChange);
+
+            // Modal event listeners
+            aboutLink.addEventListener('click', () => showModal(aboutModal));
+            privacyLink.addEventListener('click', () => showModal(privacyModal));
+            termsLink.addEventListener('click', () => showModal(termsModal));
+            closeAboutModal.addEventListener('click', () => hideModal(aboutModal));
+            closePrivacyModal.addEventListener('click', () => hideModal(privacyModal));
+            closeTermsModal.addEventListener('click', () => hideModal(termsModal));
+
+            // Close modals when clicking outside
+            aboutModal.addEventListener('click', (e) => {
+                if (e.target === aboutModal) hideModal(aboutModal);
+            });
+            privacyModal.addEventListener('click', (e) => {
+                if (e.target === privacyModal) hideModal(privacyModal);
+            });
+            termsModal.addEventListener('click', (e) => {
+                if (e.target === termsModal) hideModal(termsModal);
+            });
+
+            // Close modals with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    hideModal(aboutModal);
+                    hideModal(privacyModal);
+                    hideModal(termsModal);
+                }
+            });
+        }
+
+        // Modal Functions
+        function showModal(modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal(modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
 
         // Page Management
         function showHomePage() {
             homeSection.style.display = 'block';
-            loadMoreBtn.style.display = 'block';
             currentPage = 1;
             currentContent = [];
         }
@@ -569,7 +590,6 @@
             playerSection.style.display = 'none';
             homeSection.style.display = 'none';
             searchPageSection.style.display = 'none';
-            contentSection.style.display = 'none';
             historySection.style.display = 'none';
         }
 
@@ -601,24 +621,10 @@
                 const shimmerCard = document.createElement('div');
                 if (type === 'section') {
                     shimmerCard.className = 'shimmer-section-card shimmer';
-                    shimmerCard.innerHTML = `
-                        <div class="shimmer-section-poster"></div>
-                        <div class="shimmer-section-info">
-                            <div class="shimmer-section-line"></div>
-                            <div class="shimmer-section-line short"></div>
-                            <div class="shimmer-section-line very-short"></div>
-                        </div>
-                    `;
+                    shimmerCard.innerHTML = '<div class="shimmer-section-poster"></div><div class="shimmer-section-info"><div class="shimmer-section-line"></div><div class="shimmer-section-line short"></div><div class="shimmer-section-line very-short"></div></div>';
                 } else {
                     shimmerCard.className = 'shimmer-card shimmer';
-                    shimmerCard.innerHTML = `
-                        <div class="shimmer-poster"></div>
-                        <div class="shimmer-info">
-                            <div class="shimmer-line"></div>
-                            <div class="shimmer-line short"></div>
-                            <div class="shimmer-line very-short"></div>
-                        </div>
-                    `;
+                    shimmerCard.innerHTML = '<div class="shimmer-poster"></div><div class="shimmer-info"><div class="shimmer-line"></div><div class="shimmer-line short"></div><div class="shimmer-line very-short"></div></div>';
                 }
                 container.appendChild(shimmerCard);
             }
@@ -699,21 +705,7 @@
                 const year = releaseDate ? new Date(releaseDate).getFullYear() : '';
                 const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
                 
-                card.innerHTML = `
-                    <img src="${posterUrl}" alt="${item.title || item.name}" class="section-poster" loading="lazy" />
-                    <div class="section-info">
-                        <div class="section-name">${item.title || item.name}</div>
-                        <div class="section-meta">
-                            <div class="content-year">${year}</div>
-                            <div class="content-rating">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="#ffd700">
-                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                </svg>
-                                ${rating}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                card.innerHTML = `<img src="${posterUrl}" alt="${item.title || item.name}" class="section-poster" loading="lazy" /><div class="section-info"><div class="section-name">${item.title || item.name}</div><div class="section-meta"><div class="content-year">${year}</div><div class="content-rating"><svg width="12" height="12" viewBox="0 0 24 24" fill="#ffd700"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>${rating}</div></div></div>`;
                 sectionElement.appendChild(card);
             });
         }
@@ -804,59 +796,12 @@
                 const year = releaseDate ? new Date(releaseDate).getFullYear() : '';
                 const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
                 
-                card.innerHTML = `
-                    <img src="${posterUrl}" alt="${item.title || item.name}" class="content-poster" loading="lazy" />
-                    <div class="content-info">
-                        <div class="content-name">${item.title || item.name}</div>
-                        <div class="content-meta-small">
-                            <div class="content-year">${year}</div>
-                            <div class="content-rating">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="#ffd700">
-                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                </svg>
-                                ${rating}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                card.innerHTML = `<img src="${posterUrl}" alt="${item.title || item.name}" class="content-poster" loading="lazy" /><div class="content-info"><div class="content-name">${item.title || item.name}</div><div class="content-meta-small"><div class="content-year">${year}</div><div class="content-rating"><svg width="12" height="12" viewBox="0 0 24 24" fill="#ffd700"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>${rating}</div></div></div>`;
                 searchResultsGrid.appendChild(card);
             });
         }
 
-        // Content Loading (for backward compatibility)
-        async function loadPopularContent() {
-            // Add shimmer loading
-            addShimmerCards(contentGrid, 'grid', 12);
-            
-            try {
-                const response = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc&page=${currentPage}`, options);
-                const data = await response.json();
-                totalPages = data.total_pages;
-                
-                if (currentPage === 1) {
-                    currentContent = data.results;
-                } else {
-                    currentContent = [...currentContent, ...data.results];
-                }
-                
-                renderContentGrid(currentContent);
-                updateLoadMoreButton();
-            } catch (error) {
-                console.error('Error loading content:', error);
-                contentGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary)">Failed to load content</div>';
-            }
-        }
-
-        async function loadMoreContent() {
-            currentPage++;
-            await loadPopularContent();
-        }
-
-        function updateLoadMoreButton() {
-            loadMoreBtn.style.display = currentPage < totalPages ? 'block' : 'none';
-        }
-
-        // Content Details and Player (keep existing functionality)
+        // Content Details and Player
         async function loadContentDetails(type, id) {
             try {
                 const contentResponse = await fetch(`https://api.themoviedb.org/3/${type}/${id}`, options);
@@ -912,12 +857,7 @@
             featuredCast.forEach(person => {
                 const castElement = document.createElement('div');
                 castElement.className = 'cast-member';
-                castElement.innerHTML = `
-                    <img src="${person.profile_path ? `https://image.tmdb.org/t/p/w200${person.profile_path}` : 'https://i.imgur.com/EuQ89RI.jpeg'}" 
-                         alt="${person.name}" class="cast-photo" loading="lazy" />
-                    <div class="cast-name">${person.name}</div>
-                    <div class="cast-character">${person.character}</div>
-                `;
+                castElement.innerHTML = `<img src="${person.profile_path ? `https://image.tmdb.org/t/p/w200${person.profile_path}` : 'https://i.imgur.com/EuQ89RI.jpeg'}" alt="${person.name}" class="cast-photo" loading="lazy" /><div class="cast-name">${person.name}</div><div class="cast-character">${person.character}</div>`;
                 castContainer.appendChild(castElement);
             });
             
@@ -939,13 +879,15 @@
                 { name: 'Server 3', url: `https://vidsrc.cc/v2/embed/movie/${getUrlParams().id}?autoPlay=true` },
                 { name: 'Server 4', url: `https://player.smashy.stream/movie/${getUrlParams().id}` },
                 { name: 'Server 5', url: `https://vidapi.xyz/embedmulti/movie/${getUrlParams().id}` },
-                { name: 'Server 6', url: `https://www.2embed.cc/embed/${getUrlParams().id}` }
+                { name: 'Server 6', url: `https://www.2embed.cc/embed/${getUrlParams().id}` },
+                { name: 'Server 7', url:  `https://player.vidplus.to/embed/movie/${getUrlParams().id}?autoplay=true&poster=true&title=true&download=true&watchparty=false&chromecast=true&servericon=true&setting=true&pip=true&hideprimarycolor=true&hidesecondarycolor=true&hideiconcolor=true&hideprogresscontrol=true&hideiconset=true&icons=lucide&primarycolor=B2070F&secondarycolor=E50914&iconcolor=FFFFFF&font=Inter&fontcolor=FFFFFF&fontsize=20&opacity=0.5`}
             ] : [
                 { name: 'Server 1', url: `https://vidsrc.cc/v2/embed/tv/${getUrlParams().id}?autoPlay=true` },
                 { name: 'Server 2', url: `https://player.autoembed.cc/embed/tv/${getUrlParams().id}/1/1?server=1` },
                 { name: 'Server 3', url: `https://vidfast.pro/tv/${getUrlParams().id}/1/1` },
                 { name: 'Server 4', url: `https://vidapi.xyz/embedmulti/tv/${getUrlParams().id}&s=1&e=1` },
-                { name: 'Server 5', url: `https://www.NontonGo.win/embed/tv/${getUrlParams().id}/1/1` }
+                { name: 'Server 5', url: `https://www.NontonGo.win/embed/tv/${getUrlParams().id}/1/1` },
+                { name: 'Server 6', url:  `https://player.vidplus.to/embed/tv/${getUrlParams().id}/1/1?autoplay=true&autonext=true&nextbutton=true&poster=true&title=true&download=true&watchparty=false&chromecast=true&episodelist=true&servericon=true&setting=true&pip=true&hideprimarycolor=true&hidesecondarycolor=true&hideiconcolor=true&hideprogresscontrol=true&hideiconset=true&icons=lucide&primarycolor=B2070F&secondarycolor=E50914&iconcolor=FFFFFF&font=Inter&fontcolor=FFFFFF&fontsize=20&opacity=0.5`}
             ];
             
             servers.forEach((server, index) => {
@@ -961,47 +903,6 @@
             video.src = url;
             document.querySelectorAll('.server-button').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-        }
-
-        // Content Grid Rendering (for backward compatibility)
-        function renderContentGrid(content) {
-            if (currentPage === 1) contentGrid.innerHTML = '';
-            if (content.length === 0) {
-                contentGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary)">No content found</div>';
-                return;
-            }
-            
-            content.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'content-card';
-                const itemType = item.media_type || currentType;
-                card.onclick = () => updateUrl(itemType, item.id);
-                
-                const posterUrl = item.poster_path 
-                    ? `https://image.tmdb.org/t/p/w300${item.poster_path}`
-                    : 'https://i.imgur.com/eG5fXDo.png';
-                
-                const releaseDate = item.release_date || item.first_air_date;
-                const year = releaseDate ? new Date(releaseDate).getFullYear() : '';
-                const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
-                
-                card.innerHTML = `
-                    <img src="${posterUrl}" alt="${item.title || item.name}" class="content-poster" loading="lazy" />
-                    <div class="content-info">
-                        <div class="content-name">${item.title || item.name}</div>
-                        <div class="content-meta-small">
-                            <div class="content-year">${year}</div>
-                            <div class="content-rating">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="#ffd700">
-                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                </svg>
-                                ${rating}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                contentGrid.appendChild(card);
-            });
         }
 
         // History Management
@@ -1035,21 +936,7 @@
                     ? `https://image.tmdb.org/t/p/w300${item.poster_path}`
                     : 'https://i.imgur.com/eG5fXDo.png';
                 const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
-                card.innerHTML = `
-                    <img src="${posterUrl}" alt="${item.title}" class="content-poster" loading="lazy" />
-                    <div class="content-info">
-                        <div class="content-name">${item.title}</div>
-                        <div class="content-meta-small">
-                            <div class="content-year">${new Date(item.timestamp).getFullYear()}</div>
-                            <div class="content-rating">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="#ffd700">
-                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                </svg>
-                                ${rating}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                card.innerHTML = `<img src="${posterUrl}" alt="${item.title}" class="content-poster" loading="lazy" /><div class="content-info"><div class="content-name">${item.title}</div><div class="content-meta-small"><div class="content-year">${new Date(item.timestamp).getFullYear()}</div><div class="content-rating"><svg width="12" height="12" viewBox="0 0 24 24" fill="#ffd700"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>${rating}</div></div></div>`;
                 historyGrid.appendChild(card);
             });
         }
