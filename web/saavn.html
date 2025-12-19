@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="https://asbros.github.io/popup.js/popup.js" type="text/javascript" charset="utf-8"></script>
+ <link href='https://asbros.github.io/css/main.css' media='all' rel='stylesheet' type='text/css' />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" referrerpolicy="no-referrer" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.0.1/color-thief.min.js"></script>
+ <style>
+  @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+ </style>
+ <style>
+  *{margin: 0;user-select: none;text-decoration: none !important;}
+   html, body{
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: "Jost", sans-serif;
+   }
+   :root {
+   --pink: #ff74a4;
+   --violet: #9f6ea3;
+   --lightblack: #fff;
+   --white: #48404842;
+   --darkwhite: #cecaca;
+   --pinkshadow: #ffcbdd;
+   --lightbshadow: rgba(0,0,0,0.15);
+   }
+   body{
+   height: 100vh !important;
+   width: 100vw !important;
+       display: flex;
+   align-items: center;
+   flex-direction: column;
+   justify-content: center;
+   overflow: hidden;
+   color: #fff;
+   background-image: linear-gradient(#40C9FF,#E81CFF);
+   background-size: 100% 100%;
+   background-repeat: no-repeat;
+   backdrop-filter: blur(20px);
+   }
+   #main{
+    width: 360px;
+    padding: 0;
+    height: 550px;
+   overflow: hidden;
+   position: relative;
+   box-shadow: 0px 30px 80px rgba(0, 0, 0, 0.3);
+   height: 100%;
+   background: rgba(0,0,0,0.4)
+   }
+   #header, #controls, #time, #image, #st{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   }
+   #header,#time,#st,#controls{
+     /*background-color: rgba(232,232,240, 0.5);*/
+     max-height: 60px;
+     backdrop-filter: blur(5px);
+   }
+   #header{
+     height: 60px;
+     padding-left: 25px;
+     padding-right: 25px;
+   }
+   #controls{
+     height: 150px;
+     padding-left: 25px;
+     padding-right: 25px;
+     padding-bottom: 10px;
+   }
+   #image{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   overflow: hidden;
+   margin-top: 25px;
+   }
+   #img{
+   width: 256px;
+   height: 256px;
+   border-radius: 15px;
+   object-fit: cover;
+   box-shadow: 0px 6px 12px var(--lightbshadow);
+   }
+   #name{font-size: 21px;}
+   #artist{font-size: 18px;line-height: 0px;opacity: 0.8;}
+   #time{
+       padding: 0px 25px;
+       padding-top: 10px;
+   }
+   #timer{
+       width: 100%;
+   }
+   #st{
+       margin-top: 0px;
+       font-size: 15px;
+       padding: 0px 27px;
+   }
+   #controls button, #header button, #sclose{
+     background: none;
+     border: 0;
+   }
+   #controls i{
+     font-size: 27px;
+   user-select: none;
+   background: #fff;
+   background-clip: text;
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   }
+   #header i, #sclose i{
+     font-size: 20px;
+   user-select: none;
+   background: #fff;
+   background-clip: text;
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   }
+   #play i, #pause i{
+       font-size: 54px;
+   }
+   #header button,#sclose, #controls button:not(#play,#pause){
+       height: 40px;
+       width: 40px;
+       border-radius: 50%;
+   }
+   #timer {
+   -webkit-appearance: none;
+   appearance: none; 
+   width: 100%;
+   cursor: pointer;
+   outline: none;
+   overflow: hidden;
+   border-radius: 2px;
+  }
+  
+  #timer::-webkit-slider-runnable-track {
+   height: 7px;
+   background: #ccc;
+   border-radius: 0px;
+  }
+  
+  #timer::-moz-range-track {
+   height: 7px;
+   background: #ccc;
+   border-radius: 0px;
+  }
+  
+  #timer::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   appearance: none; 
+   height: 7px;
+   width: 7px;
+   background-color: #fff;
+   border: 2px solid #fff;
+   box-shadow: -407px 0 0 400px #fff;
+  }
+  
+  #timer::-moz-range-thumb {
+   height: 7px;
+   width: 7px;
+   background-color: #fff;
+   border: 1px solid #fff;
+   box-shadow: -407px 0 0 400px #fff;
+  }
+  #srch{
+     position: absolute;
+     top: 120%;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     z-index: 999;
+     background: rgba(0,0,0,0.7);
+     flex-direction: column;
+     padding: 10px 0px;
+     transition: all 0.3s;
+     backdrop-filter: blur(5px);
+  }
+  #shead{
+      z-index: 6;
+      height: 55px;
+      display: flex;
+      justify-content: center;
+      background: rgba(0,0,0,0.9);
+  }
+  #sinp{
+   width: 260px;
+   height: 40px;
+   padding: 0px 10px;
+   font-size: 16px;
+   font-family: Jost;
+   border-radius: 5px;
+   margin-right: 10px;
+   border: 0;
+   color: #fff;
+   background: rgba(227,222,224,0.24);
+  }
+  #sinp:focus{
+      outline: none;
+  }
+  #sres{
+  /*  display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;*/
+    overflow-y: scroll;
+    padding: 0;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    z-index: 1;
+    height: 450px;
+  }
+  #slist{
+   position: relative;
+    left: -20px;
+    overflow-y: scroll;
+  }
+  #slist li{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 300px;
+    padding: 7px;
+    text-overflow: ellipsis;overflow: hidden;white-space: nowrap;
+  }
+  .simg{
+   height: 50px;
+   width: 50px;
+   border-radius: 7px;
+   margin-right: 10px;
+   margin-left: 5px;
+  }
+  .sname, .sart{
+   width: 225px;
+   text-overflow: ellipsis;
+   overflow: hidden;
+   white-space: nowrap;
+  }
+ </style>
+</head>
+
+<body>
+ <audio id="audio"></audio>
+ <div id="bg">
+  <div id="main">
+   <div id="header">
+    <button id="menu" class="ripple"><i class="fa-solid fa-list"></i></button>
+    <span id="title" style="font-size: 20px">AS Music</span>
+    <button id="search" class="ripple"><i class="fa-solid fa-magnifying-glass"></i></button>
+   </div>
+   <div id="image" style="flex-wrap: wrap;">
+    <img id="img" crossorigin="anonymous" src="https://nglemployeedirectory.in/images/loading.gif" />
+   </div>
+   <div id="song" style="margin: 25px;margin-top: 15px;text-align: center;">
+    <div style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"><span id="name">Loading Song...</span></div>
+    <div style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"><span id="artist"></span></div>
+   </div>
+   <div id="time">
+    <input id="timer" type="range" value="0" />
+   </div>
+   <div id="st">
+    <span id="ct">0:00</span>
+    <span id="tt">0:00</span>
+   </div>
+   <div id="controls">
+    <button id="lp-off" class="ripple"><i class="fa-regular fa-heart"></i></button>
+    <button id="lp-on" class="ripple" style="display: none"><i class="fa-solid fa-heart"></i></button>
+    <button id="prev" class="ripple"><i class="fa-solid fa-backward-step"></i></button>
+    <button id="play"><i class="fa-solid fa-circle-play"></i></button>
+    <button id="pause" style="display: none"><i class="fa-solid fa-circle-pause"></i></button>
+    <button id="next" class="ripple"><i class="fa-solid fa-forward-step"></i></button>
+    <button id="down" class="ripple"><i class="fa-solid fa-arrow-down"></i></button>
+   </div>
+   <div id="srch">
+    <div id="shead" style="padding: 0px;">
+     <input id="sinp" type="text" placeholder="Type to search..." />
+     <button id="sclose" class="ripple"><i class="fa-solid fa-close"></i></button>
+    </div>
+    <div id="sres">
+     <ul id="slist"></ul>
+    </div>
+   </div>
+  </div>
+ </div>
+ <script>
+  const audio = document.getElementById('audio');
+  const menu = document.getElementById('menu');
+  const search = document.getElementById('search');
+  const img = document.getElementById('img');
+  const name = document.getElementById('name');
+  const art = document.getElementById('artist');
+  const time = document.getElementById('timer');
+  const ct = document.getElementById('ct');
+  const tt = document.getElementById('tt');
+  const prev = document.getElementById('prev');
+  const play = document.getElementById('play');
+  const pause = document.getElementById('pause');
+  const next = document.getElementById('next');
+  const down = document.getElementById('down');
+  
+  var list = [];
+  fetch("https://jiosaavn-api-privatecvc2.vercel.app/search/songs?query=latest&page=1&limit=500")
+  .then((response) => response.json())
+  .then((data) => {
+   if(data.status == "SUCCESS" && data.data.total > 0){
+    list = data.data.results;
+    set(0);
+   }else{
+      document.window.reload();
+   }
+  })
+  .catch(console.error);
+  
+  function stm(t){
+  var mins = Math.floor(t / 60);
+  var secs = Math.floor(t % 60);
+  var formattedTime = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  return formattedTime;
+  }
+  const colorThief = new ColorThief();
+  function set(n){
+    document.body.style.backgroundImage = "linear-gradient(#40C9FF,#E81CFF)";
+    img.src = "https://nglemployeedirectory.in/images/loading.gif";
+    var x = list[n];
+    window.cs = n;
+    window.st = x.name;
+    name.innerHTML = x.name;
+    art.innerHTML = x.primaryArtists;
+    tt.innerText = stm(x.duration);
+    if(x.image){
+    var e = x.image.length;
+    img.src = x.image[e-1].link;
+    img.addEventListener('load', function() {
+      document.body.style.background = `rgb(${colorThief.getColor(img)})`;
+    })
+    }
+    if(x.downloadUrl){
+    var u = x.downloadUrl.length;
+    audio.src = x.downloadUrl[u-1].link;
+    }
+    timer.setAttribute("min",0);
+    timer.setAttribute("max",x.duration);
+    document.title = x.name;
+  }
+  
+  timer.onchange = function(){
+  audio.currentTime = this.value;
+  var minutes = Math.floor(audio.currentTime / 60);
+  var seconds = Math.floor(audio.currentTime % 60);
+  var formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  ct.innerText = formattedTime;
+  }
+  
+  audio.ontimeupdate = function(){
+  timer.value = audio.currentTime;
+  var minutes = Math.floor(audio.currentTime / 60);
+  var seconds = Math.floor(audio.currentTime % 60);
+  var formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  ct.innerText = formattedTime;
+  }
+  
+  audio.onended = function(){
+    next.click();
+    play.click();
+  }
+  
+  audio.onpause = function(){
+    pause.click();
+  }
+  
+  audio.onplay = function(){
+    play.click();
+  }
+  
+  play.onclick = function(){
+    audio.play();
+    this.style.display = "none";
+    pause.style.display = "";
+  }
+  
+  pause.onclick = function(){
+    audio.pause();
+    this.style.display = "none";
+    play.style.display = "";
+  }
+  
+  prev.onclick = function(){
+    if(cs !== 0){
+    set(window.cs-1);
+    }else{
+        set(list.length-1);
+    }
+  }
+  
+  next.onclick = function(){
+    if(window.cs !== list.length-1){
+    set(window.cs+1);
+    }else{
+        set(0);
+    }
+  }
+  
+  down.onclick = function(){
+   var loader = as.loader();
+   loader.show();
+    fetch(audio.src)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const base64Data = reader.result.split(',')[1]; // Extract the Base64 data
+  
+        // Create an anchor element to trigger the download
+        const a = document.createElement('a');
+        a.href = `data:audio/mp3;base64,${base64Data}`;
+        a.download = `${window.st}.mp3`; // Set the desired filename
+  
+        // Trigger a click event on the anchor to initiate the download
+        a.dispatchEvent(new MouseEvent('click'));
+  
+        // Cleanup
+        URL.revokeObjectURL(a.href);
+      };
+      reader.readAsDataURL(blob);
+      loader.hide();
+    })
+    .catch((error) => {
+      console.error('Error downloading audio:', error);
+    });
+  }
+  
+  search.onclick = function(){
+    document.getElementById("srch").style.top = 0;
+    document.getElementById("sinp").value = "";
+    document.getElementById("slist").innerHTML = "";
+    document.getElementById("sinp").disabled = false;
+    document.getElementById("sinp").style.background = "";
+    document.getElementById("sinp").style.fontSize = "18px";
+  }
+  
+  document.getElementById("sclose").onclick = function(){
+    document.getElementById("srch").style.top = "120%";
+    document.getElementById("sinp").blur();
+  }
+  
+  function plylst(i,n,slist,cs){
+       var l = document.createElement("li");
+        l.onclick = function(){
+          list = slist;
+          set(n);
+    document.getElementById("sclose").click();
+    audio.play();
+        }
+        l.setAttribute("data-n",n);
+        l.setAttribute("data-src",i.downloadUrl[3].link);
+        if(cs == n){
+         l.style.background = "rgba(200,0,0,0.5)";
+        }
+        l.innerHTML = "<img class='simg' src='"+i.image[1].link+"'><div><div class='sname'><span>"+i.name+"</span></div><div class='sart'><span>"+i.primaryArtists+"</span></div></div>";
+        document.getElementById("slist").appendChild(l);
+       
+  }
+  
+  document.getElementById("sinp").onkeypress = function(){
+   document.getElementById("slist").innerHTML = "<h3 style='text-align: center'>Searching...</h3>";
+   fetch("https://jiosaavn-api-privatecvc2.vercel.app/search/songs?query="+this.value.trim()+"&page=1&limit=500")
+  .then((response) => response.json())
+  .then((data) => {
+      document.getElementById("slist").innerHTML = "";
+      if(data.status == "SUCCESS" && data.data.total > 0){
+       var slist = data.data.results;
+       slist.forEach((i,n) => {
+           plylst(i,n,slist);
+       });
+      }else{
+          document.getElementById("slist").innerHTML = "<h3 style='text-align: center'>No results found !</h3>";
+      }
+  })
+  .catch(console.error);
+  }
+  
+  menu.onclick = function(){
+    search.click();
+    list.forEach((i,n) => {
+        plylst(i,n,list,window.cs)
+    });
+    document.getElementById("sinp").value = "Current Playlist";
+    document.getElementById("sinp").disabled = true;
+    document.getElementById("sinp").style.background = "none";
+    document.getElementById("sinp").style.fontSize = "20px";
+  }
+ </script>
+</body>
+
+</html>
