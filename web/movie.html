@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>AS CINEPLEX | Premium Streaming</title>
+
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+ <style>
+  :root {
+      --bg-light: #f8f9fa;
+      --surface: #ffffff;
+      --primary: #6366f1;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+  }
+  
+  body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+  }
+  
+  #pageLoader {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-light);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.5s ease, visibility 0.5s;
+  }
+  
+  .loader-ring {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  
+  .navbar-custom {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 1000;
+  }
+  
+  .navbar-brand { font-weight: 800; color: var(--primary) !important; cursor: pointer; text-decoration: none; }
+  
+  .nav-link-custom {
+      font-weight: 600; color: var(--text-muted);
+      font-size: 0.9rem; transition: 0.2s; cursor: pointer;
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+  }
+  .nav-link-custom:hover, .nav-link-custom.active { color: var(--primary); }
+  
+  .search-input {
+      border-radius: 50px;
+      padding-left: 2.5rem;
+      border: 1px solid var(--border);
+      height: 40px; font-size: 0.9rem;
+  }
+  
+  .movie-card {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      height: 100%;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .movie-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
+  .poster-wrapper { aspect-ratio: 2/3; overflow: hidden; background: #eee; position: relative; }
+  .poster-img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .section-header { 
+      font-weight: 800; font-size: 1.1rem;
+      display: flex; align-items: center;
+      color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); margin-left: 1rem; }
+  
+  .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; }
+  .stream-controls {
+      background: var(--surface);
+      border-radius: 16px; padding: 25px; margin-top: -30px;
+      position: relative; z-index: 10; border: 1px solid var(--border);
+  }
+  
+  .ep-btn {
+      background: var(--bg-light); border: 1px solid var(--border);
+      padding: 12px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      text-align: left; display: flex; justify-content: space-between; align-items: center;
+  }
+  .ep-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .server-btn, .trailer-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; transition: 0.2s; }
+  .server-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .trailer-btn { background: #ef4444; color: white; border-color: #ef4444; }
+  
+  .person-circle-img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 5px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+  .cast-img-large { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 2px solid white; }
+ </style>
+</head>
+
+<body>
+
+ <div id="pageLoader">
+  <div class="loader-ring"></div>
+ </div>
+
+ <nav class="navbar navbar-custom py-2">
+  <div class="container d-flex align-items-center justify-content-between">
+   <div class="d-flex align-items-center gap-4">
+    <a class="navbar-brand fs-4" href="#" onclick="goHome()">AS<span class="text-dark">CINEPLEX</span></a>
+    <div class="d-flex align-items-center gap-3 ms-2">
+     <a href="#wishlist" class="nav-link-custom" id="nav-wishlist"><i class="fa fa-bookmark"></i> Wishlist</a>
+     <a href="#history" class="nav-link-custom" id="nav-history"><i class="fa fa-clock-rotate-left"></i> History</a>
+    </div>
+   </div>
+   <div class="search-container flex-grow-1 mx-4" style="max-width: 400px;">
+    <i class="fa fa-search position-absolute text-muted" style="margin-left: 15px; margin-top: 11px;"></i>
+    <input type="text" id="searchInput" class="form-control search-input shadow-none" placeholder="Search...">
+   </div>
+  </div>
+ </nav>
+
+ <main class="container my-4">
+  <section id="home-view"></section>
+
+  <section id="search-view" style="display:none;">
+   <h5 class="section-header mb-4">SEARCH RESULTS</h5>
+   <div id="searchGrid" class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-4"></div>
+  </section>
+
+  <section id="list-view" style="display:none;">
+   <div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="section-header mb-0" id="listTitle" style="flex:1">LIST</h5>
+    <button id="listActionBtn" class="btn btn-outline-danger btn-sm fw-bold"></button>
+   </div>
+   <div id="listGrid" class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-4"></div>
+  </section>
+
+  <section id="details-view" style="display:none;">
+   <div class="row justify-content-center">
+    <div class="col-lg-11">
+     <div id="playerContainer" class="video-container"></div>
+     <div id="resumeContainer"></div>
+     <div style="margin-top:15px" class="stream-controls shadow-sm">
+      <div class="mb-4">
+       <span class="fw-bold text-muted small d-block mb-2">STREAM OPTIONS</span>
+       <div class="server-grid d-flex flex-wrap gap-2" id="serverGrid"></div>
+      </div>
+      <div id="tvSelectors" class="d-none">
+       <div class="d-flex align-items-center gap-3 mb-3">
+        <span class="fw-bold text-primary small">SEASON</span>
+        <select id="seasonDropdown" class="form-select form-select-sm w-auto border-0 bg-light fw-bold" onchange="loadEpisodes(this.value)"></select>
+       </div>
+       <div id="episodeList" class="episode-scroll d-flex flex-column gap-2" style="max-height: 300px; overflow-y: auto;"></div>
+      </div>
+     </div>
+     <div class="row mt-5 g-4">
+      <div class="col-md-8" id="metaContent"></div>
+      <div class="col-md-4" id="sideContent"></div>
+     </div>
+    </div>
+   </div>
+  </section>
+  <section id="person-view" style="display:none;"></section>
+ </main>
+
+ <script>
+  const KEY = '6b4357c41d9c606e4d7ebe2f4a8850ea';
+  const BASE = 'https://api.themoviedb.org/3';
+  const POSTER = 'https://image.tmdb.org/t/p/w342';
+  const CAST_IMG = 'https://image.tmdb.org/t/p/w185';
+  const FALLBACK_IMG = "https://sdlatlas.com/public/img/thumbnail.jpg";
+  
+  let currentType, currentId, currentS = 1, currentE = 1, trailerKey = null, searchTimer;
+  
+  // --- Core Helpers ---
+  const getStorage = (k) => JSON.parse(localStorage.getItem(k) || '[]');
+  const setStorage = (k, d) => localStorage.setItem(k, JSON.stringify(d));
+  function sanitize(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML.replace(/'/g, "&#39;"); }
+  function setActiveUI(s, e) { document.querySelectorAll(s).forEach(i => i.classList.remove('active')); if (e) e.classList.add('active'); }
+  
+  // --- Router ---
+  window.addEventListener('hashchange', router);
+  window.onload = router;
+  
+  function goHome() { document.getElementById('searchInput').value = ''; window.location.hash = ''; }
+  
+  async function router() {
+      toggleLoader(true);
+      const h = window.location.hash;
+      const vs = ['home-view', 'search-view', 'details-view', 'person-view', 'list-view'];
+      vs.forEach(v => document.getElementById(v).style.display = 'none');
+      setActiveUI('.nav-link-custom', null);
+  
+      if (h === '#wishlist' || h === '#history') {
+          document.getElementById('list-view').style.display = 'block';
+          setActiveUI('.nav-link-custom', document.getElementById('nav-' + h.slice(1)));
+          renderListPage(h.slice(1));
+      } else if (h.startsWith('#movie/') || h.startsWith('#tv/')) {
+          const [t, i] = h.slice(1).split('/');
+          currentType = t; currentId = i;
+          document.getElementById('details-view').style.display = 'block';
+          await loadDetails(t, i);
+      } else if (h.startsWith('#person/')) {
+          document.getElementById('person-view').style.display = 'block';
+          await loadPerson(h.split('/')[1]);
+      } else if (h.startsWith('#search/')) {
+          document.getElementById('search-view').style.display = 'block';
+          await performSearch(decodeURIComponent(h.split('/')[1]));
+      } else {
+          document.getElementById('home-view').style.display = 'block';
+          await loadHome();
+      }
+      window.scrollTo(0, 0); toggleLoader(false);
+  }
+  
+  function toggleLoader(s) { const l = document.getElementById('pageLoader'); l.style.opacity = s ? '1' : '0'; setTimeout(() => l.style.visibility = s ? 'visible' : 'hidden', 500); }
+  
+  // --- View Renderers ---
+  async function loadHome() {
+      const c = document.getElementById('home-view'); 
+      c.innerHTML = '<div class="d-flex flex-column gap-5"></div>';
+      const inner = c.firstChild;
+  
+      const cats = [
+          { n: 'Trending Today', u: '/trending/all/day' }, 
+          { n: 'Action Hits', u: '/discover/movie?with_genres=28' }
+      ];
+      
+      for (const cat of cats) {
+          const r = await fetch(`${BASE}${cat.u}${cat.u.includes('?') ? '&' : '?'}api_key=${KEY}`);
+          const data = await r.json();
+          const d = document.createElement('div');
+          d.innerHTML = `<h5 class="section-header mb-4">${cat.n}</h5><div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-4">${data.results.slice(0, 12).map(i => createCard(i)).join('')}</div>`;
+          inner.appendChild(d);
+      }
+  }
+  
+  function renderListPage(mode) {
+      const storageKey = mode === 'wishlist' ? 'watchlist' : 'watchHistory';
+      const data = getStorage(storageKey);
+      document.getElementById('listTitle').innerText = mode.toUpperCase() + ` (${data.length})`;
+      
+      const btn = document.getElementById('listActionBtn');
+      btn.innerHTML = `<i class="fa fa-trash-can me-2"></i>Clear ${mode}`;
+      btn.onclick = () => { if(confirm(`Clear all ${mode}?`)) { localStorage.removeItem(storageKey); renderListPage(mode); } };
+      
+      const grid = document.getElementById('listGrid');
+      grid.innerHTML = data.length ? data.map(i => createCard({...i, poster_path: i.poster, media_type: i.type})).join('') : `<div class="col-12 text-center py-5 text-muted">No items in your ${mode}.</div>`;
+  }
+  
+  function createCard(m) {
+      const t = m.media_type || (m.title ? 'movie' : 'tv');
+      const title = sanitize(m.title || m.name);
+      const date = (m.release_date || m.first_air_date || '').split('-')[0];
+      const img = m.poster_path ? (POSTER + m.poster_path) : (m.profile_path ? (CAST_IMG + m.profile_path) : FALLBACK_IMG);
+      if (m.media_type === 'person') return `<div class="col"><div class="movie-card text-center p-2" onclick="window.location.hash='person/${m.id}'"><div class="poster-wrapper rounded-circle mx-auto mt-3" style="width:100px; height:100px;"><img src="${img}" class="poster-img" loading="lazy"></div><div class="p-2 fw-bold small text-truncate">${title}</div></div></div>`;
+      return `<div class="col"><div class="movie-card" onclick="window.location.hash='${t}/${m.id}'"><div class="poster-wrapper"><img src="${img}" class="poster-img" loading="lazy"></div><div class="p-2"><div class="text-truncate fw-bold small">${title}</div><div class="text-muted small">${date}</div></div></div></div>`;
+  }
+  
+  // --- Player & Details ---
+  async function loadDetails(t, i) {
+      const [m, c, v] = await Promise.all([
+          fetch(`${BASE}/${t}/${i}?api_key=${KEY}`).then(r => r.json()),
+          fetch(`${BASE}/${t}/${i}/credits?api_key=${KEY}`).then(r => r.json()),
+          fetch(`${BASE}/${t}/${i}/videos?api_key=${KEY}`).then(r => r.json())
+      ]);
+      trailerKey = v.results.find(x => x.type === 'Trailer' && x.site === 'YouTube')?.key;
+      addToHistory(m.id, t, m.title || m.name, m.poster_path);
+      checkContinueWatching(i, t);
+  
+      if (t === 'tv') {
+          document.getElementById('tvSelectors').classList.remove('d-none');
+          document.getElementById('seasonDropdown').innerHTML = m.seasons.filter(s => s.season_number > 0).map(s => `<option value="${s.season_number}">Season ${s.season_number}</option>`).join('');
+          await loadEpisodes(1);
+      } else { document.getElementById('tvSelectors').classList.add('d-none'); }
+      
+      buildServerButtons(true);
+      document.getElementById('metaContent').innerHTML = `<div class="d-flex justify-content-between align-items-center mb-3"><h2 class="fw-bold m-0">${sanitize(m.title || m.name)}</h2><div id="watchlistBtn" onclick="toggleWatchlist('${m.id}','${t}','${sanitize(m.title||m.name)}','${m.poster_path}')"></div></div><p class="text-muted">${sanitize(m.overview)}</p>
+      <div class="d-flex overflow-auto gap-3 pb-3">${c.cast.slice(0,10).map(a => `<div onclick="window.location.hash='person/${a.id}'" style="cursor:pointer; min-width:100px"><img src="${a.profile_path ? CAST_IMG+a.profile_path : FALLBACK_IMG}" class="cast-img-large shadow-sm mb-2"><div class="fw-bold small text-truncate text-center">${sanitize(a.name)}</div></div>`).join('')}</div>`;
+      renderWatchlistBtn(m.id);
+      document.getElementById('sideContent').innerHTML = `<div class="card border-0 p-4 rounded-4 shadow-sm"><h6 class="fw-bold">DETAILS</h6><div class="small text-muted mb-2">Genres: ${m.genres.map(g => g.name).join(', ')}</div><div class="small text-muted">Status: ${m.status}</div></div>`;
+  }
+  
+  function addToHistory(id, t, title, poster) {
+      let h = getStorage('watchHistory');
+      const ex = h.find(x => x.id == id);
+      h = h.filter(x => x.id != id);
+      h.unshift({ id, type: t, title, poster, season: ex?.season || 1, episode: ex?.episode || 1 });
+      setStorage('watchHistory', h.slice(0, 50));
+  }
+  
+  function toggleWatchlist(id, t, title, poster) {
+      let l = getStorage('watchlist');
+      const idx = l.findIndex(x => x.id == id);
+      if (idx > -1) l.splice(idx, 1); else l.push({ id, type: t, title, poster });
+      setStorage('watchlist', l); renderWatchlistBtn(id);
+  }
+  
+  function renderWatchlistBtn(id) {
+      const b = document.getElementById('watchlistBtn');
+      const is = getStorage('watchlist').some(x => x.id == id);
+      b.innerHTML = is ? `<button class="btn btn-danger btn-sm rounded-pill fw-bold px-3">Remove Wishlist</button>` : `<button class="btn btn-primary btn-sm rounded-pill fw-bold px-3">Add Wishlist</button>`;
+  }
+  
+  function checkContinueWatching(id, t) {
+      const e = getStorage('watchHistory').find(x => x.id == id);
+      const c = document.getElementById('resumeContainer'); c.innerHTML = '';
+      if (e && t === 'tv' && (e.season > 1 || e.episode > 1)) {
+          const a = document.createElement('div'); a.className = "alert alert-primary d-flex justify-content-between align-items-center mt-3 py-2 px-3 small border-0 shadow-sm";
+          a.style.borderRadius = "10px";
+          a.innerHTML = `<span><i class="fa fa-history me-2"></i>Pick up at <b>S${e.season}:E${e.episode}</b>?</span><button class="btn btn-primary btn-sm py-1 fw-bold" onclick="resumePlayback(${e.season}, ${e.episode})">Resume</button>`;
+          c.appendChild(a);
+      }
+  }
+  
+  window.resumePlayback = function(s, e) {
+      document.getElementById('seasonDropdown').value = s;
+      loadEpisodes(s).then(() => {
+          const btns = document.querySelectorAll('.ep-btn');
+          if (btns[e-1]) changeEpisode(btns[e-1], s, e);
+          document.getElementById('resumeContainer').innerHTML = '';
+      });
+  };
+  
+  const SERVERS = [
+      { n: "Server 1", m: "https://vidsrc.me/embed/movie/", t: "https://vidsrc.me/embed/tv/" }, 
+      { n: "Server 2", m: "https://embed.su/embed/movie/", t: "https://embed.su/embed/tv/" }
+  ];
+  
+  function buildServerButtons(init = false) {
+      const g = document.getElementById('serverGrid'); g.innerHTML = '';
+      if(trailerKey) {
+          const b = document.createElement('button'); b.className = `trailer-btn ${init?'active':''}`; b.innerHTML = "<i class='fa fa-play me-1'></i>Trailer";
+          b.onclick = (e) => { setActiveUI('.server-btn, .trailer-btn', e.target); loadTrailer(); };
+          g.appendChild(b);
+      }
+      SERVERS.forEach((s, i) => {
+          const b = document.createElement('button'); b.className = `server-btn ${(!trailerKey && i===0 && init)?'active':''}`; b.innerText = s.n;
+          b.onclick = (e) => { setActiveUI('.server-btn, .trailer-btn', e.target); initPlayer(currentType==='movie'?s.m:s.t); };
+          g.appendChild(b);
+      });
+      if (init) { if(trailerKey) loadTrailer(); else initPlayer(currentType==='movie'?SERVERS[0].m:SERVERS[0].t); }
+  }
+  
+  function loadTrailer() { document.getElementById('playerContainer').innerHTML = `<iframe src="https://www.youtube.com/embed/${trailerKey}?autoplay=1" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`; }
+  async function loadEpisodes(s) {
+      currentS = s; const r = await fetch(`${BASE}/tv/${currentId}/season/${s}?api_key=${KEY}`); const data = await r.json();
+      document.getElementById('episodeList').innerHTML = data.episodes.map(e => `<button class="ep-btn ${e.episode_number===1?'active':''}" onclick="changeEpisode(this, ${s}, ${e.episode_number})"><span>${e.episode_number}. ${sanitize(e.name)}</span><i class="fa fa-play-circle opacity-50"></i></button>`).join('');
+  }
+  function changeEpisode(b, s, e) {
+      currentS = s; currentE = e; setActiveUI('.ep-btn', b);
+      const h = getStorage('watchHistory'); const idx = h.findIndex(x => x.id == currentId);
+      if(idx > -1) { h[idx].season = s; h[idx].episode = e; setStorage('watchHistory', h); }
+      let active = document.querySelector('.server-btn.active') || document.querySelector('.server-btn');
+      initPlayer(SERVERS[Array.from(document.querySelectorAll('.server-btn')).indexOf(active) || 0].t);
+  }
+  function initPlayer(b) {
+      const u = currentType === 'movie' ? `${b}${currentId}` : `${b}${currentId}/${currentS}/${currentE}`;
+      document.getElementById('playerContainer').innerHTML = `<iframe src="${u}" width="100%" height="100%" frameborder="0" allowfullscreen sandbox="allow-forms allow-scripts allow-same-origin"></iframe>`;
+  }
+  
+  // --- Search & Person ---
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+      clearTimeout(searchTimer); const q = e.target.value.trim();
+      if (!q) { if (window.location.hash.startsWith('#search/')) window.location.hash = ''; return; }
+      searchTimer = setTimeout(() => { window.location.hash = `search/${encodeURIComponent(q)}`; }, 500);
+  });
+  
+  async function performSearch(q) {
+      const r = await fetch(`${BASE}/search/multi?api_key=${KEY}&query=${encodeURIComponent(q)}`);
+      const data = await r.json();
+      document.getElementById('searchGrid').innerHTML = data.results.length ? data.results.map(i => createCard(i)).join('') : `<div class="col-12 text-center py-5">No results.</div>`;
+  }
+  
+  async function loadPerson(id) {
+      const [p, c] = await Promise.all([fetch(`${BASE}/person/${id}?api_key=${KEY}`).then(r => r.json()), fetch(`${BASE}/person/${id}/combined_credits?api_key=${KEY}`).then(r => r.json())]);
+      const m = c.cast.filter(x => x.media_type==='movie').sort((a,b)=>new Date(b.release_date)-new Date(a.release_date));
+      document.getElementById('person-view').innerHTML = `<div class="text-center mb-5"><img src="${p.profile_path?POSTER+p.profile_path:FALLBACK_IMG}" class="person-circle-img mb-3" loading="lazy"><h1>${sanitize(p.name)}</h1><p class="text-muted small px-lg-5">${sanitize(p.biography) || 'No bio available.'}</p></div><h5 class="section-header mb-4">MOVIES</h5><div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-4">${m.slice(0,18).map(x=>createCard(x)).join('')}</div>`;
+  }
+ </script>
+</body>
+
+</html>
