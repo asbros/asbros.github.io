@@ -36,9 +36,12 @@
   .ep-btn { background: var(--bg-light); border: 1px solid var(--border); padding: 12px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
   .ep-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   
-  .server-btn, .trailer-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; transition: 0.2s; }
+  .server-btn, .trailer-btn { padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; transition: 0.2s; }
   .server-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   .trailer-btn { background: #ef4444; color: white; border-color: #ef4444; }
+  
+  .genre-pill { white-space: nowrap; padding: 6px 16px; border-radius: 50px; background: white; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: 0.2s; }
+  .genre-pill:hover { border-color: var(--primary); color: var(--primary); }
   
   .gallery-scroll { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: thin; scroll-snap-type: x mandatory; }
   .gallery-item { min-width: 280px; scroll-snap-align: start; }
@@ -70,7 +73,7 @@
    </div>
    <div class="search-container flex-grow-1 mx-4" style="max-width: 400px; position: relative;">
     <i class="fa fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
-    <input type="text" id="searchInput" class="form-control search-input shadow-none" placeholder="Search...">
+    <input type="text" id="searchInput" class="form-control search-input shadow-none" placeholder="Search movies, series, actors...">
    </div>
   </div>
  </nav>
@@ -174,26 +177,36 @@
   async function loadHome(append = false) {
       if (!append) { homePage = 1; document.getElementById('home-view').innerHTML = ''; }
       const container = document.getElementById('home-view');
+      
       const cats = [
-          { n: 'Trending Now', u: `/trending/all/day?page=${homePage}` },
-          { n: 'Popular Movies', u: `/movie/popular?page=${homePage}` }
+          { n: 'Trending Now', id: 'Trending', u: `/trending/all/day?page=${homePage}` },
+          { n: 'Just Released', id: 'JustReleased', u: `/movie/now_playing?page=${homePage}` },
+          { n: 'Popular Series', id: 'Series', u: `/tv/popular?page=${homePage}` },
+          { n: 'Action Movies', id: 'Action', u: `/discover/movie?with_genres=28&page=${homePage}` },
+          { n: 'Thriller & Mystery', id: 'Thriller', u: `/discover/movie?with_genres=53,9648&page=${homePage}` },
+          { n: 'Sci-Fi & Fantasy', id: 'SciFi', u: `/discover/movie?with_genres=878,14&page=${homePage}` },
+          { n: 'Comedy', id: 'Comedy', u: `/discover/movie?with_genres=35&page=${homePage}` },
+          { n: 'Animation', id: 'Animation', u: `/discover/movie?with_genres=16&page=${homePage}` },
+          { n: 'Horror', id: 'Horror', u: `/discover/movie?with_genres=27&page=${homePage}` },
+          { n: 'Top Rated', id: 'TopRated', u: `/movie/top_rated?page=${homePage}` }
       ];
   
       for (const cat of cats) {
           const r = await fetch(`${BASE}${cat.u}&api_key=${KEY}`);
           const data = await r.json();
-          let section = document.getElementById(`sec-${cat.n.replace(/\s/g, '')}`);
+          let section = document.getElementById(`cat-${cat.id}`);
           if (!section) {
               section = document.createElement('div');
-              section.id = `sec-${cat.n.replace(/\s/g, '')}`;
-              section.className = "mb-5";
+              section.id = `cat-${cat.id}`;
+              section.className = "mb-5 pt-4"; // Added padding for anchor scrolling
               section.innerHTML = `<h5 class="section-header mb-4">${cat.n}</h5><div class="row row-cols-2 row-cols-md-6 g-4 grid-target"></div>`;
               container.appendChild(section);
           }
           section.querySelector('.grid-target').insertAdjacentHTML('beforeend', data.results.map(i => createCard(i)).join(''));
       }
+      
       if (!document.getElementById('homeLoadMore')) {
-          container.insertAdjacentHTML('beforeend', `<div class="text-center my-5"><button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button></div>`);
+          container.insertAdjacentHTML('beforeend', `<div class="text-center my-5"><button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More From All Categories</button></div>`);
       }
       homePage++;
   }
@@ -260,7 +273,6 @@
       const container = document.createElement('div');
       container.className = "mt-5 pt-4 border-top";
   
-      // Gallery First
       let gallery = '';
       if(img.backdrops.length > 0) {
           gallery = `<h6 class="fw-bold mb-3">GALLERY</h6><div class="gallery-scroll mb-5">
@@ -337,8 +349,18 @@
   }
   
   const SERVERS = [
-      { n: "Server 1", m: "https://vidsrc.me/embed/movie/", t: "https://vidsrc.me/embed/tv/" },
-      { n: "Server 2", m: "https://embed.su/embed/movie/", t: "https://embed.su/embed/tv/" }
+      { n: "Server 1", m: "https://cinemaos.live/movie/watch/", t: "https://cinemaos.live/tv/watch/" },
+      { n: "Server 2", m: "https://player.autoembed.app/embed/movie/", t: "https://player.autoembed.app/embed/tv/" },
+      { n: "Server 3", m: "https://player.videasy.net/movie/", t: "https://player.videasy.net/tv/" },
+      { n: "Server 4", m: "https://player.vidzee.wtf/embed/movie/", t: "https://player.videasy.net/tv/" },
+      { n: "Server 5", m: "https://zxcstream.xyz/player/movie/", t: "https://zxcstream.xyz/player/tv/" },
+      { n: "Server 6", m: "https://vidfast.pro/movie/", t: "https://vidfast.pro/tv/" },
+      { n: "Server 7", m: "https://111movies.net/movie/", t: "https://111movies.net/tv/" },
+      { n: "Server 8", m: "https://vidnest.fun/movie/", t: "https://vidnest.fun/tv/" },
+      { n: "Server 9", m: "https://www.NontonGo.win/embed/movie/", t: "https://www.NontonGo.win/embed/tv/" },
+      { n: "Server 10", m: "https://www.vidking.net/embed/movie/", t: "https://www.vidking.net/embed/tv/" },
+      { n: "Server 11", m: "https://vidsrc.cc/v3/embed/movie/", t: "https://vidsrc.cc/v3/embed/tv/" },
+      { n: "Server 12", m: "https://player.vidplus.to/embed/movie/", t: "https://player.vidplus.to/embed/tv/" }
   ];
   
   function buildServerButtons(init = false) {
@@ -366,7 +388,6 @@
       const url = currentType === 'movie' ? `${baseUrl}${currentId}` : `${baseUrl}${currentId}/${currentS}/${currentE}`;
       const ifr = document.createElement('iframe');
       ifr.src = url; ifr.style.width = "100%"; ifr.style.height = "100%"; ifr.frameBorder = "0"; ifr.allowFullscreen = true;
-      ifr.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin allow-presentation allow-popups');
       ifr.onload = () => { if(p.querySelector('.spinner-border')) p.querySelector('.spinner-border').remove(); };
       p.innerHTML = ''; p.appendChild(ifr);
   }
