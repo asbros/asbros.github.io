@@ -21,23 +21,70 @@
   .navbar-brand { font-weight: 800; color: var(--primary) !important; cursor: pointer; text-decoration: none; }
   .nav-link-custom { font-weight: 600; color: var(--text-muted); font-size: 0.9rem; transition: 0.2s; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 6px; }
   .nav-link-custom:hover, .nav-link-custom.active { color: var(--primary); }
-  .search-input { border-radius: 50px; padding-left: 2.5rem; border: 1px solid var(--border); height: 40px; font-size: 0.9rem; }
   
-  .movie-card { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; height: 100%; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .movie-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
-  .poster-wrapper { background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); background-size: 200% 100%; animation: shine 1.5s linear infinite; aspect-ratio: 2/3; overflow: hidden; }
-  .poster-img { width: 100%; height: 100%; object-fit: cover; }
+  /* Search & Autocomplete */
+  .search-input { border-radius: 50px; padding-left: 2.5rem; border: 1px solid var(--border); height: 40px; font-size: 0.9rem; }
+  #searchSuggestions { top: 45px; border-radius: 12px; border: 1px solid var(--border); background: #fff; z-index: 1100; max-height: 300px; overflow-y: auto; }
+
+  /* RESPONSIVE GRID */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 992px) {
+    .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 2rem;
+    }
+  }
+
+  /* PREMIUM MOVIE CARD */
+  .movie-card {
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .movie-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-color: var(--primary);
+  }
+
+  .poster-wrapper {
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: shine 1.5s linear infinite;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .poster-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .movie-card:hover .poster-img { transform: scale(1.1); }
   @keyframes shine { to { background-position-x: -200%; } }
+
+  .card-body-content { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .card-title-text { font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-meta-text { font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
   
   .section-header { font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; }
   .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); margin-left: 1rem; }
   
+  /* Player & Controls */
   .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; position: relative; }
   .stream-controls { background: var(--surface); border-radius: 16px; padding: 25px; margin-top: -30px; position: relative; z-index: 10; border: 1px solid var(--border); }
-  
   .ep-btn { background: var(--bg-light); border: 1px solid var(--border); padding: 12px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
   .ep-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-  
   .server-btn, .trailer-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; transition: 0.2s; }
   .server-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   .trailer-btn { background: #ef4444; color: white; border-color: #ef4444; }
@@ -49,13 +96,7 @@
   .person-circle-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 5px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
   .cast-img-large { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid white; }
   
-  .nav-pills .nav-link { color: var(--text-muted); font-weight: 700; border-radius: 8px; padding: 10px 20px; }
-  .nav-pills .nav-link.active { background-color: var(--primary); color: white; }
-  .review-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
-  
-  .player-wrapper { position: relative; width: 100%; height: 100%; }
   .iframe-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 5; }
-  .iframe-loader .spinner-border { width: 3rem; height: 3rem; color: var(--primary); }
   .iframe-loader span { margin-top: 10px; font-weight: 600; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
  </style>
 </head>
@@ -77,24 +118,39 @@
    </div>
    <div class="search-container flex-grow-1 mx-4" style="max-width: 400px; position: relative;">
     <i class="fa fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
-    <input type="text" id="searchInput" class="form-control search-input shadow-none" placeholder="Search movies, series, actors...">
+    <input type="text" id="searchInput" class="form-control search-input shadow-none" placeholder="Search movies, series, actors..." autocomplete="off">
+    <div id="searchSuggestions" class="list-group position-absolute w-100 shadow-sm d-none"></div>
    </div>
   </div>
  </nav>
 
  <main class="container my-4">
   <section id="home-view"></section>
+  
   <section id="search-view" style="display:none;">
-   <h5 class="section-header mb-4">SEARCH RESULTS</h5>
-   <div id="searchGrid" class="row row-cols-2 row-cols-md-6 g-4"></div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <h5 class="section-header mb-0" style="flex: 1;">SEARCH RESULTS</h5>
+        <div class="btn-group btn-group-sm bg-white shadow-sm rounded-pill p-1">
+            <button id="filter-multi" class="btn btn-primary rounded-pill px-3 filter-btn active" onclick="filterSearch('multi', this)">All</button>
+            <button id="filter-movie" class="btn btn-light rounded-pill px-3 filter-btn" onclick="filterSearch('movie', this)">Movies</button>
+            <button id="filter-tv" class="btn btn-light rounded-pill px-3 filter-btn" onclick="filterSearch('tv', this)">Series</button>
+            <button id="filter-person" class="btn btn-light rounded-pill px-3 filter-btn" onclick="filterSearch('person', this)">Actors</button>
+        </div>
+    </div>
+    <div id="searchGrid" class="grid-container"></div>
+    <div class="text-center my-5">
+        <button id="searchLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold d-none" onclick="loadMoreSearch()">Load More</button>
+    </div>
   </section>
+
   <section id="list-view" style="display:none;">
    <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="section-header mb-0" id="listTitle" style="flex:1">LIST</h5>
     <button id="listActionBtn" class="btn btn-outline-danger btn-sm fw-bold"></button>
    </div>
-   <div id="listGrid" class="row row-cols-2 row-cols-md-6 g-4"></div>
+   <div id="listGrid" class="grid-container"></div>
   </section>
+
   <section id="details-view" style="display:none;">
    <div class="row justify-content-center">
     <div class="col-lg-11">
@@ -120,6 +176,7 @@
     </div>
    </div>
   </section>
+
   <section id="person-view" style="display:none;"></section>
  </main>
 
@@ -133,8 +190,8 @@
   const FALLBACK_IMG = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6eoP22fr1gee9ZOkWtUS0frFs_ZYwV0SCwrGuI14ebw&s=10";
   
   let currentType, currentId, currentS = 1, currentE = 1, trailerKey = null, searchTimer;
-  let homePage = 1, personPage = 1, currentPersonId = null;
-  let activeServerIndex = 0; // Robust server switching state
+  let homePage = 1, personPage = 1, searchPage = 1;
+  let currentSearchQuery = '', currentSearchFilter = 'multi', activeServerIndex = 0;
 
   const getStorage = (k) => JSON.parse(localStorage.getItem(k) || '[]');
   const setStorage = (k, d) => localStorage.setItem(k, JSON.stringify(d));
@@ -153,7 +210,10 @@
       toggleLoader(true);
       const h = window.location.hash;
       const vs = ['home-view', 'search-view', 'details-view', 'person-view', 'list-view'];
+      const suggestionsBox = document.getElementById('searchSuggestions');
+      
       vs.forEach(v => document.getElementById(v).style.display = 'none');
+      
       if (h === '#wishlist' || h === '#history') {
           document.getElementById('list-view').style.display = 'block';
           renderListPage(h.slice(1));
@@ -167,7 +227,9 @@
           await loadPerson(h.split('/')[1]);
       } else if (h.startsWith('#search/')) {
           document.getElementById('search-view').style.display = 'block';
-          await performSearch(decodeURIComponent(h.split('/')[1]));
+          suggestionsBox.classList.add('d-none');
+          const query = decodeURIComponent(h.split('/')[1]);
+          if(query !== currentSearchQuery) await performSearch(query);
       } else {
           document.getElementById('home-view').style.display = 'block';
           await loadHome();
@@ -181,19 +243,133 @@
       l.style.opacity = s ? '1' : '0';
       setTimeout(() => l.style.visibility = s ? 'visible' : 'hidden', 500);
   }
-  
+
+  // --- SEARCH & AUTOCOMPLETE ---
+  const searchInput = document.getElementById('searchInput');
+  const suggestionsBox = document.getElementById('searchSuggestions');
+
+  searchInput.addEventListener('input', async (e) => {
+      const q = e.target.value.trim();
+      if (q.length < 2) { 
+          suggestionsBox.innerHTML = '';
+          suggestionsBox.classList.add('d-none'); 
+          return; 
+      }
+
+      try {
+          const r = await fetch(`${BASE}/search/multi?api_key=${KEY}&query=${encodeURIComponent(q)}`);
+          const data = await r.json();
+          
+          if (data.results.length > 0) {
+              suggestionsBox.innerHTML = data.results.slice(0, 6).map(i => {
+                  const name = sanitize(i.title || i.name);
+                  return `
+                  <button class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-2" 
+                          onclick="selectSuggestion('${name.replace(/'/g, "\\'")}')">
+                      <i class="fa fa-search text-muted small"></i>
+                      <span class="small fw-bold">${name}</span>
+                  </button>`;
+              }).join('');
+              suggestionsBox.classList.remove('d-none');
+          }
+      } catch (err) { console.error("Search error:", err); }
+
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => { 
+          if (q && q !== currentSearchQuery) {
+              window.location.hash = `search/${encodeURIComponent(q)}`; 
+          }
+      }, 1000); 
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+          const q = searchInput.value.trim();
+          if (q) {
+              suggestionsBox.classList.add('d-none');
+              window.location.hash = `search/${encodeURIComponent(q)}`;
+              searchInput.blur();
+          }
+      }
+  });
+
+  function selectSuggestion(val) {
+      searchInput.value = val;
+      suggestionsBox.classList.add('d-none');
+      window.location.hash = `search/${encodeURIComponent(val)}`;
+  }
+
+  document.addEventListener('click', e => { if (!e.target.closest('.search-container')) suggestionsBox.classList.add('d-none'); });
+
+  async function filterSearch(type, btn) {
+      currentSearchFilter = type;
+      document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('active', 'btn-primary');
+          b.classList.add('btn-light');
+      });
+      btn.classList.add('active', 'btn-primary');
+      btn.classList.remove('btn-light');
+      await performSearch(currentSearchQuery);
+  }
+
+  async function performSearch(q, append = false) {
+      if (!append) { searchPage = 1; currentSearchQuery = q; document.getElementById('searchGrid').innerHTML = ''; }
+      toggleLoader(true);
+      const endpoint = currentSearchFilter === 'multi' ? 'multi' : currentSearchFilter;
+      const r = await fetch(`${BASE}/search/${endpoint}?api_key=${KEY}&query=${encodeURIComponent(q)}&page=${searchPage}`);
+      const data = await r.json();
+      
+      const grid = document.getElementById('searchGrid');
+      grid.insertAdjacentHTML('beforeend', data.results.map(i => createCard(i)).join(''));
+      
+      document.getElementById('searchLoadMore').classList.toggle('d-none', data.page >= data.total_pages);
+      toggleLoader(false);
+  }
+
+  function loadMoreSearch() { searchPage++; performSearch(currentSearchQuery, true); }
+
+  // --- RENDERING CORE ---
+  function createCard(m) {
+      const t = m.media_type || (m.title ? 'movie' : 'tv');
+      const title = sanitize(m.title || m.name);
+      const date = (m.release_date || m.first_air_date || '').split('-')[0];
+      const rating = m.vote_average ? m.vote_average.toFixed(1) : 'N/A';
+      const img = m.poster_path ? (POSTER + m.poster_path) : (m.profile_path ? (POSTER + m.profile_path) : FALLBACK_IMG);
+      
+      if (m.media_type === 'person' || (!m.title && !m.name && m.profile_path)) {
+          return `
+          <div class="movie-card text-center p-3" onclick="window.location.hash='person/${m.id}'">
+              <div class="poster-wrapper rounded-circle mx-auto mt-2" style="width:110px; height:110px;">
+                  <img src="${img}" class="poster-img">
+              </div>
+              <div class="mt-3 card-title-text">${title}</div>
+              <div class="text-muted small">Actor</div>
+          </div>`;
+      }
+
+      return `
+      <div class="movie-card" onclick="window.location.hash='${t}/${m.id}'">
+          <div class="poster-wrapper">
+              <img src="${img}" class="poster-img" loading="lazy">
+          </div>
+          <div class="card-body-content">
+              <div class="card-title-text">${title}</div>
+              <div class="card-meta-text">
+                  <span>${date || 'N/A'}</span>
+                  <span class="badge bg-light text-dark border px-2 py-1"><i class="fa fa-star text-warning me-1"></i>${rating}</span>
+              </div>
+          </div>
+      </div>`;
+  }
+
+  // --- DATA LOADING ---
   async function loadHome(append = false) {
       if (!append) { homePage = 1; document.getElementById('home-view').innerHTML = ''; }
       const container = document.getElementById('home-view');
       const cats = [
           { n: 'Trending Now', id: 'Trending', u: `/trending/all/day?page=${homePage}` },
-          { n: 'Just Released', id: 'JustReleased', u: `/movie/now_playing?page=${homePage}` },
           { n: 'Popular Series', id: 'Series', u: `/tv/popular?page=${homePage}` },
-          { n: 'Action Movies', id: 'Action', u: `/discover/movie?with_genres=28&page=${homePage}` },
-          { n: 'Thriller & Mystery', id: 'Thriller', u: `/discover/movie?with_genres=53,9648&page=${homePage}` },
-          { n: 'Sci-Fi & Fantasy', id: 'SciFi', u: `/discover/movie?with_genres=878,14&page=${homePage}` },
-          { n: 'Comedy', id: 'Comedy', u: `/discover/movie?with_genres=35&page=${homePage}` },
-          { n: 'Animation', id: 'Animation', u: `/discover/movie?with_genres=16&page=${homePage}` }
+          { n: 'Action Movies', id: 'Action', u: `/discover/movie?with_genres=28&page=${homePage}` }
       ];
 
       for (const cat of cats) {
@@ -204,12 +380,11 @@
               section = document.createElement('div');
               section.id = `cat-${cat.id}`;
               section.className = "mb-5 pt-4";
-              section.innerHTML = `<h5 class="section-header mb-4">${cat.n}</h5><div class="row row-cols-2 row-cols-md-6 g-4 grid-target"></div>`;
+              section.innerHTML = `<h5 class="section-header mb-4">${cat.n}</h5><div class="grid-container grid-target"></div>`;
               container.appendChild(section);
           }
           section.querySelector('.grid-target').insertAdjacentHTML('beforeend', data.results.map(i => createCard(i)).join(''));
       }
-      
       if (!document.getElementById('homeLoadMore')) {
           container.insertAdjacentHTML('beforeend', `<div class="text-center my-5"><button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button></div>`);
       }
@@ -249,10 +424,8 @@
                   <div onclick="window.location.hash='person/${a.id}'" style="cursor:pointer; min-width:100px" class="text-center">
                       <img src="${a.profile_path ? CAST_IMG+a.profile_path : FALLBACK_IMG}" class="cast-img-large shadow-sm mb-2" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
                       <div class="fw-bold small text-truncate">${sanitize(a.name)}</div>
-                  </div>
-              `).join('')}
-          </div>
-      `;
+                  </div>`).join('')}
+          </div>`;
   
       renderWatchlistBtn(m.id);
       document.getElementById('sideContent').innerHTML = `
@@ -261,94 +434,50 @@
               <div class="small mb-2"><b>Genres:</b> ${m.genres.map(g => g.name).join(', ')}</div>
               <div class="small mb-2"><b>Release:</b> ${m.release_date || m.first_air_date}</div>
               <div class="small"><b>Rating:</b> <span class="text-warning"><i class="fa fa-star"></i> ${m.vote_average.toFixed(1)}</span></div>
-          </div>
-      `;
+          </div>`;
       await loadExtraDetails(t, i);
   }
   
   async function loadExtraDetails(t, i) {
-      const [rev, img, rec, vid] = await Promise.all([
+      const [rev, img, rec] = await Promise.all([
           fetch(`${BASE}/${t}/${i}/reviews?api_key=${KEY}`).then(r => r.json()),
           fetch(`${BASE}/${t}/${i}/images?api_key=${KEY}`).then(r => r.json()),
-          fetch(`${BASE}/${t}/${i}/recommendations?api_key=${KEY}`).then(r => r.json()),
-          fetch(`${BASE}/${t}/${i}/videos?api_key=${KEY}`).then(r => r.json())
+          fetch(`${BASE}/${t}/${i}/recommendations?api_key=${KEY}`).then(r => r.json())
       ]);
   
       const meta = document.getElementById('metaContent');
       const container = document.createElement('div');
       container.className = "mt-5 pt-4 border-top";
-  
-      let gallery = '';
-      if(img.backdrops.length > 0) {
-          gallery = `<h6 class="fw-bold mb-3">GALLERY</h6><div class="gallery-scroll mb-5">
-              ${img.backdrops.slice(0,8).map(b => `<div class="gallery-item"><img src="${BACKDROP+b.file_path}" class="gallery-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></div>`).join('')}
-          </div>`;
-      }
-  
       container.innerHTML = `
-          ${gallery}
-          <ul class="nav nav-pills mb-4 gap-2" id="detailTabs">
-              <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-sim">Similar</button></li>
-              <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-vid">Clips</button></li>
-              <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-rev">Reviews</button></li>
-          </ul>
-          <div class="tab-content">
-              <div class="tab-pane fade show active" id="tab-sim">
-                  <div class="row row-cols-2 row-cols-md-4 g-3">${rec.results.slice(0,8).map(m => createCard(m)).join('')}</div>
-              </div>
-              <div class="tab-pane fade" id="tab-vid">
-                  <div class="row g-3">${vid.results.slice(0,4).map(v => `<div class="col-md-6"><div class="ratio ratio-16x9"><iframe src="https://www.youtube.com/embed/${v.key}" allowfullscreen class="rounded-3 border-0 shadow-sm"></iframe></div></div>`).join('')}</div>
-              </div>
-              <div class="tab-pane fade" id="tab-rev">
-                  ${rev.results.length ? rev.results.slice(0,3).map(r => `<div class="review-card shadow-sm"><div class="fw-bold text-primary mb-1">${sanitize(r.author)}</div><div class="small text-muted">${sanitize(r.content).substring(0,300)}...</div></div>`).join('') : '<p class="text-muted">No reviews available.</p>'}
-              </div>
+          <h6 class="fw-bold mb-3">GALLERY</h6>
+          <div class="gallery-scroll mb-5">
+              ${img.backdrops.slice(0,8).map(b => `<div class="gallery-item"><img src="${BACKDROP+b.file_path}" class="gallery-img"></div>`).join('')}
           </div>
-      `;
+          <h5 class="section-header mb-4">MORE LIKE THIS</h5>
+          <div class="grid-container mb-5">${rec.results.slice(0,12).map(m => createCard(m)).join('')}</div>`;
       meta.appendChild(container);
   }
-  
+
   async function loadPerson(id, append = false) {
-      if (!append) { personPage = 1; currentPersonId = id; document.getElementById('person-view').innerHTML = ''; }
+      if (!append) { personPage = 1; document.getElementById('person-view').innerHTML = ''; }
       const [p, c] = await Promise.all([
           fetch(`${BASE}/person/${id}?api_key=${KEY}`).then(r => r.json()),
           fetch(`${BASE}/person/${id}/combined_credits?api_key=${KEY}`).then(r => r.json())
       ]);
-  
       if (!append) {
           document.getElementById('person-view').innerHTML = `
               <div class="row mb-5 align-items-center">
-                  <div class="col-md-3 text-center"><img src="${p.profile_path ? POSTER+p.profile_path : FALLBACK_IMG}" class="person-circle-img mb-3 shadow" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></div>
-                  <div class="col-md-9"><h1 class="fw-bold">${sanitize(p.name)}</h1><p class="text-muted">${sanitize(p.biography) || 'No bio available.'}</p></div>
+                  <div class="col-md-3 text-center"><img src="${p.profile_path ? POSTER+p.profile_path : FALLBACK_IMG}" class="person-circle-img mb-3 shadow"></div>
+                  <div class="col-md-9"><h1 class="fw-bold">${sanitize(p.name)}</h1><p class="text-muted">${sanitize(p.biography) || 'No bio.'}</p></div>
               </div>
               <h5 class="section-header mb-4">KNOWN FOR</h5>
-              <div id="personGrid" class="row row-cols-2 row-cols-md-6 g-4"></div>
-              <div class="text-center mt-5"><button id="personLoadMore" class="btn btn-outline-primary px-5 rounded-pill" onclick="loadPerson('${id}', true)">Load More</button></div>
-          `;
+              <div id="personGrid" class="grid-container"></div>
+              <div class="text-center mt-5"><button id="personLoadMore" class="btn btn-outline-primary px-5 rounded-pill" onclick="loadPerson('${id}', true)">Load More</button></div>`;
       }
       const sorted = c.cast.sort((a,b) => b.popularity - a.popularity).slice((personPage-1)*12, personPage*12);
       document.getElementById('personGrid').insertAdjacentHTML('beforeend', sorted.map(x => createCard(x)).join(''));
       if (sorted.length < 12) document.getElementById('personLoadMore')?.remove();
       personPage++;
-  }
-  
-  function createCard(m) {
-      const t = m.media_type || (m.title ? 'movie' : 'tv');
-      const title = sanitize(m.title || m.name);
-      const date = (m.release_date || m.first_air_date || '').split('-')[0];
-      const img = m.poster_path ? (POSTER + m.poster_path) : (m.profile_path ? (POSTER + m.profile_path) : FALLBACK_IMG);
-      
-      if (m.media_type === 'person') {
-          return `<div class="col">
-              <div class="movie-card text-center p-2" onclick="window.location.hash='person/${m.id}'">
-                  <div class="poster-wrapper rounded-circle mx-auto mt-3" style="width:100px; height:100px;"><img src="${img}" class="poster-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></div>
-                  <div class="p-2 fw-bold small text-truncate">${title}</div>
-              </div>
-          </div>`;
-      }
-      return `<div class="col"><div class="movie-card" onclick="window.location.hash='${t}/${m.id}'">
-          <div class="poster-wrapper"><img src="${img}" class="poster-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';" loading="lazy"></div>
-          <div class="p-2"><div class="text-truncate fw-bold small">${title}</div><div class="text-muted small">${date || 'N/A'}</div></div>
-      </div></div>`;
   }
   
   const SERVERS = [
@@ -380,36 +509,23 @@
           const isSelected = (!trailerKey && i === activeServerIndex && init);
           b.className = `server-btn ${isSelected ? 'active' : ''}`;
           b.innerText = s.n;
-          b.onclick = (e) => { 
-              activeServerIndex = i; 
-              setActiveUI('.server-btn, .trailer-btn', e.target); 
-              initPlayer(currentType==='movie'?s.m:s.t); 
-          };
+          b.onclick = (e) => { activeServerIndex = i; setActiveUI('.server-btn, .trailer-btn', e.target); initPlayer(currentType==='movie'?s.m:s.t); };
           g.appendChild(b);
       });
-      if (init) {
-          if(trailerKey) loadTrailer();
-          else initPlayer(currentType==='movie' ? SERVERS[activeServerIndex].m : SERVERS[activeServerIndex].t);
-      }
+      if (init) { if(trailerKey) loadTrailer(); else initPlayer(currentType==='movie' ? SERVERS[activeServerIndex].m : SERVERS[activeServerIndex].t); }
   }
   
   function initPlayer(baseUrl) {
     const p = document.getElementById('playerContainer');
     const url = currentType === 'movie' ? `${baseUrl}${currentId}` : `${baseUrl}${currentId}/${currentS}/${currentE}`;
-    p.innerHTML = `<div class="player-wrapper">
-            <div id="iframeLoading" class="iframe-loader"><div class="spinner-border" role="status"></div><span>Connecting...</span></div>
-            <iframe id="streamIframe" src="${url}" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
-        </div>`;
+    p.innerHTML = `<div class="player-wrapper" style="height:100%"><div id="iframeLoading" class="iframe-loader"><div class="spinner-border text-primary"></div><span>Connecting...</span></div>
+            <iframe id="streamIframe" src="${url}" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe></div>`;
     document.getElementById('streamIframe').onload = () => document.getElementById('iframeLoading').style.display = 'none';
   }
   
   function loadTrailer() {
     const p = document.getElementById('playerContainer');
-    p.innerHTML = `<div class="player-wrapper">
-            <div id="trailerLoading" class="iframe-loader"><div class="spinner-border text-danger" role="status"></div></div>
-            <iframe id="trailerIframe" src="https://www.youtube.com/embed/${trailerKey}?autoplay=1" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        </div>`;
-    document.getElementById('trailerIframe').onload = () => document.getElementById('trailerLoading').style.display = 'none';
+    p.innerHTML = `<iframe src="https://www.youtube.com/embed/${trailerKey}?autoplay=1" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`;
   }
   
   async function loadEpisodes(s) {
@@ -430,30 +546,14 @@
       initPlayer(SERVERS[activeServerIndex].t);
   }
   
-  document.getElementById('searchInput').addEventListener('input', (e) => {
-      clearTimeout(searchTimer);
-      const q = e.target.value.trim();
-      if (!q) { 
-          if (window.location.hash.startsWith('#search/')) goHome(); 
-          return; 
-      }
-      searchTimer = setTimeout(() => { window.location.hash = `search/${encodeURIComponent(q)}`; }, 500);
-  });
-  
-  async function performSearch(q) {
-      const r = await fetch(`${BASE}/search/multi?api_key=${KEY}&query=${encodeURIComponent(q)}`);
-      const data = await r.json();
-      document.getElementById('searchGrid').innerHTML = data.results.length ? data.results.map(i => createCard(i)).join('') : `<div class="col-12 text-center py-5">No results.</div>`;
-  }
-  
   function renderListPage(mode) {
       const key = mode === 'wishlist' ? 'watchlist' : 'watchHistory';
       const data = getStorage(key);
       document.getElementById('listTitle').innerText = mode.toUpperCase() + ` (${data.length})`;
       const btn = document.getElementById('listActionBtn');
-      btn.innerHTML = `<i class="fa fa-trash-can me-2"></i>Clear ${mode}`;
-      btn.onclick = () => { if(confirm(`Clear all ${mode}?`)) { localStorage.removeItem(key); renderListPage(mode); } };
-      document.getElementById('listGrid').innerHTML = data.length ? data.map(i => createCard({...i, poster_path: i.poster, media_type: i.type})).join('') : `<div class="col-12 text-center py-5 text-muted">No items found.</div>`;
+      btn.innerHTML = `<i class="fa fa-trash-can me-2"></i>Clear`;
+      btn.onclick = () => { if(confirm(`Clear ${mode}?`)) { localStorage.removeItem(key); renderListPage(mode); } };
+      document.getElementById('listGrid').innerHTML = data.length ? data.map(i => createCard({...i, poster_path: i.poster, media_type: i.type})).join('') : `<div class="col-12 text-center py-5 text-muted">Empty list.</div>`;
   }
   
   function addToHistory(id, t, title, poster) {
@@ -474,7 +574,7 @@
   function renderWatchlistBtn(id) {
       const b = document.getElementById('watchlistBtn');
       const is = getStorage('watchlist').some(x => x.id == id);
-      b.innerHTML = is ? `<button class="btn btn-danger btn-sm rounded-pill fw-bold px-3">Remove Wishlist</button>` : `<button class="btn btn-primary btn-sm rounded-pill fw-bold px-3">Add Wishlist</button>`;
+      b.innerHTML = `<button class="btn ${is?'btn-danger':'btn-primary'} btn-sm rounded-pill fw-bold px-3">${is?'Remove':'Add'} Wishlist</button>`;
   }
   
   function checkContinueWatching(id, t) {
@@ -482,11 +582,9 @@
       const c = document.getElementById('resumeContainer');
       c.innerHTML = '';
       if (e && t === 'tv' && (e.season > 1 || e.episode > 1)) {
-          const a = document.createElement('div');
-          a.className = "alert alert-primary d-flex justify-content-between align-items-center mt-3 py-2 px-3 small shadow-sm border-0";
-          a.style.borderRadius = "10px";
-          a.innerHTML = `<span><i class="fa fa-history me-2"></i>Resume at <b>S${e.season}:E${e.episode}</b>?</span><button class="btn btn-primary btn-sm fw-bold" onclick="resumePlayback(${e.season}, ${e.episode})">Resume</button>`;
-          c.appendChild(a);
+          c.innerHTML = `<div class="alert alert-primary d-flex justify-content-between align-items-center mt-3 py-2 px-3 small shadow-sm border-0" style="border-radius:10px">
+              <span><i class="fa fa-history me-2"></i>Resume <b>S${e.season}:E${e.episode}</b>?</span>
+              <button class="btn btn-primary btn-sm fw-bold" onclick="resumePlayback(${e.season}, ${e.episode})">Resume</button></div>`;
       }
   }
   
