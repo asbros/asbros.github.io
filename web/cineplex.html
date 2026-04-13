@@ -25,8 +25,9 @@
   
   .movie-card { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; height: 100%; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .movie-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
-  .poster-wrapper { aspect-ratio: 2/3; overflow: hidden; background: #eee; position: relative; }
+  .poster-wrapper { background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); background-size: 200% 100%; animation: shine 1.5s linear infinite; aspect-ratio: 2/3; overflow: hidden; }
   .poster-img { width: 100%; height: 100%; object-fit: cover; }
+  @keyframes shine { to { background-position-x: -200%; } }
   
   .section-header { font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; }
   .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); margin-left: 1rem; }
@@ -37,12 +38,9 @@
   .ep-btn { background: var(--bg-light); border: 1px solid var(--border); padding: 12px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
   .ep-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   
-  .server-btn, .trailer-btn { padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; transition: 0.2s; }
+  .server-btn, .trailer-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; transition: 0.2s; }
   .server-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
   .trailer-btn { background: #ef4444; color: white; border-color: #ef4444; }
-  
-  .genre-pill { white-space: nowrap; padding: 6px 16px; border-radius: 50px; background: white; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: 0.2s; }
-  .genre-pill:hover { border-color: var(--primary); color: var(--primary); }
   
   .gallery-scroll { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: thin; scroll-snap-type: x mandatory; }
   .gallery-item { min-width: 280px; scroll-snap-align: start; }
@@ -54,6 +52,11 @@
   .nav-pills .nav-link { color: var(--text-muted); font-weight: 700; border-radius: 8px; padding: 10px 20px; }
   .nav-pills .nav-link.active { background-color: var(--primary); color: white; }
   .review-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+  
+  .player-wrapper { position: relative; width: 100%; height: 100%; }
+  .iframe-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 5; }
+  .iframe-loader .spinner-border { width: 3rem; height: 3rem; color: var(--primary); }
+  .iframe-loader span { margin-top: 10px; font-weight: 600; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
  </style>
 </head>
 
@@ -127,11 +130,12 @@
   const POSTER = 'https://image.tmdb.org/t/p/w342';
   const BACKDROP = 'https://image.tmdb.org/t/p/w780';
   const CAST_IMG = 'https://image.tmdb.org/t/p/w185';
-  const FALLBACK_IMG = "https://via.placeholder.com/342x513?text=No+Image";
+  const FALLBACK_IMG = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6eoP22fr1gee9ZOkWtUS0frFs_ZYwV0SCwrGuI14ebw&s=10";
   
   let currentType, currentId, currentS = 1, currentE = 1, trailerKey = null, searchTimer;
   let homePage = 1, personPage = 1, currentPersonId = null;
-  
+  let activeServerIndex = 0; // Robust server switching state
+
   const getStorage = (k) => JSON.parse(localStorage.getItem(k) || '[]');
   const setStorage = (k, d) => localStorage.setItem(k, JSON.stringify(d));
   function sanitize(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
@@ -140,7 +144,10 @@
   window.addEventListener('hashchange', router);
   window.onload = router;
   
-  function goHome() { document.getElementById('searchInput').value = ''; window.location.hash = ''; }
+  function goHome() { 
+      document.getElementById('searchInput').value = ''; 
+      window.location.hash = ''; 
+  }
   
   async function router() {
       toggleLoader(true);
@@ -178,7 +185,6 @@
   async function loadHome(append = false) {
       if (!append) { homePage = 1; document.getElementById('home-view').innerHTML = ''; }
       const container = document.getElementById('home-view');
-      
       const cats = [
           { n: 'Trending Now', id: 'Trending', u: `/trending/all/day?page=${homePage}` },
           { n: 'Just Released', id: 'JustReleased', u: `/movie/now_playing?page=${homePage}` },
@@ -187,11 +193,9 @@
           { n: 'Thriller & Mystery', id: 'Thriller', u: `/discover/movie?with_genres=53,9648&page=${homePage}` },
           { n: 'Sci-Fi & Fantasy', id: 'SciFi', u: `/discover/movie?with_genres=878,14&page=${homePage}` },
           { n: 'Comedy', id: 'Comedy', u: `/discover/movie?with_genres=35&page=${homePage}` },
-          { n: 'Animation', id: 'Animation', u: `/discover/movie?with_genres=16&page=${homePage}` },
-          { n: 'Horror', id: 'Horror', u: `/discover/movie?with_genres=27&page=${homePage}` },
-          { n: 'Top Rated', id: 'TopRated', u: `/movie/top_rated?page=${homePage}` }
+          { n: 'Animation', id: 'Animation', u: `/discover/movie?with_genres=16&page=${homePage}` }
       ];
-  
+
       for (const cat of cats) {
           const r = await fetch(`${BASE}${cat.u}&api_key=${KEY}`);
           const data = await r.json();
@@ -199,7 +203,7 @@
           if (!section) {
               section = document.createElement('div');
               section.id = `cat-${cat.id}`;
-              section.className = "mb-5 pt-4"; // Added padding for anchor scrolling
+              section.className = "mb-5 pt-4";
               section.innerHTML = `<h5 class="section-header mb-4">${cat.n}</h5><div class="row row-cols-2 row-cols-md-6 g-4 grid-target"></div>`;
               container.appendChild(section);
           }
@@ -207,7 +211,7 @@
       }
       
       if (!document.getElementById('homeLoadMore')) {
-          container.insertAdjacentHTML('beforeend', `<div class="text-center my-5"><button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More From All Categories</button></div>`);
+          container.insertAdjacentHTML('beforeend', `<div class="text-center my-5"><button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button></div>`);
       }
       homePage++;
   }
@@ -243,7 +247,7 @@
           <div class="d-flex overflow-auto gap-3 pb-3">
               ${c.cast.slice(0,10).map(a => `
                   <div onclick="window.location.hash='person/${a.id}'" style="cursor:pointer; min-width:100px" class="text-center">
-                      <img src="${a.profile_path ? CAST_IMG+a.profile_path : FALLBACK_IMG}" class="cast-img-large shadow-sm mb-2" onerror="this.src='${FALLBACK_IMG}'">
+                      <img src="${a.profile_path ? CAST_IMG+a.profile_path : FALLBACK_IMG}" class="cast-img-large shadow-sm mb-2" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
                       <div class="fw-bold small text-truncate">${sanitize(a.name)}</div>
                   </div>
               `).join('')}
@@ -277,7 +281,7 @@
       let gallery = '';
       if(img.backdrops.length > 0) {
           gallery = `<h6 class="fw-bold mb-3">GALLERY</h6><div class="gallery-scroll mb-5">
-              ${img.backdrops.slice(0,8).map(b => `<div class="gallery-item"><img src="${BACKDROP+b.file_path}" class="gallery-img"></div>`).join('')}
+              ${img.backdrops.slice(0,8).map(b => `<div class="gallery-item"><img src="${BACKDROP+b.file_path}" class="gallery-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></div>`).join('')}
           </div>`;
       }
   
@@ -310,15 +314,10 @@
           fetch(`${BASE}/person/${id}/combined_credits?api_key=${KEY}`).then(r => r.json())
       ]);
   
-      const perPage = 12;
-      const start = (personPage - 1) * perPage;
-      const sorted = c.cast.sort((a,b) => b.popularity - a.popularity);
-      const chunk = sorted.slice(start, start + perPage);
-  
       if (!append) {
           document.getElementById('person-view').innerHTML = `
               <div class="row mb-5 align-items-center">
-                  <div class="col-md-3 text-center"><img src="${p.profile_path ? POSTER+p.profile_path : FALLBACK_IMG}" class="person-circle-img mb-3 shadow"></div>
+                  <div class="col-md-3 text-center"><img src="${p.profile_path ? POSTER+p.profile_path : FALLBACK_IMG}" class="person-circle-img mb-3 shadow" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></div>
                   <div class="col-md-9"><h1 class="fw-bold">${sanitize(p.name)}</h1><p class="text-muted">${sanitize(p.biography) || 'No bio available.'}</p></div>
               </div>
               <h5 class="section-header mb-4">KNOWN FOR</h5>
@@ -326,8 +325,9 @@
               <div class="text-center mt-5"><button id="personLoadMore" class="btn btn-outline-primary px-5 rounded-pill" onclick="loadPerson('${id}', true)">Load More</button></div>
           `;
       }
-      document.getElementById('personGrid').insertAdjacentHTML('beforeend', chunk.map(x => createCard(x)).join(''));
-      if (start + perPage >= sorted.length) document.getElementById('personLoadMore')?.remove();
+      const sorted = c.cast.sort((a,b) => b.popularity - a.popularity).slice((personPage-1)*12, personPage*12);
+      document.getElementById('personGrid').insertAdjacentHTML('beforeend', sorted.map(x => createCard(x)).join(''));
+      if (sorted.length < 12) document.getElementById('personLoadMore')?.remove();
       personPage++;
   }
   
@@ -336,15 +336,17 @@
       const title = sanitize(m.title || m.name);
       const date = (m.release_date || m.first_air_date || '').split('-')[0];
       const img = m.poster_path ? (POSTER + m.poster_path) : (m.profile_path ? (POSTER + m.profile_path) : FALLBACK_IMG);
-      if (m.media_type === 'person') return `
-          <div class="col">
+      
+      if (m.media_type === 'person') {
+          return `<div class="col">
               <div class="movie-card text-center p-2" onclick="window.location.hash='person/${m.id}'">
-                  <div class="poster-wrapper rounded-circle mx-auto mt-3" style="width:100px; height:100px;"><img src="${img}" class="poster-img" onerror="this.src='${FALLBACK_IMG}'"></div>
+                  <div class="poster-wrapper rounded-circle mx-auto mt-3" style="width:100px; height:100px;"><img src="${img}" class="poster-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></div>
                   <div class="p-2 fw-bold small text-truncate">${title}</div>
               </div>
           </div>`;
+      }
       return `<div class="col"><div class="movie-card" onclick="window.location.hash='${t}/${m.id}'">
-          <div class="poster-wrapper"><img src="${img}" class="poster-img" onerror="this.src='${FALLBACK_IMG}'" loading="lazy"></div>
+          <div class="poster-wrapper"><img src="${img}" class="poster-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';" loading="lazy"></div>
           <div class="p-2"><div class="text-truncate fw-bold small">${title}</div><div class="text-muted small">${date || 'N/A'}</div></div>
       </div></div>`;
   }
@@ -375,26 +377,39 @@
       }
       SERVERS.forEach((s, i) => {
           const b = document.createElement('button');
-          b.className = `server-btn ${(!trailerKey && i===0 && init)?'active':''}`;
+          const isSelected = (!trailerKey && i === activeServerIndex && init);
+          b.className = `server-btn ${isSelected ? 'active' : ''}`;
           b.innerText = s.n;
-          b.onclick = (e) => { setActiveUI('.server-btn, .trailer-btn', e.target); initPlayer(currentType==='movie'?s.m:s.t); };
+          b.onclick = (e) => { 
+              activeServerIndex = i; 
+              setActiveUI('.server-btn, .trailer-btn', e.target); 
+              initPlayer(currentType==='movie'?s.m:s.t); 
+          };
           g.appendChild(b);
       });
-      if (init) trailerKey ? loadTrailer() : initPlayer(currentType==='movie'?SERVERS[0].m:SERVERS[0].t);
+      if (init) {
+          if(trailerKey) loadTrailer();
+          else initPlayer(currentType==='movie' ? SERVERS[activeServerIndex].m : SERVERS[activeServerIndex].t);
+      }
   }
   
   function initPlayer(baseUrl) {
-      const p = document.getElementById('playerContainer');
-      p.innerHTML = `<div class="d-flex h-100 align-items-center justify-content-center text-white"><div class="spinner-border"></div></div>`;
-      const url = currentType === 'movie' ? `${baseUrl}${currentId}` : `${baseUrl}${currentId}/${currentS}/${currentE}`;
-      const ifr = document.createElement('iframe');
-      ifr.src = url; ifr.style.width = "100%"; ifr.style.height = "100%"; ifr.frameBorder = "0"; ifr.allowFullscreen = true;
-      ifr.onload = () => { if(p.querySelector('.spinner-border')) p.querySelector('.spinner-border').remove(); };
-      p.innerHTML = ''; p.appendChild(ifr);
+    const p = document.getElementById('playerContainer');
+    const url = currentType === 'movie' ? `${baseUrl}${currentId}` : `${baseUrl}${currentId}/${currentS}/${currentE}`;
+    p.innerHTML = `<div class="player-wrapper">
+            <div id="iframeLoading" class="iframe-loader"><div class="spinner-border" role="status"></div><span>Connecting...</span></div>
+            <iframe id="streamIframe" src="${url}" style="width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+        </div>`;
+    document.getElementById('streamIframe').onload = () => document.getElementById('iframeLoading').style.display = 'none';
   }
   
   function loadTrailer() {
-      document.getElementById('playerContainer').innerHTML = `<iframe src="https://www.youtube.com/embed/${trailerKey}?autoplay=1" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`;
+    const p = document.getElementById('playerContainer');
+    p.innerHTML = `<div class="player-wrapper">
+            <div id="trailerLoading" class="iframe-loader"><div class="spinner-border text-danger" role="status"></div></div>
+            <iframe id="trailerIframe" src="https://www.youtube.com/embed/${trailerKey}?autoplay=1" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+        </div>`;
+    document.getElementById('trailerIframe').onload = () => document.getElementById('trailerLoading').style.display = 'none';
   }
   
   async function loadEpisodes(s) {
@@ -402,7 +417,7 @@
       const r = await fetch(`${BASE}/tv/${currentId}/season/${s}?api_key=${KEY}`);
       const data = await r.json();
       document.getElementById('episodeList').innerHTML = data.episodes.map(e => `
-          <button class="ep-btn ${e.episode_number===1?'active':''}" onclick="changeEpisode(this, ${s}, ${e.episode_number})">
+          <button class="ep-btn ${e.episode_number===currentE?'active':''}" onclick="changeEpisode(this, ${s}, ${e.episode_number})">
               <span>${e.episode_number}. ${sanitize(e.name)}</span><i class="fa fa-play-circle opacity-50"></i>
           </button>`).join('');
   }
@@ -412,14 +427,16 @@
       const h = getStorage('watchHistory');
       const idx = h.findIndex(x => x.id == currentId);
       if(idx > -1) { h[idx].season = s; h[idx].episode = e; setStorage('watchHistory', h); }
-      let active = document.querySelector('.server-btn.active') || document.querySelector('.server-btn');
-      initPlayer(SERVERS[Array.from(document.querySelectorAll('.server-btn')).indexOf(active) || 0].t);
+      initPlayer(SERVERS[activeServerIndex].t);
   }
   
   document.getElementById('searchInput').addEventListener('input', (e) => {
       clearTimeout(searchTimer);
       const q = e.target.value.trim();
-      if (!q) { if (window.location.hash.startsWith('#search/')) window.location.hash = ''; return; }
+      if (!q) { 
+          if (window.location.hash.startsWith('#search/')) goHome(); 
+          return; 
+      }
       searchTimer = setTimeout(() => { window.location.hash = `search/${encodeURIComponent(q)}`; }, 500);
   });
   
@@ -436,8 +453,7 @@
       const btn = document.getElementById('listActionBtn');
       btn.innerHTML = `<i class="fa fa-trash-can me-2"></i>Clear ${mode}`;
       btn.onclick = () => { if(confirm(`Clear all ${mode}?`)) { localStorage.removeItem(key); renderListPage(mode); } };
-      const grid = document.getElementById('listGrid');
-      grid.innerHTML = data.length ? data.map(i => createCard({...i, poster_path: i.poster, media_type: i.type})).join('') : `<div class="col-12 text-center py-5 text-muted">No items found.</div>`;
+      document.getElementById('listGrid').innerHTML = data.length ? data.map(i => createCard({...i, poster_path: i.poster, media_type: i.type})).join('') : `<div class="col-12 text-center py-5 text-muted">No items found.</div>`;
   }
   
   function addToHistory(id, t, title, poster) {
@@ -484,5 +500,4 @@
   };
  </script>
 </body>
-
 </html>
