@@ -22,53 +22,22 @@
   .nav-link-custom { font-weight: 600; color: var(--text-muted); font-size: 0.9rem; transition: 0.2s; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 6px; }
   .nav-link-custom:hover, .nav-link-custom.active { color: var(--primary); }
   
-  /* Search & Autocomplete */
   .search-input { border-radius: 50px; padding-left: 2.5rem; border: 1px solid var(--border); height: 40px; font-size: 0.9rem; }
   #searchSuggestions { top: 45px; border-radius: 12px; border: 1px solid var(--border); background: #fff; z-index: 1100; max-height: 300px; overflow-y: auto; }
 
-  /* RESPONSIVE GRID */
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1.25rem;
-  }
+  .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.25rem; }
+  @media (min-width: 992px) { .grid-container { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem; } }
 
-  @media (min-width: 992px) {
-    .grid-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 2rem;
-    }
-  }
+  /* Horizontal Scroll for Continue Watching */
+  .horizontal-scroll { display: flex; overflow-x: auto; gap: 1.25rem; padding: 10px 5px 20px 5px; scrollbar-width: none; scroll-snap-type: x mandatory; }
+  .horizontal-scroll::-webkit-scrollbar { display: none; }
+  .horizontal-scroll .movie-card { min-width: 160px; max-width: 160px; scroll-snap-align: start; }
+  @media (min-width: 992px) { .horizontal-scroll .movie-card { min-width: 200px; max-width: 200px; } }
 
-  /* PREMIUM MOVIE CARD */
-  .movie-card {
-    background: var(--surface);
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    height: 100%;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
+  .movie-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; height: 100%; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; display: flex; flex-direction: column; }
+  .movie-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: var(--primary); }
 
-  .movie-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    border-color: var(--primary);
-  }
-
-  .poster-wrapper {
-    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-    background-size: 200% 100%;
-    animation: shine 1.5s linear infinite;
-    aspect-ratio: 2/3;
-    overflow: hidden;
-    position: relative;
-  }
-
+  .poster-wrapper { background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%); background-size: 200% 100%; animation: shine 1.5s linear infinite; aspect-ratio: 2/3; overflow: hidden; position: relative; }
   .poster-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
   .movie-card:hover .poster-img { transform: scale(1.1); }
   @keyframes shine { to { background-position-x: -200%; } }
@@ -80,7 +49,6 @@
   .section-header { font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; }
   .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); margin-left: 1rem; }
   
-  /* Player & Controls */
   .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 16px; overflow: hidden; position: relative; }
   .stream-controls { background: var(--surface); border-radius: 16px; padding: 25px; margin-top: -30px; position: relative; z-index: 10; border: 1px solid var(--border); }
   .ep-btn { background: var(--bg-light); border: 1px solid var(--border); padding: 12px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
@@ -190,7 +158,7 @@
   const FALLBACK_IMG = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6eoP22fr1gee9ZOkWtUS0frFs_ZYwV0SCwrGuI14ebw&s=10";
   
   let currentType, currentId, currentS = 1, currentE = 1, trailerKey = null, searchTimer;
-  let homePage = 1, personPage = 1, searchPage = 1;
+  let homePage = 1, searchPage = 1;
   let currentSearchQuery = '', currentSearchFilter = 'multi', activeServerIndex = 0;
 
   const getStorage = (k) => JSON.parse(localStorage.getItem(k) || '[]');
@@ -366,6 +334,41 @@
   async function loadHome(append = false) {
       if (!append) { homePage = 1; document.getElementById('home-view').innerHTML = ''; }
       const container = document.getElementById('home-view');
+
+      // --- ADDED: CONTINUE WATCHING SECTION ---
+      if (!append) {
+          const history = getStorage('watchHistory');
+          if (history.length > 0) {
+              const continueSection = document.createElement('div');
+              continueSection.className = "mb-5 pt-2";
+              
+              const cardsHtml = history.map(item => {
+                  const label = item.type === 'tv' ? `S${item.season} : E${item.episode}` : 'Movie';
+                  const img = item.poster ? (POSTER + item.poster) : FALLBACK_IMG;
+                  
+                  return `
+                  <div class="movie-card" onclick="window.location.hash='${item.type}/${item.id}'">
+                      <div class="poster-wrapper">
+                          <img src="${img}" class="poster-img" loading="lazy">
+                          <div class="position-absolute bottom-0 start-0 w-100 p-2" style="background:rgba(0,0,0,0.6)">
+                               <span class="badge bg-primary w-100" style="font-size:0.7rem">${label}</span>
+                          </div>
+                      </div>
+                      <div class="card-body-content">
+                          <div class="card-title-text">${sanitize(item.title)}</div>
+                      </div>
+                  </div>`;
+              }).join('');
+
+              continueSection.innerHTML = `
+                  <h5 class="section-header mb-4">CONTINUE WATCHING</h5>
+                  <div class="horizontal-scroll">
+                      ${cardsHtml}
+                  </div>`;
+              container.appendChild(continueSection);
+          }
+      }
+
       const cats = [
           { n: 'Trending Now', id: 'Trending', u: `/trending/all/day?page=${homePage}` },
           { n: 'Popular Series', id: 'Series', u: `/tv/popular?page=${homePage}` },
@@ -458,26 +461,66 @@
       meta.appendChild(container);
   }
 
-  async function loadPerson(id, append = false) {
-      if (!append) { personPage = 1; document.getElementById('person-view').innerHTML = ''; }
-      const [p, c] = await Promise.all([
-          fetch(`${BASE}/person/${id}?api_key=${KEY}`).then(r => r.json()),
-          fetch(`${BASE}/person/${id}/combined_credits?api_key=${KEY}`).then(r => r.json())
-      ]);
-      if (!append) {
-          document.getElementById('person-view').innerHTML = `
-              <div class="row mb-5 align-items-center">
-                  <div class="col-md-3 text-center"><img src="${p.profile_path ? POSTER+p.profile_path : FALLBACK_IMG}" class="person-circle-img mb-3 shadow"></div>
-                  <div class="col-md-9"><h1 class="fw-bold">${sanitize(p.name)}</h1><p class="text-muted">${sanitize(p.biography) || 'No bio.'}</p></div>
-              </div>
-              <h5 class="section-header mb-4">KNOWN FOR</h5>
-              <div id="personGrid" class="grid-container"></div>
-              <div class="text-center mt-5"><button id="personLoadMore" class="btn btn-outline-primary px-5 rounded-pill" onclick="loadPerson('${id}', true)">Load More</button></div>`;
-      }
-      const sorted = c.cast.sort((a,b) => b.popularity - a.popularity).slice((personPage-1)*12, personPage*12);
-      document.getElementById('personGrid').insertAdjacentHTML('beforeend', sorted.map(x => createCard(x)).join(''));
-      if (sorted.length < 12) document.getElementById('personLoadMore')?.remove();
-      personPage++;
+  // --- ARTIST PAGE LOGIC ---
+  async function loadPerson(id) {
+    toggleLoader(true);
+    try {
+        const [p, c] = await Promise.all([
+            fetch(`${BASE}/person/${id}?api_key=${KEY}`).then(r => r.json()),
+            fetch(`${BASE}/person/${id}/combined_credits?api_key=${KEY}`).then(r => r.json())
+        ]);
+
+        const movies = c.cast.filter(x => x.media_type === 'movie').sort((a, b) => b.popularity - a.popularity);
+        const tvShows = c.cast.filter(x => x.media_type === 'tv').sort((a, b) => b.popularity - a.popularity);
+
+        const bio = p.biography || 'No biography available.';
+        const isLong = bio.length > 450;
+        const shortBio = isLong ? bio.substring(0, 450) + '...' : bio;
+
+        document.getElementById('person-view').innerHTML = `
+            <div class="row mb-5 align-items-start">
+                <div class="col-md-3 text-center">
+                    <img src="${p.profile_path ? POSTER + p.profile_path : FALLBACK_IMG}" class="person-circle-img mb-3 shadow">
+                </div>
+                <div class="col-md-9">
+                    <h1 class="fw-bold">${sanitize(p.name)}</h1>
+                    <div id="bio-container">
+                        <p class="text-muted mb-1" style="white-space: pre-line;" id="bio-text">${sanitize(shortBio)}</p>
+                        ${isLong ? `<a href="javascript:void(0)" class="text-primary fw-bold small text-decoration-none" id="btn-bio" onclick="toggleBio('${encodeURIComponent(bio)}', '${encodeURIComponent(shortBio)}')">View More</a>` : ''}
+                    </div>
+                </div>
+            </div>
+
+            ${movies.length ? `
+                <div class="mb-5">
+                    <h5 class="section-header mb-4">MOVIES</h5>
+                    <div class="grid-container">${movies.slice(0, 18).map(x => createCard(x)).join('')}</div>
+                </div>
+            ` : ''}
+
+            ${tvShows.length ? `
+                <div class="mb-5">
+                    <h5 class="section-header mb-4">TV SHOWS</h5>
+                    <div class="grid-container">${tvShows.slice(0, 18).map(x => createCard(x)).join('')}</div>
+                </div>
+            ` : ''}
+        `;
+    } catch (err) { console.error("Error loading person:", err); }
+    toggleLoader(false);
+  }
+
+  function toggleBio(full, short) {
+    const textEl = document.getElementById('bio-text');
+    const btnEl = document.getElementById('btn-bio');
+    const isExpanded = btnEl.innerText === 'View Less';
+
+    if (isExpanded) {
+        textEl.innerText = sanitize(decodeURIComponent(short));
+        btnEl.innerText = 'View More';
+    } else {
+        textEl.innerText = sanitize(decodeURIComponent(full));
+        btnEl.innerText = 'View Less';
+    }
   }
   
   const SERVERS = [
@@ -544,6 +587,8 @@
       const idx = h.findIndex(x => x.id == currentId);
       if(idx > -1) { h[idx].season = s; h[idx].episode = e; setStorage('watchHistory', h); }
       initPlayer(SERVERS[activeServerIndex].t);
+      const resumeContainer = document.getElementById('resumeContainer');
+      if(resumeContainer) resumeContainer.innerHTML = '';
   }
   
   function renderListPage(mode) {
