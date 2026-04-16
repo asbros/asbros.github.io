@@ -126,6 +126,32 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
   
+  /* Container for the preview video */
+  .preview-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 2;
+    background: #000;
+  }
+  
+  /* Show video on hover */
+  .movie-card:hover .preview-video-container {
+    opacity: 1;
+  }
+  
+  .preview-video-container iframe {
+    width: 300%; /* Scale up to hide UI elements of YouTube */
+    height: 100%;
+    margin-left: -100%;
+    pointer-events: none;
+  }
+  
  </style>
 
 </head>
@@ -406,37 +432,43 @@
   
   // --- RENDERING CORE ---
   function createCard(m) {
-      const t = m.media_type || (m.title ? 'movie' : 'tv');
-      const title = sanitize(m.title || m.name);
-      const date = (m.release_date || m.first_air_date || '').split('-')[0];
-      const rating = m.vote_average ? m.vote_average.toFixed(1) : 'N/A';
-      const img = m.poster_path ? (POSTER + m.poster_path) : (m.profile_path ? (POSTER + m.profile_path) : FALLBACK_IMG);
-      
-      if (m.media_type === 'person' || (!m.title && !m.name && m.profile_path)) {
-          return `
-          <div class="movie-card text-center p-3" onclick="window.location.hash='person/${m.id}'">
-              <div class="poster-wrapper rounded-circle mx-auto mt-2" style="width:110px; height:110px;">
-                  <img src="${img}" class="poster-img">
-              </div>
-              <div class="mt-3 card-title-text">${title}</div>
-              <div class="text-muted small">Actor</div>
-          </div>`;
-      }
+    const t = m.media_type || (m.title ? 'movie' : 'tv');
+    const title = sanitize(m.title || m.name);
+    const date = (m.release_date || m.first_air_date || '').split('-')[0];
+    const rating = m.vote_average ? m.vote_average.toFixed(1) : 'N/A';
+    const img = m.poster_path ? (POSTER + m.poster_path) : (m.profile_path ? (POSTER + m.profile_path) : FALLBACK_IMG);
+    
+    // For Persons, we keep it simple
+    if (m.media_type === 'person') {
+        return `
+        <div class="movie-card text-center p-3" onclick="window.location.hash='person/${m.id}'">
+            <div class="poster-wrapper rounded-circle mx-auto mt-2" style="width:110px; height:110px;">
+                <img src="${img}" class="poster-img">
+            </div>
+            <div class="mt-3 card-title-text">${title}</div>
+            <div class="text-muted small">Actor</div>
+        </div>`;
+    }
   
-      return `
-      <div class="movie-card" onclick="window.location.hash='${t}/${m.id}'">
-          <div class="poster-wrapper">
-              <img src="${img}" class="poster-img" loading="lazy">
-          </div>
-          <div class="card-body-content">
-              <div class="card-title-text">${title}</div>
-              <div class="card-meta-text">
-                  <span>${date || 'N/A'}</span>
-                  <span class="badge bg-light text-dark border px-2 py-1"><i class="fa fa-star text-warning me-1"></i>${rating}</span>
-              </div>
-          </div>
-      </div>`;
+    // For Movies/TV, we add the Preview Container
+    return `
+    <div class="movie-card" 
+         onclick="window.location.hash='${t}/${m.id}'" 
+         onmouseenter="loadPreview(this, ${m.id}, '${t}')"
+         onmouseleave="stopPreview(this)">
+        <div class="poster-wrapper">
+            <img src="${img}" class="poster-img" loading="lazy">
+            <div class="preview-video-container"></div> </div>
+        <div class="card-body-content">
+            <div class="card-title-text">${title}</div>
+            <div class="card-meta-text">
+                <span>${date || 'N/A'}</span>
+                <span class="badge bg-light text-dark border px-2 py-1"><i class="fa fa-star text-warning me-1"></i>${rating}</span>
+            </div>
+        </div>
+    </div>`;
   }
+  
   
   // --- DATA LOADING ---
   async function loadHome(append = false) {
@@ -1003,6 +1035,33 @@
     });
   }
   
+  //Pre play
+  let previewTimeout;
+  
+  async function loadPreview(el, id, type) {
+    const container = el.querySelector('.preview-video-container');
+    
+    // Start a timer so we don't load previews while just scrolling past
+    previewTimeout = setTimeout(async () => {
+        try {
+            const r = await fetch(`${BASE}/${type}/${id}/videos?api_key=${KEY}`);
+            const data = await r.json();
+            const trailer = data.results.find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'));
+            
+            if (trailer) {
+                container.innerHTML = `
+                    <iframe src="https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailer.key}&modestbranding=1" 
+                            frameborder="0" allow="autoplay"></iframe>`;
+            }
+        } catch (err) { console.error("Preview failed", err); }
+    }, 600);
+  }
+  
+  function stopPreview(el) {
+    clearTimeout(previewTimeout);
+    const container = el.querySelector('.preview-video-container');
+    container.innerHTML = ''; // Kill the iframe to stop data usage
+  }
   
  </script>
 </body>
