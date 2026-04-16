@@ -66,6 +66,40 @@
   
   .iframe-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 5; }
   .iframe-loader span { margin-top: 10px; font-weight: 600; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+  /* Horizontal Season Bar */
+  #seasonTabs::-webkit-scrollbar { display: none; }
+  .season-tab { 
+    padding: 8px 20px; 
+    border-radius: 50px; 
+    background: var(--surface); 
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .season-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+  
+  /* Modern Episode Cards */
+  .ep-card { cursor: pointer; transition: 0.3s; }
+  .ep-card:hover { transform: translateY(-3px); }
+  .ep-thumb-wrapper { 
+    position: relative; 
+    border-radius: 12px; 
+    overflow: hidden; 
+    aspect-ratio: 16/9; 
+    background: #000;
+  }
+  .ep-thumb { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+  .ep-play-overlay { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    display: flex; align-items: center; justify-content: center; 
+    background: rgba(0,0,0,0.3); opacity: 0; transition: 0.3s;
+  }
+  .ep-card:hover .ep-play-overlay { opacity: 1; }
+  .ep-card.active .ep-thumb-wrapper { border: 3px solid var(--primary); }
+  
  </style>
 </head>
 
@@ -129,13 +163,20 @@
        <span class="fw-bold text-muted small d-block mb-2">STREAM OPTIONS</span>
        <div class="server-grid d-flex flex-wrap gap-2" id="serverGrid"></div>
       </div>
-      <div id="tvSelectors" class="d-none">
-       <div class="d-flex align-items-center gap-3 mb-3">
-        <span class="fw-bold text-primary small">SEASON</span>
-        <select id="seasonDropdown" class="form-select form-select-sm w-auto border-0 bg-light fw-bold" onchange="loadEpisodes(this.value)"></select>
+      <div id="tvSelectors" class="d-none mt-4">
+       <div class="d-flex align-items-center gap-2 mb-3">
+        <h6 class="fw-bold text-muted small mb-0">SEASONS:</h6>
+        <div id="seasonTabs" class="d-flex gap-2 overflow-auto pb-2" style="scrollbar-width: none;"></div>
        </div>
-       <div id="episodeList" class="episode-scroll d-flex flex-column gap-2" style="max-height: 250px; overflow-y: auto;"></div>
+
+       <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0">Episodes</h5>
+        <span id="epCount" class="badge bg-light text-dark border"></span>
+       </div>
+       <div id="episodeList" class="row g-3" style="max-height: 500px; overflow-y: auto;">
+       </div>
       </div>
+
      </div>
      <div class="row mt-5 g-4">
       <div class="col-md-8" id="metaContent"></div>
@@ -217,7 +258,8 @@
   const suggestionsBox = document.getElementById('searchSuggestions');
   
   searchInput.addEventListener('input', async (e) => {
-      const q = e.target.value.trim();
+    clearTimeout(searchTimer);
+    const q = e.target.value.trim();
       if (q.length < 2) { 
           suggestionsBox.innerHTML = '';
           suggestionsBox.classList.add('d-none'); 
@@ -242,12 +284,9 @@
           }
       } catch (err) { console.error("Search error:", err); }
   
-      clearTimeout(searchTimer);
       searchTimer = setTimeout(() => { 
-          if (q && q !== currentSearchQuery) {
-              window.location.hash = `search/${encodeURIComponent(q)}`; 
-          }
-      }, 1000); 
+        if (q && q.length >= 3) window.location.hash = `search/${encodeURIComponent(q)}`; 
+    }, 800); 
   });
   
   searchInput.addEventListener('keydown', (e) => {
@@ -402,39 +441,123 @@
         fetch(`${BASE}/${t}/${i}/external_ids?api_key=${KEY}`).then(r => r.json())
     ]);
   
-  // Store the IMDb ID globally or on the window object so the player can see it
     window.currentImdbId = ext.imdb_id;
+    trailerKey = v.results.find(x => x.type === 'Trailer' && x.site === 'YouTube')?.key;
     
-      trailerKey = v.results.find(x => x.type === 'Trailer' && x.site === 'YouTube')?.key;
-      addToHistory(m.id, t, m.title || m.name, m.poster_path);
-      checkContinueWatching(i, t);
+    // Check if we have history to resume specific S/E
+    const history = getStorage('watchHistory');
+    const existing = history.find(x => x.id == i);
+    currentS = existing?.season || 1;
+    currentE = existing?.episode || 1;
   
-      if (t === 'tv') {
-          document.getElementById('tvSelectors').classList.remove('d-none');
-          document.getElementById('seasonDropdown').innerHTML = m.seasons.filter(s => s.season_number > 0).map(s => `<option value="${s.season_number}">Season ${s.season_number}</option>`).join('');
-          await loadEpisodes(1);
-      } else {
-          document.getElementById('tvSelectors').classList.add('d-none');
+    addToHistory(m.id, t, m.title || m.name, m.poster_path);
+    checkContinueWatching(i, t);
+  
+    if (t === 'tv') {
+        const tvS = document.getElementById('tvSelectors');
+        tvS.classList.remove('d-none');
+        // Create Horizontal Season Tabs
+        tvS.innerHTML = `
+            <div class="mb-4">
+                <span class="fw-bold text-muted small d-block mb-2">SEASONS</span>
+                <div id="seasonTabs" class="d-flex gap-2 overflow-auto pb-2" style="scrollbar-width: none;">
+                    ${m.seasons.filter(s => s.season_number > 0).map(s => `
+                        <div class="season-tab ${s.season_number == currentS ? 'active' : ''}" 
+                             onclick="switchSeason(this, ${s.season_number})">
+                             Season ${s.season_number}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div id="episodeList" class="row g-3" style="max-height: 500px; overflow-y: auto;"></div>
+        `;
+        await loadEpisodes(currentS);
+    } else {
+        document.getElementById('tvSelectors').classList.add('d-none');
+    }
+  
+    buildServerButtons(true);
+    renderMetadata(m, c);
+    renderSideContent(m);
+    await loadExtraDetails(t, i);
+  }
+  
+  // --- NEW TV NAVIGATION FUNCTIONS ---
+  async function switchSeason(el, s) {
+      setActiveUI('.season-tab', el);
+      await loadEpisodes(s);
+  }
+  
+  async function loadEpisodes(s) {
+      currentS = s;
+      const r = await fetch(`${BASE}/tv/${currentId}/season/${s}?api_key=${KEY}`);
+      const data = await r.json();
+      
+      const list = document.getElementById('episodeList');
+      list.innerHTML = data.episodes.map(e => {
+          const thumb = e.still_path ? STILL_IMG + e.still_path : FALLBACK_IMG;
+          const isActive = (e.episode_number === currentE);
+          return `
+          <div class="col-md-6">
+              <div class="ep-card ${isActive ? 'active' : ''}" onclick="changeEpisode(this, ${s}, ${e.episode_number})">
+                  <div class="ep-thumb-wrapper shadow-sm">
+                      <img src="${thumb}" class="ep-thumb" loading="lazy">
+                      <div class="ep-play-overlay"><i class="fa fa-play text-white fs-4"></i></div>
+                      <div class="position-absolute bottom-0 start-0 p-2 w-100 bg-dark bg-opacity-50 text-white small">
+                          EP ${e.episode_number}
+                      </div>
+                  </div>
+                  <div class="mt-2">
+                      <div class="fw-bold small text-truncate">${sanitize(e.name)}</div>
+                      <div class="text-muted" style="font-size: 0.7rem;">${e.runtime ? e.runtime + ' min' : 'standard'}</div>
+                  </div>
+              </div>
+          </div>`;
+      }).join('');
+      
+      if(currentE > 1) {
+          const activeEp = list.querySelector('.ep-card.active');
+          if(activeEp) activeEp.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
+  }
   
-      buildServerButtons(true);
+  function changeEpisode(el, s, e) {
+      currentS = s; currentE = e; 
+      setActiveUI('.ep-card', el);
+      
+      const h = getStorage('watchHistory');
+      const idx = h.findIndex(x => x.id == currentId);
+      if(idx > -1) { 
+          h[idx].season = s; 
+          h[idx].episode = e; 
+          setStorage('watchHistory', h); 
+      }
+      
+      initPlayer(SERVERS[activeServerIndex].t);
+      const res = document.getElementById('resumeContainer');
+      if(res) res.innerHTML = '';
+  }
   
+  // --- CORE UI RENDERING ---
+  function renderMetadata(m, c) {
       document.getElementById('metaContent').innerHTML = `
           <div class="d-flex justify-content-between align-items-center mb-3">
               <h2 class="fw-bold m-0">${sanitize(m.title || m.name)}</h2>
-              <div id="watchlistBtn" onclick="toggleWatchlist('${m.id}','${t}','${sanitize(m.title||m.name)}','${m.poster_path}')"></div>
+              <div id="watchlistBtn" onclick="toggleWatchlist('${m.id}','${currentType}','${sanitize(m.title||m.name)}','${m.poster_path}')"></div>
           </div>
           <p class="text-muted mb-4">${sanitize(m.overview)}</p>
           <h6 class="fw-bold mb-3">TOP CAST</h6>
-          <div class="d-flex overflow-auto gap-3 pb-3">
+          <div class="d-flex overflow-auto gap-3 pb-3" style="scrollbar-width:none">
               ${c.cast.slice(0,10).map(a => `
                   <div onclick="window.location.hash='person/${a.id}'" style="cursor:pointer; min-width:100px" class="text-center">
                       <img src="${a.profile_path ? CAST_IMG+a.profile_path : FALLBACK_IMG}" class="cast-img-large shadow-sm mb-2" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
                       <div class="fw-bold small text-truncate">${sanitize(a.name)}</div>
                   </div>`).join('')}
           </div>`;
-  
       renderWatchlistBtn(m.id);
+  }
+  
+  function renderSideContent(m) {
       document.getElementById('sideContent').innerHTML = `
           <div class="card border-0 p-4 rounded-4 shadow-sm">
               <h6 class="fw-bold mb-3">DETAILS</h6>
@@ -442,7 +565,6 @@
               <div class="small mb-2"><b>Release:</b> ${m.release_date || m.first_air_date}</div>
               <div class="small"><b>Rating:</b> <span class="text-warning"><i class="fa fa-star"></i> ${m.vote_average.toFixed(1)}</span></div>
           </div>`;
-      await loadExtraDetails(t, i);
   }
   
   async function loadExtraDetails(t, i) {
@@ -529,8 +651,11 @@
   
   const SERVERS = [
     { n: "Server 1", m: "https://cinemaos.live/movie/watch/", t: "https://cinemaos.live/tv/watch/" },
-    { n: "Server 2", m: "https://piexe411qok.com/play/", t: "https://watch-v2.autoembed.app/api/hdmovies/embed?type=tv&id=" },
-    /* Updated Server 9 */
+    { n: "Server 2", 
+      m: "https://piexe411qok.com/play/", 
+      t: "https://watch-v2.autoembed.app/api/hdmovies/embed?type=tv&id=",
+      useImdb: true
+    },
     { 
       n: "Server 3", 
       m: "https://streams.iqsmartgames.com/embed/movie/", 
@@ -575,7 +700,7 @@
   const key = server.key || "";
   
   // Logic: Use IMDb ID for Server 2, otherwise use TMDB ID
-  const idToUse = (server.n === "Server 2" && window.currentImdbId) ? window.currentImdbId : currentId;
+  const idToUse = (server.useImdb && window.currentImdbId) ? window.currentImdbId : currentId;
   
   const url = currentType === 'movie' 
       ? `${baseUrl}${idToUse}${key}` 
