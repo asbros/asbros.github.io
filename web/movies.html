@@ -9,6 +9,8 @@
  <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
  <style>
   :root { --bg-light: #f8f9fa; --surface: #ffffff; --primary: #6366f1; --text-main: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
   body { background-color: var(--bg-light); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
@@ -100,10 +102,49 @@
   .ep-card:hover .ep-play-overlay { opacity: 1; }
   .ep-card.active .ep-thumb-wrapper { border: 3px solid var(--primary); }
   
+  .vibe-btn {
+    background: white;
+    transition: all 0.3s ease;
+    border-color: var(--border) !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  
+  .vibe-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.15) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary);
+  }
+  
+  .vibe-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Ensure the modal grid matches your main grid */
+  #vibeResults.grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
  </style>
+
 </head>
 
 <body>
+
+ <div class="modal fade" id="inviteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+   <div class="modal-content border-0 rounded-4 shadow-lg text-center p-4">
+    <h5 class="fw-bold">Invite to Watch</h5>
+    <p class="text-muted small">Scan to join the stream</p>
+    <div id="qrcode" class="d-flex justify-content-center my-3"></div>
+    <div class="bg-light p-3 rounded-3 mb-3">
+     <code id="shareUrl" class="small text-primary" style="word-break: break-all;"></code>
+    </div>
+    <button class="btn btn-primary rounded-pill w-100 fw-bold" onclick="copyInviteLink()">Copy Link</button>
+   </div>
+  </div>
+ </div>
 
  <div id="pageLoader">
   <div class="loader-ring"></div>
@@ -127,6 +168,34 @@
  </nav>
 
  <main class="container my-4">
+  <div id="vibe-container" class="container mt-4" style="display:none;">
+   <div id="vibe-picker" class="mb-5 text-center">
+    <h6 class="text-muted small fw-bold mb-3 text-uppercase" style="letter-spacing: 1px;">How are you feeling?</h6>
+    <div class="d-flex justify-content-center flex-wrap gap-2">
+     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('28,12', '🚀 Adrenaline')">🚀 Adrenaline</button>
+     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('35,10751', '🍿 Pure Chill')">🍿 Pure Chill</button>
+     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('27,53', '😱 Spooky')">😱 Spooky</button>
+     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('878,9648', '🕵️ Mind-Bending')">🕵️ Mind-Bending</button>
+     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('18,10749', '🫠 Emotional')">🫠 Emotional</button>
+    </div>
+   </div>
+  </div>
+
+
+  <div class="modal fade" id="vibeModal" tabindex="-1" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+     <div class="modal-header border-0 pb-0">
+      <h5 class="modal-title fw-bold" id="vibeTitle">Found for you</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+     </div>
+     <div class="modal-body p-4">
+      <div id="vibeResults" class="grid-container"></div>
+     </div>
+    </div>
+   </div>
+  </div>
+
   <section id="home-view"></section>
 
   <section id="search-view" style="display:none;">
@@ -558,14 +627,19 @@
   }
   
   function renderSideContent(m) {
-      document.getElementById('sideContent').innerHTML = `
-          <div class="card border-0 p-4 rounded-4 shadow-sm">
-              <h6 class="fw-bold mb-3">DETAILS</h6>
-              <div class="small mb-2"><b>Genres:</b> ${m.genres.map(g => g.name).join(', ')}</div>
-              <div class="small mb-2"><b>Release:</b> ${m.release_date || m.first_air_date}</div>
-              <div class="small"><b>Rating:</b> <span class="text-warning"><i class="fa fa-star"></i> ${m.vote_average.toFixed(1)}</span></div>
-          </div>`;
+    document.getElementById('sideContent').innerHTML = `
+        <div class="card border-0 p-4 rounded-4 shadow-sm">
+            <h6 class="fw-bold mb-3">DETAILS</h6>
+            <div class="small mb-2"><b>Genres:</b> ${m.genres.map(g => g.name).join(', ')}</div>
+            <div class="small mb-2"><b>Release:</b> ${m.release_date || m.first_air_date}</div>
+            <div class="small mb-3"><b>Rating:</b> <span class="text-warning"><i class="fa fa-star"></i> ${m.vote_average.toFixed(1)}</span></div>
+            
+            <button class="btn btn-outline-primary w-100 rounded-pill fw-bold py-2 mt-2" onclick="generateInvite()">
+                <i class="fa fa-share-nodes me-2"></i>Invite a Friend
+            </button>
+        </div>`;
   }
+  
   
   async function loadExtraDetails(t, i) {
       const [rev, img, rec] = await Promise.all([
@@ -788,6 +862,148 @@
           document.getElementById('resumeContainer').innerHTML = '';
       });
   };
+  
+  //Mood button 
+  // Global variable to store country
+  let userCountry = 'IN'; // Default to India
+  
+  async function detectUserCountry() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        userCountry = data.country_code;
+    } catch (e) { console.log("Country detection failed, using default."); }
+  }
+  
+  // Call this once when the site loads
+  detectUserCountry();
+  
+  async function getVibe(genres, label) {
+    const btn = event.currentTarget;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Picking...`;
+    btn.disabled = true;
+  
+    try {
+        // We add 'with_origin_country' to the discovery call
+        // This prioritizes movies from the user's region while keeping the 'vibe'
+        const r = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&with_origin_country=${userCountry}&vote_average.gte=6&sort_by=popularity.desc`);
+        let data = await r.json();
+        
+        // If local results are too few, we do a fallback search (global)
+        if (data.results.length < 3) {
+            const fallback = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&vote_average.gte=7&page=1`);
+            data = await fallback.json();
+        }
+  
+        const picks = data.results.sort(() => 0.5 - Math.random()).slice(0, 5);
+        const container = document.getElementById('vibeResults');
+        
+        document.getElementById('vibeTitle').innerText = `${label} in ${userCountry}`;
+        container.innerHTML = picks.map(m => createCard(m)).join('');
+        
+        const myModal = new bootstrap.Modal(document.getElementById('vibeModal'));
+        myModal.show();
+  
+        container.querySelectorAll('.movie-card').forEach(card => {
+            card.addEventListener('click', () => myModal.hide());
+        });
+  
+    } catch (err) {
+        console.error("Vibe Error:", err);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+  }
+  
+  async function router() {
+    toggleLoader(true);
+    const h = window.location.hash;
+    const vs = ['home-view', 'search-view', 'details-view', 'person-view', 'list-view'];
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    const vibeContainer = document.getElementById('vibe-container'); // Get the vibe picker
+    
+    // Hide all views
+    vs.forEach(v => {
+        const el = document.getElementById(v);
+        if(el) el.style.display = 'none';
+    });
+  
+    // --- NEW VISIBILITY LOGIC ---
+    // If we are at home (empty hash), show the vibe picker. Otherwise, hide it.
+    if (vibeContainer) {
+        vibeContainer.style.display = (h === '' || h === '#') ? 'block' : 'none';
+    }
+  
+    if (h === '#wishlist' || h === '#history') {
+        document.getElementById('list-view').style.display = 'block';
+        renderListPage(h.slice(1));
+    } else if (h.startsWith('#movie/') || h.startsWith('#tv/')) {
+        const [t, i] = h.slice(1).split('/');
+        currentType = t; currentId = i;
+        document.getElementById('details-view').style.display = 'block';
+        await loadDetails(t, i);
+    } else if (h.startsWith('#person/')) {
+        document.getElementById('person-view').style.display = 'block';
+        await loadPerson(h.split('/')[1]);
+    } else if (h.startsWith('#search/')) {
+        document.getElementById('search-view').style.display = 'block';
+        suggestionsBox.classList.add('d-none');
+        const query = decodeURIComponent(h.split('/')[1]);
+        if(query !== currentSearchQuery) await performSearch(query);
+    } else {
+        // HOME VIEW
+        document.getElementById('home-view').style.display = 'block';
+        await loadHome();
+    }
+    
+    window.scrollTo(0, 0);
+    toggleLoader(false);
+  }
+  
+  //Generate Invitation 
+  function generateInvite() {
+    const url = window.location.href;
+    const qrContainer = document.getElementById('qrcode');
+    const urlDisplay = document.getElementById('shareUrl');
+    
+    // 1. Clear previous QR if it exists
+    qrContainer.innerHTML = ""; 
+    urlDisplay.innerText = url;
+  
+    // 2. Generate new QR Code
+    new QRCode(qrContainer, {
+        text: url,
+        width: 180,
+        height: 180,
+        colorDark : "#6366f1", // This matches your primary Indigo color
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+  
+    // 3. Show the Modal
+    const inviteModal = new bootstrap.Modal(document.getElementById('inviteModal'));
+    inviteModal.show();
+  }
+  
+  function copyInviteLink() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        // Optional: Change button text temporarily to show it worked
+        const btn = event.target;
+        const originalText = btn.innerText;
+        btn.innerText = "Copied!";
+        btn.classList.replace('btn-primary', 'btn-success');
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.classList.replace('btn-success', 'btn-primary');
+        }, 2000);
+    });
+  }
+  
+  
  </script>
 </body>
 
