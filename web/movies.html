@@ -9,6 +9,8 @@
  <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
  <style>
   :root { --bg-light: #f8fafc; --surface: #ffffff; --primary: #4f46e5; --primary-dark: #4338ca; --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0; }
   body { background-color: var(--bg-light); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden;transition: background-color 0.8s ease, color 0.5s ease; }
@@ -316,43 +318,119 @@
   function checkContinueWatching(id, t) { const e = getStorage('watchHistory').find(x => x.id == id); const c = document.getElementById('resumeContainer'); c.innerHTML = ''; if (e && t === 'tv' && (e.season > 1 || e.episode > 1)) { c.innerHTML = `<div class="resume-alert d-flex justify-content-between align-items-center mt-3 py-2 px-3 small shadow-sm"><span><i class="fa fa-history me-2"></i>Resume <b>S${e.season}:E${e.episode}</b>?</span><button class="btn btn-primary btn-sm fw-bold" onclick="resumePlayback(${e.season}, ${e.episode})">Resume</button></div>`; } }
   window.resumePlayback = async function(s, e) { const seasonTab = Array.from(document.querySelectorAll('.season-tab')).find(tab => tab.innerText.includes(`Season ${s}`)); if(seasonTab) seasonTab.click(); const waitForEp = setInterval(() => { const epCard = Array.from(document.querySelectorAll('.ep-card')).find(card => card.innerText.includes(`EP ${e}`) || card.innerText.includes(`EP0${e}`)); if(epCard) { clearInterval(waitForEp); epCard.click(); document.getElementById('resumeContainer').innerHTML = ''; } }, 300); setTimeout(() => clearInterval(waitForEp), 10000); };
   function toggleWatchlist(id, t, title, poster) { let l = getStorage('watchlist'); const idx = l.findIndex(x => x.id == id); if (idx > -1) l.splice(idx, 1); else l.push({ id, type: t, title, poster: poster || currentPosterPath }); setStorage('watchlist', l); renderWatchlistBtn(id); }
-  function renderWatchlistBtn(id) { const b = document.getElementById('watchlistBtn'); const is = getStorage('watchlist').some(x => x.id == id); b.innerHTML = `<button class="btn ${is ? 'btn-danger' : 'btn-primary'} btn-sm rounded-pill fw-bold px-3" onclick="toggleWatchlist('${id}','${currentType}','${sanitize(currentTitle)}','${currentPosterPath || ''}')">${is ? 'Remove' : 'Add'} Wishlist</button>`; }
-  function renderListPage(mode) { const key = mode === 'wishlist' ? 'watchlist' : 'watchHistory'; const data = getStorage(key); document.getElementById('listTitle').innerText = mode.toUpperCase() + ` (${data.length})`; document.getElementById('listActionBtn').innerHTML = `<i class="fa fa-trash-can me-2"></i>Clear`; document.getElementById('listActionBtn').onclick = () => { if(confirm(`Clear ${mode}?`)) { localStorage.removeItem(key); renderListPage(mode); } }; document.getElementById('listGrid').innerHTML = data.length ? data.map(i => createCard({...i, poster_path: i.poster, media_type: i.type})).join('') : `<div class="col-12 text-center py-5 text-muted">Empty list.</div>`; }
+  function renderWatchlistBtn(id) {
+    const b = document.getElementById('watchlistBtn');
+    const is = getStorage('watchlist').some(x => x.id == id);
+    
+    b.innerHTML = `<button class="btn ${is ? 'btn-danger' : 'btn-primary'} btn-sm rounded-pill fw-bold px-3" onclick="handleWatchlistToggle('${id}')">
+        ${is ? '<i class="fa fa-minus me-1"></i>' : '<i class="fa fa-plus me-1"></i>'} Wishlist
+    </button>`;
+  }
+  
+  function handleWatchlistToggle(id) {
+    let l = getStorage('watchlist');
+    const idx = l.findIndex(x => x.id == id);
+    let added = false;
+  
+    if (idx > -1) {
+        l.splice(idx, 1);
+    } else {
+        l.push({ id, type: currentType, title: currentTitle, poster: currentPosterPath });
+        added = true;
+    }
+    setStorage('watchlist', l);
+    renderWatchlistBtn(id);
+  
+    // SweetAlert Toast
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: added ? 'Added to Wishlist' : 'Removed from Wishlist',
+        showConfirmButton: false,
+        timer: 1500
+    });
+  }
+  
+  function renderListPage(mode) {
+    const key = mode === 'wishlist' ? 'watchlist' : 'watchHistory';
+    const data = getStorage(key);
+    
+    document.getElementById('listTitle').innerText = mode.toUpperCase() + ` (${data.length})`;
+    document.getElementById('listActionBtn').innerHTML = `<i class="fa fa-trash-can me-2"></i>Clear All`;
+    
+    document.getElementById('listActionBtn').onclick = () => {
+        if (data.length === 0) return;
+  
+        Swal.fire({
+            title: `Clear ${mode}?`,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4f46e5',
+            cancelButtonColor: '#ef4444',
+            confirmButtonText: 'Yes, clear it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem(key);
+                renderListPage(mode);
+                Swal.fire('Deleted!', `Your ${mode} has been cleared.`, 'success');
+            }
+        });
+    };
+    
+    document.getElementById('listGrid').innerHTML = data.length ? 
+        data.map(i => createCard({...i, poster_path: i.poster, media_type: i.type})).join('') : 
+        `<div class="col-12 text-center py-5 text-muted">Empty list.</div>`;
+  }
+  
   async function filterSearch(type, btn) { currentSearchFilter = type; document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active','btn-primary'); b.classList.add('btn-light'); }); btn.classList.add('active','btn-primary'); btn.classList.remove('btn-light'); await performSearch(currentSearchQuery); }
   async function performSearch(q, append = false) { if (!append) { searchPage = 1; currentSearchQuery = q; document.getElementById('searchGrid').innerHTML = ''; } toggleLoader(true); try { const endpoint = currentSearchFilter === 'multi' ? 'multi' : currentSearchFilter; const r = await fetch(`${BASE}/search/${endpoint}?api_key=${KEY}&query=${encodeURIComponent(q)}&page=${searchPage}`); if(!r.ok) throw new Error(); const data = await r.json(); document.getElementById('searchGrid').insertAdjacentHTML('beforeend', (data.results || []).map(i => createCard(i)).join('')); document.getElementById('searchLoadMore').classList.toggle('d-none', data.page >= data.total_pages); } catch(e) { document.getElementById('searchGrid').innerHTML = '<div class="error-msg">Search failed. Try again.</div>'; } finally { toggleLoader(false); } }
   function loadMoreSearch() { searchPage++; performSearch(currentSearchQuery, true); }
-  window.getVibe = async function(genres, label, event) { const btn = event.currentTarget; const originalText = btn.innerHTML; btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Picking...`; btn.disabled = true; try { const country = window.userCountry || 'IN'; let r = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&with_origin_country=${country}&vote_average.gte=6&sort_by=popularity.desc`); let data = await r.json(); if(data.results.length < 3) { const fallback = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&vote_average.gte=7&page=1`); data = await fallback.json(); } const picks = (data.results || []).sort(()=>0.5-Math.random()).slice(0,5); document.getElementById('vibeTitle').innerText = `${label} in ${country}`; document.getElementById('vibeResults').innerHTML = picks.map(m => createCard(m)).join(''); new bootstrap.Modal(document.getElementById('vibeModal')).show(); } catch(e) { console.error(e); } finally { btn.innerHTML = originalText; btn.disabled = false; } };
+  window.getVibe = async function(genres, label, event) {
+    // Show SweetAlert Loading
+    Swal.fire({
+        title: `Finding ${label} movies...`,
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
+  
+    try {
+        const country = window.userCountry || 'IN';
+        let r = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&with_origin_country=${country}&vote_average.gte=6&sort_by=popularity.desc`);
+        let data = await r.json(); if(data.results.length < 3) { const fallback = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&vote_average.gte=7&page=1`); data = await fallback.json(); } const picks = (data.results || []).sort(()=>0.5-Math.random()).slice(0,5); document.getElementById('vibeTitle').innerText = `${label} in ${country}`; document.getElementById('vibeResults').innerHTML = picks.map(m => createCard(m)).join(''); Swal.close(); // Close loading
+        new bootstrap.Modal(document.getElementById('vibeModal')).show();
+    } catch(e) {
+        Swal.fire('Error', 'Could not fetch movies', 'error');
+    } finally { btn.innerHTML = originalText; btn.disabled = false; } };
   window.selectSuggestion = (val) => { document.getElementById('searchInput').value = val; document.getElementById('searchSuggestions').classList.add('d-none'); window.location.hash = `search/${encodeURIComponent(val)}`; };
   document.getElementById('searchInput').addEventListener('input', async (e) => { clearTimeout(searchTimer); const q = e.target.value.trim(); if(q.length < 2) { document.getElementById('searchSuggestions').classList.add('d-none'); return; } try { const r = await fetch(`${BASE}/search/multi?api_key=${KEY}&query=${encodeURIComponent(q)}`); const data = await r.json(); if(data.results && data.results.length) { document.getElementById('searchSuggestions').innerHTML = data.results.slice(0,6).map(i => `<button class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-2" onclick="selectSuggestion('${(i.title||i.name).replace(/'/g, "\\'")}')"><i class="fa fa-search text-muted small"></i><span class="small fw-bold">${sanitize(i.title||i.name)}</span>${i.known_for_department === 'Acting' ? '<span class="badge bg-primary ms-2">Actor</span>' : ''}</button>`).join(''); document.getElementById('searchSuggestions').classList.remove('d-none'); } } catch(err) { console.error(err); } searchTimer = setTimeout(() => { if(q && q.length >= 3) window.location.hash = `search/${encodeURIComponent(q)}`; }, 800); });
   document.getElementById('searchInput').addEventListener('keydown', (e) => { if(e.key === 'Enter') { const q = e.target.value.trim(); if(q) { document.getElementById('searchSuggestions').classList.add('d-none'); window.location.hash = `search/${encodeURIComponent(q)}`; e.target.blur(); } } });
   document.addEventListener('click', e => { if (!e.target.closest('.search-container')) document.getElementById('searchSuggestions')?.classList.add('d-none'); });
   
   //Share button
-  async function shareMedia() {
+  async function shareMedia(title = currentTitle) {
     const shareData = {
-        title: currentTitle,
-        text: `Check out "${currentTitle}" on AS CINEPLEX!`,
+        title: title,
+        text: `Check out "${title}" on AS CINEPLEX!`,
         url: window.location.href,
     };
   
     try {
-        // Check if the browser supports the Web Share API
         if (navigator.share) {
             await navigator.share(shareData);
-        // Replacement for the 'else' block above
-  } else {
-    await navigator.clipboard.writeText(window.location.href);
-    const shareBtn = event.currentTarget;
-    const originalContent = shareBtn.innerHTML;
-    shareBtn.innerHTML = `<i class="fa fa-check"></i> Copied!`;
-    shareBtn.classList.replace('btn-outline-primary', 'btn-success');
-    
-    setTimeout(() => {
-        shareBtn.innerHTML = originalContent;
-        shareBtn.classList.replace('btn-success', 'btn-outline-primary');
-    }, 2000);
-  }
-  
+        } else {
+            await navigator.clipboard.writeText(window.location.href);
+            Swal.fire({
+                icon: 'success',
+                title: 'Link Copied!',
+                text: 'The link is ready to share.',
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        }
     } catch (err) {
         console.log("Error sharing:", err);
     }
