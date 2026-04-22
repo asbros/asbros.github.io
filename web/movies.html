@@ -89,10 +89,30 @@
     border-radius: 16px;
     position: relative;
   }
+   
+  .preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    animation: previewGrow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
   
-  /* Ensure the download section follows dark mode if you use it */
-  body.dark-mode .download-section .bg-white {
-    background-color: var(--surface) !important;
+  @keyframes previewGrow {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1.05); opacity: 1; } /* Slight grow effect */
+  }
+  
+  /* Ensure the iframe covers the area without black bars */
+  .preview-overlay iframe {
+    pointer-events: none; /* Prevents users from accidentally clicking links inside the ad-heavy player */
+    transform: scale(1.3); /* Zoom slightly to hide YouTube UI elements */
   }
   
  </style>
@@ -302,6 +322,7 @@
               let section = document.getElementById(`cat-${cat.id}`);
               if (!section) { section = document.createElement('div'); section.id = `cat-${cat.id}`; section.className = "mb-5"; section.innerHTML = `<h5 class="section-header mb-4">${cat.n}</h5><div class="grid-container grid-target"></div>`; container.appendChild(section); }
               section.querySelector('.grid-target').insertAdjacentHTML('beforeend', data.results.map(i => createCard(i)).join(''));
+              attachPreviewListeners();
           } catch(e) { console.warn(`Failed ${cat.n}`); }
       }
       if (!document.getElementById('homeLoadMore')) container.insertAdjacentHTML('beforeend', `<div class="text-center my-5"><button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button></div>`);
@@ -443,7 +464,7 @@
   }
   
   async function filterSearch(type, btn) { currentSearchFilter = type; document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active','btn-primary'); b.classList.add('btn-light'); }); btn.classList.add('active','btn-primary'); btn.classList.remove('btn-light'); await performSearch(currentSearchQuery); }
-  async function performSearch(q, append = false) { if (!append) { searchPage = 1; currentSearchQuery = q; document.getElementById('searchGrid').innerHTML = ''; } toggleLoader(true); try { const endpoint = currentSearchFilter === 'multi' ? 'multi' : currentSearchFilter; const r = await fetch(`${BASE}/search/${endpoint}?api_key=${KEY}&query=${encodeURIComponent(q)}&page=${searchPage}`); if(!r.ok) throw new Error(); const data = await r.json(); document.getElementById('searchGrid').insertAdjacentHTML('beforeend', (data.results || []).map(i => createCard(i)).join('')); document.getElementById('searchLoadMore').classList.toggle('d-none', data.page >= data.total_pages); } catch(e) { document.getElementById('searchGrid').innerHTML = '<div class="error-msg">Search failed. Try again.</div>'; } finally { toggleLoader(false); } }
+  async function performSearch(q, append = false) { if (!append) { searchPage = 1; currentSearchQuery = q; document.getElementById('searchGrid').innerHTML = ''; } toggleLoader(true); try { const endpoint = currentSearchFilter === 'multi' ? 'multi' : currentSearchFilter; const r = await fetch(`${BASE}/search/${endpoint}?api_key=${KEY}&query=${encodeURIComponent(q)}&page=${searchPage}`); if(!r.ok) throw new Error(); const data = await r.json(); document.getElementById('searchGrid').insertAdjacentHTML('beforeend', (data.results || []).map(i => createCard(i)).join('')); attachPreviewListeners(); document.getElementById('searchLoadMore').classList.toggle('d-none', data.page >= data.total_pages); } catch(e) { document.getElementById('searchGrid').innerHTML = '<div class="error-msg">Search failed. Try again.</div>'; } finally { toggleLoader(false); } }
   function loadMoreSearch() { searchPage++; performSearch(currentSearchQuery, true); }window.getVibe = async function(genres, label, event) {
     const btn = event.currentTarget; // Capture the clicked button
     const originalText = btn.innerHTML;
@@ -572,6 +593,99 @@
   
     container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
+  
+  //Preview
+  let pressTimer;
+  
+  function attachPreviewListeners() {
+    const cards = document.querySelectorAll('.movie-card');
+    
+    cards.forEach(card => {
+        const getInfo = () => {
+            const onclickAttr = card.getAttribute('onclick');
+            const match = onclickAttr.match(/'([^']+)', '([^']+)'/);
+            return { type: match[1], id: match[2] };
+        };
+  
+        // --- DESKTOP HOVER ---
+        card.addEventListener('mouseenter', () => {
+            const info = getInfo();
+            if (info.type === 'person') return;
+            pressTimer = setTimeout(() => startPreview(card, info.type, info.id), 600);
+        });
+  
+        card.addEventListener('mouseleave', () => {
+            clearTimeout(pressTimer);
+            stopPreview(card);
+        });
+  
+        // --- MOBILE LONG PRESS ---
+        card.addEventListener('touchstart', (e) => {
+            const info = getInfo();
+            if (info.type === 'person') return;
+            
+            // Start timer for long press
+            pressTimer = setTimeout(() => {
+                // Vibrate device if supported for haptic feedback
+                if (navigator.vibrate) navigator.vibrate(50);
+                startPreview(card, info.type, info.id);
+            }, 600); 
+        }, { passive: true });
+  
+        card.addEventListener('touchend', () => {
+            clearTimeout(pressTimer);
+            // On mobile, we keep the preview until they tap elsewhere or stop touching
+            // Optional: stopPreview(card) here if you want it to vanish immediately
+        });
+  
+        card.addEventListener('touchmove', () => clearTimeout(pressTimer));
+    });
+  }
+  
+  async function startPreview(card, type, id) {
+    const wrapper = card.querySelector('.poster-wrapper');
+    if (wrapper.querySelector('.preview-overlay')) return;
+  
+    const loader = document.createElement('div');
+    loader.className = 'preview-loading';
+    loader.innerHTML = '<div class="spinner-border spinner-border-sm text-primary"></div>';
+    wrapper.appendChild(loader);
+  
+    try {
+        const res = await fetch(`${BASE}/${type}/${id}/videos?api_key=${KEY}`);
+        const data = await res.json();
+        const video = data.results.find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'));
+  
+        if (video) {
+            const overlay = document.createElement('div');
+            overlay.className = 'preview-overlay';
+            // Added 'playsinline=1' which is crucial for mobile auto-play
+            overlay.innerHTML = `
+                <iframe 
+                    src="https://www.youtube.com/embed/${video.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${video.key}&modestbranding=1&playsinline=1&rel=0" 
+                    width="100%" height="100%" frameborder="0" 
+                    allow="autoplay; encrypted-media">
+                </iframe>`;
+            wrapper.appendChild(overlay);
+        }
+    } catch (err) {
+        console.warn("Preview unavailable");
+    } finally {
+        loader.remove();
+    }
+  }
+  
+  function stopPreview(card) {
+    const overlay = card.querySelector('.preview-overlay');
+    if (overlay) overlay.remove();
+  }
+  
+  // Global listener to clear previews when clicking/tapping elsewhere
+  document.addEventListener('touchstart', (e) => {
+    if (!e.target.closest('.movie-card')) {
+        document.querySelectorAll('.preview-overlay').forEach(el => el.remove());
+    }
+  });
   
  </script>
 </body>
