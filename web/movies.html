@@ -808,61 +808,70 @@
   
   // ------------------- LOAD HOME (Trending + Continue Watching) -------------------
   async function loadHome(append = false) {
-    if (!append) {
-      homePage = 1;
-      document.getElementById('home-view').innerHTML = '';
+  const container = document.getElementById('home-view');
+  if (!append) {
+    homePage = 1;
+    container.innerHTML = '';
+    
+    // Render Continue Watching from LocalStorage
+    const history = getStorage('watchHistory');
+    if (history.length) {
+      const historyHtml = history.map(item => `
+        <div class="movie-card" onclick="handleCardClick('${item.type}', '${item.id}')">
+          <div class="poster-wrapper">
+            <img src="${item.poster ? POSTER + item.poster : FALLBACK_IMG}" class="poster-img">
+            <div class="position-absolute bottom-0 start-0 w-100 p-2" style="background:rgba(0,0,0,0.7)">
+              <span class="badge bg-primary w-100">${item.type === 'tv' ? `S${item.season}:E${item.episode}` : 'Movie'}</span>
+            </div>
+          </div>
+          <div class="card-body-content"><div class="card-title-text text-truncate">${sanitize(item.title)}</div></div>
+        </div>`).join('');
+  
+      container.insertAdjacentHTML('afterbegin', `
+        <div class="mb-5 pt-2">
+          <h5 class="section-header mb-4">CONTINUE WATCHING</h5>
+          <div class="horizontal-scroll">${historyHtml}</div>
+        </div>`);
     }
-    const container = document.getElementById('home-view');
-    if (!append) {
-      const history = getStorage('watchHistory');
-      if (history.length) {
-        const continueSection = document.createElement('div');
-        continueSection.className = "mb-5 pt-2";
-        continueSection.innerHTML = `<h5 class="section-header mb-4">CONTINUE WATCHING</h5>
-          <div class="horizontal-scroll">
-            ${history.map(item => `<div class="movie-card" style="min-width:160px" onclick="handleCardClick('${item.type}', '${item.id}', '${sanitize(item.title)}')">
-              <div class="poster-wrapper">
-                <img src="${item.poster ? POSTER + item.poster : FALLBACK_IMG}" class="poster-img" onerror="this.src='${FALLBACK_IMG}'">
-                <div class="position-absolute bottom-0 start-0 w-100 p-2" style="background:rgba(0,0,0,0.6)">
-                  <span class="badge bg-primary w-100" style="font-size:0.7rem">${item.type === 'tv' ? `S${item.season}:E${item.episode}` : 'Movie'}</span>
-                </div>
-              </div>
-              <div class="card-body-content"><div class="card-title-text">${sanitize(item.title)}</div></div>
-            </div>`).join('')}
-          </div>`;
-        container.appendChild(continueSection);
+  }
+  
+  // Categories to load
+  const categories = [
+    { label: 'Trending Now', url: `/trending/all/day?page=${homePage}` },
+    { label: 'Popular Series', url: `/tv/popular?page=${homePage}` },
+    { label: 'Action Hits', url: `/discover/movie?with_genres=28&page=${homePage}` }
+  ];
+  
+  for (const cat of categories) {
+    try {
+      const response = await fetch(`${BASE}${cat.url}&api_key=${KEY}`);
+      const data = await response.json();
+      
+      let section = document.getElementById(`section-${cat.label.replace(/\s/g, '')}`);
+      if (!section) {
+        section = document.createElement('div');
+        section.id = `section-${cat.label.replace(/\s/g, '')}`;
+        section.className = "mb-5";
+        section.innerHTML = `<h5 class="section-header mb-4">${cat.label}</h5><div class="grid-container grid-target"></div>`;
+        container.appendChild(section);
       }
+      
+      const cardsHtml = data.results.map(movie => createCard(movie)).join('');
+      section.querySelector('.grid-target').insertAdjacentHTML('beforeend', cardsHtml);
+    } catch (err) {
+      console.error(`Failed to load ${cat.label}:`, err);
     }
+  }
   
-    const cats = [
-      { n: 'Trending Now', id: 'Trending', u: `/trending/all/day?page=${homePage}` },
-      { n: 'Popular Series', id: 'Series', u: `/tv/popular?page=${homePage}` },
-      { n: 'Action Movies', id: 'Action', u: `/discover/movie?with_genres=28&page=${homePage}` }
-    ];
-  
-    for (const cat of cats) {
-      try {
-        const r = await fetch(`${BASE}${cat.u}&api_key=${KEY}`);
-        if (!r.ok) throw new Error();
-        const data = await r.json();
-        let section = document.getElementById(`cat-${cat.id}`);
-        if (!section) {
-          section = document.createElement('div');
-          section.id = `cat-${cat.id}`;
-          section.className = "mb-5";
-          section.innerHTML = `<h5 class="section-header mb-4">${cat.n}</h5><div class="grid-container grid-target"></div>`;
-          container.appendChild(section);
-        }
-        section.querySelector('.grid-target').insertAdjacentHTML('beforeend', data.results.map(i => createCard(i)).join('')); attachPreviewListeners();
-      } catch (e) {
-        console.warn(`Failed ${cat.n}`);
-      }
-    }
-  
-    if (!document.getElementById('homeLoadMore')) {
-      container.insertAdjacentHTML('beforeend', `<div class="text-center my-5"><button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button></div>`);
-    }
-    homePage++;
+  // Manage "Load More" Button
+  if (!document.getElementById('homeLoadMore')) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="text-center my-5">
+        <button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button>
+      </div>`);
+  }
+  homePage++;
+  attachPreviewListeners();
   }
   
   // ---------- DETAILS (Movie / TV) ----------
@@ -1295,15 +1304,33 @@
   
   // ---------- SHARE ----------
   async function shareMedia(title = currentTitle) {
-    const shareData = { title: title, text: `Check out "${title}" on AS CINEPLEX!`, url: window.location.href };
-    try {
-      if (navigator.share) await navigator.share(shareData);
-      else {
-        await navigator.clipboard.writeText(window.location.href);
-        Swal.fire({ icon: 'success', title: 'Link Copied!', text: 'The link is ready to share.', timer: 2000, showConfirmButton: false, toast: true, position: 'top-end' });
-      }
-    } catch (err) { console.log("Error sharing:", err); }
+  const shareData = {
+    title: title,
+    text: `Stream "${title}" on AS CINEPLEX!`,
+    url: window.location.href
+  };
+  
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(window.location.href);
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Link copied to clipboard!',
+        showConfirmButton: false,
+        timer: 2000,
+        background: 'var(--surface)',
+        color: 'var(--text-main)'
+      });
+    }
+  } catch (err) {
+    console.warn("Share failed or cancelled:", err);
   }
+  }
+  
   
   // ---------- DOWNLOAD SERVERS ----------
   const DL_SERVERS = { 1: "https://bunnyddl.termsandconditionshere.workers.dev/", 2: "https://vidvault.ru/" };
