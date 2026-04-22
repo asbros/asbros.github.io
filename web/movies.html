@@ -7,6 +7,7 @@
  <title>AS CINEPLEX | Premium Streaming</title>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
  <link href='https://asbros.github.io/as.webmanifest' rel='manifest' />
+ <link href='https://i.imgur.com/ZEQdTSH.png' rel='shortcut icon' type='image/x-icon' />
  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -69,6 +70,31 @@
   .gallery-img { width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
   .iframe-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 5; background: rgba(0,0,0,0.7); padding: 12px 20px; border-radius: 40px; backdrop-filter: blur(4px); }
   .error-msg, .no-trailer-msg { color: #f87171; font-size: 0.9rem; text-align: center; padding: 2rem; background: #1f1f2e; border-radius: 16px; }
+  .download-section .dl-server-btn {
+    transition: all 0.3s ease;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  
+  .download-section .dl-server-btn:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .dl-iframe-wrapper {
+    background: #f1f5f9;
+    padding: 10px;
+    border-radius: 16px;
+    position: relative;
+  }
+  
+  /* Ensure the download section follows dark mode if you use it */
+  body.dark-mode .download-section .bg-white {
+    background-color: var(--surface) !important;
+  }
+  
  </style>
 </head>
 
@@ -155,6 +181,29 @@
         <h5 class="fw-bold mb-0">Episodes</h5><span id="epCount" class="badge bg-light text-dark border"></span>
        </div>
        <div id="episodeList" class="row g-3" style="max-height: 500px; overflow-y: auto;"></div>
+      </div>
+     </div>
+     <div class="download-section shadow-sm mt-4">
+      <div class="p-4 bg-white rounded-4 border">
+       <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold text-muted small mb-0 text-uppercase">
+         <i class="fa fa-download me-2"></i>Download Options
+        </h6>
+        <span id="dlTargetLabel" class="badge bg-primary rounded-pill"></span>
+       </div>
+
+       <div class="d-flex flex-wrap gap-2 mb-4">
+        <button class="btn btn-outline-dark rounded-pill px-4 fw-bold dl-server-btn" onclick="initDownload(1)">
+         Server: BunnyDDL
+        </button>
+        <button class="btn btn-outline-dark rounded-pill px-4 fw-bold dl-server-btn" onclick="initDownload(2)">
+         Server: VidVault
+        </button>
+       </div>
+
+       <div id="dlIframeContainer" class="d-none mt-3">
+        <iframe id="dlIframe" src="" style="width:100%; height:500px; border-radius:12px; border:1px solid var(--border);"></iframe>
+       </div>
       </div>
      </div>
      <div class="row mt-5 g-4">
@@ -274,6 +323,15 @@
           renderMetadata(m, c); renderSideContent(m);
           await loadExtraDetails(t, i);
       } catch(e) { document.getElementById('metaContent').innerHTML = `<div class="alert alert-danger">Failed to load details</div>`; console.error(e); toggleLoader(false); }
+      // Add this helper function
+  function updateDownloadLabel() {
+    const label = document.getElementById('dlTargetLabel');
+    if (!label) return;
+    label.innerText = currentType === 'tv' ? `Target: S${currentS} E${currentE}` : `Target: Movie`;
+  }
+  
+  // Call updateDownloadLabel() inside changeEpisode and loadDetails.
+  
   }
   
   async function switchSeason(el, s) { setActiveUI('.season-tab', el); currentS = s; currentE = 1; await loadEpisodes(s); }
@@ -386,9 +444,10 @@
   
   async function filterSearch(type, btn) { currentSearchFilter = type; document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active','btn-primary'); b.classList.add('btn-light'); }); btn.classList.add('active','btn-primary'); btn.classList.remove('btn-light'); await performSearch(currentSearchQuery); }
   async function performSearch(q, append = false) { if (!append) { searchPage = 1; currentSearchQuery = q; document.getElementById('searchGrid').innerHTML = ''; } toggleLoader(true); try { const endpoint = currentSearchFilter === 'multi' ? 'multi' : currentSearchFilter; const r = await fetch(`${BASE}/search/${endpoint}?api_key=${KEY}&query=${encodeURIComponent(q)}&page=${searchPage}`); if(!r.ok) throw new Error(); const data = await r.json(); document.getElementById('searchGrid').insertAdjacentHTML('beforeend', (data.results || []).map(i => createCard(i)).join('')); document.getElementById('searchLoadMore').classList.toggle('d-none', data.page >= data.total_pages); } catch(e) { document.getElementById('searchGrid').innerHTML = '<div class="error-msg">Search failed. Try again.</div>'; } finally { toggleLoader(false); } }
-  function loadMoreSearch() { searchPage++; performSearch(currentSearchQuery, true); }
-  window.getVibe = async function(genres, label, event) {
-    // Show SweetAlert Loading
+  function loadMoreSearch() { searchPage++; performSearch(currentSearchQuery, true); }window.getVibe = async function(genres, label, event) {
+    const btn = event.currentTarget; // Capture the clicked button
+    const originalText = btn.innerHTML;
+    
     Swal.fire({
         title: `Finding ${label} movies...`,
         allowOutsideClick: false,
@@ -398,11 +457,25 @@
     try {
         const country = window.userCountry || 'IN';
         let r = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&with_origin_country=${country}&vote_average.gte=6&sort_by=popularity.desc`);
-        let data = await r.json(); if(data.results.length < 3) { const fallback = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&vote_average.gte=7&page=1`); data = await fallback.json(); } const picks = (data.results || []).sort(()=>0.5-Math.random()).slice(0,5); document.getElementById('vibeTitle').innerText = `${label} in ${country}`; document.getElementById('vibeResults').innerHTML = picks.map(m => createCard(m)).join(''); Swal.close(); // Close loading
+        let data = await r.json();
+        
+        if(!data.results || data.results.length < 3) {
+            const fallback = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&vote_average.gte=7&page=1`);
+            data = await fallback.json();
+        }
+        
+        const picks = (data.results || []).sort(()=>0.5-Math.random()).slice(0,5);
+        document.getElementById('vibeTitle').innerText = `${label} in ${country}`;
+        document.getElementById('vibeResults').innerHTML = picks.map(m => createCard(m)).join('');
+        
+        Swal.close();
         new bootstrap.Modal(document.getElementById('vibeModal')).show();
     } catch(e) {
         Swal.fire('Error', 'Could not fetch movies', 'error');
-    } finally { btn.innerHTML = originalText; btn.disabled = false; } };
+    }
+  };
+  
+  
   window.selectSuggestion = (val) => { document.getElementById('searchInput').value = val; document.getElementById('searchSuggestions').classList.add('d-none'); window.location.hash = `search/${encodeURIComponent(val)}`; };
   document.getElementById('searchInput').addEventListener('input', async (e) => { clearTimeout(searchTimer); const q = e.target.value.trim(); if(q.length < 2) { document.getElementById('searchSuggestions').classList.add('d-none'); return; } try { const r = await fetch(`${BASE}/search/multi?api_key=${KEY}&query=${encodeURIComponent(q)}`); const data = await r.json(); if(data.results && data.results.length) { document.getElementById('searchSuggestions').innerHTML = data.results.slice(0,6).map(i => `<button class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-2" onclick="selectSuggestion('${(i.title||i.name).replace(/'/g, "\\'")}')"><i class="fa fa-search text-muted small"></i><span class="small fw-bold">${sanitize(i.title||i.name)}</span>${i.known_for_department === 'Acting' ? '<span class="badge bg-primary ms-2">Actor</span>' : ''}</button>`).join(''); document.getElementById('searchSuggestions').classList.remove('d-none'); } } catch(err) { console.error(err); } searchTimer = setTimeout(() => { if(q && q.length >= 3) window.location.hash = `search/${encodeURIComponent(q)}`; }, 800); });
   document.getElementById('searchInput').addEventListener('keydown', (e) => { if(e.key === 'Enter') { const q = e.target.value.trim(); if(q) { document.getElementById('searchSuggestions').classList.add('d-none'); window.location.hash = `search/${encodeURIComponent(q)}`; e.target.blur(); } } });
@@ -434,6 +507,70 @@
     } catch (err) {
         console.log("Error sharing:", err);
     }
+  }
+  
+  //Download section 
+  // Add these server constants at the top of your script
+  const DL_SERVERS = {
+    1: "https://bunnyddl.termsandconditionshere.workers.dev/",
+    2: "https://vidvault.ru/"
+  };
+  
+  // Modified changeEpisode to ensure global sync
+  function changeEpisode(el, s, e) {
+    currentS = s;
+    currentE = e;
+    setActiveUI('.ep-card', el);
+    
+    const h = getStorage('watchHistory');
+    const idx = h.findIndex(x => x.id == currentId);
+    if(idx > -1) {
+        h[idx].season = s;
+        h[idx].episode = e;
+        setStorage('watchHistory', h);
+    }
+    
+    // Refresh the player
+    initPlayer(SERVERS[activeServerIndex].t);
+    
+    // Hide the download iframe when switching episodes to prevent confusion
+    document.getElementById('dlIframeContainer').classList.add('d-none');
+    document.getElementById('dlIframe').src = "";
+    
+    document.getElementById('resumeContainer').innerHTML = '';
+  }
+  
+  // Updated Download Handler
+  function initDownload(serverIndex) {
+    const container = document.getElementById('dlIframeContainer');
+    const iframe = document.getElementById('dlIframe');
+    const baseUrl = DL_SERVERS[serverIndex];
+    
+    // Construct the URL based on current playing state
+    const typePath = currentType === 'movie' ? 'movie/' : 'tv/';
+    let finalUrl = "";
+  
+    if (currentType === 'movie') {
+        finalUrl = `${baseUrl}${typePath}${currentId}`;
+    } else {
+        // Automatically uses currentS and currentE updated by changeEpisode()
+        finalUrl = `${baseUrl}${typePath}${currentId}/${currentS}/${currentE}`;
+    }
+  
+    container.classList.remove('d-none');
+    iframe.src = finalUrl;
+  
+    // UI Feedback for the user
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: currentType === 'tv' ? `Fetching S${currentS}:E${currentE}...` : 'Fetching Movie...',
+        showConfirmButton: false,
+        timer: 2000
+    });
+  
+    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   
  </script>
