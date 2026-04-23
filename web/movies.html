@@ -546,7 +546,7 @@
     <a class="navbar-brand fs-4" href="#" onclick="goHome()">AS<span class="text-dark">CINEPLEX</span></a>
     <div class="d-flex align-items-center gap-3 ms-2">
      <a href="#wishlist" class="nav-link-custom"><i class="fa fa-bookmark"></i> Wishlist</a>
-     <a href="#history" class="nav-link-custom"><i class="fa fa-clock-rotate-left"></i> History</a>
+     <a href="#settings" class="nav-link-custom"><i class="fa fa-cog"></i> Settings</a>
     </div>
    </div>
    <div class="search-container flex-grow-1 mx-4" style="max-width: 400px; position: relative;">
@@ -589,6 +589,84 @@
   </div>
 
   <!-- DYNAMIC VIEWS -->
+  <section id="settings-view" style="display:none;">
+   <div class="row justify-content-center">
+    <div class="col-md-9 col-lg-8">
+     <h2 class="fw-bold mb-4">Settings</h2>
+
+     <div class="card border-0 shadow-sm rounded-4 mb-4">
+      <div class="card-body p-4">
+       <h5 class="fw-bold mb-4"><i class="fa fa-server me-2 text-primary"></i> Default Servers</h5>
+       <div class="row g-3">
+        <div class="col-sm-6">
+         <label class="small fw-bold text-muted mb-2">DEFAULT MOVIE SERVER</label>
+         <select id="defaultMovieServer" class="form-select rounded-3 shadow-none border" onchange="updateDefaultServer('movie', this.value)">
+         </select>
+        </div>
+        <div class="col-sm-6">
+         <label class="small fw-bold text-muted mb-2">DEFAULT TV SERVER</label>
+         <select id="defaultTvServer" class="form-select rounded-3 shadow-none border" onchange="updateDefaultServer('tv', this.value)">
+         </select>
+        </div>
+       </div>
+       <p class="text-muted small mt-3 mb-0">Choosing a default will bypass the Trailer/Server 1 auto-load and jump straight to your preferred source.</p>
+      </div>
+     </div>
+
+     <div class="card border-0 shadow-sm rounded-4 mb-4">
+      <div class="card-body p-4">
+       <h5 class="fw-bold mb-4"><i class="fa fa-play-circle me-2 text-success"></i> Playback & UI</h5>
+
+       <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+         <div class="fw-bold">Dark Mode</div>
+         <div class="text-muted small">Optimized for night viewing.</div>
+        </div>
+        <div class="form-check form-switch">
+         <input class="form-check-input" type="checkbox" id="darkModeToggle" style="transform: scale(1.2);">
+        </div>
+       </div>
+
+       <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+         <div class="fw-bold">Auto-Next Episode</div>
+         <div class="text-muted small">Automatically load the next episode for TV shows.</div>
+        </div>
+        <div class="form-check form-switch">
+         <input class="form-check-input" type="checkbox" id="autoNextToggle" onchange="updatePref('autoNext', this.checked)">
+        </div>
+       </div>
+
+       <div class="d-flex justify-content-between align-items-center">
+        <div>
+         <div class="fw-bold">History Tracking</div>
+         <div class="text-muted small">Save your progress to 'Continue Watching'.</div>
+        </div>
+        <div class="form-check form-switch">
+         <input class="form-check-input" type="checkbox" id="historyToggle" checked onchange="updatePref('historyEnabled', this.checked)">
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <div class="card border-0 shadow-sm rounded-4 mb-4">
+      <div class="card-body p-4">
+       <h5 class="fw-bold mb-4 text-danger"><i class="fa fa-database me-2"></i> Your Data</h5>
+       <div class="d-flex gap-2 flex-wrap mb-4">
+        <a href="#history" class="btn btn-light rounded-pill px-3 border fw-bold"><i class="fa fa-clock-rotate-left me-1"></i> View History</a>
+        <button class="btn btn-light rounded-pill px-3 border fw-bold" onclick="exportData()"><i class="fa fa-download me-1"></i> Export Backup</button>
+       </div>
+       <hr class="opacity-25">
+       <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchlist')">Clear Wishlist</button>
+        <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchHistory')">Clear History</button>
+        <button class="btn btn-danger rounded-pill px-3 fw-bold btn-sm ms-auto" onclick="resetApp()">Factory Reset</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
   <section id="home-view"></section>
   <section id="search-view" style="display:none;">
    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
@@ -770,40 +848,47 @@
   }
   
   async function router() {
-    toggleLoader(true);
-    const h = window.location.hash;
-    document.querySelectorAll('#home-view, #search-view, #details-view, #person-view, #list-view').forEach(v => v.style.display = 'none');
-    const vibeContainer = document.getElementById('vibe-container');
-    if (vibeContainer) vibeContainer.style.display = (h === '' || h === '#') ? 'block' : 'none';
-    document.getElementById('searchSuggestions')?.classList.add('d-none');
+  toggleLoader(true);
+  const h = window.location.hash;
   
-    try {
-      if (h === '#wishlist' || h === '#history') {
-        document.getElementById('list-view').style.display = 'block';
-        renderListPage(h.slice(1));
-      } else if (h.startsWith('#movie/') || h.startsWith('#tv/')) {
-        const [t, i] = h.slice(1).split('/');
-        currentType = t;
-        currentId = i;
-        document.getElementById('details-view').style.display = 'block';
-        await loadDetails(t, i);
-      } else if (h.startsWith('#person/')) {
-        document.getElementById('person-view').style.display = 'block';
-        await loadPerson(h.split('/')[1]);
-      } else if (h.startsWith('#search/')) {
-        document.getElementById('search-view').style.display = 'block';
-        const query = decodeURIComponent(h.split('/')[1]);
-        if (query !== currentSearchQuery) await performSearch(query);
-      } else {
-        document.getElementById('home-view').style.display = 'block';
-        await loadHome();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      window.scrollTo(0, 0);
-      toggleLoader(false);
+  // Reset Visibility
+  const sections = ['#home-view', '#search-view', '#details-view', '#person-view', '#list-view', '#settings-view'];
+  document.querySelectorAll(sections.join(', ')).forEach(v => v.style.display = 'none');
+  
+  const vibeContainer = document.getElementById('vibe-container');
+  if (vibeContainer) vibeContainer.style.display = (h === '' || h === '#') ? 'block' : 'none';
+  document.getElementById('searchSuggestions')?.classList.add('d-none');
+  
+  try {
+    if (h === '#settings') {
+      document.getElementById('settings-view').style.display = 'block';
+      initSettingsUI(); // New function to sync switches/dropdowns
+    } else if (h === '#wishlist' || h === '#history') {
+      document.getElementById('list-view').style.display = 'block';
+      renderListPage(h.slice(1));
+    } else if (h.startsWith('#movie/') || h.startsWith('#tv/')) {
+      const [t, i] = h.slice(1).split('/');
+      currentType = t;
+      currentId = i;
+      document.getElementById('details-view').style.display = 'block';
+      await loadDetails(t, i);
+    } else if (h.startsWith('#person/')) {
+      document.getElementById('person-view').style.display = 'block';
+      await loadPerson(h.split('/')[1]);
+    } else if (h.startsWith('#search/')) {
+      document.getElementById('search-view').style.display = 'block';
+      const query = decodeURIComponent(h.split('/')[1]);
+      if (query !== currentSearchQuery) await performSearch(query);
+    } else {
+      document.getElementById('home-view').style.display = 'block';
+      await loadHome();
     }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    window.scrollTo(0, 0);
+    toggleLoader(false);
+  }
   }
   
   // ------------------- LOAD HOME (Trending + Continue Watching) -------------------
@@ -1072,39 +1157,54 @@
   ];
   
   function buildServerButtons(init = false) {
-    const g = document.getElementById('serverGrid');
-    g.innerHTML = '';
-    const trailerBtn = document.createElement('button');
-    trailerBtn.className = `trailer-btn ${(trailerKey && init && activeServerIndex === -1) ? 'active' : ''}`;
-    trailerBtn.innerHTML = "<i class='fa fa-play me-1'></i>Trailer";
-    trailerBtn.onclick = (e) => {
-      setActiveUI('.server-btn, .trailer-btn', trailerBtn);
-      if (trailerKey) loadTrailer();
-      else showNoTrailerMessage();
+  const g = document.getElementById('serverGrid');
+  g.innerHTML = '';
+  
+  // Trailer Button
+  const trailerBtn = document.createElement('button');
+  trailerBtn.className = 'trailer-btn';
+  trailerBtn.innerHTML = "<i class='fa fa-play me-1'></i>Trailer";
+  trailerBtn.onclick = () => {
+    activeServerIndex = -1;
+    setActiveUI('.server-btn, .trailer-btn', trailerBtn);
+    loadTrailer();
+  };
+  g.appendChild(trailerBtn);
+  
+  // Server Buttons
+  SERVERS.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'server-btn';
+    b.innerText = s.n;
+    b.onclick = () => {
+      activeServerIndex = i;
+      setActiveUI('.server-btn, .trailer-btn', b);
+      initPlayer(currentType === 'movie' ? s.m : s.t);
     };
-    g.appendChild(trailerBtn);
+    g.appendChild(b);
+  });
   
-    SERVERS.forEach((s, i) => {
-      const b = document.createElement('button');
-      b.className = `server-btn ${(!trailerKey && i === activeServerIndex && init) ? 'active' : (trailerKey && init && activeServerIndex === i) ? 'active' : ''}`;
-      b.innerText = s.n;
-      b.onclick = (e) => {
-        activeServerIndex = i;
-        setActiveUI('.server-btn, .trailer-btn', b);
-        initPlayer(currentType === 'movie' ? s.m : s.t);
-      };
-      g.appendChild(b);
-    });
+  if (init) {
+    // 1. Get user preference from localStorage
+    const savedDefault = currentType === 'movie' 
+      ? localStorage.getItem('defaultMovieServer') 
+      : localStorage.getItem('defaultTvServer');
   
-    if (init) {
-      if (trailerKey) {
-        activeServerIndex = -1;
-        loadTrailer();
-      } else {
-        if (activeServerIndex === undefined || activeServerIndex < 0) activeServerIndex = 0;
-        initPlayer(currentType === 'movie' ? SERVERS[activeServerIndex].m : SERVERS[activeServerIndex].t);
-      }
+    // 2. Set the active index (default to -1 for movies if nothing saved)
+    activeServerIndex = parseInt(savedDefault || (currentType === 'movie' ? -1 : 0));
+  
+    // 3. Auto-load the preferred source
+    if (activeServerIndex === -1 && trailerKey) {
+      setActiveUI('.server-btn, .trailer-btn', trailerBtn);
+      loadTrailer();
+    } else {
+      // Fallback if index was -1 but no trailer exists
+      if (activeServerIndex === -1) activeServerIndex = 0; 
+      const defaultBtn = g.querySelectorAll('.server-btn')[activeServerIndex];
+      setActiveUI('.server-btn, .trailer-btn', defaultBtn);
+      initPlayer(currentType === 'movie' ? SERVERS[activeServerIndex].m : SERVERS[activeServerIndex].t);
     }
+  }
   }
   
   function showNoTrailerMessage() {
@@ -1129,10 +1229,22 @@
   }
   
   function addToHistory(id, t, title, poster) {
-    let h = getStorage('watchHistory');
-    h = h.filter(x => x.id != id);
-    h.unshift({ id, type: t, title, poster, season: currentS, episode: currentE });
-    setStorage('watchHistory', h.slice(0, 50));
+  // Check if tracking is disabled in settings
+  const trackingEnabled = localStorage.getItem('historyEnabled') !== 'false';
+  if (!trackingEnabled) return;
+  
+  let h = getStorage('watchHistory');
+  h = h.filter(x => x.id != id);
+  h.unshift({ 
+    id, 
+    type: t, 
+    title, 
+    poster, 
+    season: currentS, 
+    episode: currentE,
+    timestamp: Date.now() 
+  });
+  setStorage('watchHistory', h.slice(0, 50));
   }
   
   function checkContinueWatching(id, t) {
@@ -1445,6 +1557,94 @@
   document.addEventListener('touchstart', (e) => {
     if (!e.target.closest('.movie-card')) stopAllPreviews();
   });
+  
+  // --- SETTINGS HELPERS ---
+  function clearLocalData(key) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `Your ${key === 'watchlist' ? 'Wishlist' : 'History'} will be permanently deleted.`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#4f46e5',
+    confirmButtonText: 'Yes, clear it'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.removeItem(key);
+      Swal.fire('Cleared!', '', 'success');
+    }
+  });
+  }
+  
+  function resetApp() {
+  Swal.fire({
+    title: 'Full Reset?',
+    text: 'This will delete EVERYTHING: History, Wishlist, and Settings.',
+    icon: 'error',
+    showCancelButton: true,
+    confirmButtonColor: '#ef4444',
+    confirmButtonText: 'Delete Everything'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.clear();
+      window.location.reload();
+    }
+  });
+  }
+  
+  // Optional: Toggle Dark Mode (requires CSS implementation)
+  document.addEventListener('change', (e) => {
+  if (e.target.id === 'darkModeToggle') {
+    if (e.target.checked) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+  });
+  
+  function initSettingsUI() {
+  const movieSelect = document.getElementById('defaultMovieServer');
+  const tvSelect = document.getElementById('defaultTvServer');
+  
+  if (!movieSelect || !tvSelect) return;
+  
+  // Populate Dropdowns
+  const serverOptions = SERVERS.map((s, i) => `<option value="${i}">${s.n}</option>`).join('');
+  movieSelect.innerHTML = `<option value="-1">🎬 Trailer (Auto-load)</option>` + serverOptions;
+  tvSelect.innerHTML = serverOptions;
+  
+  // Set values from Storage
+  movieSelect.value = localStorage.getItem('defaultMovieServer') || "-1";
+  tvSelect.value = localStorage.getItem('defaultTvServer') || "0";
+  
+  document.getElementById('autoNextToggle').checked = localStorage.getItem('autoNext') === 'true';
+  document.getElementById('historyToggle').checked = localStorage.getItem('historyEnabled') !== 'false';
+  document.getElementById('darkModeToggle').checked = localStorage.getItem('theme') === 'dark';
+  }
+  
+  function updateDefaultServer(type, index) {
+  localStorage.setItem(type === 'movie' ? 'defaultMovieServer' : 'defaultTvServer', index);
+  showToast('Preference Saved');
+  }
+  
+  function updatePref(key, val) {
+  localStorage.setItem(key, val);
+  }
+  
+  function showToast(msg) {
+  Swal.fire({ 
+    toast: true, 
+    position: 'top-end', 
+    icon: 'success', 
+    title: msg, 
+    showConfirmButton: false, 
+    timer: 1500,
+    background: 'var(--surface)',
+    color: 'var(--text-main)'
+  });
+  }
   
  </script>
 </body>
