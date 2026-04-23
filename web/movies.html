@@ -530,7 +530,6 @@
     backdrop-filter: blur(4px);
     border-radius: inherit;
   }
-  
  </style>
 </head>
 
@@ -1191,7 +1190,13 @@
       : localStorage.getItem('defaultTvServer');
   
     // 2. Set the active index (default to -1 for movies if nothing saved)
-    activeServerIndex = parseInt(savedDefault || (currentType === 'movie' ? -1 : 0));
+    if (savedDefault === "-1" && trailerKey) {
+    trailerBtn.click(); // Programmatically click it to trigger UI and logic
+  } else {
+    const idx = parseInt(savedDefault) || 0;
+    const btns = g.querySelectorAll('.server-btn');
+    if(btns[idx]) btns[idx].click();
+  }
   
     // 3. Auto-load the preferred source
     if (activeServerIndex === -1 && trailerKey) {
@@ -1614,7 +1619,7 @@
   const serverOptions = SERVERS.map((s, i) => `<option value="${i}">${s.n}</option>`).join('');
   movieSelect.innerHTML = `<option value="-1">🎬 Trailer (Auto-load)</option>` + serverOptions;
   tvSelect.innerHTML = serverOptions;
-  
+   
   // Set values from Storage
   movieSelect.value = localStorage.getItem('defaultMovieServer') || "-1";
   tvSelect.value = localStorage.getItem('defaultTvServer') || "0";
