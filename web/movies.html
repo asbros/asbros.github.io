@@ -530,6 +530,7 @@
     backdrop-filter: blur(4px);
     border-radius: inherit;
   }
+  
  </style>
 </head>
 
@@ -649,17 +650,31 @@
      </div>
 
      <div class="card border-0 shadow-sm rounded-4 mb-4">
-      <div class="card-body p-4">
-       <h5 class="fw-bold mb-4 text-danger"><i class="fa fa-database me-2"></i> Your Data</h5>
-       <div class="d-flex gap-2 flex-wrap mb-4">
-        <a href="#history" class="btn btn-light rounded-pill px-3 border fw-bold"><i class="fa fa-clock-rotate-left me-1"></i> View History</a>
-        <button class="btn btn-light rounded-pill px-3 border fw-bold" onclick="exportData()"><i class="fa fa-download me-1"></i> Export Backup</button>
-       </div>
-       <hr class="opacity-25">
-       <div class="d-flex gap-2 flex-wrap">
-        <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchlist')">Clear Wishlist</button>
-        <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchHistory')">Clear History</button>
-        <button class="btn btn-danger rounded-pill px-3 fw-bold btn-sm ms-auto" onclick="resetApp()">Factory Reset</button>
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+       <div class="card-body p-4">
+        <h5 class="fw-bold mb-4 text-danger"><i class="fa fa-database me-2"></i> Your Data & Privacy</h5>
+
+        <div class="p-3 rounded-4 mb-3 border d-flex align-items-center justify-content-between" style="background: var(--bg-light);">
+         <div class="d-flex align-items-center gap-3">
+          <div>
+           <div class="fw-bold">Watch History</div>
+           <div class="text-muted small" id="historyCount">0 titles recorded</div>
+          </div>
+         </div>
+         <a href="#history" class="btn btn-primary rounded-pill px-4 fw-bold">View History</a>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap mb-4">
+         <button class="btn btn-light rounded-pill px-3 border fw-bold" onclick="exportData()"><i class="fa fa-download me-1"></i> Export Backup</button>
+        </div>
+
+        <hr class="opacity-25">
+
+        <div class="d-flex gap-2 flex-wrap">
+         <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchlist')">Clear Wishlist</button>
+         <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchHistory')">Clear History</button>
+         <button class="btn btn-danger rounded-pill px-3 fw-bold btn-sm ms-auto" onclick="resetApp()">Factory Reset</button>
+        </div>
        </div>
       </div>
      </div>
@@ -1610,23 +1625,65 @@
   });
   
   function initSettingsUI() {
+  // 1. Reference UI Elements
   const movieSelect = document.getElementById('defaultMovieServer');
   const tvSelect = document.getElementById('defaultTvServer');
+  const autoNextToggle = document.getElementById('autoNextToggle');
+  const historyToggle = document.getElementById('historyToggle');
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const historyCountEl = document.getElementById('historyCount');
   
-  if (!movieSelect || !tvSelect) return;
-  
-  // Populate Dropdowns
+  // 2. Populate Server Dropdowns
+  // We generate options dynamically based on the SERVERS array
   const serverOptions = SERVERS.map((s, i) => `<option value="${i}">${s.n}</option>`).join('');
-  movieSelect.innerHTML = `<option value="-1">🎬 Trailer (Auto-load)</option>` + serverOptions;
-  tvSelect.innerHTML = serverOptions;
-   
-  // Set values from Storage
-  movieSelect.value = localStorage.getItem('defaultMovieServer') || "-1";
-  tvSelect.value = localStorage.getItem('defaultTvServer') || "0";
   
-  document.getElementById('autoNextToggle').checked = localStorage.getItem('autoNext') === 'true';
-  document.getElementById('historyToggle').checked = localStorage.getItem('historyEnabled') !== 'false';
-  document.getElementById('darkModeToggle').checked = localStorage.getItem('theme') === 'dark';
+  if (movieSelect) {
+    movieSelect.innerHTML = `<option value="-1">🎬 Trailer (Auto-load)</option>` + serverOptions;
+    movieSelect.value = localStorage.getItem('defaultMovieServer') || "-1";
+  }
+  
+  if (tvSelect) {
+    tvSelect.innerHTML = serverOptions;
+    tvSelect.value = localStorage.getItem('defaultTvServer') || "0";
+  }
+  
+  // 3. Sync Switches (Toggles)
+  // Ensure the UI matches the actual boolean state in storage
+  if (autoNextToggle) {
+    autoNextToggle.checked = localStorage.getItem('autoNext') === 'true';
+  }
+  
+  if (historyToggle) {
+    // Default to true if the key doesn't exist yet
+    historyToggle.checked = localStorage.getItem('historyEnabled') !== 'false';
+  }
+  
+  if (darkModeToggle) {
+    darkModeToggle.checked = document.body.classList.contains('dark-mode');
+  }
+  
+  // 4. Update History Metadata Preview
+  const history = getStorage('watchHistory');
+  if (historyCountEl) {
+    const count = history.length;
+    historyCountEl.innerText = `${count} title${count === 1 ? '' : 's'} recorded`;
+  }
+  
+  // 5. Apply Theme-Specific Styling to Inputs
+  // This ensures that if the user toggled dark mode, the settings inputs 
+  // immediately reflect the theme's colors
+  const isDark = document.body.classList.contains('dark-mode');
+  document.querySelectorAll('#settings-view .form-select, #settings-view .form-control').forEach(el => {
+    if (isDark) {
+      el.style.backgroundColor = '#2c2c2c';
+      el.style.color = '#ffffff';
+      el.style.borderColor = '#444';
+    } else {
+      el.style.backgroundColor = '#ffffff';
+      el.style.color = '#0f172a';
+      el.style.borderColor = '#e2e8f0';
+    }
+  });
   }
   
   function updateDefaultServer(type, index) {
@@ -1650,6 +1707,33 @@
     color: 'var(--text-main)'
   });
   }
+  
+  // Add this to your window.onload or as a standalone script
+  (function applySavedTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    // We'll sync the checkbox state once the DOM is fully loaded
+    window.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.getElementById('darkModeToggle');
+      if (toggle) toggle.checked = true;
+    });
+  }
+  })();
+  
+  // Update your toggle listener
+  document.addEventListener('change', (e) => {
+  if (e.target.id === 'darkModeToggle') {
+    if (e.target.checked) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+  });
+  
   
  </script>
 </body>
