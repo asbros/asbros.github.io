@@ -12,6 +12,9 @@
  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+ <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
  <style>
   /* ---------- GLOBAL VARIABLES ---------- */
   :root {
@@ -530,6 +533,177 @@
     backdrop-filter: blur(4px);
     border-radius: inherit;
   }
+    /* ---------- MASTER DARK MODE OVERRIDE ---------- */
+  body.dark-mode {
+    --bg-light: #050505;       /* Deep cinematic black */
+    --surface: #121212;        /* Elevated dark surface */
+    --primary: #d90429;        /* Stark red */
+    --text-main: #f5f5f5;      /* Crisp off-white */
+    --text-muted: #888888;     /* Legible gray */
+    --border: #262626;         /* Subtle separator */
+  }
+  
+  /* 1. Global Backgrounds & Structural Fixes */
+  body.dark-mode {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+  }
+  
+  body.dark-mode .navbar-custom {
+    background: rgba(5, 5, 5, 0.95);
+    border-bottom: 1px solid var(--border);
+  }
+  
+  /* 2. The "White Card" Fixes & Premium Spacing */
+  /* This targets all Bootstrap cards, side panels, and actor cards */
+  body.dark-mode .card,
+  body.dark-mode .actor-card,
+  body.dark-mode .stream-controls,
+  body.dark-mode .download-section .bg-white,
+  body.dark-mode .bg-white {
+    background-color: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text-main) !important;
+    padding: 1.5rem !important; /* Increases negative space */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8) !important; /* Bold, dramatic shadows */
+  }
+  
+  /* 3. Global Text Color Overrides */
+  body.dark-mode .text-dark { color: var(--text-main) !important; }
+  body.dark-mode .text-muted { color: var(--text-muted) !important; }
+  body.dark-mode .fw-bold { color: var(--text-main); }
+  
+  /* Update gradients for dark backgrounds */
+  body.dark-mode .navbar-brand {
+    background: linear-gradient(135deg, var(--primary), #ff4d4d);
+    -webkit-background-clip: text;
+  }
+  
+  body.dark-mode .section-header::after {
+    background: linear-gradient(90deg, var(--primary), transparent);
+  }
+  
+  /* 4. Badges, Pills, and Toggles */
+  body.dark-mode .badge.bg-light {
+    background-color: #222 !important;
+    color: var(--text-main) !important;
+    border-color: var(--border) !important;
+  }
+  
+  body.dark-mode .badge.bg-primary {
+    background-color: var(--primary) !important;
+    color: #fff !important;
+  }
+  
+  body.dark-mode .season-tab {
+    background-color: transparent;
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+  
+  body.dark-mode .season-tab.active {
+    background-color: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary) !important;
+  }
+  
+  body.dark-mode .form-check-input {
+    background-color: var(--surface);
+    border-color: var(--border);
+  }
+  
+  body.dark-mode .form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+  
+  /* 5. Inputs, Modals, and Search */
+  body.dark-mode .form-control,
+  body.dark-mode .form-select,
+  body.dark-mode .search-input {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid var(--border);
+  }
+  
+  body.dark-mode .form-control:focus,
+  body.dark-mode .form-select:focus,
+  body.dark-mode .search-input:focus {
+    background-color: #000;
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(217, 4, 41, 0.25);
+  }
+  
+  body.dark-mode #searchSuggestions,
+  body.dark-mode .modal-content,
+  body.dark-mode .list-group-item {
+    background-color: var(--surface);
+    color: var(--text-main);
+    border-color: var(--border);
+  }
+  
+  body.dark-mode .list-group-item:hover {
+    background-color: #1a1a1a;
+    color: var(--primary);
+  }
+  
+  /* 6. Button Standardization */
+  body.dark-mode .btn-primary,
+  body.dark-mode .btn-danger {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  
+  body.dark-mode .btn-light,
+  body.dark-mode .btn-white,
+  body.dark-mode .vibe-btn,
+  body.dark-mode .server-btn,
+  body.dark-mode .filter-btn:not(.active) {
+    background-color: transparent !important;
+    color: var(--text-main) !important;
+    border-color: var(--border) !important;
+  }
+  
+  body.dark-mode .server-btn.active,
+  body.dark-mode .filter-btn.active {
+    background-color: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary) !important;
+  }
+  
+  body.dark-mode .btn-outline-dark,
+  body.dark-mode .btn-outline-primary,
+  body.dark-mode .btn-outline-danger {
+    color: var(--text-main);
+    border-color: var(--border);
+  }
+  
+  body.dark-mode .btn-outline-dark:hover,
+  body.dark-mode .btn-outline-primary:hover,
+  body.dark-mode .btn-outline-danger:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  #streamIframe {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  #streamIframe.loaded {
+    opacity: 1;
+  }
+  .poster-wrapper.loading {
+    background: linear-gradient(90deg, var(--border) 25%, var(--bg-light) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+  
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
   
  </style>
 </head>
@@ -549,7 +723,7 @@
      <a href="#settings" class="nav-link-custom"><i class="fa fa-cog"></i> Settings</a>
     </div>
    </div>
-   <div class="search-container flex-grow-1 mx-4" style="max-width: 400px; position: relative;">
+   <div id="navSearchContainer" class="search-container flex-grow-1 mx-4" style="max-width: 400px; position: relative;">
     <i class="fa fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
     <input type="text" id="searchInput" class="form-control search-input shadow-none" placeholder="Search movies, series, actors..." autocomplete="off">
     <div id="searchSuggestions" class="list-group position-absolute w-100 shadow-sm d-none"></div>
@@ -569,6 +743,7 @@
      <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('27,53', '😱 Spooky', event)">😱 Spooky</button>
      <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('878,9648', '🕵️ Mind-Bending', event)">🕵️ Mind-Bending</button>
      <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('18,10749', '🫠 Emotional', event)">🫠 Emotional</button>
+     <button class="btn-white shadow-sm rounded-pill px-3 border vibe-btn"><a href="#livetv" class="nav-link-custom"><i class="fa fa-tv"></i> Live TV</a></button>
     </div>
    </div>
   </div>
@@ -593,7 +768,6 @@
    <div class="row justify-content-center">
     <div class="col-md-9 col-lg-8">
      <h2 class="fw-bold mb-4">Settings</h2>
-
      <div class="card border-0 shadow-sm rounded-4 mb-4">
       <div class="card-body p-4">
        <h5 class="fw-bold mb-4"><i class="fa fa-server me-2 text-primary"></i> Default Servers</h5>
@@ -612,28 +786,42 @@
        <p class="text-muted small mt-3 mb-0">Choosing a default will bypass the Trailer/Server 1 auto-load and jump straight to your preferred source.</p>
       </div>
      </div>
+     <div class="card border-0 shadow-sm rounded-4 mb-4">
+      <div class="card-body p-4">
+       <h5 class="fw-bold mb-4"><i class="fa fa-tv me-2 text-info"></i> Live TV Settings</h5>
+       <div class="mb-3">
+        <label class="small fw-bold text-muted mb-2">M3U PLAYLIST URL</label>
+        <div class="d-flex gap-2">
+         <input type="text" id="iptvUrlInput" class="form-control rounded-3 shadow-none border" placeholder="https://...">
+         <button class="btn btn-primary rounded-3 px-4 fw-bold" onclick="saveIptvUrl()">Save</button>
+        </div>
+        <p class="text-muted small mt-2 mb-0">Default: https://iptv-org.github.io/iptv/index.m3u</p>
+       </div>
+      </div>
+     </div>
 
      <div class="card border-0 shadow-sm rounded-4 mb-4">
       <div class="card-body p-4">
        <h5 class="fw-bold mb-4"><i class="fa fa-play-circle me-2 text-success"></i> Playback & UI</h5>
 
-       <div class="d-flex justify-content-between align-items-center mb-3">
+       <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
         <div>
-         <div class="fw-bold">Dark Mode</div>
-         <div class="text-muted small">Optimized for night viewing.</div>
+         <div class="fw-bold">App Theme</div>
+         <div class="text-muted small">Choose your visual aesthetic.</div>
         </div>
-        <div class="form-check form-switch">
-         <input class="form-check-input" type="checkbox" id="darkModeToggle" style="transform: scale(1.2);">
-        </div>
+        <select id="themeSelect" class="form-select form-select-sm rounded-3 shadow-none border" style="width: 140px;" onchange="changeTheme(this.value)">
+         <option value="light">Light</option>
+         <option value="dark">Dark</option>
+        </select>
        </div>
 
        <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-         <div class="fw-bold">Auto-Next Episode</div>
-         <div class="text-muted small">Automatically load the next episode for TV shows.</div>
+         <div class="fw-bold">Hover Previews</div>
+         <div class="text-muted small">Autoplay trailers when hovering posters.</div>
         </div>
         <div class="form-check form-switch">
-         <input class="form-check-input" type="checkbox" id="autoNextToggle" onchange="updatePref('autoNext', this.checked)">
+         <input class="form-check-input" type="checkbox" id="previewToggle" checked onchange="updatePref('hoverPreviews', this.checked)">
         </div>
        </div>
 
@@ -648,40 +836,40 @@
        </div>
       </div>
      </div>
-
      <div class="card border-0 shadow-sm rounded-4 mb-4">
-      <div class="card border-0 shadow-sm rounded-4 mb-4">
-       <div class="card-body p-4">
-        <h5 class="fw-bold mb-4 text-danger"><i class="fa fa-database me-2"></i> Your Data & Privacy</h5>
+      <div class="card-body p-4">
+       <h5 class="fw-bold mb-4 text-danger"><i class="fa fa-database me-2"></i> Your Data & Privacy</h5>
 
-        <div class="p-3 rounded-4 mb-3 border d-flex align-items-center justify-content-between" style="background: var(--bg-light);">
-         <div class="d-flex align-items-center gap-3">
-          <div>
-           <div class="fw-bold">Watch History</div>
-           <div class="text-muted small" id="historyCount">0 titles recorded</div>
-          </div>
+       <div class="p-3 rounded-4 mb-3 border d-flex align-items-center justify-content-between" style="background: var(--bg-light);">
+        <div class="d-flex align-items-center gap-3">
+         <div>
+          <div class="fw-bold">Watch History</div>
+          <div class="text-muted small" id="historyCount">0 titles recorded</div>
          </div>
-         <a href="#history" class="btn btn-primary rounded-pill px-4 fw-bold">View History</a>
         </div>
+        <a href="#history" class="btn btn-primary rounded-pill px-4 fw-bold">View History</a>
+       </div>
+       <hr class="opacity-25">
 
-        <div class="d-flex gap-2 flex-wrap mb-4">
-         <button class="btn btn-light rounded-pill px-3 border fw-bold" onclick="exportData()"><i class="fa fa-download me-1"></i> Export Backup</button>
-        </div>
-
-        <hr class="opacity-25">
-
-        <div class="d-flex gap-2 flex-wrap">
-         <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchlist')">Clear Wishlist</button>
-         <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchHistory')">Clear History</button>
-         <button class="btn btn-danger rounded-pill px-3 fw-bold btn-sm ms-auto" onclick="resetApp()">Factory Reset</button>
-        </div>
+       <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchlist')">Clear Wishlist</button>
+        <button class="btn btn-outline-danger rounded-pill px-3 fw-bold btn-sm" onclick="clearLocalData('watchHistory')">Clear History</button>
        </div>
       </div>
      </div>
+
     </div>
    </div>
   </section>
   <section id="home-view"></section>
+  <section id="livetv-view" style="display:none;">
+   <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <h5 class="section-header mb-0">LIVE TV CHANNELS</h5>
+    <input type="text" id="channelSearch" class="form-control form-control-sm w-auto rounded-pill px-3 shadow-sm border" style="min-width: 250px;" placeholder="Search channels..." onkeyup="filterChannels(this.value)">
+   </div>
+   <div id="livetvGrid" class="grid-container"></div>
+  </section>
+
   <section id="search-view" style="display:none;">
    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
     <h5 class="section-header mb-0" style="flex:1;">SEARCH RESULTS</h5>
@@ -752,6 +940,23 @@
   </section>
 
   <section id="person-view" style="display:none;"></section>
+  <div class="modal fade" id="livetvModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+   <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 rounded-4 shadow-lg bg-dark">
+     <div class="modal-header border-0 pb-0">
+      <h5 class="modal-title fw-bold text-white" id="livetvTitle">Channel</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="stopLiveTv()"></button>
+     </div>
+     <div class="modal-body p-4">
+      <video id="liveTvPlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" style="width: 100%; border-radius: 12px; aspect-ratio: 16/9;"></video>
+      <div id="liveTvError" class="text-danger mt-3 text-center small fw-bold d-none">
+       <i class="fa fa-triangle-exclamation me-1"></i> Failed to load stream. The channel might be offline or blocked by browser CORS security.
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
  </main>
 
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -769,6 +974,10 @@
   let currentType, currentId, currentS = 1, currentE = 1, trailerKey = null, searchTimer;
   let homePage = 1, searchPage = 1, currentSearchQuery = '', currentSearchFilter = 'multi', activeServerIndex = 0;
   let currentImdbId = null, currentPosterPath = null, currentTitle = '';
+  
+  // Live TV Globals
+  let allChannels = [];
+  let vjsPlayer = null;
   
   // Helper: localStorage helpers
   const getStorage = (k) => JSON.parse(localStorage.getItem(k) || '[]');
@@ -844,6 +1053,7 @@
   window.onload = () => {
     router();
     detectUserCountry();
+    applySavedTheme();
   };
   
   function goHome() {
@@ -865,21 +1075,41 @@
   toggleLoader(true);
   const h = window.location.hash;
   
-  // Reset Visibility
-  const sections = ['#home-view', '#search-view', '#details-view', '#person-view', '#list-view', '#settings-view'];
+  // 1. Reset Visibility for all sections
+  const sections = [
+    '#home-view', '#search-view', '#details-view', 
+    '#person-view', '#list-view', '#settings-view', '#livetv-view'
+  ];
   document.querySelectorAll(sections.join(', ')).forEach(v => v.style.display = 'none');
   
+  // 2. Handle specific UI elements (Vibe Picker & Search Suggestions)
   const vibeContainer = document.getElementById('vibe-container');
   if (vibeContainer) vibeContainer.style.display = (h === '' || h === '#') ? 'block' : 'none';
   document.getElementById('searchSuggestions')?.classList.add('d-none');
   
+  // 3. Toggle Search Bar Visibility
+  // Ensure your search container in the HTML has id="navSearchContainer"
+  const searchContainer = document.getElementById('navSearchContainer');
+  if (searchContainer) {
+    // Show only on homepage ('') or search results page ('#search/...')
+    if (h === '' || h === '#' || h.startsWith('#search/')) {
+      searchContainer.classList.remove('d-none');
+    } else {
+      searchContainer.classList.add('d-none');
+    }
+  }
+  
+  // 4. Route to the correct view based on the hash
   try {
     if (h === '#settings') {
       document.getElementById('settings-view').style.display = 'block';
-      initSettingsUI(); // New function to sync switches/dropdowns
+      initSettingsUI();
     } else if (h === '#wishlist' || h === '#history') {
       document.getElementById('list-view').style.display = 'block';
       renderListPage(h.slice(1));
+    } else if (h === '#livetv') {
+      document.getElementById('livetv-view').style.display = 'block';
+      await loadLiveTv();
     } else if (h.startsWith('#movie/') || h.startsWith('#tv/')) {
       const [t, i] = h.slice(1).split('/');
       currentType = t;
@@ -894,11 +1124,12 @@
       const query = decodeURIComponent(h.split('/')[1]);
       if (query !== currentSearchQuery) await performSearch(query);
     } else {
+      // Default fallback is the Home View
       document.getElementById('home-view').style.display = 'block';
       await loadHome();
     }
   } catch (e) {
-    console.error(e);
+    console.error("Routing error:", e);
   } finally {
     window.scrollTo(0, 0);
     toggleLoader(false);
@@ -907,70 +1138,69 @@
   
   // ------------------- LOAD HOME (Trending + Continue Watching) -------------------
   async function loadHome(append = false) {
-  const container = document.getElementById('home-view');
-  if (!append) {
-    homePage = 1;
-    container.innerHTML = '';
-    
-    // Render Continue Watching from LocalStorage
-    const history = getStorage('watchHistory');
-    if (history.length) {
-      const historyHtml = history.map(item => `
-        <div class="movie-card" onclick="handleCardClick('${item.type}', '${item.id}')">
-          <div class="poster-wrapper">
-            <img src="${item.poster ? POSTER + item.poster : FALLBACK_IMG}" class="poster-img">
-            <div class="position-absolute bottom-0 start-0 w-100 p-2" style="background:rgba(0,0,0,0.7)">
-              <span class="badge bg-primary w-100">${item.type === 'tv' ? `S${item.season}:E${item.episode}` : 'Movie'}</span>
+    const container = document.getElementById('home-view');
+    if (!append) {
+      homePage = 1;
+      container.innerHTML = '';
+      
+      // Render Continue Watching from LocalStorage
+      const history = getStorage('watchHistory');
+      if (history.length) {
+        const historyHtml = history.map(item => `
+          <div class="movie-card" onclick="handleCardClick('${item.type}', '${item.id}')">
+            <div class="poster-wrapper">
+              <img src="${item.poster ? POSTER + item.poster : FALLBACK_IMG}" class="poster-img">
+              <div class="position-absolute bottom-0 start-0 w-100 p-2" style="background:rgba(0,0,0,0.7)">
+                <span class="badge bg-primary w-100">${item.type === 'tv' ? `S${item.season}:E${item.episode}` : 'Movie'}</span>
+              </div>
             </div>
-          </div>
-          <div class="card-body-content"><div class="card-title-text text-truncate">${sanitize(item.title)}</div></div>
-        </div>`).join('');
+            <div class="card-body-content"><div class="card-title-text text-truncate">${sanitize(item.title)}</div></div>
+          </div>`).join('');
   
-      container.insertAdjacentHTML('afterbegin', `
-        <div class="mb-5 pt-2">
-          <h5 class="section-header mb-4">CONTINUE WATCHING</h5>
-          <div class="horizontal-scroll">${historyHtml}</div>
+        container.insertAdjacentHTML('afterbegin', `
+          <div class="mb-5 pt-2">
+            <h5 class="section-header mb-4">CONTINUE WATCHING</h5>
+            <div class="horizontal-scroll">${historyHtml}</div>
+          </div>`);
+      }
+    }
+  
+    // Categories to load
+    const categories = [
+      { label: 'Trending Now', url: `/trending/all/day?page=${homePage}` },
+      { label: 'Popular Series', url: `/tv/popular?page=${homePage}` },
+      { label: 'Action Hits', url: `/discover/movie?with_genres=28&page=${homePage}` }
+    ];
+  
+    for (const cat of categories) {
+      try {
+        const response = await fetch(`${BASE}${cat.url}&api_key=${KEY}`);
+        const data = await response.json();
+        
+        let section = document.getElementById(`section-${cat.label.replace(/\s/g, '')}`);
+        if (!section) {
+          section = document.createElement('div');
+          section.id = `section-${cat.label.replace(/\s/g, '')}`;
+          section.className = "mb-5";
+          section.innerHTML = `<h5 class="section-header mb-4">${cat.label}</h5><div class="grid-container grid-target"></div>`;
+          container.appendChild(section);
+        }
+        
+        const cardsHtml = data.results.map(movie => createCard(movie)).join('');
+        section.querySelector('.grid-target').insertAdjacentHTML('beforeend', cardsHtml);
+      } catch (err) {
+        console.error(`Failed to load ${cat.label}:`, err);
+      }
+    }
+  
+    if (!document.getElementById('homeLoadMore')) {
+      container.insertAdjacentHTML('beforeend', `
+        <div class="text-center my-5">
+          <button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button>
         </div>`);
     }
-  }
-  
-  // Categories to load
-  const categories = [
-    { label: 'Trending Now', url: `/trending/all/day?page=${homePage}` },
-    { label: 'Popular Series', url: `/tv/popular?page=${homePage}` },
-    { label: 'Action Hits', url: `/discover/movie?with_genres=28&page=${homePage}` }
-  ];
-  
-  for (const cat of categories) {
-    try {
-      const response = await fetch(`${BASE}${cat.url}&api_key=${KEY}`);
-      const data = await response.json();
-      
-      let section = document.getElementById(`section-${cat.label.replace(/\s/g, '')}`);
-      if (!section) {
-        section = document.createElement('div');
-        section.id = `section-${cat.label.replace(/\s/g, '')}`;
-        section.className = "mb-5";
-        section.innerHTML = `<h5 class="section-header mb-4">${cat.label}</h5><div class="grid-container grid-target"></div>`;
-        container.appendChild(section);
-      }
-      
-      const cardsHtml = data.results.map(movie => createCard(movie)).join('');
-      section.querySelector('.grid-target').insertAdjacentHTML('beforeend', cardsHtml);
-    } catch (err) {
-      console.error(`Failed to load ${cat.label}:`, err);
-    }
-  }
-  
-  // Manage "Load More" Button
-  if (!document.getElementById('homeLoadMore')) {
-    container.insertAdjacentHTML('beforeend', `
-      <div class="text-center my-5">
-        <button id="homeLoadMore" class="btn btn-primary px-5 rounded-pill fw-bold" onclick="loadHome(true)">Load More</button>
-      </div>`);
-  }
-  homePage++;
-  attachPreviewListeners();
+    homePage++;
+    attachPreviewListeners();
   }
   
   // ---------- DETAILS (Movie / TV) ----------
@@ -1171,60 +1401,54 @@
   ];
   
   function buildServerButtons(init = false) {
-  const g = document.getElementById('serverGrid');
-  g.innerHTML = '';
+    const g = document.getElementById('serverGrid');
+    g.innerHTML = '';
   
-  // Trailer Button
-  const trailerBtn = document.createElement('button');
-  trailerBtn.className = 'trailer-btn';
-  trailerBtn.innerHTML = "<i class='fa fa-play me-1'></i>Trailer";
-  trailerBtn.onclick = () => {
-    activeServerIndex = -1;
-    setActiveUI('.server-btn, .trailer-btn', trailerBtn);
-    loadTrailer();
-  };
-  g.appendChild(trailerBtn);
-  
-  // Server Buttons
-  SERVERS.forEach((s, i) => {
-    const b = document.createElement('button');
-    b.className = 'server-btn';
-    b.innerText = s.n;
-    b.onclick = () => {
-      activeServerIndex = i;
-      setActiveUI('.server-btn, .trailer-btn', b);
-      initPlayer(currentType === 'movie' ? s.m : s.t);
-    };
-    g.appendChild(b);
-  });
-  
-  if (init) {
-    // 1. Get user preference from localStorage
-    const savedDefault = currentType === 'movie' 
-      ? localStorage.getItem('defaultMovieServer') 
-      : localStorage.getItem('defaultTvServer');
-  
-    // 2. Set the active index (default to -1 for movies if nothing saved)
-    if (savedDefault === "-1" && trailerKey) {
-    trailerBtn.click(); // Programmatically click it to trigger UI and logic
-  } else {
-    const idx = parseInt(savedDefault) || 0;
-    const btns = g.querySelectorAll('.server-btn');
-    if(btns[idx]) btns[idx].click();
-  }
-  
-    // 3. Auto-load the preferred source
-    if (activeServerIndex === -1 && trailerKey) {
+    const trailerBtn = document.createElement('button');
+    trailerBtn.className = 'trailer-btn';
+    trailerBtn.innerHTML = "<i class='fa fa-play me-1'></i>Trailer";
+    trailerBtn.onclick = () => {
+      activeServerIndex = -1;
       setActiveUI('.server-btn, .trailer-btn', trailerBtn);
       loadTrailer();
-    } else {
-      // Fallback if index was -1 but no trailer exists
-      if (activeServerIndex === -1) activeServerIndex = 0; 
-      const defaultBtn = g.querySelectorAll('.server-btn')[activeServerIndex];
-      setActiveUI('.server-btn, .trailer-btn', defaultBtn);
-      initPlayer(currentType === 'movie' ? SERVERS[activeServerIndex].m : SERVERS[activeServerIndex].t);
+    };
+    g.appendChild(trailerBtn);
+  
+    SERVERS.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.className = 'server-btn';
+      b.innerText = s.n;
+      b.onclick = () => {
+        activeServerIndex = i;
+        setActiveUI('.server-btn, .trailer-btn', b);
+        initPlayer(currentType === 'movie' ? s.m : s.t);
+      };
+      g.appendChild(b);
+    });
+  
+    if (init) {
+      const savedDefault = currentType === 'movie' 
+        ? localStorage.getItem('defaultMovieServer') 
+        : localStorage.getItem('defaultTvServer');
+  
+      if (savedDefault === "-1" && trailerKey) {
+        trailerBtn.click();
+      } else {
+        const idx = parseInt(savedDefault) || 0;
+        const btns = g.querySelectorAll('.server-btn');
+        if(btns[idx]) btns[idx].click();
+      }
+  
+      if (activeServerIndex === -1 && trailerKey) {
+        setActiveUI('.server-btn, .trailer-btn', trailerBtn);
+        loadTrailer();
+      } else {
+        if (activeServerIndex === -1) activeServerIndex = 0; 
+        const defaultBtn = g.querySelectorAll('.server-btn')[activeServerIndex];
+        setActiveUI('.server-btn, .trailer-btn', defaultBtn);
+        initPlayer(currentType === 'movie' ? SERVERS[activeServerIndex].m : SERVERS[activeServerIndex].t);
+      }
     }
-  }
   }
   
   function showNoTrailerMessage() {
@@ -1244,27 +1468,30 @@
     const url = currentType === 'movie' ? `${baseUrl}${idToUse}${key}` : `${baseUrl}${idToUse}/${currentS}/${currentE}${key}`;
     document.getElementById('playerContainer').innerHTML = `<div class="player-wrapper" style="height:100%"><div id="iframeLoading" class="iframe-loader"><div class="spinner-border text-primary"></div><span>Connecting...</span></div><iframe id="streamIframe" src="${url}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe></div>`;
     const iframe = document.getElementById('streamIframe');
-    iframe.onload = () => { const loader = document.getElementById('iframeLoading'); if (loader) loader.style.display = 'none'; };
+    iframe.onload = () => {
+      const loader = document.getElementById('iframeLoading');
+      if (loader) loader.style.display = 'none';
+      iframe.classList.add('loaded');
+    };
     iframe.onerror = () => { const loader = document.getElementById('iframeLoading'); if (loader) loader.innerHTML = '<span class="text-danger">⚠️ Failed to load stream. Try another server.</span>'; };
   }
   
   function addToHistory(id, t, title, poster) {
-  // Check if tracking is disabled in settings
-  const trackingEnabled = localStorage.getItem('historyEnabled') !== 'false';
-  if (!trackingEnabled) return;
-  
-  let h = getStorage('watchHistory');
-  h = h.filter(x => x.id != id);
-  h.unshift({ 
-    id, 
-    type: t, 
-    title, 
-    poster, 
-    season: currentS, 
-    episode: currentE,
-    timestamp: Date.now() 
-  });
-  setStorage('watchHistory', h.slice(0, 50));
+    const trackingEnabled = localStorage.getItem('historyEnabled') !== 'false';
+    if (!trackingEnabled) return;
+    
+    let h = getStorage('watchHistory');
+    h = h.filter(x => x.id != id);
+    h.unshift({ 
+      id, 
+      type: t, 
+      title, 
+      poster, 
+      season: currentS, 
+      episode: currentE,
+      timestamp: Date.now() 
+    });
+    setStorage('watchHistory', h.slice(0, 50));
   }
   
   function checkContinueWatching(id, t) {
@@ -1436,33 +1663,23 @@
   
   // ---------- SHARE ----------
   async function shareMedia(title = currentTitle) {
-  const shareData = {
-    title: title,
-    text: `Stream "${title}" on AS CINEPLEX!`,
-    url: window.location.href
-  };
+    const shareData = {
+      title: title,
+      text: `Stream "${title}" on AS CINEPLEX!`,
+      url: window.location.href
+    };
   
-  try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-    } else {
-      await navigator.clipboard.writeText(window.location.href);
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'success',
-        title: 'Link copied to clipboard!',
-        showConfirmButton: false,
-        timer: 2000,
-        background: 'var(--surface)',
-        color: 'var(--text-main)'
-      });
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast('Link copied to clipboard!');
+      }
+    } catch (err) {
+      console.warn("Share failed or cancelled:", err);
     }
-  } catch (err) {
-    console.warn("Share failed or cancelled:", err);
   }
-  }
-  
   
   // ---------- DOWNLOAD SERVERS ----------
   const DL_SERVERS = { 1: "https://bunnyddl.termsandconditionshere.workers.dev/", 2: "https://vidvault.ru/" };
@@ -1472,34 +1689,29 @@
     const iframe = document.getElementById('dlIframe');
     const baseUrl = DL_SERVERS[serverIndex];
     const typePath = currentType === 'movie' ? 'movie/' : 'tv/';
-    let finalUrl = "";
-    if (currentType === 'movie') {
-      finalUrl = `${baseUrl}${typePath}${currentId}`;
-    } else {
-      finalUrl = `${baseUrl}${typePath}${currentId}/${currentS}/${currentE}`;
-    }
+    let finalUrl = currentType === 'movie' ? `${baseUrl}${typePath}${currentId}` : `${baseUrl}${typePath}${currentId}/${currentS}/${currentE}`;
+    
     container.classList.remove('d-none');
     iframe.src = finalUrl;
     Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: currentType === 'tv' ? `Fetching S${currentS}:E${currentE}...` : 'Fetching Movie...', showConfirmButton: false, timer: 2000 });
     container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   
-  //Preview
+  // ---------- PREVIEW HOVER LOGIC ----------
   let previewTimer;
   
   function attachPreviewListeners() {
     const cards = document.querySelectorAll('.movie-card');
     
     cards.forEach(card => {
-        // Detect media type and ID from the existing onclick attribute
         const onclickData = card.getAttribute('onclick');
+        if (!onclickData) return;
         const match = onclickData.match(/'([^']+)', '([^']+)'/);
         if (!match || match[1] === 'person') return;
   
         const mediaType = match[1];
         const mediaId = match[2];
   
-        // --- DESKTOP HOVER ---
         card.addEventListener('mouseenter', () => {
             clearTimeout(previewTimer);
             previewTimer = setTimeout(() => startPreview(card, mediaType, mediaId), 500);
@@ -1507,10 +1719,9 @@
   
         card.addEventListener('mouseleave', () => {
             clearTimeout(previewTimer);
-            stopAllPreviews(); // Immediately kills preview and restores poster
+            stopAllPreviews();
         });
   
-        // --- MOBILE TOUCH ---
         card.addEventListener('touchstart', (e) => {
             clearTimeout(previewTimer);
             previewTimer = setTimeout(() => {
@@ -1521,18 +1732,16 @@
     });
   }
   
-  // THE CLEANUP: Stops all videos and removes all loaders globally
   function stopAllPreviews() {
     document.querySelectorAll('.preview-overlay, .preview-loader-container').forEach(el => el.remove());
   }
   
   async function startPreview(card, type, id) {
-    // 1. Ensure no other card is currently previewing
-    stopAllPreviews();
+    if (localStorage.getItem('hoverPreviews') === 'false') return;
   
+    stopAllPreviews();
     const wrapper = card.querySelector('.poster-wrapper');
     
-    // 2. Create and show the loader
     const loader = document.createElement('div');
     loader.className = 'preview-loader-container';
     loader.innerHTML = `
@@ -1546,8 +1755,6 @@
         const data = await res.json();
         const video = data.results.find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'));
   
-        // 3. Check if the user is still hovering this specific card before playing
-        // This prevents the video from starting if they've already moved their mouse away
         if (!card.matches(':hover') && !window.matchMedia("(max-width: 768px)").matches) {
             stopAllPreviews();
             return;
@@ -1568,173 +1775,239 @@
     } catch (err) {
         console.error("Preview error:", err);
     } finally {
-        // Remove the loader once the iframe is added (or if the fetch fails)
         loader.remove();
     }
   }
   
-  // Close previews when tapping outside on mobile
   document.addEventListener('touchstart', (e) => {
     if (!e.target.closest('.movie-card')) stopAllPreviews();
   });
   
-  // --- SETTINGS HELPERS ---
-  function clearLocalData(key) {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: `Your ${key === 'watchlist' ? 'Wishlist' : 'History'} will be permanently deleted.`,
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#4f46e5',
-    confirmButtonText: 'Yes, clear it'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      localStorage.removeItem(key);
-      Swal.fire('Cleared!', '', 'success');
+  // ---------- LIVE TV LOGIC & VIDEO.JS PLAYER ----------
+  function saveIptvUrl() {
+    const url = document.getElementById('iptvUrlInput').value || 'https://iptv-org.github.io/iptv/index.m3u';
+    localStorage.setItem('iptvPlaylist', url);
+    showToast('IPTV Playlist Saved');
+  }
+  
+  async function loadLiveTv() {
+    toggleLoader(true);
+    const grid = document.getElementById('livetvGrid');
+    grid.innerHTML = '';
+    
+    const url = localStorage.getItem('iptvPlaylist') || 'https://iptv-org.github.io/iptv/index.m3u';
+  
+    try {
+      const res = await fetch(url);
+      const text = await res.text();
+      allChannels = parseM3U(text);
+      renderChannels(allChannels.slice(0, 100));
+    } catch (e) {
+      grid.innerHTML = '<div class="col-12 text-center text-danger mt-5"><i class="fa fa-warning fs-1 mb-3"></i><br>Failed to load playlist. Ensure the URL is correct and allows CORS.</div>';
+      console.error("IPTV Fetch Error:", e);
     }
-  });
+    toggleLoader(false);
+  }
+  
+  function parseM3U(data) {
+    const lines = data.split('\n');
+    const channels = [];
+    let currentChannel = {};
+  
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.startsWith('#EXTINF:')) {
+        const nameMatch = line.split(',').pop();
+        currentChannel.name = nameMatch ? nameMatch.trim() : 'Unknown Channel';
+  
+        const logoMatch = line.match(/tvg-logo="([^"]+)"/);
+        currentChannel.logo = logoMatch ? logoMatch[1] : FALLBACK_IMG;
+      } else if (line !== '' && !line.startsWith('#')) {
+        currentChannel.url = line;
+        channels.push(currentChannel);
+        currentChannel = {}; 
+      }
+    }
+    return channels;
+  }
+  
+  function renderChannels(channels) {
+    const grid = document.getElementById('livetvGrid');
+    if (!channels.length) {
+        grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">No channels found.</div>';
+        return;
+    }
+    
+    grid.innerHTML = channels.map(c => `
+      <div class="movie-card" onclick="playLiveTv('${c.url}', '${sanitize(c.name).replace(/'/g, "\\'")}')">
+        <div class="poster-wrapper bg-white d-flex align-items-center justify-content-center p-3" style="aspect-ratio: 16/9; background: #fff;">
+          <img src="${c.logo}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.src='${FALLBACK_IMG}'">
+        </div>
+        <div class="card-body-content text-center py-2">
+          <div class="card-title-text small fw-bold text-truncate">${sanitize(c.name)}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  function filterChannels(q) {
+    if (!q) return renderChannels(allChannels.slice(0, 100));
+    const lowerQ = q.toLowerCase();
+    const filtered = allChannels.filter(c => c.name.toLowerCase().includes(lowerQ)).slice(0, 100);
+    renderChannels(filtered);
+  }
+  
+  function playLiveTv(url, name) {
+    document.getElementById('livetvTitle').innerText = name;
+    document.getElementById('liveTvError').classList.add('d-none');
+    
+    const modal = new bootstrap.Modal(document.getElementById('livetvModal'));
+    modal.show();
+  
+    if (!vjsPlayer) {
+      vjsPlayer = videojs('liveTvPlayer', {
+        controls: true,
+        autoplay: true,
+        preload: 'auto',
+        fluid: true
+      });
+  
+      vjsPlayer.on('error', function() {
+        document.getElementById('liveTvError').classList.remove('d-none');
+      });
+    }
+  
+    vjsPlayer.src({
+      src: url,
+      type: 'application/x-mpegURL'
+    });
+  
+    vjsPlayer.play().catch((err) => {
+      console.log('Autoplay was blocked by the browser:', err);
+    });
+  }
+  
+  function stopLiveTv() {
+    if (vjsPlayer) {
+      vjsPlayer.pause();
+      vjsPlayer.src(''); 
+    }
+  }
+  
+  // Bind stop to modal close to prevent background audio
+  const liveTvModalEl = document.getElementById('livetvModal');
+  if (liveTvModalEl) {
+    liveTvModalEl.addEventListener('hidden.bs.modal', stopLiveTv);
+  }
+  
+  
+  // ---------- SETTINGS LOGIC ----------
+  function initSettingsUI() {
+    const movieSelect = document.getElementById('defaultMovieServer');
+    const tvSelect = document.getElementById('defaultTvServer');
+    const themeSelect = document.getElementById('themeSelect');
+    const previewToggle = document.getElementById('previewToggle');
+    const historyToggle = document.getElementById('historyToggle');
+    const historyCountEl = document.getElementById('historyCount');
+    const iptvInput = document.getElementById('iptvUrlInput');
+  
+    const serverOptions = SERVERS.map((s, i) => `<option value="${i}">${s.n}</option>`).join('');
+  
+    if (movieSelect) {
+      movieSelect.innerHTML = `<option value="-1">🎬 Trailer (Auto-load)</option>` + serverOptions;
+      movieSelect.value = localStorage.getItem('defaultMovieServer') || "-1";
+    }
+  
+    if (tvSelect) {
+      tvSelect.innerHTML = serverOptions;
+      tvSelect.value = localStorage.getItem('defaultTvServer') || "0";
+    }
+  
+    if (themeSelect) themeSelect.value = localStorage.getItem('appTheme') || 'light';
+    if (previewToggle) previewToggle.checked = localStorage.getItem('hoverPreviews') !== 'false';
+    if (historyToggle) historyToggle.checked = localStorage.getItem('historyEnabled') !== 'false';
+  
+    if (historyCountEl) {
+      const history = getStorage('watchHistory') || [];
+      const count = history.length;
+      historyCountEl.innerText = `${count} title${count === 1 ? '' : 's'} recorded`;
+    }
+    
+    if (iptvInput) iptvInput.value = localStorage.getItem('iptvPlaylist') || 'https://iptv-org.github.io/iptv/index.m3u';
+  }
+  
+  function clearLocalData(key) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Your ${key === 'watchlist' ? 'Wishlist' : 'History'} will be permanently deleted.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4f46e5',
+      confirmButtonText: 'Yes, clear it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem(key);
+        Swal.fire('Cleared!', '', 'success');
+      }
+    });
   }
   
   function resetApp() {
-  Swal.fire({
-    title: 'Full Reset?',
-    text: 'This will delete EVERYTHING: History, Wishlist, and Settings.',
-    icon: 'error',
-    showCancelButton: true,
-    confirmButtonColor: '#ef4444',
-    confirmButtonText: 'Delete Everything'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      localStorage.clear();
-      window.location.reload();
-    }
-  });
-  }
-  
-  // Optional: Toggle Dark Mode (requires CSS implementation)
-  document.addEventListener('change', (e) => {
-  if (e.target.id === 'darkModeToggle') {
-    if (e.target.checked) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }
-  });
-  
-  function initSettingsUI() {
-  // 1. Reference UI Elements
-  const movieSelect = document.getElementById('defaultMovieServer');
-  const tvSelect = document.getElementById('defaultTvServer');
-  const autoNextToggle = document.getElementById('autoNextToggle');
-  const historyToggle = document.getElementById('historyToggle');
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  const historyCountEl = document.getElementById('historyCount');
-  
-  // 2. Populate Server Dropdowns
-  // We generate options dynamically based on the SERVERS array
-  const serverOptions = SERVERS.map((s, i) => `<option value="${i}">${s.n}</option>`).join('');
-  
-  if (movieSelect) {
-    movieSelect.innerHTML = `<option value="-1">🎬 Trailer (Auto-load)</option>` + serverOptions;
-    movieSelect.value = localStorage.getItem('defaultMovieServer') || "-1";
-  }
-  
-  if (tvSelect) {
-    tvSelect.innerHTML = serverOptions;
-    tvSelect.value = localStorage.getItem('defaultTvServer') || "0";
-  }
-  
-  // 3. Sync Switches (Toggles)
-  // Ensure the UI matches the actual boolean state in storage
-  if (autoNextToggle) {
-    autoNextToggle.checked = localStorage.getItem('autoNext') === 'true';
-  }
-  
-  if (historyToggle) {
-    // Default to true if the key doesn't exist yet
-    historyToggle.checked = localStorage.getItem('historyEnabled') !== 'false';
-  }
-  
-  if (darkModeToggle) {
-    darkModeToggle.checked = document.body.classList.contains('dark-mode');
-  }
-  
-  // 4. Update History Metadata Preview
-  const history = getStorage('watchHistory');
-  if (historyCountEl) {
-    const count = history.length;
-    historyCountEl.innerText = `${count} title${count === 1 ? '' : 's'} recorded`;
-  }
-  
-  // 5. Apply Theme-Specific Styling to Inputs
-  // This ensures that if the user toggled dark mode, the settings inputs 
-  // immediately reflect the theme's colors
-  const isDark = document.body.classList.contains('dark-mode');
-  document.querySelectorAll('#settings-view .form-select, #settings-view .form-control').forEach(el => {
-    if (isDark) {
-      el.style.backgroundColor = '#2c2c2c';
-      el.style.color = '#ffffff';
-      el.style.borderColor = '#444';
-    } else {
-      el.style.backgroundColor = '#ffffff';
-      el.style.color = '#0f172a';
-      el.style.borderColor = '#e2e8f0';
-    }
-  });
+    Swal.fire({
+      title: 'Full Reset?',
+      text: 'This will delete EVERYTHING: History, Wishlist, and Settings.',
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      confirmButtonText: 'Delete Everything'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear();
+        window.location.reload();
+      }
+    });
   }
   
   function updateDefaultServer(type, index) {
-  localStorage.setItem(type === 'movie' ? 'defaultMovieServer' : 'defaultTvServer', index);
-  showToast('Preference Saved');
+    localStorage.setItem(type === 'movie' ? 'defaultMovieServer' : 'defaultTvServer', index);
+    showToast('Preference Saved');
   }
   
   function updatePref(key, val) {
-  localStorage.setItem(key, val);
+    localStorage.setItem(key, val);
   }
   
   function showToast(msg) {
-  Swal.fire({ 
-    toast: true, 
-    position: 'top-end', 
-    icon: 'success', 
-    title: msg, 
-    showConfirmButton: false, 
-    timer: 1500,
-    background: 'var(--surface)',
-    color: 'var(--text-main)'
-  });
-  }
-  
-  // Add this to your window.onload or as a standalone script
-  (function applySavedTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-    // We'll sync the checkbox state once the DOM is fully loaded
-    window.addEventListener('DOMContentLoaded', () => {
-      const toggle = document.getElementById('darkModeToggle');
-      if (toggle) toggle.checked = true;
+    Swal.fire({ 
+      toast: true, 
+      position: 'top-end', 
+      icon: 'success', 
+      title: msg, 
+      showConfirmButton: false, 
+      timer: 1500,
+      background: 'var(--surface)',
+      color: 'var(--text-main)'
     });
   }
-  })();
   
-  // Update your toggle listener
-  document.addEventListener('change', (e) => {
-  if (e.target.id === 'darkModeToggle') {
-    if (e.target.checked) {
+  // ---------- THEME HANDLING ----------
+  function changeTheme(theme) {
+    const isDark = theme === 'dark';
+    document.body.classList.toggle('dark-mode', isDark);
+    localStorage.setItem('appTheme', theme);
+    
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) themeSelect.value = theme;
+    
+    showToast(`${theme.charAt(0).toUpperCase() + theme.slice(1)} mode active`);
+  }
+  
+  function applySavedTheme() {
+    const savedTheme = localStorage.getItem('appTheme') || 'light';
+    if (savedTheme === 'dark') {
       document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
     }
   }
-  });
-  
-  
  </script>
 </body>
 
