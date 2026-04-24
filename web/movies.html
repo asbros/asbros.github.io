@@ -1099,7 +1099,15 @@
     }
   }
   
-  // 4. Route to the correct view based on the hash
+  // 4. Auto-close Download Iframe on Navigation
+  const dlContainer = document.getElementById('dlIframeContainer');
+  const dlIframe = document.getElementById('dlIframe');
+  if (dlContainer && !dlContainer.classList.contains('d-none')) {
+    dlContainer.classList.add('d-none');
+    if (dlIframe) dlIframe.src = ''; // Kill the background process
+  }
+  
+  // 5. Route to the correct view based on the hash
   try {
     if (h === '#settings') {
       document.getElementById('settings-view').style.display = 'block';
