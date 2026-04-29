@@ -4,7 +4,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
- <title>Streamify - Sharable Edition</title>
+ <title>Streamify - Shareable Dynamic Edition</title>
 
  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -90,7 +90,6 @@
   .search-input-group .input-group-text { border-right: none; padding-left: 15px; border-top-right-radius: 0; border-bottom-right-radius: 0; }
   .search-input-group .form-control { border-left: none; padding-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
   .search-input-group .form-control:focus { box-shadow: none; background: #ffffff; border-color: var(--accent-glow); }
-  .search-input-group .form-control::placeholder { color: var(--text-secondary); }
   
   .nav-pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 5px; justify-content: flex-start !important; }
   .nav-pills::-webkit-scrollbar { display: none; }
@@ -134,35 +133,42 @@
   
   .search-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; padding: 0 10px;}
   
-  /* --- TRULY RESPONSIVE NOW PLAYING SCREEN --- */
+  /* --- FIXED: TRULY RESPONSIVE NOW PLAYING SCREEN --- */
   #page-now-playing { 
-      position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; overflow: hidden; z-index: 1050; 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; z-index: 1050; 
       background-color: var(--bg-base); transition: background-color 0.8s ease;
+      flex-direction: column; overflow: hidden;
+      /* BUG FIX: It is hidden by default so it doesn't show on load */
+      display: none;
   }
+  
+  #page-now-playing.active {
+      display: flex; /* Display Flex is only applied when active! */
+  }
+  
   .np-dynamic-bg {
       position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; object-fit: cover;
       filter: blur(80px) brightness(1.1) saturate(1.2); z-index: 1; transition: 0.5s ease; opacity: 0.6;
   }
   .np-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, var(--bg-base) 100%); z-index: 2; transition: background 0.8s ease;}
   
-  /* Flexbox structure to handle all screen heights perfectly */
   .np-container { 
-      position: relative; z-index: 3; display: flex; flex-direction: column; height: 100%; 
+      position: relative; z-index: 3; display: flex; flex-direction: column; height: 100%; width: 100%;
       padding: max(env(safe-area-inset-top), 20px) 25px max(env(safe-area-inset-bottom), 20px); 
+      box-sizing: border-box; flex: 1;
   }
-  .np-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+  .np-header { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; }
   
-  /* Art Wrapper acts as a flexible void. It shrinks gracefully on small screens. */
   .np-art-wrapper { 
       flex: 1 1 auto; min-height: 0; 
-      display: flex; align-items: center; justify-content: center; padding: 2vh 0; 
+      display: flex; align-items: center; justify-content: center; margin: 2vh 0; 
   }
-  /* Image binds tightly to whichever dimension is smallest, keeping aspect 1:1 */
   .np-art { 
-      max-width: 100%; max-height: 100%; aspect-ratio: 1; object-fit: cover; 
-      border-radius: 3vmin; box-shadow: 0 15px 40px rgba(0,0,0,0.15); transition: 0.3s;
+      width: auto; height: auto; max-width: 100%; max-height: 100%; aspect-ratio: 1; object-fit: cover; 
+      border-radius: 4vmin; box-shadow: 0 15px 40px rgba(0,0,0,0.15); transition: 0.3s;
   }
   
+  .np-controls-wrapper { flex-shrink: 0; display: flex; flex-direction: column; }
   .np-info-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
   .np-title { font-size: 1.6rem; font-weight: 800; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); letter-spacing: -0.5px;}
   .np-artist { font-size: 1.1rem; color: var(--text-secondary); margin: 4px 0 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -184,7 +190,7 @@
   <div class="home-header-wrapper d-none" id="globalHomeHeader">
    <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="greeting m-0" id="timeGreeting">Good Evening</h2>
-    <button class="btn btn-sm btn-light rounded-circle" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
+    <button class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
    </div>
    <div class="filter-chips">
     <div class="chip active" id="chip-all" onclick="navigateTo('home')">Home</div>
@@ -207,9 +213,9 @@
    <div class="container pt-3 pb-4">
     <h4 class="mb-4 px-2 fw-bold" id="moodTitle" style="letter-spacing: -0.5px; color: var(--text-primary);">How are you feeling?</h4>
 
-    <div class="mood-grid px-2" id="moodGrid"></div>
+    <div class="mood-grid" id="moodGrid"></div>
 
-    <div id="moodSongsFeed" class="d-flex flex-column d-none px-2"></div>
+    <div id="moodSongsFeed" class="d-none px-2 mb-4"></div>
 
     <div class="text-center mt-4 mb-4 d-none" id="loadMoreMoodBtnContainer">
      <button class="btn btn-outline-dark rounded-pill px-4 py-2" onclick="loadMoreMoodFeed()">Load More <i class="bi bi-chevron-down ms-1"></i></button>
@@ -226,7 +232,7 @@
   <div id="page-search" class="app-view">
    <div class="top-bar d-flex justify-content-between">
     <h3 class="mb-0 fw-bold">Search</h3>
-    <button class="btn btn-sm btn-light rounded-circle" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
+    <button class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
    </div>
    <div class="container pt-4 pb-4">
     <div class="search-container px-3">
@@ -385,9 +391,9 @@
   let currentDetailSongs = [], currentDetailIndex = 0;
   const DETAIL_CHUNK_SIZE = 20;
   let sleepTimerInstance = null;
-  let currentDetailView = null; // Stored to allow sharing Album/Artist context
+  let currentDetailView = null; // Stores currently viewed Album/Playlist/Artist for sharing
   
-  // --- MOOD CONFIGURATION ---
+  // --- MOOD CONFIGURATION (Fetches Playlists now) ---
   const MOODS = [
       { name: 'Happy', query: 'happy', gradient: 'linear-gradient(135deg, #FFB75E, #ED8F03)' },
       { name: 'Sad', query: 'sad', gradient: 'linear-gradient(135deg, #3a7bd5, #3a6073)' },
@@ -436,12 +442,12 @@
       renderMoodGrid();
       loadSpotifyHome();
       
-      // Handle Deep Links immediately on load
-      handleDeepLinks();
-  
-      const hash = window.location.hash || '#home';
-      const baseRoute = hash.substring(1).split('?')[0];
-      if(['home', 'mood', 'radio'].includes(baseRoute)) document.getElementById('globalHomeHeader').classList.remove('d-none');
+      // Setup initial routing safely
+      if(!handleDeepLinks()) {
+          const hash = window.location.hash || '#home';
+          history.replaceState(null, '', hash); // Prevent back button anomalies
+          window.dispatchEvent(new Event('hashchange')); // Force router to process initial hash explicitly
+      }
   });
   
   function setGreeting() {
@@ -475,31 +481,32 @@
   
   function handleDeepLinks() {
       const hash = window.location.hash;
-      if(hash.startsWith('#play?id=')) {
-          const id = new URLSearchParams(hash.substring(5)).get('id');
-          if(id) playSharedSong(id);
-          window.location.hash = 'now-playing';
+      if (!hash.includes('?')) return false;
+  
+      const path = hash.split('?')[0];
+      const params = new URLSearchParams(hash.split('?')[1]);
+  
+      if (path === '#play' && params.has('id')) {
+          playSharedSong(params.get('id'));
           return true;
       }
-      if(hash.startsWith('#view?')) {
-          const params = new URLSearchParams(hash.substring(5));
+      if (path === '#view' && params.has('type') && params.has('id')) {
           const type = params.get('type');
           const id = params.get('id');
-          if (type && id) {
-              if (type === 'artist') openArtist(id, 'Shared Artist', null);
-              else openUniversalDetail(type, id, `Shared ${type}`, '', null);
-              window.location.hash = `${type}-details`; 
-              return true;
-          }
+          if (type === 'artist') openArtist(id, 'Shared Artist', null);
+          else openUniversalDetail(type, id, `Shared ${type}`, '', null);
+          return true;
       }
       return false;
   }
   
   async function playSharedSong(id) {
       try {
-          Swal.fire({ title: 'Loading...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: 'var(--bg-panel)', color: 'var(--text-primary)' });
+          Swal.fire({ title: 'Loading Song...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: 'var(--bg-panel)', color: 'var(--text-primary)' });
           const res = await fetch(`${API_META}/songs?id=${id}`);
-          const data = (await res.json()).data?.[0] || {};
+          const payload = await res.json();
+          const data = payload.data?.[0] || payload.data || {};
+          
           if(!data.id) throw new Error();
           const songObj = {
               videoId: data.id,
@@ -510,9 +517,11 @@
           Swal.close();
           activePlaybackQueue = [songObj];
           executePlay(songObj, 0);
+          window.location.hash = 'now-playing';
       } catch(e) {
           Swal.close();
           Swal.fire({ icon: 'error', title: 'Oops', text: 'Could not load the shared song.', background: 'var(--bg-panel)', color: 'var(--text-primary)' });
+          window.location.hash = 'home';
       }
   }
   
@@ -663,6 +672,7 @@
   
   // --- ROUTING ENGINE ---
   window.addEventListener('hashchange', () => {
+      // If it's a deep link, do not run the standard tab-switching logic
       if(handleDeepLinks()) return;
   
       const hash = window.location.hash || '#home';
@@ -820,8 +830,9 @@
   }
   
   function renderSearchGrid(items, containerId, targetType, append = false) {
-      const container = document.getElementById(containerId); if(!append) container.innerHTML = '<div class="search-grid" id="searchGridInner"></div>';
-      const grid = document.getElementById('searchGridInner') || container;
+      const container = document.getElementById(containerId); 
+      if(!append) container.innerHTML = '<div class="search-grid" id="searchGridInner-' + containerId + '"></div>';
+      const grid = document.getElementById('searchGridInner-' + containerId) || container.querySelector('.search-grid');
       
       items.forEach(item => {
           const card = document.createElement('div'); card.className = `carousel-card ${targetType === 'artist' ? 'artist-circ' : ''}`; card.style.flex = "none"; card.style.width = "100%"; 
@@ -837,7 +848,7 @@
       });
   }
   
-  // --- MOOD EXPLORER LOGIC ---
+  // --- MOOD EXPLORER LOGIC (Playlists) ---
   function renderMoodGrid() {
       const grid = document.getElementById('moodGrid'); grid.innerHTML = '';
       MOODS.forEach(mood => {
@@ -849,7 +860,7 @@
   async function openMood(mood) {
       document.getElementById('moodGrid').classList.add('d-none');
       document.getElementById('moodSongsFeed').classList.remove('d-none');
-      document.getElementById('moodTitle').innerHTML = `<button class="btn btn-sm btn-link p-0 me-2" style="color: var(--text-primary);" onclick="closeMood()"><i class="bi bi-arrow-left fs-3"></i></button> ${mood.name} Vibes`;
+      document.getElementById('moodTitle').innerHTML = `<button class="btn btn-sm btn-link p-0 me-2" style="color: var(--text-primary);" onclick="closeMood()"><i class="bi bi-arrow-left fs-3"></i></button> ${mood.name} Playlists`;
       currentMoodQuery = mood.query; moodPageNum = 1;
       await loadMoodFeed(false);
   }
@@ -863,26 +874,19 @@
   
   async function loadMoodFeed(isLoadMore = false) {
       const container = document.getElementById('moodSongsFeed'); const btnContainer = document.getElementById('loadMoreMoodBtnContainer');
-      if (!isLoadMore) container.innerHTML = INLINE_LOADER;
+      if (!isLoadMore) { container.innerHTML = INLINE_LOADER; moodPageNum = 1; }
       btnContainer.classList.add('d-none'); const loadingItem = document.createElement('div');
       if (isLoadMore) { loadingItem.innerHTML = `<div class="text-center w-100 py-3"><div class="spinner-border spinner-border-sm text-dark"></div></div>`; container.appendChild(loadingItem); }
   
       try {
-          const res = await fetch(`${API_META}/search/songs?query=${encodeURIComponent(currentMoodQuery)}&page=${moodPageNum}&limit=30`);
+          const res = await fetch(`${API_META}/search/playlists?query=${encodeURIComponent(currentMoodQuery)}&page=${moodPageNum}&limit=30`);
           const items = extractData(await res.json());
           if (!isLoadMore) container.innerHTML = ''; else container.removeChild(loadingItem);
   
           if (items.length > 0) {
-              const viewContext = items.map(s => ({ videoId: s.id || s.videoId, title: s.title || s.name, author: s.subtitle || s.primaryArtists || 'Unknown', thumbUrl: getHighResImage(s.image) }));
-              if(isLoadMore) activePlaybackQueue.push(...viewContext); else activePlaybackQueue = [...viewContext];
-              items.forEach((songObj, i) => {
-                  const item = document.createElement('div'); item.className = 'song-list-item';
-                  item.onclick = () => { if(!isLoadMore) activePlaybackQueue = [...viewContext]; executePlay(songObj, isLoadMore ? activePlaybackQueue.findIndex(x => x.videoId === songObj.videoId) : i); };
-                  item.innerHTML = `<img src="${songObj.thumbUrl}" class="song-thumb" onerror="this.src='${FALLBACK_IMG}'"><div class="song-info"><p class="song-title">${songObj.title}</p><p class="song-artist">${songObj.author}</p></div><i class="bi bi-play-circle text-muted fs-5"></i>`;
-                  container.appendChild(item);
-              });
+              renderSearchGrid(items, 'moodSongsFeed', 'playlist', isLoadMore);
               moodPageNum++; btnContainer.classList.remove('d-none');
-          } else { if(!isLoadMore) container.innerHTML = '<p class="text-muted text-center mt-4">No songs found for this mood.</p>'; }
+          } else { if(!isLoadMore) container.innerHTML = '<p class="text-muted text-center mt-4">No playlists found for this mood.</p>'; }
       } catch (error) { if(isLoadMore) container.removeChild(loadingItem); else container.innerHTML = '<p class="text-danger text-center mt-4">Error loading feed.</p>'; console.error(error); }
   }
   function loadMoreMoodFeed() { loadMoodFeed(true); }
