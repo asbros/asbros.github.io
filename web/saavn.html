@@ -4,7 +4,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
- <title>Streamify - Light Dynamic Edition</title>
+ <title>Streamify - Sharable Edition</title>
 
  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,7 +61,7 @@
   .back-btn { background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; margin-right: 15px; cursor: pointer; padding: 0;}
   
   .home-header-wrapper { position: sticky; top: 0; background: linear-gradient(to bottom, var(--bg-base) 0%, rgba(244,245,247,0.8) 70%, transparent 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 100; padding: 15px 20px 10px; margin-bottom: 10px; transition: background 0.8s ease;}
-  .greeting { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
+  .greeting { font-size: 1.6rem; font-weight: 800; }
   .filter-chips { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
   .filter-chips::-webkit-scrollbar { display: none; }
   .chip { background: var(--bg-panel); border-radius: 20px; padding: 7px 18px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: 0.3s ease; border: 1px solid var(--glass-border); color: var(--text-primary);}
@@ -97,12 +97,10 @@
   .nav-pills .nav-link { color: var(--text-secondary); border-radius: 30px; padding: 6px 20px; margin: 0 5px; cursor: pointer; font-weight: 500; transition: 0.2s; white-space: nowrap; border: 1px solid transparent;}
   .nav-pills .nav-link.active { background: var(--bg-panel); color: var(--text-primary); border: 1px solid var(--glass-border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
   
-  /* Mood Grid */
   .mood-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 5px;}
   .mood-card { padding: 30px 15px; border-radius: 12px; font-size: 1.2rem; font-weight: 700; color: white; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s;}
   .mood-card:active { transform: scale(0.95); }
   
-  /* Floating Master Player */
   .master-player {
       position: fixed; bottom: calc(var(--nav-height) + 10px); width: 96%; max-width: 460px; left: 50%; transform: translateX(-50%);
       height: 60px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); border-radius: 12px; display: flex; align-items: center; padding: 0 10px;
@@ -121,7 +119,6 @@
   .progress-ring { position: absolute; bottom: 0; left: 12px; right: 12px; height: 3px; background: rgba(0,0,0,0.08); border-radius: 2px; overflow: hidden;}
   .progress-fill { height: 100%; width: 0%; background: var(--accent-glow); transition: width 0.1s linear, background-color 0.8s ease; }
   
-  /* Bottom Nav */
   .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height); background: linear-gradient(to top, rgba(255,255,255,1) 40%, rgba(255,255,255,0)); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; z-index: 1000; border-top: 1px solid var(--glass-border); padding-bottom: env(safe-area-inset-bottom); transition: background-color 0.8s ease;}
   .nav-item { color: var(--text-secondary); text-align: center; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; transition: all 0.3s; font-weight: 500; gap: 3px;}
   .nav-item i { font-size: 1.5rem; }
@@ -137,9 +134,9 @@
   
   .search-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; padding: 0 10px;}
   
-  /* Enhanced Dynamic Now Playing Screen */
+  /* --- TRULY RESPONSIVE NOW PLAYING SCREEN --- */
   #page-now-playing { 
-      position: fixed; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; z-index: 1050; 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; overflow: hidden; z-index: 1050; 
       background-color: var(--bg-base); transition: background-color 0.8s ease;
   }
   .np-dynamic-bg {
@@ -147,19 +144,37 @@
       filter: blur(80px) brightness(1.1) saturate(1.2); z-index: 1; transition: 0.5s ease; opacity: 0.6;
   }
   .np-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, var(--bg-base) 100%); z-index: 2; transition: background 0.8s ease;}
-  .np-container { position: relative; z-index: 3; display: flex; flex-direction: column; height: 100%; padding: env(safe-area-inset-top) 25px 30px; }
   
-  .np-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
-  .np-art-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px 0; }
-  .np-art { width: 100%; max-width: 340px; aspect-ratio: 1; object-fit: cover; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); transition: 0.3s;}
-  .np-info-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
+  /* Flexbox structure to handle all screen heights perfectly */
+  .np-container { 
+      position: relative; z-index: 3; display: flex; flex-direction: column; height: 100%; 
+      padding: max(env(safe-area-inset-top), 20px) 25px max(env(safe-area-inset-bottom), 20px); 
+  }
+  .np-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+  
+  /* Art Wrapper acts as a flexible void. It shrinks gracefully on small screens. */
+  .np-art-wrapper { 
+      flex: 1 1 auto; min-height: 0; 
+      display: flex; align-items: center; justify-content: center; padding: 2vh 0; 
+  }
+  /* Image binds tightly to whichever dimension is smallest, keeping aspect 1:1 */
+  .np-art { 
+      max-width: 100%; max-height: 100%; aspect-ratio: 1; object-fit: cover; 
+      border-radius: 3vmin; box-shadow: 0 15px 40px rgba(0,0,0,0.15); transition: 0.3s;
+  }
+  
+  .np-info-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
   .np-title { font-size: 1.6rem; font-weight: 800; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); letter-spacing: -0.5px;}
   .np-artist { font-size: 1.1rem; color: var(--text-secondary); margin: 4px 0 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .np-controls-main { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-  .np-controls-secondary { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 15px; }
-  .np-controls-secondary button { font-size: 0.85rem; display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-secondary);}
-  .np-controls-secondary button i { font-size: 1.3rem; color: var(--text-primary); }
-  .btn-play-pause { font-size: 4.8rem !important; line-height: 1; color: var(--accent-glow) !important; transition: transform 0.1s, color 0.8s ease; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.15));}
+  .np-controls-main { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  
+  .np-controls-secondary { 
+      display: flex; justify-content: space-between; align-items: center; margin-top: 25px; 
+      background: rgba(0,0,0,0.03); padding: 12px 10px; border-radius: 15px; 
+  }
+  .np-controls-secondary button { font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); padding: 5px;}
+  .np-controls-secondary button i { font-size: 1.2rem; color: var(--text-primary); }
+  .btn-play-pause { font-size: 4.5rem !important; line-height: 1; color: var(--accent-glow) !important; transition: transform 0.1s, color 0.8s ease; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));}
  </style>
 </head>
 
@@ -167,7 +182,10 @@
  <div class="app-container">
 
   <div class="home-header-wrapper d-none" id="globalHomeHeader">
-   <h2 class="greeting" id="timeGreeting">Good Evening</h2>
+   <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="greeting m-0" id="timeGreeting">Good Evening</h2>
+    <button class="btn btn-sm btn-light rounded-circle" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
+   </div>
    <div class="filter-chips">
     <div class="chip active" id="chip-all" onclick="navigateTo('home')">Home</div>
     <div class="chip" id="chip-mood" onclick="navigateTo('mood')">Mood</div>
@@ -206,8 +224,9 @@
   </div>
 
   <div id="page-search" class="app-view">
-   <div class="top-bar">
+   <div class="top-bar d-flex justify-content-between">
     <h3 class="mb-0 fw-bold">Search</h3>
+    <button class="btn btn-sm btn-light rounded-circle" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
    </div>
    <div class="container pt-4 pb-4">
     <div class="search-container px-3">
@@ -235,6 +254,8 @@
 
   <div id="page-playlist-details" class="app-view">
    <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="history.back()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
+   <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
+
    <div class="cinematic-header" id="playlistHeaderBg" style="background-image: url('');">
     <div class="cinematic-header-vignette"></div>
     <div class="cinematic-header-content">
@@ -252,6 +273,8 @@
 
   <div id="page-artist-details" class="app-view">
    <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="history.back()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
+   <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
+
    <div class="cinematic-header" id="artistHeaderBg" style="background-image: url(''); height: 40vh;">
     <div class="cinematic-header-vignette"></div>
     <div class="cinematic-header-content">
@@ -315,6 +338,7 @@
      </div>
 
      <div class="np-controls-secondary">
+      <button class="ctrl-btn" id="npShareBtn" onclick="shareCurrentSong()"><i class="bi bi-share"></i> Share</button>
       <button class="ctrl-btn" id="npLyricsBtn" onclick="showLyrics()"><i class="bi bi-music-note-list"></i> Lyrics</button>
       <button class="ctrl-btn" id="npDownloadBtn" onclick="downloadCurrentSong()"><i class="bi bi-download"></i> Save</button>
       <button class="ctrl-btn" id="npTimerBtn" onclick="promptSleepTimer()"><i class="bi bi-moon"></i> Timer</button>
@@ -361,8 +385,9 @@
   let currentDetailSongs = [], currentDetailIndex = 0;
   const DETAIL_CHUNK_SIZE = 20;
   let sleepTimerInstance = null;
+  let currentDetailView = null; // Stored to allow sharing Album/Artist context
   
-  // --- MOOD CONFIGURATION (Simplified precise search queries) ---
+  // --- MOOD CONFIGURATION ---
   const MOODS = [
       { name: 'Happy', query: 'happy', gradient: 'linear-gradient(135deg, #FFB75E, #ED8F03)' },
       { name: 'Sad', query: 'sad', gradient: 'linear-gradient(135deg, #3a7bd5, #3a6073)' },
@@ -375,7 +400,7 @@
   ];
   let currentMoodQuery = ''; let moodPageNum = 1;
   
-  // Homepage Categories (Massively expanded, Global Artists removed)
+  // Homepage Categories
   const ALL_HOME_SECTIONS = [
       { id: 's1', title: "New Releases", query: "latest hits", endpoint: "/search/songs", type: "song" },
       { id: 's2', title: "Trending Albums", query: "trending hindi", endpoint: "/search/albums", type: "album" },
@@ -411,15 +436,86 @@
       renderMoodGrid();
       loadSpotifyHome();
       
-      // Ensure default view loads properly
+      // Handle Deep Links immediately on load
+      handleDeepLinks();
+  
       const hash = window.location.hash || '#home';
-      if(['#home', '#mood', '#radio'].includes(hash)) document.getElementById('globalHomeHeader').classList.remove('d-none');
+      const baseRoute = hash.substring(1).split('?')[0];
+      if(['home', 'mood', 'radio'].includes(baseRoute)) document.getElementById('globalHomeHeader').classList.remove('d-none');
   });
   
   function setGreeting() {
       const hour = new Date().getHours();
       document.getElementById('timeGreeting').innerText = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
   }
+  
+  // --- DEEP LINKING (SHARE) LOGIC ---
+  function shareContent(title, text, hashPath) {
+      const url = window.location.origin + window.location.pathname + hashPath;
+      if (navigator.share) {
+          navigator.share({ title, text, url }).catch(console.error);
+      } else {
+          navigator.clipboard.writeText(url);
+          Swal.fire({ icon: 'success', title: 'Link Copied!', showConfirmButton: false, timer: 1000, background: 'var(--bg-panel)', color: 'var(--text-primary)' });
+      }
+  }
+  
+  function shareApp() { shareContent('Streamify', 'Discover ad-free music on Streamify!', ''); }
+  
+  function shareCurrentSong() {
+      if (!currentPlayingSong || currentPlayingSong.isRadio) return;
+      const cleanId = currentPlayingSong.videoId.toString().split(',')[0].trim();
+      shareContent(currentPlayingSong.title, `Listen to ${currentPlayingSong.title} by ${currentPlayingSong.author} on Streamify!`, `#play?id=${cleanId}`);
+  }
+  
+  function shareCurrentDetail() {
+      if (!currentDetailView) return;
+      shareContent(currentDetailView.title, `Check out this ${currentDetailView.type} on Streamify!`, `#view?type=${currentDetailView.type}&id=${currentDetailView.id}`);
+  }
+  
+  function handleDeepLinks() {
+      const hash = window.location.hash;
+      if(hash.startsWith('#play?id=')) {
+          const id = new URLSearchParams(hash.substring(5)).get('id');
+          if(id) playSharedSong(id);
+          window.location.hash = 'now-playing';
+          return true;
+      }
+      if(hash.startsWith('#view?')) {
+          const params = new URLSearchParams(hash.substring(5));
+          const type = params.get('type');
+          const id = params.get('id');
+          if (type && id) {
+              if (type === 'artist') openArtist(id, 'Shared Artist', null);
+              else openUniversalDetail(type, id, `Shared ${type}`, '', null);
+              window.location.hash = `${type}-details`; 
+              return true;
+          }
+      }
+      return false;
+  }
+  
+  async function playSharedSong(id) {
+      try {
+          Swal.fire({ title: 'Loading...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: 'var(--bg-panel)', color: 'var(--text-primary)' });
+          const res = await fetch(`${API_META}/songs?id=${id}`);
+          const data = (await res.json()).data?.[0] || {};
+          if(!data.id) throw new Error();
+          const songObj = {
+              videoId: data.id,
+              title: data.name || data.title,
+              author: data.subtitle || data.primaryArtists || data.singers || 'Unknown',
+              thumbUrl: getHighResImage(data.image)
+          };
+          Swal.close();
+          activePlaybackQueue = [songObj];
+          executePlay(songObj, 0);
+      } catch(e) {
+          Swal.close();
+          Swal.fire({ icon: 'error', title: 'Oops', text: 'Could not load the shared song.', background: 'var(--bg-panel)', color: 'var(--text-primary)' });
+      }
+  }
+  
   
   // --- LIGHT DYNAMIC THEME ENGINE ---
   function updateAppTheme(imgUrl) {
@@ -557,7 +653,7 @@
   function toggleRadioUI(isRadio) {
       const safeToggleDisplay = (id) => { const el = document.getElementById(id); if(el) el.style.display = isRadio ? 'none' : ''; };
       safeToggleDisplay('npAddBtn'); safeToggleDisplay('playerLikeBtn'); safeToggleDisplay('npLikeBtn'); 
-      safeToggleDisplay('npLyricsBtn'); safeToggleDisplay('npDownloadBtn'); safeToggleDisplay('npQueueBtn');
+      safeToggleDisplay('npLyricsBtn'); safeToggleDisplay('npDownloadBtn'); safeToggleDisplay('npQueueBtn'); safeToggleDisplay('npShareBtn');
   
       const safeToggleVisibility = (id) => { const el = document.getElementById(id); if(el) el.style.visibility = isRadio ? 'hidden' : 'visible'; };
       safeToggleVisibility('npPrevBtn'); safeToggleVisibility('npNextBtn'); safeToggleVisibility('npRepeatBtn'); safeToggleVisibility('npShuffleBtn');
@@ -566,8 +662,9 @@
   }
   
   // --- ROUTING ENGINE ---
-  // Detached from ID attributes to prevent native scrolling bugs
   window.addEventListener('hashchange', () => {
+      if(handleDeepLinks()) return;
+  
       const hash = window.location.hash || '#home';
       const pageId = hash.substring(1).split('?')[0];
   
@@ -627,8 +724,6 @@
   // --- PLAYBACK EXECUTION ---
   async function executePlay(songObj, indexInQueue) {
       toggleRadioUI(false); currentQueueIndex = indexInQueue; currentPlayingSong = songObj; addToHistory(songObj);
-      
-      // Trigger Dynamic Theme Update based on Album Art
       updateAppTheme(songObj.thumbUrl);
   
       const player = document.getElementById('masterPlayer'); player.classList.remove('hidden');
@@ -832,6 +927,7 @@
   }
   
   async function openUniversalDetail(type, id, defaultTitle, defaultAuthor, defaultThumbUrl) {
+      currentDetailView = { type: type, id: id, title: defaultTitle };
       document.getElementById('detailTitle').innerText = defaultTitle; document.getElementById('detailAuthor').innerText = defaultAuthor ? defaultAuthor : '';
       document.getElementById('playlistHeaderBg').style.backgroundImage = `url('${defaultThumbUrl || FALLBACK_IMG}')`; document.getElementById('playlistSongsContainer').innerHTML = INLINE_LOADER; document.getElementById('loadMorePlaylistBtn').classList.add('d-none');
       navigateTo('playlist-details');
@@ -841,6 +937,7 @@
           const realTitle = data.name || data.title || defaultTitle; const realAuthor = data.subtitle || data.description || data.header_desc || defaultAuthor;
           const realThumbUrl = getHighResImage(data.image) !== FALLBACK_IMG ? getHighResImage(data.image) : defaultThumbUrl;
           
+          currentDetailView.title = realTitle;
           document.getElementById('detailTitle').innerText = realTitle; document.getElementById('detailAuthor').innerText = realAuthor; document.getElementById('playlistHeaderBg').style.backgroundImage = `url('${realThumbUrl}')`; 
   
           let songs = [];
@@ -859,6 +956,7 @@
   }
   
   async function openArtist(artistId, name, thumbUrl) {
+      currentDetailView = { type: 'artist', id: artistId, title: name };
       document.getElementById('artistDetailName').innerText = name; document.getElementById('artistHeaderBg').style.backgroundImage = `url('${thumbUrl || FALLBACK_IMG}')`; document.getElementById('artistSongsContainer').innerHTML = INLINE_LOADER; document.getElementById('loadMoreArtistBtn').classList.add('d-none');
       navigateTo('artist-details');
       try {
