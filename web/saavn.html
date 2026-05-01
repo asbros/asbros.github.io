@@ -15,11 +15,8 @@
   * { -webkit-user-select: none; -ms-user-select: none; user-select: none; box-sizing: border-box; } 
   input[type="text"], input[type="range"] { -webkit-user-select: auto; -ms-user-select: auto; user-select: auto; } 
   body { background-color: var(--bg-base); color: var(--text-primary); font-family: 'Outfit', sans-serif; padding-bottom: calc(var(--nav-height) + 120px); -webkit-tap-highlight-color: transparent; overflow-x: hidden; margin: 0; transition: background-color 0.8s ease; } 
-  @media (min-width: 768px) { body { background-color: #e5e7eb; display: flex; justify-content: center;} .app-container { width: 100%; max-width: 480px; background-color: var(--bg-base); min-height: 100vh; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.1); border-left: 1px solid var(--glass-border); border-right: 1px solid var(--glass-border); transition: background-color 0.8s ease; } .bottom-nav, .home-header-wrapper, .top-bar, .master-player { max-width: 480px; margin: 0 auto; left: 0; right: 0; } } 
-  @media (max-width: 767px) { .app-container { width: 100%; transition: background-color 0.8s ease; } } 
-  h1, h2, h3, h4, h5 { font-weight: 700; letter-spacing: -0.5px;} 
-  .text-muted { color: var(--text-secondary) !important; } 
   
+  /* SKELETON LOADER CSS */
   .skeleton-card { flex: 0 0 145px; display: flex; flex-direction: column; gap: 8px; scroll-snap-align: start; }
   .skel-img { width: 145px; height: 145px; border-radius: 12px; background: #e2e4e9; animation: pulse 1.5s infinite ease-in-out; }
   .skel-text { width: 80%; height: 12px; border-radius: 4px; background: #e2e4e9; animation: pulse 1.5s infinite ease-in-out; margin-top: 2px; }
@@ -109,172 +106,237 @@
   .np-artist { font-size: 1.1rem; color: var(--text-secondary); margin: 4px 0 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } 
   .np-controls-main { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; } 
   .btn-play-pause { font-size: 4.5rem !important; line-height: 1; color: var(--accent-glow) !important; transition: transform 0.1s, color 0.8s ease; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));} 
+  
+  /* -------------------------------------------
+     NEW DESKTOP & LARGE SCREEN RESPONSIVENESS
+  -------------------------------------------- */
+  .left-sidebar { display: none; }
+  .main-content { width: 100%; position: relative; }
+  
+  @media (min-width: 768px) {
+      body { padding-bottom: 0; overflow: hidden; background: var(--bg-base); }
+      .app-container { display: flex; max-width: 100%; width: 100vw; height: 100vh; box-shadow: none; border: none; }
+      
+      /* Left Sidebar */
+      .left-sidebar { display: flex; flex-direction: column; width: 280px; min-width: 280px; background: var(--bg-panel); border-right: 1px solid var(--glass-border); padding: 25px 20px; z-index: 100; }
+      .sidebar-brand { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; letter-spacing: -1px; }
+      .sidebar-brand i { color: var(--accent-glow); }
+      .sidebar-nav { display: flex; flex-direction: column; gap: 10px; }
+      .sidebar-nav .nav-item { display: flex; align-items: center; gap: 15px; font-size: 1.1rem; color: var(--text-secondary); text-decoration: none; padding: 12px 18px; border-radius: 12px; transition: 0.2s; font-weight: 500; }
+      .sidebar-nav .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+      .sidebar-nav .nav-item.active { color: var(--text-primary); font-weight: 700; background: rgba(0,0,0,0.05); }
+      .sidebar-nav .nav-item i { font-size: 1.4rem; }
+      
+      /* Main Content Area */
+      .main-content { flex-grow: 1; height: 100vh; overflow-y: auto; padding-bottom: 100px; position: relative;}
+      
+      /* Hide Mobile Navigation */
+      .bottom-nav { display: none !important; }
+      
+      /* Master Player Desktop Adjustment */
+      .master-player { max-width: 100%; width: 100%; left: 0; transform: translateY(0); bottom: 0; height: 90px; border-radius: 0; border: none; border-top: 1px solid var(--glass-border); padding: 0 40px; z-index: 2000; justify-content: space-between; }
+      .master-player.hidden { transform: translateY(100%); }
+      .master-player .track-info { width: 300px; flex-grow: 0; }
+      .master-player .player-controls { flex-grow: 1; justify-content: center; gap: 30px; }
+      .master-player .progress-ring { bottom: auto; top: 0; height: 4px; }
+      
+      /* Grids Optimization for Desktop */
+      .carousel-card { flex: 0 0 190px; }
+      .carousel-card img { width: 190px; height: 190px; }
+      .search-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+      .skeleton-card { flex: 0 0 190px; }
+      .skel-img { width: 190px; height: 190px; }
+      
+      /* Padding Adjustments */
+      .top-bar, .home-header-wrapper { max-width: 100%; padding: 20px 40px; }
+      .section-header { margin: 30px 40px 15px; }
+      .carousel-container { padding: 0 40px 20px; gap: 20px;}
+      .container { padding-left: 40px; padding-right: 40px; max-width: 1400px; }
+      
+      /* Now Playing Desktop Confinement */
+      #page-now-playing { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 0; z-index: 1050; padding-bottom: 100px;}
+      .np-dynamic-bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0;}
+      .np-overlay { position: absolute; }
+      .np-controls-wrapper { max-width: 600px; margin: 0 auto;}
+  }
  </style>
 </head>
 
 <body>
  <div class="app-container">
 
-  <div class="home-header-wrapper d-none" id="globalHomeHeader">
-   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="greeting m-0" id="timeGreeting">Good Evening</h2>
-    <button class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
-   </div>
-   <div class="filter-chips">
-    <div class="chip active" id="chip-all" onclick="navigateTo('home')">Home</div>
-    <div class="chip" id="chip-mood" onclick="navigateTo('mood')">Mood</div>
-    <div class="chip" id="chip-radio" onclick="navigateTo('radio')">Live Radio</div>
-   </div>
-  </div>
+  <aside class="left-sidebar">
+   <div class="sidebar-brand"><i class="bi bi-music-note-beamed"></i> Streamify</div>
+   <nav class="sidebar-nav">
+    <a href="#home" class="nav-item active"><i class="bi bi-house-door-fill"></i><span>Home</span></a>
+    <a href="#search" class="nav-item"><i class="bi bi-search"></i><span>Search</span></a>
+    <a href="#library" class="nav-item"><i class="bi bi-collection-fill"></i><span>Library</span></a>
+   </nav>
+  </aside>
 
-  <div id="page-home" class="app-view active">
-   <div id="homeRecentContainer"></div>
-   <div id="homeSectionsContainer"></div>
-  </div>
+  <main class="main-content" id="mainContent">
 
-  <div id="page-mood" class="app-view">
-   <div class="container pt-3 pb-4">
-    <h4 class="mb-4 px-2 fw-bold" id="moodTitle" style="letter-spacing: -0.5px; color: var(--text-primary);">How are you feeling?</h4>
-    <div class="mood-grid" id="moodGrid"></div>
-    <div id="moodSongsFeed" class="d-none px-2 mb-4"></div>
-    <div class="text-center mt-4 mb-4 d-none" id="loadMoreMoodBtnContainer">
-     <button class="btn btn-outline-dark rounded-pill px-4 py-2" onclick="loadMoreMoodFeed()">Load More <i class="bi bi-chevron-down ms-1"></i></button>
+   <div class="home-header-wrapper d-none" id="globalHomeHeader">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+     <h2 class="greeting m-0" id="timeGreeting">Good Evening</h2>
+     <button class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
+    </div>
+    <div class="filter-chips">
+     <div class="chip active" id="chip-all" onclick="navigateTo('home')">Home</div>
+     <div class="chip" id="chip-mood" onclick="navigateTo('mood')">Mood</div>
+     <div class="chip" id="chip-radio" onclick="navigateTo('radio')">Live Radio</div>
     </div>
    </div>
-  </div>
 
-  <div id="page-radio" class="app-view">
-   <div class="container pt-3 pb-4 px-2">
-    <div id="radioFeedList" class="d-flex flex-column"></div>
+   <div id="page-home" class="app-view active">
+    <div id="homeRecentContainer"></div>
+    <div id="homeSectionsContainer"></div>
    </div>
-  </div>
 
-  <div id="page-search" class="app-view">
-   <div class="top-bar d-flex justify-content-between">
-    <h3 class="mb-0 fw-bold">Search</h3>
-    <button class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
-   </div>
-   <div class="container pt-4 pb-4">
-    <div class="search-container px-3">
-     <div class="input-group mb-4 search-input-group">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" id="searchInput" class="form-control" placeholder="Songs, artists, albums..." autocomplete="off" onkeypress="if(event.key === 'Enter') searchGlobalMusic(false)">
+   <div id="page-mood" class="app-view">
+    <div class="container pt-3 pb-4">
+     <h4 class="mb-4 px-2 fw-bold" id="moodTitle" style="letter-spacing: -0.5px; color: var(--text-primary);">How are you feeling?</h4>
+     <div class="mood-grid" id="moodGrid"></div>
+     <div id="moodSongsFeed" class="d-none px-2 mb-4"></div>
+     <div class="text-center mt-4 mb-4 d-none" id="loadMoreMoodBtnContainer">
+      <button class="btn btn-outline-dark rounded-pill px-4 py-2" onclick="loadMoreMoodFeed()">Load More <i class="bi bi-chevron-down ms-1"></i></button>
      </div>
     </div>
-    <ul class="nav nav-pills px-3 mb-4" id="searchFilters">
-     <li class="nav-item"><a class="nav-link active" id="filter-songs" onclick="setSearchFilter('songs')">Tracks</a></li>
-     <li class="nav-item"><a class="nav-link" id="filter-albums" onclick="setSearchFilter('albums')">Albums</a></li>
-     <li class="nav-item"><a class="nav-link" id="filter-artists" onclick="setSearchFilter('artists')">Artists</a></li>
-     <li class="nav-item"><a class="nav-link" id="filter-playlists" onclick="setSearchFilter('playlists')">Playlists</a></li>
-    </ul>
-    <div id="searchResultsContainer" class="px-2">
-     <div class="text-center text-muted mt-5"><i class="bi bi-music-note-beamed fs-1"></i>
-      <p class="mt-2 fw-bold">Find your favorites</p>
-     </div>
-    </div>
-    <div class="text-center mt-4 mb-4 d-none" id="loadMoreSearchBtn">
-     <button class="btn btn-outline-dark rounded-pill px-4 py-2" onclick="searchGlobalMusic(true)">Load More <i class="bi bi-chevron-down ms-1"></i></button>
-    </div>
    </div>
-  </div>
 
-  <div id="page-playlist-details" class="app-view">
-   <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="navigateToHomeOrBack()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
-   <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" id="playlistShareBtn" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
-   <div class="cinematic-header" id="playlistHeaderBg" style="background-image: url('');">
-    <div class="cinematic-header-vignette"></div>
-    <div class="cinematic-header-content">
-     <h2 class="text-muted fs-6 mb-1" id="detailAuthor">Creator</h2>
-     <h1 class="detail-title" id="detailTitle">Title</h1>
+   <div id="page-radio" class="app-view">
+    <div class="container pt-3 pb-4 px-2">
+     <div id="radioFeedList" class="d-flex flex-column"></div>
     </div>
    </div>
-   <div class="container pt-4 pb-4 px-2">
-    <div id="playlistSongsContainer" class="d-flex flex-column"></div>
-    <div class="text-center mt-4 mb-4 d-none" id="loadMorePlaylistBtn">
-     <button class="btn btn-outline-dark rounded-pill px-4 py-2">Load More <i class="bi bi-chevron-down ms-1"></i></button>
-    </div>
-   </div>
-  </div>
 
-  <div id="page-artist-details" class="app-view">
-   <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="navigateToHomeOrBack()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
-   <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
-   <div class="cinematic-header" id="artistHeaderBg" style="background-image: url(''); height: 40vh;">
-    <div class="cinematic-header-vignette"></div>
-    <div class="cinematic-header-content">
-     <p class="text-muted fs-6 mb-1"><i class="bi bi-patch-check-fill text-primary" style="color: #1da1f2 !important;"></i> Verified Artist</p>
-     <h1 id="artistDetailName" class="detail-title">Artist Name</h1>
+   <div id="page-search" class="app-view">
+    <div class="top-bar d-flex justify-content-between">
+     <h3 class="mb-0 fw-bold">Search</h3>
+     <button class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="shareApp()"><i class="bi bi-share-fill text-dark"></i></button>
     </div>
-   </div>
-   <div class="container pt-4 pb-4 px-2">
-    <h4 class="mb-3 px-2 fw-bold" style="color: var(--text-primary);">Popular Tracks</h4>
-    <div id="artistSongsContainer" class="d-flex flex-column"></div>
-    <div class="text-center mt-4 mb-4 d-none" id="loadMoreArtistBtn">
-     <button class="btn btn-outline-dark rounded-pill px-4 py-2">Load More <i class="bi bi-chevron-down ms-1"></i></button>
-    </div>
-   </div>
-  </div>
-
-  <div id="page-library" class="app-view">
-   <div class="top-bar">
-    <h3 class="mb-0 fw-bold">Your Library</h3>
-   </div>
-   <div class="container pt-4 pb-4 px-2">
-    <div id="libraryContainer" class="d-flex flex-column"></div>
-   </div>
-  </div>
-
-  <div id="page-now-playing" class="app-view">
-   <img src="" id="npBgBlur" class="np-dynamic-bg">
-   <div class="np-overlay"></div>
-   <div class="np-container">
-    <div class="np-header">
-     <button class="back-btn me-2" onclick="navigateToHomeOrBack()"><i class="bi bi-chevron-down fs-3"></i></button>
-     <span class="text-uppercase fw-bold flex-grow-1 text-center" style="font-size: 0.75rem; letter-spacing: 1.5px; color: var(--text-primary);">Now Playing</span>
-     <div class="d-flex">
-      <button class="back-btn me-0" id="npShareBtnTop" onclick="shareCurrentSong()"><i class="bi bi-share fs-4"></i></button>
-     </div>
-    </div>
-
-    <div class="np-art-wrapper" onclick="toggleLyricsView()">
-     <img src="" id="npArt" class="np-art">
-     <div id="npLyrics" class="np-lyrics-box d-none">
-      <p class="text-center mt-5"><span class="spinner-border text-light"></span></p>
-     </div>
-    </div>
-
-    <div class="np-controls-wrapper w-100">
-     <div class="np-info-row">
-      <div style="overflow: hidden; padding-right: 15px; flex-grow: 1;">
-       <h3 id="npTitle" class="np-title">Select a track</h3>
-       <p id="npArtist" class="np-artist">Artist</p>
+    <div class="container pt-4 pb-4">
+     <div class="search-container px-3">
+      <div class="input-group mb-4 search-input-group">
+       <span class="input-group-text"><i class="bi bi-search"></i></span>
+       <input type="text" id="searchInput" class="form-control" placeholder="Songs, artists, albums..." autocomplete="off" onkeypress="if(event.key === 'Enter') searchGlobalMusic(false)">
       </div>
-      <button class="ctrl-btn" id="npLikeBtn" onclick="toggleLikeCurrent()"><i id="npLikeIcon" class="bi bi-heart fs-2"></i></button>
      </div>
+     <ul class="nav nav-pills px-3 mb-4" id="searchFilters">
+      <li class="nav-item-filter"><a class="nav-link active" id="filter-songs" onclick="setSearchFilter('songs')">Tracks</a></li>
+      <li class="nav-item-filter"><a class="nav-link" id="filter-albums" onclick="setSearchFilter('albums')">Albums</a></li>
+      <li class="nav-item-filter"><a class="nav-link" id="filter-artists" onclick="setSearchFilter('artists')">Artists</a></li>
+      <li class="nav-item-filter"><a class="nav-link" id="filter-playlists" onclick="setSearchFilter('playlists')">Playlists</a></li>
+     </ul>
+     <div id="searchResultsContainer" class="px-2">
+      <div class="text-center text-muted mt-5"><i class="bi bi-music-note-beamed fs-1"></i>
+       <p class="mt-2 fw-bold">Find your favorites</p>
+      </div>
+     </div>
+     <div class="text-center mt-4 mb-4 d-none" id="loadMoreSearchBtn">
+      <button class="btn btn-outline-dark rounded-pill px-4 py-2" onclick="searchGlobalMusic(true)">Load More <i class="bi bi-chevron-down ms-1"></i></button>
+     </div>
+    </div>
+   </div>
 
-     <div class="mb-3 mt-4">
-      <input type="range" class="form-range custom-range" id="npSeekbar" value="0" step="0.1" min="0" max="100" onchange="seekAudio(this.value)">
-      <div class="d-flex justify-content-between text-muted mt-1" style="font-size: 0.8rem; font-weight: 500;">
-       <span id="npCurrentTime">0:00</span> <span id="npDuration">0:00</span>
+   <div id="page-playlist-details" class="app-view">
+    <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="navigateToHomeOrBack()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
+    <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" id="playlistShareBtn" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
+    <div class="cinematic-header" id="playlistHeaderBg" style="background-image: url('');">
+     <div class="cinematic-header-vignette"></div>
+     <div class="cinematic-header-content">
+      <h2 class="text-muted fs-6 mb-1" id="detailAuthor">Creator</h2>
+      <h1 class="detail-title" id="detailTitle">Title</h1>
+     </div>
+    </div>
+    <div class="container pt-4 pb-4 px-2">
+     <div id="playlistSongsContainer" class="d-flex flex-column"></div>
+     <div class="text-center mt-4 mb-4 d-none" id="loadMorePlaylistBtn">
+      <button class="btn btn-outline-dark rounded-pill px-4 py-2">Load More <i class="bi bi-chevron-down ms-1"></i></button>
+     </div>
+    </div>
+   </div>
+
+   <div id="page-artist-details" class="app-view">
+    <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="navigateToHomeOrBack()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
+    <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
+    <div class="cinematic-header" id="artistHeaderBg" style="background-image: url(''); height: 40vh;">
+     <div class="cinematic-header-vignette"></div>
+     <div class="cinematic-header-content">
+      <p class="text-muted fs-6 mb-1"><i class="bi bi-patch-check-fill text-primary" style="color: #1da1f2 !important;"></i> Verified Artist</p>
+      <h1 id="artistDetailName" class="detail-title">Artist Name</h1>
+     </div>
+    </div>
+    <div class="container pt-4 pb-4 px-2">
+     <h4 class="mb-3 px-2 fw-bold" style="color: var(--text-primary);">Popular Tracks</h4>
+     <div id="artistSongsContainer" class="d-flex flex-column"></div>
+     <div class="text-center mt-4 mb-4 d-none" id="loadMoreArtistBtn">
+      <button class="btn btn-outline-dark rounded-pill px-4 py-2">Load More <i class="bi bi-chevron-down ms-1"></i></button>
+     </div>
+    </div>
+   </div>
+
+   <div id="page-library" class="app-view">
+    <div class="top-bar">
+     <h3 class="mb-0 fw-bold">Your Library</h3>
+    </div>
+    <div class="container pt-4 pb-4 px-2">
+     <div id="libraryContainer" class="d-flex flex-column"></div>
+    </div>
+   </div>
+
+   <div id="page-now-playing" class="app-view">
+    <img src="" id="npBgBlur" class="np-dynamic-bg">
+    <div class="np-overlay"></div>
+    <div class="np-container">
+     <div class="np-header">
+      <button class="back-btn me-2" onclick="navigateToHomeOrBack()"><i class="bi bi-chevron-down fs-3"></i></button>
+      <span class="text-uppercase fw-bold flex-grow-1 text-center" style="font-size: 0.75rem; letter-spacing: 1.5px; color: var(--text-primary);">Now Playing</span>
+      <div class="d-flex">
+       <button class="back-btn me-0" id="npShareBtnTop" onclick="shareCurrentSong()"><i class="bi bi-share fs-4"></i></button>
       </div>
      </div>
 
-     <div class="np-controls-main">
-      <button class="ctrl-btn text-muted fs-3" id="npDownloadBtnInPlace" onclick="downloadCurrentSongInPlace()"><i id="npDownloadIcon" class="bi bi-download"></i></button>
-      <button class="ctrl-btn fs-1" id="npPrevBtn" onclick="playPrevSong()"><i class="bi bi-skip-end-fill" style="transform: rotate(180deg); display: inline-block;"></i></button>
-      <button class="ctrl-btn btn-play-pause" onclick="togglePlayPause()"><i id="npPlayPauseIcon" class="bi bi-play-circle-fill"></i></button>
-      <button class="ctrl-btn fs-1" id="npNextBtn" onclick="playNextSong()"><i class="bi bi-skip-end-fill"></i></button>
-      <button class="ctrl-btn text-muted fs-3" id="npOptionsMenuBtn" onclick="openNpOptions()"><i class="bi bi-three-dots-vertical"></i></button>
+     <div class="np-art-wrapper" onclick="toggleLyricsView()">
+      <img src="" id="npArt" class="np-art">
+      <div id="npLyrics" class="np-lyrics-box d-none">
+       <p class="text-center mt-5"><span class="spinner-border text-light"></span></p>
+      </div>
+     </div>
+
+     <div class="np-controls-wrapper w-100">
+      <div class="np-info-row">
+       <div style="overflow: hidden; padding-right: 15px; flex-grow: 1;">
+        <h3 id="npTitle" class="np-title">Select a track</h3>
+        <p id="npArtist" class="np-artist">Artist</p>
+       </div>
+       <button class="ctrl-btn" id="npLikeBtn" onclick="toggleLikeCurrent()"><i id="npLikeIcon" class="bi bi-heart fs-2"></i></button>
+      </div>
+
+      <div class="mb-3 mt-4">
+       <input type="range" class="form-range custom-range" id="npSeekbar" value="0" step="0.1" min="0" max="100" onchange="seekAudio(this.value)">
+       <div class="d-flex justify-content-between text-muted mt-1" style="font-size: 0.8rem; font-weight: 500;">
+        <span id="npCurrentTime">0:00</span> <span id="npDuration">0:00</span>
+       </div>
+      </div>
+
+      <div class="np-controls-main">
+       <button class="ctrl-btn text-muted fs-3" id="npDownloadBtnInPlace" onclick="downloadCurrentSongInPlace()"><i id="npDownloadIcon" class="bi bi-download"></i></button>
+       <button class="ctrl-btn fs-1" id="npPrevBtn" onclick="playPrevSong()"><i class="bi bi-skip-end-fill" style="transform: rotate(180deg); display: inline-block;"></i></button>
+       <button class="ctrl-btn btn-play-pause" onclick="togglePlayPause()"><i id="npPlayPauseIcon" class="bi bi-play-circle-fill"></i></button>
+       <button class="ctrl-btn fs-1" id="npNextBtn" onclick="playNextSong()"><i class="bi bi-skip-end-fill"></i></button>
+       <button class="ctrl-btn text-muted fs-3" id="npOptionsMenuBtn" onclick="openNpOptions()"><i class="bi bi-three-dots-vertical"></i></button>
+      </div>
+     </div>
+
+     <div id="npQueueWrapper" class="mt-5 pt-4 border-top" style="border-color: rgba(0,0,0,0.05) !important;">
+      <h5 class="fw-bold mb-3 px-1" style="color: var(--text-primary);">Up Next</h5>
+      <div id="npQueueList" class="d-flex flex-column pb-4"></div>
      </div>
     </div>
-
-    <div id="npQueueWrapper" class="mt-5 pt-4 border-top" style="border-color: rgba(0,0,0,0.05) !important;">
-     <h5 class="fw-bold mb-3 px-1" style="color: var(--text-primary);">Up Next</h5>
-     <div id="npQueueList" class="d-flex flex-column pb-4"></div>
-    </div>
    </div>
-  </div>
 
+  </main>
   <div class="master-player hidden" id="masterPlayer" onclick="openNowPlayingView(event)">
    <img src="" id="playerThumb" class="track-art" alt="Art">
    <div class="track-info">
@@ -292,9 +354,9 @@
   </div>
 
   <nav class="bottom-nav">
-   <a href="#home" class="nav-item active" id="nav-home" onclick="navigateTo('home', event)"><i class="bi bi-house-door-fill"></i><span>Home</span></a>
-   <a href="#search" class="nav-item" id="nav-search" onclick="navigateTo('search', event)"><i class="bi bi-search"></i><span>Search</span></a>
-   <a href="#library" class="nav-item" id="nav-library" onclick="navigateTo('library', event)"><i class="bi bi-collection-fill"></i><span>Library</span></a>
+   <a href="#home" class="nav-item active"><i class="bi bi-house-door-fill"></i><span>Home</span></a>
+   <a href="#search" class="nav-item"><i class="bi bi-search"></i><span>Search</span></a>
+   <a href="#library" class="nav-item"><i class="bi bi-collection-fill"></i><span>Library</span></a>
   </nav>
  </div>
 
@@ -409,24 +471,18 @@
       } 
   } 
   
-  function shareApp() { 
-      shareContent('Streamify', 'Discover ad-free music on Streamify!', ''); 
-  } 
-  
+  function shareApp() { shareContent('Streamify', 'Discover ad-free music on Streamify!', ''); } 
   function shareCurrentSong() { 
       if (!currentPlayingSong || currentPlayingSong.isRadio) return; 
       const cleanId = currentPlayingSong.videoId.toString().split(',')[0].trim(); 
       shareContent(currentPlayingSong.title, `Listen to ${currentPlayingSong.title} by ${currentPlayingSong.author} on Streamify!`, `#play?id=${cleanId}`); 
   } 
-  
   function shareCurrentDetail() { 
       if (!currentDetailView) return; 
       shareContent(currentDetailView.title, `Check out this ${currentDetailView.type} on Streamify!`, `#view?type=${currentDetailView.type}&id=${currentDetailView.id}`); 
   } 
   
-  window.addEventListener('hashchange', () => { 
-      processHash();
-  });
+  window.addEventListener('hashchange', () => { processHash(); });
   
   function processHash() {
       const hash = window.location.hash || '#home'; 
@@ -451,7 +507,7 @@
           if(viewEl) viewEl.classList.add('active');
           
           document.getElementById('globalHomeHeader').classList.add('d-none');
-          document.querySelector('.bottom-nav').style.display = 'flex';
+          
           if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
           
           if (currentDetailId !== id) {
@@ -466,7 +522,10 @@
                   openUniversalDetail(type, id, pre.title, pre.subtitle, pre.thumbUrl, true);
               }
           }
-          window.scrollTo(0, 0);
+          
+          const contentArea = document.getElementById('mainContent');
+          if(contentArea) contentArea.scrollTo(0, 0);
+          else window.scrollTo(0, 0);
           return;
       }
   
@@ -493,15 +552,15 @@
       if (pageId === 'library') loadLibrary(); 
       if (pageId === 'now-playing') { 
           document.getElementById('masterPlayer').classList.add('hidden'); 
-          document.querySelector('.bottom-nav').style.display = 'none'; 
       } else { 
           if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
-          document.querySelector('.bottom-nav').style.display = 'flex'; 
-          document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active')); 
-          const navId = `nav-${pageId}`; 
-          if(document.getElementById(navId)) document.getElementById(navId).classList.add('active'); 
+          document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
+          document.querySelectorAll(`.nav-item[href="#${pageId}"]`).forEach(n => n.classList.add('active'));
       } 
-      window.scrollTo(0, 0); 
+      
+      const contentArea = document.getElementById('mainContent');
+      if(contentArea) contentArea.scrollTo(0, 0);
+      else window.scrollTo(0, 0);
   }
   
   function handleDeepLinks() {
@@ -635,7 +694,6 @@
       }); 
   } 
   
-  // CUSTOM PLAYLIST EDITING LOGIC
   function showLocalPlaylistOptions() {
       Swal.fire({
           title: 'Playlist Options',
