@@ -19,6 +19,14 @@
   @media (max-width: 767px) { .app-container { width: 100%; transition: background-color 0.8s ease; } } 
   h1, h2, h3, h4, h5 { font-weight: 700; letter-spacing: -0.5px;} 
   .text-muted { color: var(--text-secondary) !important; } 
+  
+  /* SKELETON LOADER CSS */
+  .skeleton-card { flex: 0 0 145px; display: flex; flex-direction: column; gap: 8px; scroll-snap-align: start; }
+  .skel-img { width: 145px; height: 145px; border-radius: 12px; background: #e2e4e9; animation: pulse 1.5s infinite ease-in-out; }
+  .skel-text { width: 80%; height: 12px; border-radius: 4px; background: #e2e4e9; animation: pulse 1.5s infinite ease-in-out; margin-top: 2px; }
+  .skel-text-short { width: 50%; height: 10px; border-radius: 4px; background: #e2e4e9; animation: pulse 1.5s infinite ease-in-out; }
+  @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+  
   .inline-loader { display: flex; justify-content: center; align-items: center; padding: 40px 0; width: 100%; } 
   .spinner { width: 40px; height: 40px; border: 3px solid rgba(0, 0, 0, 0.1); border-top-color: var(--accent-glow); border-radius: 50%; animation: spin 0.8s linear infinite; } 
   @keyframes spin { to { transform: rotate(360deg); } } 
@@ -26,7 +34,7 @@
   .app-view.active { display: block; } 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } 
   .top-bar { position: sticky; top: 0; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 20px 20px 10px; z-index: 100; display: flex; align-items: center; border-bottom: 1px solid var(--glass-border); transition: background-color 0.8s ease;} 
-  .back-btn { background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; margin-right: 15px; cursor: pointer; padding: 0;} 
+  .back-btn { background: transparent; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; padding: 0;} 
   .home-header-wrapper { position: sticky; top: 0; background: linear-gradient(to bottom, var(--bg-base) 0%, rgba(244,245,247,0.8) 70%, transparent 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 100; padding: 15px 20px 10px; margin-bottom: 10px; transition: background 0.8s ease;} 
   .greeting { font-size: 1.6rem; font-weight: 800; } 
   .filter-chips { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; } 
@@ -83,22 +91,25 @@
   .custom-range::-webkit-slider-thumb { background: var(--text-primary); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);} 
   .custom-range::-webkit-slider-runnable-track { background: rgba(0, 0, 0, 0.1); height: 4px; border-radius: 2px; } 
   .search-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; padding: 0 10px;} 
-  #page-now-playing { position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; z-index: 1050; background-color: var(--bg-base); transition: background-color 0.8s ease; flex-direction: column; overflow: hidden; display: none; } 
+  
+  /* NOW PLAYING Scrollable Adjustments */
+  #page-now-playing { position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; z-index: 1050; background-color: var(--bg-base); transition: background-color 0.8s ease; flex-direction: column; overflow-y: auto; overflow-x: hidden; display: none; padding-bottom: 40px; } 
   #page-now-playing.active { display: flex; } 
-  .np-dynamic-bg { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; object-fit: cover; filter: blur(80px) brightness(1.1) saturate(1.2); z-index: 1; transition: 0.5s ease; opacity: 0.6; } 
-  .np-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, var(--bg-base) 100%); z-index: 2; transition: background 0.8s ease;} 
-  .np-container { position: relative; z-index: 3; display: flex; flex-direction: column; height: 100%; width: 100%; padding: max(env(safe-area-inset-top), 20px) 25px max(env(safe-area-inset-bottom), 20px); box-sizing: border-box; flex: 1; } 
+  .np-dynamic-bg { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; object-fit: cover; filter: blur(80px) brightness(1.1) saturate(1.2); z-index: 1; transition: 0.5s ease; opacity: 0.6; pointer-events: none;} 
+  .np-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, var(--bg-base) 100%); z-index: 2; transition: background 0.8s ease; pointer-events: none;} 
+  .np-container { position: relative; z-index: 3; display: flex; flex-direction: column; width: 100%; padding: max(env(safe-area-inset-top), 20px) 25px max(env(safe-area-inset-bottom), 20px); box-sizing: border-box; } 
   .np-header { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; } 
-  .np-art-wrapper { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; margin: 2vh 0; } 
-  .np-art { width: auto; height: auto; max-width: 100%; max-height: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4vmin; box-shadow: 0 15px 40px rgba(0,0,0,0.15); transition: 0.3s; } 
+  .np-art-wrapper { position: relative; display: flex; align-items: center; justify-content: center; margin: 4vh 0; cursor: pointer;} 
+  .np-art { width: 100%; height: auto; max-width: 350px; aspect-ratio: 1; object-fit: cover; border-radius: 4vmin; box-shadow: 0 15px 40px rgba(0,0,0,0.15); transition: opacity 0.3s; } 
+  .np-lyrics-box { position: absolute; top: 0; left: 0; width: 100%; height: 100%; max-width: 350px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 4vmin; overflow-y: auto; padding: 20px; color: rgba(255,255,255,0.7); text-align: center; font-size: 1.1rem; line-height: 1.8; transition: opacity 0.3s; scrollbar-width: none;}
+  .np-lyrics-box::-webkit-scrollbar { display: none; }
+  .np-lyrics-box p { transition: color 0.3s, transform 0.3s; margin-bottom: 10px; }
+  .lyric-active { color: #ffffff !important; font-weight: 700; transform: scale(1.05); }
   .np-controls-wrapper { flex-shrink: 0; display: flex; flex-direction: column; } 
   .np-info-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; } 
   .np-title { font-size: 1.6rem; font-weight: 800; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); letter-spacing: -0.5px;} 
   .np-artist { font-size: 1.1rem; color: var(--text-secondary); margin: 4px 0 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } 
   .np-controls-main { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; } 
-  .np-controls-secondary { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; background: rgba(0,0,0,0.03); padding: 12px 10px; border-radius: 15px; } 
-  .np-controls-secondary button { font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); padding: 5px;} 
-  .np-controls-secondary button i { font-size: 1.2rem; color: var(--text-primary); } 
   .btn-play-pause { font-size: 4.5rem !important; line-height: 1; color: var(--accent-glow) !important; transition: transform 0.1s, color 0.8s ease; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));} 
  </style>
 </head>
@@ -121,9 +132,6 @@
   <div id="page-home" class="app-view active">
    <div id="homeRecentContainer"></div>
    <div id="homeSectionsContainer"></div>
-   <div class="text-center mt-4 mb-5" id="homeLoadMoreWrapper" style="display: none;">
-    <button class="btn btn-outline-dark rounded-pill px-4 py-2" onclick="loadMoreHomeSections()"> Explore More Categories <i class="bi bi-chevron-down ms-1"></i> </button>
-   </div>
   </div>
 
   <div id="page-mood" class="app-view">
@@ -223,11 +231,21 @@
    <div class="np-overlay"></div>
    <div class="np-container">
     <div class="np-header">
-     <button class="back-btn" onclick="history.back()"><i class="bi bi-chevron-down fs-3"></i></button>
-     <span class="text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 1.5px; color: var(--text-primary);">Now Playing</span>
-     <button class="back-btn me-0" id="npAddBtn" onclick="promptAddToPlaylist()"><i class="bi bi-plus-circle fs-4"></i></button>
+     <button class="back-btn me-2" onclick="navigateToHomeOrBack()"><i class="bi bi-chevron-down fs-3"></i></button>
+     <span class="text-uppercase fw-bold flex-grow-1 text-center" style="font-size: 0.75rem; letter-spacing: 1.5px; color: var(--text-primary);">Now Playing</span>
+     <div class="d-flex">
+      <button class="back-btn me-3" id="npShareBtnTop" onclick="shareCurrentSong()"><i class="bi bi-share fs-4"></i></button>
+      <button class="back-btn me-0" id="npOptionsMenuBtn" onclick="openNpOptions()"><i class="bi bi-three-dots-vertical fs-4"></i></button>
+     </div>
     </div>
-    <div class="np-art-wrapper"><img src="" id="npArt" class="np-art"></div>
+
+    <div class="np-art-wrapper" onclick="toggleLyricsView()">
+     <img src="" id="npArt" class="np-art">
+     <div id="npLyrics" class="np-lyrics-box d-none">
+      <p class="text-center mt-5"><span class="spinner-border text-light"></span></p>
+     </div>
+    </div>
+
     <div class="np-controls-wrapper w-100">
      <div class="np-info-row">
       <div style="overflow: hidden; padding-right: 15px; flex-grow: 1;">
@@ -236,26 +254,26 @@
       </div>
       <button class="ctrl-btn" id="npLikeBtn" onclick="toggleLikeCurrent()"><i id="npLikeIcon" class="bi bi-heart fs-2"></i></button>
      </div>
+
      <div class="mb-3 mt-4">
       <input type="range" class="form-range custom-range" id="npSeekbar" value="0" step="0.1" min="0" max="100" onchange="seekAudio(this.value)">
       <div class="d-flex justify-content-between text-muted mt-1" style="font-size: 0.8rem; font-weight: 500;">
        <span id="npCurrentTime">0:00</span> <span id="npDuration">0:00</span>
       </div>
      </div>
+
      <div class="np-controls-main">
-      <button class="ctrl-btn text-muted fs-3" id="npShuffleBtn"><i class="bi bi-shuffle"></i></button>
+      <button class="ctrl-btn text-muted fs-3" id="npShuffleBtn" onclick="shuffleQueue()"><i class="bi bi-shuffle"></i></button>
       <button class="ctrl-btn fs-1" id="npPrevBtn" onclick="playPrevSong()"><i class="bi bi-skip-end-fill" style="transform: rotate(180deg); display: inline-block;"></i></button>
       <button class="ctrl-btn btn-play-pause" onclick="togglePlayPause()"><i id="npPlayPauseIcon" class="bi bi-play-circle-fill"></i></button>
       <button class="ctrl-btn fs-1" id="npNextBtn" onclick="playNextSong()"><i class="bi bi-skip-end-fill"></i></button>
-      <button class="ctrl-btn text-muted fs-3" id="npRepeatBtn"><i class="bi bi-repeat"></i></button>
+      <button class="ctrl-btn text-muted fs-3" id="npDownloadBtnInPlace" onclick="downloadCurrentSongInPlace()"><i id="npDownloadIcon" class="bi bi-download"></i></button>
      </div>
-     <div class="np-controls-secondary">
-      <button class="ctrl-btn" id="npShareBtn" onclick="shareCurrentSong()"><i class="bi bi-share"></i> Share</button>
-      <button class="ctrl-btn" id="npLyricsBtn" onclick="showLyrics()"><i class="bi bi-music-note-list"></i> Lyrics</button>
-      <button class="ctrl-btn" id="npDownloadBtn" onclick="downloadCurrentSong()"><i class="bi bi-download"></i> Save</button>
-      <button class="ctrl-btn" id="npTimerBtn" onclick="promptSleepTimer()"><i class="bi bi-moon"></i> Timer</button>
-      <button class="ctrl-btn" id="npQueueBtn" onclick="showQueue()"><i class="bi bi-list-nested"></i> Queue</button>
-     </div>
+    </div>
+
+    <div id="npQueueWrapper" class="mt-5 pt-4 border-top" style="border-color: rgba(0,0,0,0.05) !important;">
+     <h5 class="fw-bold mb-3 px-1" style="color: var(--text-primary);">Up Next</h5>
+     <div id="npQueueList" class="d-flex flex-column pb-4"></div>
     </div>
    </div>
   </div>
@@ -284,9 +302,16 @@
  </div>
 
  <script>
-  const API_META = "https://saavn.sumit.co/api"; 
+  const API_META = "https://jiosaavn-api-privatecvc2.vercel.app"; 
   const API_STREAM = "https://jiosaavn-api-privatecvc2.vercel.app"; 
   const FALLBACK_IMG = "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=500&auto=format&fit=crop"; 
+  
+  const SKELETON_HTML = `
+      <div class="skeleton-card"><div class="skel-img"></div><div class="skel-text"></div><div class="skel-text-short"></div></div>
+      <div class="skeleton-card"><div class="skel-img"></div><div class="skel-text"></div><div class="skel-text-short"></div></div>
+      <div class="skeleton-card"><div class="skel-img"></div><div class="skel-text"></div><div class="skel-text-short"></div></div>
+      <div class="skeleton-card"><div class="skel-img"></div><div class="skel-text"></div><div class="skel-text-short"></div></div>
+  `;
   const INLINE_LOADER = `<div class="inline-loader"><div class="spinner text-dark"></div></div>`; 
   
   let currentSearchType = 'songs'; 
@@ -295,13 +320,9 @@
   let currentDetailSongs = [], currentDetailIndex = 0; 
   const DETAIL_CHUNK_SIZE = 20; 
   
-  // Pagination Variables
-  let currentDetailId = null;
-  let currentDetailType = null;
-  let currentDetailPage = 1;
-  
-  let sleepTimerInstance = null; 
-  let currentDetailView = null; 
+  let currentDetailId = null; let currentDetailType = null; let currentDetailPage = 1;
+  let sleepTimerInstance = null; let currentDetailView = null; 
+  let parsedLyricsArr = []; let lyricsVisible = false;
   
   const MOODS = [ 
       { name: 'Happy', query: 'happy', gradient: 'linear-gradient(135deg, #FFB75E, #ED8F03)' }, 
@@ -316,22 +337,24 @@
   let currentMoodQuery = ''; 
   let moodPageNum = 1; 
   
+  // UPDATED HOMEPAGE CATEGORIES
   const ALL_HOME_SECTIONS = [ 
-      { id: 's1', title: "New Releases", query: "latest hits", endpoint: "/search/songs", type: "song" }, 
-      { id: 's2', title: "Trending Albums", query: "trending hindi", endpoint: "/search/albums", type: "album" }, 
-      { id: 's3', title: "Viral Tracks", query: "viral hits", endpoint: "/search/songs", type: "song" }, 
-      { id: 's4', title: "Chill & Lofi", query: "lofi chill mix", endpoint: "/search/playlists", type: "playlist" }, 
-      { id: 's5', title: "Workout Mix", query: "gym workout power", endpoint: "/search/playlists", type: "playlist" }, 
-      { id: 's6', title: "Party Anthems", query: "party dance mix", endpoint: "/search/playlists", type: "playlist" }, 
-      { id: 's7', title: "Romantic Melodies", query: "romantic hindi", endpoint: "/search/songs", type: "song" }, 
-      { id: 's8', title: "Devotional & Spiritual", query: "bhakti geet", endpoint: "/search/playlists", type: "playlist" }, 
-      { id: 's9', title: "Pop Chartbusters", query: "pop hits", endpoint: "/search/songs", type: "song" }, 
-      { id: 's10', title: "Punjabi Beats", query: "punjabi hits", endpoint: "/search/songs", type: "song" }, 
-      { id: 's11', title: "Indie Discoveries", query: "indie", endpoint: "/search/playlists", type: "playlist" }, 
-      { id: 's12', title: "Global Top 50", query: "global top", endpoint: "/search/playlists", type: "playlist" } 
+      { id: 's1', title: "Latest Songs", query: "latest", endpoint: "/search/songs", type: "song" }, 
+      { id: 's2', title: "Trending Songs", query: "trending", endpoint: "/search/songs", type: "song" }, 
+      { id: 's3', title: "Latest Punjabi Songs", query: "latest punjabi", endpoint: "/search/songs", type: "song" }, 
+      { id: 's4', title: "Latest Hindi Songs", query: "latest hindi", endpoint: "/search/songs", type: "song" }, 
+      { id: 's5', title: "Latest Bhojpuri Songs", query: "latest bhojpuri", endpoint: "/search/songs", type: "song" }, 
+      { id: 's6', title: "Trending Playlists", query: "trending hindi", endpoint: "/search/playlists", type: "playlist" }, 
+      { id: 's7', title: "New Playlists", query: "new releases", endpoint: "/search/playlists", type: "playlist" }, 
+      { id: 's8', title: "Popular Artists", query: "top hindi", endpoint: "/search/artists", type: "artist" }, 
+      { id: 's9', title: "Top Albums", query: "top albums", endpoint: "/search/albums", type: "album" }, 
+      { id: 's10', title: "Hindi Lo-Fi Drops", query: "hindi lofi", endpoint: "/search/songs", type: "song" }, 
+      { id: 's11', title: "Global Top Charts", query: "global top 50", endpoint: "/search/playlists", type: "playlist" },
+      { id: 's12', title: "90s Bollywood Classics", query: "90s bollywood", endpoint: "/search/playlists", type: "playlist" },
+      { id: 's13', title: "Gym & Workout", query: "gym workout", endpoint: "/search/playlists", type: "playlist" },
+      { id: 's14', title: "Devotional & Bhakti", query: "bhakti", endpoint: "/search/playlists", type: "playlist" },
+      { id: 's15', title: "Sufi & Ghazals", query: "sufi ghazal", endpoint: "/search/playlists", type: "playlist" }
   ]; 
-  let currentHomeSectionIndex = 0; 
-  const HOME_CHUNK_SIZE = 3; 
   
   function extractData(payload) { 
       if (!payload) return []; 
@@ -364,7 +387,14 @@
   document.addEventListener('DOMContentLoaded', () => { 
       setGreeting(); 
       renderMoodGrid(); 
+      
+      const initialHash = window.location.hash;
+      if(!initialHash || initialHash === '#home') {
+          document.getElementById('globalHomeHeader').classList.remove('d-none');
+      }
+  
       loadSpotifyHome(); 
+      
       if(!handleDeepLinks()) { 
           const hash = window.location.hash || '#home'; 
           history.replaceState(null, '', hash); 
@@ -402,20 +432,18 @@
       shareContent(currentDetailView.title, `Check out this ${currentDetailView.type} on Streamify!`, `#view?type=${currentDetailView.type}&id=${currentDetailView.id}`); 
   } 
   
-  // UPDATED DEEP LINKING
   function handleDeepLinks() {
       const hash = window.location.hash;
       if (!hash.includes('?')) return false;
   
-      const path = hash.split('?')[0];
-      const params = new URLSearchParams(hash.split('?')[1]);
-  
-      if (path === '#play' && params.has('id')) {
-          window.history.replaceState(null, '', window.location.pathname);
-          playSharedSong(params.get('id'));
+      if (hash.startsWith('#play?id=')) {
+          const id = hash.split('=')[1];
+          window.history.replaceState(null, '', window.location.pathname); 
+          playSharedSong(id); 
           return true;
       }
-      if (path === '#view' && params.has('type') && params.has('id')) {
+      if (hash.startsWith('#view?type=')) {
+          const params = new URLSearchParams(hash.split('?')[1]);
           const type = params.get('type');
           const id = params.get('id');
           window.history.replaceState(null, '', window.location.pathname);
@@ -443,12 +471,21 @@
           };
   
           Swal.close();
-          activePlaybackQueue = [songObj];
           
-          window.location.hash = 'now-playing';
-          setTimeout(() => {
-              executePlay(songObj, 0);
-          }, 300);
+          Swal.fire({
+              title: 'Ready to Play',
+              html: `<p class="fw-bold m-0">${songObj.title}</p><p class="text-muted small">${songObj.author}</p>`,
+              imageUrl: songObj.thumbUrl,
+              imageWidth: 150, imageHeight: 150, imageAlt: 'Art',
+              confirmButtonText: '<i class="bi bi-play-fill fs-5"></i> Play Now',
+              confirmButtonColor: '#121212', background: 'var(--bg-panel)', color: 'var(--text-primary)',
+              allowOutsideClick: false
+          }).then((result) => {
+              if(result.isConfirmed) {
+                  activePlaybackQueue = [songObj];
+                  executePlay(songObj, 0);
+              }
+          });
       } catch(e) {
           Swal.close();
           Swal.fire({ icon: 'error', title: 'Oops', text: 'Song load nahi ho paya. Link expire ho sakta hai.', background: 'var(--bg-panel)', color: 'var(--text-primary)' });
@@ -472,16 +509,11 @@
               const b = Math.floor(color[2] * 0.15 + 255 * 0.85); 
               const bgTint = `rgb(${r}, ${g}, ${b})`; 
               document.documentElement.style.setProperty('--bg-base', bgTint); 
-          } catch(e) { 
-              console.log('Cross-origin blocked theme extraction.'); 
-          } 
+          } catch(e) { console.log('Theme error ignored.'); } 
       } 
   } 
   
-  function getHistory() { 
-      return JSON.parse(localStorage.getItem('recent_songs') || '[]'); 
-  } 
-  
+  function getHistory() { return JSON.parse(localStorage.getItem('recent_songs') || '[]'); } 
   function addToHistory(song) { 
       if(song.isRadio) return; 
       let history = getHistory().filter(s => s.videoId !== song.videoId); 
@@ -490,18 +522,9 @@
       localStorage.setItem('recent_songs', JSON.stringify(history)); 
       if(document.getElementById('page-home').classList.contains('active')) renderHomeRecent(); 
   } 
-  
-  function getLikedSongs() { 
-      return JSON.parse(localStorage.getItem('liked_songs') || '[]'); 
-  } 
-  
-  function isLiked(videoId) { 
-      return getLikedSongs().some(s => s.videoId === videoId); 
-  } 
-  
-  function getUserPlaylists() { 
-      return JSON.parse(localStorage.getItem('user_playlists') || '[]'); 
-  } 
+  function getLikedSongs() { return JSON.parse(localStorage.getItem('liked_songs') || '[]'); } 
+  function isLiked(videoId) { return getLikedSongs().some(s => s.videoId === videoId); } 
+  function getUserPlaylists() { return JSON.parse(localStorage.getItem('user_playlists') || '[]'); } 
   
   function toggleLikeCurrent() { 
       if(!currentPlayingSong || currentPlayingSong.isRadio) return; 
@@ -571,13 +594,10 @@
               plContainer.innerHTML += `<div class="carousel-card" onclick="openUserPlaylist('${pl.id}')"><img src="${thumb}"><p class="carousel-title">${pl.name}</p><p class="carousel-subtitle">${pl.songs.length} tracks</p></div>`; 
           }); 
           container.appendChild(plContainer); 
-      } else { 
-          container.innerHTML += '<p class="text-muted small px-2 mb-4">No custom playlists yet.</p>'; 
-      } 
+      } else { container.innerHTML += '<p class="text-muted small px-2 mb-4">No custom playlists yet.</p>'; } 
       container.innerHTML += `<h5 class="mb-3 px-2 mt-2 fw-bold">Liked Songs</h5>`; 
-      if (likedSongs.length === 0) { 
-          container.innerHTML += '<p class="text-muted px-2">Your liked songs will appear here.</p>'; 
-      } else { 
+      if (likedSongs.length === 0) { container.innerHTML += '<p class="text-muted px-2">Your liked songs will appear here.</p>'; } 
+      else { 
           const listDiv = document.createElement('div'); 
           listDiv.id = 'likedSongsList'; 
           container.appendChild(listDiv); 
@@ -603,37 +623,45 @@
       }); 
   } 
   
-  function showQueue() { 
-      if(!currentPlayingSong || activePlaybackQueue.length === 0) return; 
-      let html = '<div style="max-height: 60vh; overflow-y: auto; text-align: left;">'; 
-      const upcoming = activePlaybackQueue.slice(currentQueueIndex + 1, currentQueueIndex + 21); 
-      if(upcoming.length === 0) html += '<p class="text-muted text-center">No more songs in queue.</p>'; 
-      else { 
-          upcoming.forEach(s => { 
-              html += `<div style="display:flex; align-items:center; margin-bottom:10px;"><img src="${s.thumbUrl}" style="width:40px; height:40px; border-radius:5px; margin-right:10px;"><div style="overflow:hidden;"><p style="margin:0; font-size:0.9rem; white-space:nowrap; text-overflow:ellipsis; color: var(--text-primary);">${s.title}</p><p style="margin:0; font-size:0.75rem; color:var(--text-secondary);">${s.author}</p></div></div>`; 
-          }); 
-      } 
-      html += '</div>'; 
-      Swal.fire({ title: 'Up Next', html: html, background: 'var(--bg-panel)', color: 'var(--text-primary)', showConfirmButton: true, confirmButtonColor: '#121212'}); 
-  } 
+  function openNpOptions() {
+      Swal.fire({
+          html: `
+              <div class="list-group list-group-flush text-start fs-5">
+                  <button class="list-group-item list-group-item-action py-3 border-0 bg-transparent text-dark fw-medium" onclick="Swal.close(); promptAddToPlaylist();"><i class="bi bi-plus-circle me-3"></i> Add to Playlist</button>
+                  <button class="list-group-item list-group-item-action py-3 border-0 bg-transparent text-dark fw-medium" onclick="Swal.close(); promptSleepTimer();"><i class="bi bi-moon me-3"></i> Sleep Timer</button>
+              </div>
+          `,
+          showConfirmButton: false,
+          background: 'var(--bg-panel)',
+          color: 'var(--text-primary)',
+          position: 'bottom',
+          showClass: { popup: 'animate__animated animate__fadeInUp animate__faster' },
+          hideClass: { popup: 'animate__animated animate__fadeOutDown animate__faster' }
+      });
+  }
   
   function toggleRadioUI(isRadio) { 
       const safeToggleDisplay = (id) => { const el = document.getElementById(id); if(el) el.style.display = isRadio ? 'none' : ''; }; 
-      safeToggleDisplay('npAddBtn'); 
-      safeToggleDisplay('playerLikeBtn'); 
-      safeToggleDisplay('npLikeBtn'); 
-      safeToggleDisplay('npLyricsBtn'); 
-      safeToggleDisplay('npDownloadBtn'); 
-      safeToggleDisplay('npQueueBtn'); 
-      safeToggleDisplay('npShareBtn'); 
+      safeToggleDisplay('npShareBtnTop');
+      safeToggleDisplay('npOptionsMenuBtn');
+      safeToggleDisplay('npDownloadBtnInPlace'); 
+      safeToggleDisplay('npShuffleBtn'); 
+      safeToggleDisplay('npQueueWrapper');
+      
       const safeToggleVisibility = (id) => { const el = document.getElementById(id); if(el) el.style.visibility = isRadio ? 'hidden' : 'visible'; }; 
       safeToggleVisibility('npPrevBtn'); 
       safeToggleVisibility('npNextBtn'); 
-      safeToggleVisibility('npRepeatBtn'); 
-      safeToggleVisibility('npShuffleBtn'); 
       const seekbar = document.getElementById('npSeekbar'); 
       if (seekbar) seekbar.disabled = isRadio; 
   } 
+  
+  function navigateToHomeOrBack() {
+      if(window.history.length > 1) {
+          history.back();
+      } else {
+          window.location.hash = 'home';
+      }
+  }
   
   window.addEventListener('hashchange', () => { 
       if(handleDeepLinks()) return; 
@@ -674,7 +702,9 @@
   } 
   
   function openNowPlayingView(e) { 
-      if (!e.target.closest('.player-controls') && currentPlayingSong) window.location.hash = `now-playing`; 
+      if (!e.target.closest('.player-controls') && currentPlayingSong) {
+          window.location.hash = 'now-playing';
+      }
   } 
   
   const audioEl = document.getElementById('audioElement'); 
@@ -701,6 +731,7 @@
               document.getElementById('npSeekbar').value = percent; 
               document.getElementById('npCurrentTime').innerText = formatTime(audioEl.currentTime); 
               document.getElementById('npDuration').innerText = formatTime(audioEl.duration); 
+              syncLyrics(audioEl.currentTime);
           } 
       } 
   }); 
@@ -730,12 +761,71 @@
       else audioEl.currentTime = 0; 
   } 
   
+  function shuffleQueue() {
+      if(activePlaybackQueue.length <= currentQueueIndex + 1) return;
+      const upcoming = activePlaybackQueue.slice(currentQueueIndex + 1);
+      for(let i = upcoming.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i+1));
+          [upcoming[i], upcoming[j]] = [upcoming[j], upcoming[i]];
+      }
+      activePlaybackQueue = [...activePlaybackQueue.slice(0, currentQueueIndex + 1), ...upcoming];
+      
+      document.getElementById('npShuffleBtn').style.color = 'var(--accent-glow)';
+      setTimeout(() => { document.getElementById('npShuffleBtn').style.color = ''; }, 300);
+      renderQueueList();
+  }
+  
+  function renderQueueList() {
+      const qList = document.getElementById('npQueueList');
+      qList.innerHTML = '';
+      const upcoming = activePlaybackQueue.slice(currentQueueIndex + 1, currentQueueIndex + 21);
+      if(upcoming.length === 0) {
+          qList.innerHTML = '<p class="text-muted text-center py-3">No more upcoming tracks.</p>';
+          return;
+      }
+      upcoming.forEach((s, idx) => {
+          const globalIdx = currentQueueIndex + 1 + idx;
+          const item = document.createElement('div');
+          item.className = 'song-list-item bg-transparent';
+          item.onclick = () => executePlay(s, globalIdx);
+          item.innerHTML = `<img src="${s.thumbUrl}" class="song-thumb" onerror="this.src='${FALLBACK_IMG}'"><div class="song-info"><p class="song-title">${s.title}</p><p class="song-artist">${s.author}</p></div>`;
+          qList.appendChild(item);
+      });
+  }
+  
+  async function downloadCurrentSongInPlace() {
+      if (!currentPlayingSong || currentPlayingSong.isRadio || !currentPlayingSong.downloadUrl) return; 
+      
+      const icon = document.getElementById('npDownloadIcon');
+      icon.className = "spinner-border spinner-border-sm text-dark";
+      
+      try {
+          const res = await fetch(currentPlayingSong.downloadUrl);
+          const blob = await res.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = `${currentPlayingSong.title}.m4a`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+          Swal.fire({ title: 'Downloaded', toast: true, position: 'top', timer: 1500, showConfirmButton: false, background: 'var(--accent-glow)', color: '#fff' });
+      } catch(e) {
+          window.open(currentPlayingSong.downloadUrl, '_blank'); 
+      }
+      icon.className = "bi bi-download";
+  }
+  
   async function executePlay(songObj, indexInQueue) { 
       toggleRadioUI(false); 
       currentQueueIndex = indexInQueue; 
       currentPlayingSong = songObj; 
       addToHistory(songObj); 
       updateAppTheme(songObj.thumbUrl); 
+      
+      window.location.hash = 'now-playing';
       
       const player = document.getElementById('masterPlayer'); 
       player.classList.remove('hidden'); 
@@ -763,8 +853,32 @@
       playPauseIcon.className = 'spinner-border spinner-border-sm text-dark'; 
       if(document.getElementById('npPlayPauseIcon')) document.getElementById('npPlayPauseIcon').className = 'spinner-border text-dark'; 
       
+      renderQueueList();
+      fetchAndParseLyrics(); 
+      
+      if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+              title: songObj.title,
+              artist: songObj.author,
+              album: 'Streamify',
+              artwork: [
+                  { src: songObj.thumbUrl, sizes: '96x96', type: 'image/jpeg' },
+                  { src: songObj.thumbUrl, sizes: '128x128', type: 'image/jpeg' },
+                  { src: songObj.thumbUrl, sizes: '192x192', type: 'image/jpeg' },
+                  { src: songObj.thumbUrl, sizes: '256x256', type: 'image/jpeg' },
+                  { src: songObj.thumbUrl, sizes: '384x384', type: 'image/jpeg' },
+                  { src: songObj.thumbUrl, sizes: '512x512', type: 'image/jpeg' }
+              ]
+          });
+  
+          navigator.mediaSession.setActionHandler('play', togglePlayPause);
+          navigator.mediaSession.setActionHandler('pause', togglePlayPause);
+          navigator.mediaSession.setActionHandler('previoustrack', playPrevSong);
+          navigator.mediaSession.setActionHandler('nexttrack', playNextSong);
+      }
+      
       try { 
-          let cleanId = songObj.videoId.toString().split(',')[0].trim(); 
+          let cleanId = songObj.videoId.toString().split(',')[0].trim();
           const response = await fetch(`${API_STREAM}/songs?id=${cleanId}`); 
           const payload = await response.json(); 
           const data = payload.data?.[0] || payload.data || {}; 
@@ -785,12 +899,71 @@
       } 
   } 
   
-  async function loadSpotifyHome() { 
-      document.getElementById('homeSectionsContainer').innerHTML = ''; 
-      currentHomeSectionIndex = 0; 
-      renderHomeRecent(); 
-      await loadMoreHomeSections(); 
-  } 
+  async function fetchAndParseLyrics() {
+      parsedLyricsArr = [];
+      const lyricsBox = document.getElementById('npLyrics');
+      lyricsBox.innerHTML = '<p class="text-center mt-5"><span class="spinner-border text-light"></span></p>';
+      
+      try {
+          const payload = await (await fetch(`${API_META}/lyrics?id=${currentPlayingSong.videoId.toString().split(',')[0].trim()}`)).json();
+          if (payload.data && payload.data.lyrics) {
+              const rawLines = payload.data.lyrics.split(/\r?\n|<br>/);
+              lyricsBox.innerHTML = '';
+              
+              rawLines.forEach((line, idx) => {
+                  const match = line.match(/\[(\d+):(\d+\.\d+)\](.*)/);
+                  let timeObj = null;
+                  let cleanText = line.replace(/<[^>]*>?/gm, '').trim();
+                  
+                  if(match) {
+                      timeObj = parseInt(match[1])*60 + parseFloat(match[2]);
+                      cleanText = match[3].trim();
+                  }
+                  
+                  if(cleanText) {
+                      parsedLyricsArr.push({ time: timeObj, text: cleanText, id: `lyric-${idx}` });
+                      lyricsBox.innerHTML += `<p id="lyric-${idx}">${cleanText}</p>`;
+                  }
+              });
+          } else {
+              lyricsBox.innerHTML = '<p class="text-center mt-5 text-white-50">Lyrics not found.</p>';
+          }
+      } catch(e) {
+          lyricsBox.innerHTML = '<p class="text-center mt-5 text-white-50">Error loading lyrics.</p>';
+      }
+  }
+  
+  function toggleLyricsView() {
+      lyricsVisible = !lyricsVisible;
+      const art = document.getElementById('npArt');
+      const lyricsBox = document.getElementById('npLyrics');
+      if(lyricsVisible) {
+          art.style.opacity = '0.1';
+          lyricsBox.classList.remove('d-none');
+      } else {
+          art.style.opacity = '1';
+          lyricsBox.classList.add('d-none');
+      }
+  }
+  
+  function syncLyrics(currentTime) {
+      if(!lyricsVisible || parsedLyricsArr.length === 0 || parsedLyricsArr[0].time === null) return;
+      
+      let activeIdx = -1;
+      for(let i=0; i<parsedLyricsArr.length; i++) {
+          if(currentTime >= parsedLyricsArr[i].time) activeIdx = i;
+          else break;
+      }
+      
+      if(activeIdx !== -1) {
+          const activeLine = document.getElementById(parsedLyricsArr[activeIdx].id);
+          if(activeLine && !activeLine.classList.contains('lyric-active')) {
+              document.querySelectorAll('.np-lyrics-box p').forEach(p => p.classList.remove('lyric-active'));
+              activeLine.classList.add('lyric-active');
+              activeLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+      }
+  }
   
   function renderHomeRecent() { 
       const history = getHistory(); 
@@ -812,28 +985,86 @@
       }); 
   } 
   
-  async function loadMoreHomeSections() { 
-      const container = document.getElementById('homeSectionsContainer'); 
-      const loadMoreWrapper = document.getElementById('homeLoadMoreWrapper'); 
-      loadMoreWrapper.style.display = 'none'; 
-      const sectionsToLoad = ALL_HOME_SECTIONS.slice(currentHomeSectionIndex, currentHomeSectionIndex + HOME_CHUNK_SIZE); 
-      if (sectionsToLoad.length === 0) return; 
+  async function loadSpotifyHome() { 
+      const container = document.getElementById('homeSectionsContainer');
+      container.innerHTML = ''; 
+      renderHomeRecent(); 
       
-      for (const section of sectionsToLoad) { 
+      let htmlString = "";
+      ALL_HOME_SECTIONS.forEach(section => {
           const sectionId = `home-section-${section.id}`; 
-          container.insertAdjacentHTML('beforeend', `<div class="section-header"><h2 class="section-title">${section.title}</h2></div><div id="${sectionId}" class="carousel-container">${INLINE_LOADER}</div>`); 
-          try { 
-              const res = await fetch(`${API_META}${section.endpoint}?query=${encodeURIComponent(section.query)}&limit=20`); 
-              const items = extractData(await res.json()); 
-              if (items.length > 0) renderCarousel(items.slice(0, 20), sectionId, section.type, false); 
-              else document.getElementById(sectionId).innerHTML = '<p class="text-muted px-4">No data.</p>'; 
-          } catch(e) { 
-              document.getElementById(sectionId).innerHTML = '<p class="text-muted px-4">Failed to load.</p>'; 
-          } 
-      } 
-      currentHomeSectionIndex += HOME_CHUNK_SIZE; 
-      if (currentHomeSectionIndex < ALL_HOME_SECTIONS.length) loadMoreWrapper.style.display = 'block'; 
+          htmlString += `
+              <div class="section-header"><h2 class="section-title">${section.title}</h2></div>
+              <div id="${sectionId}" class="carousel-container" style="overflow:hidden;">${SKELETON_HTML}</div>
+          `; 
+      });
+      container.innerHTML = htmlString;
+  
+      const fetchChunk = async (sections) => {
+          const promises = sections.map(async (section) => {
+              const sectionId = `home-section-${section.id}`; 
+              try {
+                  const res = await fetch(`${API_STREAM}${section.endpoint}?query=${encodeURIComponent(section.query)}&limit=15`);
+                  if(!res.ok) throw new Error("API Limit");
+                  
+                  const payload = await res.json();
+                  const items = extractData(payload); 
+  
+                  const sectionEl = document.getElementById(sectionId);
+                  if (sectionEl) {
+                      if (items && items.length > 0) {
+                          renderCarousel(items.slice(0, 15), sectionId, section.type, false); 
+                          sectionEl.style.overflow = ''; 
+                      } else {
+                          sectionEl.innerHTML = '<p class="text-muted px-4">No data found.</p>'; 
+                      }
+                  }
+              } catch(error) {
+                  const sectionEl = document.getElementById(sectionId);
+                  if (sectionEl) {
+                      sectionEl.innerHTML = `<p class="text-muted px-4 py-2" style="font-size:0.85rem;">Failed to load. <button class="btn btn-sm btn-outline-dark rounded-pill ms-2" onclick="retrySection('${section.id}')">Retry</button></p>`; 
+                  }
+              }
+          });
+          await Promise.all(promises);
+      };
+  
+      const chunkSize = 3;
+      for (let i = 0; i < ALL_HOME_SECTIONS.length; i += chunkSize) {
+          const chunk = ALL_HOME_SECTIONS.slice(i, i + chunkSize);
+          await fetchChunk(chunk);
+          if (i + chunkSize < ALL_HOME_SECTIONS.length) {
+              await new Promise(r => setTimeout(r, 1200));
+          }
+      }
   } 
+  
+  window.retrySection = async (id) => {
+      const section = ALL_HOME_SECTIONS.find(s => s.id === id);
+      const sectionId = `home-section-${section.id}`;
+      const sectionEl = document.getElementById(sectionId);
+      
+      if(!sectionEl) return;
+      sectionEl.innerHTML = SKELETON_HTML;
+      sectionEl.style.overflow = 'hidden';
+      
+      try {
+          const res = await fetch(`${API_STREAM}${section.endpoint}?query=${encodeURIComponent(section.query)}&limit=15`);
+          if(!res.ok) throw new Error();
+          
+          const payload = await res.json();
+          const items = extractData(payload); 
+          
+          if (items && items.length > 0) {
+              renderCarousel(items.slice(0, 15), sectionId, section.type, false); 
+              sectionEl.style.overflow = ''; 
+          } else {
+              sectionEl.innerHTML = '<p class="text-muted px-4">No data found.</p>'; 
+          }
+      } catch(e) {
+          sectionEl.innerHTML = `<p class="text-muted px-4 py-2" style="font-size:0.85rem;">Still busy. <button class="btn btn-sm btn-outline-dark rounded-pill ms-2" onclick="retrySection('${section.id}')">Retry</button></p>`; 
+      }
+  };
   
   function renderCarousel(items, containerId, targetType, append = false) { 
       const container = document.getElementById(containerId); 
@@ -945,13 +1176,10 @@
       } catch (error) { 
           if(isLoadMore) container.removeChild(loadingItem); 
           else container.innerHTML = '<p class="text-danger text-center mt-4">Error loading feed.</p>'; 
-          console.error(error); 
       } 
   } 
   
-  function loadMoreMoodFeed() { 
-      loadMoodFeed(true); 
-  } 
+  function loadMoreMoodFeed() { loadMoodFeed(true); } 
   
   async function loadRadioFeed() { 
       const container = document.getElementById('radioFeedList'); 
@@ -971,12 +1199,8 @@
                   item.innerHTML = `<img src="${thumb}" class="song-thumb rounded-circle border border-dark" onerror="this.src='${FALLBACK_IMG}'"><div class="song-info"><p class="song-title">${title}</p><p class="song-artist"><span class="badge bg-secondary me-1" style="font-size: 0.6rem;">${country}</span> Live Stream</p></div><i class="bi bi-broadcast text-success fs-4"></i>`; 
                   container.appendChild(item); 
               }); 
-          } else { 
-              container.innerHTML = '<p class="text-muted text-center mt-4">No stations found.</p>'; 
-          } 
-      } catch (error) { 
-          container.innerHTML = '<p class="text-danger text-center mt-4">Error loading radio stations.</p>'; 
-      } 
+          } else { container.innerHTML = '<p class="text-muted text-center mt-4">No stations found.</p>'; } 
+      } catch (error) { container.innerHTML = '<p class="text-danger text-center mt-4">Error loading radio stations.</p>'; } 
   } 
   
   function setSearchFilter(filterType) { 
@@ -996,9 +1220,7 @@
           searchPage = 1; 
           document.getElementById(containerId).innerHTML = INLINE_LOADER; 
           loadMoreBtn.classList.add('d-none'); 
-      } else { 
-          searchPage++; 
-      } 
+      } else { searchPage++; } 
       isSearching = true; 
       try { 
           const res = await fetch(`${API_META}/search/${currentSearchType}?query=${encodeURIComponent(query)}&page=${searchPage}`); 
@@ -1018,7 +1240,6 @@
       isSearching = false; 
   } 
   
-  // UPDATED DETAIL VIEWS FOR PAGINATION
   async function openUniversalDetail(type, id, defaultTitle, defaultAuthor, defaultThumbUrl) { 
       currentDetailView = { type: type, id: id, title: defaultTitle }; 
       document.getElementById('detailTitle').innerText = defaultTitle; 
@@ -1055,12 +1276,8 @@
               
               document.getElementById('playlistSongsContainer').innerHTML = ''; 
               renderNextDetailChunk('playlist'); 
-          } else { 
-              document.getElementById('playlistSongsContainer').innerHTML = `<p class="text-center text-muted mt-4">${type} is empty.</p>`; 
-          } 
-      } catch (error) { 
-          document.getElementById('playlistSongsContainer').innerHTML = `<p class="text-danger text-center mt-4">Error loading ${type}.</p>`; 
-      } 
+          } else { document.getElementById('playlistSongsContainer').innerHTML = `<p class="text-center text-muted mt-4">${type} is empty.</p>`; } 
+      } catch (error) { document.getElementById('playlistSongsContainer').innerHTML = `<p class="text-danger text-center mt-4">Error loading ${type}.</p>`; } 
   } 
   
   function openUserPlaylist(playlistId) { 
@@ -1103,15 +1320,10 @@
               
               document.getElementById('artistSongsContainer').innerHTML = ''; 
               renderNextDetailChunk('artist'); 
-          } else { 
-              document.getElementById('artistSongsContainer').innerHTML = '<p class="text-center text-muted mt-4">No tracks available.</p>'; 
-          } 
-      } catch (error) { 
-          document.getElementById('artistSongsContainer').innerHTML = '<p class="text-danger text-center mt-4">Error loading artist.</p>'; 
-      } 
+          } else { document.getElementById('artistSongsContainer').innerHTML = '<p class="text-center text-muted mt-4">No tracks available.</p>'; } 
+      } catch (error) { document.getElementById('artistSongsContainer').innerHTML = '<p class="text-danger text-center mt-4">Error loading artist.</p>'; } 
   } 
   
-  // UPDATED LOAD MORE & PAGINATION FUNCTIONS
   async function renderNextDetailChunk(type) {
       if (currentDetailIndex < currentDetailSongs.length) {
           const chunk = currentDetailSongs.slice(currentDetailIndex, currentDetailIndex + DETAIL_CHUNK_SIZE);
@@ -1154,16 +1366,12 @@
               renderSongsList(newSongs, containerId, true);
               currentDetailSongs.push(...newSongs); 
               currentDetailIndex += newSongs.length;
-              
               btn.innerHTML = originalText;
               btn.disabled = false;
-          } else {
-              btn.classList.add('d-none');
-          }
+          } else { btn.classList.add('d-none'); }
       } catch (error) {
           btn.innerHTML = originalText;
           btn.disabled = false;
-          console.error(error);
           Swal.fire({ title: 'No more songs', background: 'var(--bg-panel)', color: 'var(--text-primary)', timer: 1000, showConfirmButton: false });
       }
   }
@@ -1189,19 +1397,6 @@
           item.innerHTML = `<img src="${songObj.thumbUrl}" class="song-thumb" onerror="this.src='${FALLBACK_IMG}'"><div class="song-info"><p class="song-title">${songObj.title}</p><p class="song-artist">${songObj.author}</p></div><i class="bi bi-play-circle text-muted"></i>`; 
           container.appendChild(item); 
       }); 
-  } 
-  
-  async function showLyrics() { 
-      if (!currentPlayingSong || currentPlayingSong.isRadio) return; 
-      Swal.fire({ title: 'Loading...', allowOutsideClick: false, background: 'var(--bg-panel)', color: 'var(--text-primary)', didOpen: () => { Swal.showLoading(); } }); 
-      try { 
-          const payload = await (await fetch(`${API_META}/lyrics?id=${currentPlayingSong.videoId}`)).json(); 
-          if (payload.data && payload.data.lyrics) 
-              Swal.fire({ title: currentPlayingSong.title, html: `<div style="white-space: pre-wrap; font-size: 0.9rem; max-height: 50vh; overflow-y: auto; text-align: center; color: var(--text-secondary); line-height: 1.6;">${payload.data.lyrics.replace(/<br>/g, '\n')}</div>`, background: 'var(--bg-panel)', color: 'var(--text-primary)', confirmButtonColor: '#121212' }); 
-          else throw new Error(); 
-      } catch (error) { 
-          Swal.fire({ icon: 'error', title: 'Oops!', text: 'Lyrics not available.', background: 'var(--bg-panel)', color: 'var(--text-primary)' }); 
-      } 
   } 
   
   function executeRadioPlay(stationObj) { 
@@ -1232,23 +1427,6 @@
           if(document.getElementById('npPlayPauseIcon')) document.getElementById('npPlayPauseIcon').className = 'bi bi-play-circle-fill'; 
           Swal.fire({ icon: 'error', title: 'Offline', text: 'Stream unavailable.', background: 'var(--bg-panel)', color: 'var(--text-primary)' }); 
       }); 
-  } 
-  
-  async function downloadCurrentSong() { 
-      if (!currentPlayingSong || currentPlayingSong.isRadio) return; 
-      if(currentPlayingSong.downloadUrl) { 
-          window.open(currentPlayingSong.downloadUrl, '_blank'); return; 
-      } 
-      Swal.fire({ title: 'Preparing...', allowOutsideClick: false, background: 'var(--bg-panel)', color: 'var(--text-primary)', didOpen: () => { Swal.showLoading(); } }); 
-      try { 
-          const data = (await (await fetch(`${API_STREAM}/songs?id=${currentPlayingSong.videoId}`)).json()).data?.[0] || {}; 
-          if (data.downloadUrl?.length > 0) { 
-              window.open(data.downloadUrl[data.downloadUrl.length - 1].link || data.downloadUrl[data.downloadUrl.length - 1].url, '_blank'); 
-              Swal.close(); 
-          } else throw new Error(); 
-      } catch (e) { 
-          Swal.fire({ icon: 'error', title: 'Failed', background: 'var(--bg-panel)', color: 'var(--text-primary)' }); 
-      } 
   } 
  </script>
 </body>
