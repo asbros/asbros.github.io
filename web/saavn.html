@@ -107,9 +107,125 @@
   .np-controls-main { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; } 
   .btn-play-pause { font-size: 4.5rem !important; line-height: 1; color: var(--accent-glow) !important; transition: transform 0.1s, color 0.8s ease; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));} 
   
-  /* -------------------------------------------
-     NEW DESKTOP & LARGE SCREEN RESPONSIVENESS
-  -------------------------------------------- */
+  /* YouTube Shorts Style Discovery CSS */
+  .shorts-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    background-color: #050505;
+  }
+  .shorts-container::-webkit-scrollbar { display: none; }
+  
+  .short-item {
+    height: 100%;
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-color: #121212;
+  }
+  
+  .short-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .shorts-top-gradient {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 100px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .short-info {
+    position: absolute;
+    bottom: calc(var(--nav-height) + 20px);
+    left: 20px;
+    right: 80px;
+    z-index: 2;
+    color: white;
+  }
+  
+  .short-actions {
+    position: absolute;
+    bottom: calc(var(--nav-height) + 20px);
+    right: 15px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+  }
+  
+  .short-action-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 2.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    transition: transform 0.2s, color 0.2s;
+    padding: 0;
+  }
+  .short-action-btn:active { transform: scale(0.85); }
+  .short-action-btn .small-text { font-size: 0.75rem; margin-top: 5px; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+  
+  .heart-anim {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 8rem;
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+  }
+  .heart-anim.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    color: var(--accent-glow);
+  }
+  
+  /* Play/Pause Center Icon Animation */
+  .center-play-pause-anim {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    transition: opacity 0.2s, transform 0.2s;
+    backdrop-filter: blur(5px);
+  }
+  .center-play-pause-anim.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  
+  /* NEW DESKTOP & LARGE SCREEN RESPONSIVENESS */
   .left-sidebar { display: none; }
   .main-content { width: 100%; position: relative; }
   
@@ -117,7 +233,6 @@
       body { padding-bottom: 0; overflow: hidden; background: var(--bg-base); }
       .app-container { display: flex; max-width: 100%; width: 100vw; height: 100vh; box-shadow: none; border: none; }
       
-      /* Left Sidebar */
       .left-sidebar { display: flex; flex-direction: column; width: 280px; min-width: 280px; background: var(--bg-panel); border-right: 1px solid var(--glass-border); padding: 25px 20px; z-index: 100; }
       .sidebar-brand { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; letter-spacing: -1px; }
       .sidebar-brand i { color: var(--accent-glow); }
@@ -127,33 +242,26 @@
       .sidebar-nav .nav-item.active { color: var(--text-primary); font-weight: 700; background: rgba(0,0,0,0.05); }
       .sidebar-nav .nav-item i { font-size: 1.4rem; }
       
-      /* Main Content Area */
       .main-content { flex-grow: 1; height: 100vh; overflow-y: auto; padding-bottom: 100px; position: relative;}
-      
-      /* Hide Mobile Navigation */
       .bottom-nav { display: none !important; }
       
-      /* Master Player Desktop Adjustment */
       .master-player { max-width: 100%; width: 100%; left: 0; transform: translateY(0); bottom: 0; height: 90px; border-radius: 0; border: none; border-top: 1px solid var(--glass-border); padding: 0 40px; z-index: 2000; justify-content: space-between; }
       .master-player.hidden { transform: translateY(100%); }
       .master-player .track-info { width: 300px; flex-grow: 0; }
       .master-player .player-controls { flex-grow: 1; justify-content: center; gap: 30px; }
       .master-player .progress-ring { bottom: auto; top: 0; height: 4px; }
       
-      /* Grids Optimization for Desktop */
       .carousel-card { flex: 0 0 190px; }
       .carousel-card img { width: 190px; height: 190px; }
       .search-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
       .skeleton-card { flex: 0 0 190px; }
       .skel-img { width: 190px; height: 190px; }
       
-      /* Padding Adjustments */
       .top-bar, .home-header-wrapper { max-width: 100%; padding: 20px 40px; }
       .section-header { margin: 30px 40px 15px; }
       .carousel-container { padding: 0 40px 20px; gap: 20px;}
       .container { padding-left: 40px; padding-right: 40px; max-width: 1400px; }
       
-      /* Now Playing Desktop Confinement */
       #page-now-playing { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 0; z-index: 1050; padding-bottom: 100px;}
       .np-dynamic-bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0;}
       .np-overlay { position: absolute; }
@@ -175,6 +283,18 @@
   </aside>
 
   <main class="main-content" id="mainContent">
+
+   <div id="page-discovery" class="app-view p-0" style="height: 100vh; overflow: hidden; position: relative;">
+    <div id="shortsContainer" class="shorts-container">
+     <div class="text-center text-muted mt-5 pt-5" id="discoveryLoader">
+      <div class="spinner-border text-light mb-2"></div>
+      <p class="text-light">Loading discovery...</p>
+     </div>
+    </div>
+
+    <div class="shorts-top-gradient"></div>
+    <h4 class="position-absolute text-white fw-bold" style="top: max(env(safe-area-inset-top), 20px); left: 20px; z-index: 10;">Discover</h4>
+   </div>
 
    <div class="home-header-wrapper d-none" id="globalHomeHeader">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -356,6 +476,7 @@
   <nav class="bottom-nav">
    <a href="#home" class="nav-item active"><i class="bi bi-house-door-fill"></i><span>Home</span></a>
    <a href="#search" class="nav-item"><i class="bi bi-search"></i><span>Search</span></a>
+   <a href="#discovery" class="nav-item" onclick="startDiscovery()"><i class="bi bi-compass-fill"></i><span>Discover</span></a>
    <a href="#library" class="nav-item"><i class="bi bi-collection-fill"></i><span>Library</span></a>
   </nav>
  </div>
@@ -550,14 +671,13 @@
       } 
       
       if (pageId === 'library') loadLibrary(); 
-      if (pageId === 'now-playing') { 
-          document.getElementById('masterPlayer').classList.add('hidden'); 
-      } else { 
-          if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
-          document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
-          document.querySelectorAll(`.nav-item[href="#${pageId}"]`).forEach(n => n.classList.add('active'));
-      } 
-      
+      if (pageId === 'now-playing' || pageId === 'discovery') { 
+        document.getElementById('masterPlayer').classList.add('hidden'); 
+    } else { 
+        if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
+        document.querySelectorAll(`.nav-item[href="#${pageId}"]`).forEach(n => n.classList.add('active'));
+    }
       const contentArea = document.getElementById('mainContent');
       if(contentArea) contentArea.scrollTo(0, 0);
       else window.scrollTo(0, 0);
@@ -972,8 +1092,9 @@
       currentPlayingSong = songObj; 
       addToHistory(songObj); 
       updateAppTheme(songObj.thumbUrl); 
-      
-      window.location.hash = 'now-playing';
+      if (window.location.hash !== '#discovery') {
+          window.location.hash = 'now-playing';
+      }
       
       const player = document.getElementById('masterPlayer'); 
       player.classList.remove('hidden'); 
@@ -1663,7 +1784,303 @@
           if(document.getElementById('npPlayPauseIcon')) document.getElementById('npPlayPauseIcon').className = 'bi bi-play-circle-fill'; 
           Swal.fire({ icon: 'error', title: 'Offline', text: 'Stream unavailable.', background: 'var(--bg-panel)', color: 'var(--text-primary)' }); 
       }); 
-  } 
+  }
+  
+  let discoverySongs = [];
+  let shortsObserver = null;
+  let isFetchingDiscovery = false;
+  let discoveryPage = 1;
+  let discoveryQueries = [];
+  let currentQueryIndex = 0;
+  let seenDiscoveryIds = new Set();
+  let playTimeout = null;
+  
+  function setupShortsObserver() {
+    if(shortsObserver) shortsObserver.disconnect();
+    
+    const container = document.getElementById('shortsContainer');
+    const options = {
+        root: container,
+        threshold: 0.6 
+    };
+    
+    shortsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                clearTimeout(playTimeout);
+                
+                playTimeout = setTimeout(() => {
+                    const songObj = {
+                        videoId: entry.target.dataset.videoId,
+                        title: entry.target.dataset.title,
+                        author: entry.target.dataset.author,
+                        thumbUrl: entry.target.dataset.thumbUrl
+                    };
+                    const index = parseInt(entry.target.dataset.index);
+                    
+                    activePlaybackQueue = discoverySongs.map(s => ({
+                        videoId: s.id, 
+                        title: s.name || s.title, 
+                        author: s.primaryArtists || s.subtitle, 
+                        thumbUrl: getHighResImage(s.image)
+                    }));
+                    
+                    executePlay(songObj, index);
+                    
+                    document.getElementById('masterPlayer').classList.add('hidden');
+                }, 350); 
+            }
+        });
+    }, options);
+    
+    document.querySelectorAll('.short-item').forEach(item => {
+        shortsObserver.observe(item);
+    });
+  }
+  
+  async function startDiscovery() {
+    if (discoverySongs.length === 0) {
+        document.getElementById('discoveryLoader').classList.remove('d-none');
+        
+        const history = getHistory();
+        const liked = getLikedSongs();
+        
+        history.forEach(s => seenDiscoveryIds.add(s.videoId));
+        liked.forEach(s => seenDiscoveryIds.add(s.videoId));
+  
+        const artists = history.map(s => s.author.split(',')[0].trim()).filter(a => a && a !== 'Unknown');
+        const uniqueArtists = [...new Set(artists)]; 
+        
+        if (uniqueArtists.length > 0) {
+            discoveryQueries = uniqueArtists;
+        } else {
+            discoveryQueries = ['trending hindi', 'latest bollywood', 'viral songs', 'lofi beats'];
+        }
+        
+        await fetchDiscoveryChunk();
+        
+        const container = document.getElementById('shortsContainer');
+        container.addEventListener('scroll', handleDiscoveryScroll);
+    }
+  }
+  
+  async function fetchDiscoveryChunk() {
+    if (isFetchingDiscovery) return;
+    isFetchingDiscovery = true;
+    
+    if (currentQueryIndex >= discoveryQueries.length) {
+        currentQueryIndex = 0;
+    }
+    
+    const query = discoveryQueries[currentQueryIndex];
+    
+    try {
+        const res = await fetch(`${API_STREAM}/search/songs?query=${encodeURIComponent(query)}&page=${discoveryPage}&limit=15`);
+        const data = await res.json();
+        let fetchedSongs = extractData(data);
+        
+        let newSongs = [];
+        fetchedSongs.forEach(song => {
+            if (!seenDiscoveryIds.has(song.id)) {
+                seenDiscoveryIds.add(song.id);
+                newSongs.push(song);
+            }
+        });
+        
+        if (newSongs.length > 0) {
+            const startIndex = discoverySongs.length;
+            discoverySongs = [...discoverySongs, ...newSongs]; 
+            appendShortsToDOM(newSongs, startIndex);
+            
+            document.getElementById('discoveryLoader').classList.add('d-none');
+            discoveryPage++; 
+        } else {
+            currentQueryIndex++;
+            discoveryPage = 1;
+            isFetchingDiscovery = false;
+            await fetchDiscoveryChunk(); 
+            return;
+        }
+    } catch (e) {
+        console.error("Discovery fetch error", e);
+    }
+    
+    isFetchingDiscovery = false;
+  }
+  
+  function handleDiscoveryScroll() {
+    const container = document.getElementById('shortsContainer');
+    if (container.scrollTop + container.clientHeight >= container.scrollHeight - 1000) {
+        fetchDiscoveryChunk();
+    }
+  }
+  
+  function appendShortsToDOM(songsChunk, startIndex) {
+    const container = document.getElementById('shortsContainer');
+    
+    const existingLoader = document.getElementById('discoveryLoader');
+    if (existingLoader) existingLoader.remove();
+    
+    songsChunk.forEach((song, i) => {
+        const index = startIndex + i;
+        const thumbUrl = getHighResImage(song.image);
+        const isLikedClass = isLiked(song.id) ? 'bi-heart-fill text-success' : 'bi-heart';
+        
+        const item = document.createElement('div');
+        item.className = 'short-item';
+        item.style.backgroundImage = `url('${thumbUrl}')`;
+        item.id = `short-${index}`;
+        
+        item.dataset.videoId = song.id;
+        item.dataset.title = song.name || song.title;
+        item.dataset.author = song.primaryArtists || song.subtitle;
+        item.dataset.thumbUrl = thumbUrl;
+        item.dataset.index = index;
+        
+        item.innerHTML = `
+            <div class="short-overlay"></div>
+            <div class="short-info">
+                <h3 class="mb-1 fw-bold text-truncate" style="text-shadow: 0 2px 4px rgba(0,0,0,0.6);">${song.name || song.title}</h3>
+                <p class="mb-0 text-truncate text-white-50" style="font-size: 0.9rem;">${song.primaryArtists || song.subtitle}</p>
+            </div>
+            <div class="short-actions">
+                <button class="short-action-btn" onclick="toggleShortLike(event, '${song.id}', 'icon-${index}')">
+                    <i id="icon-${index}" class="bi ${isLikedClass}"></i>
+                    <span class="small-text">Like</span>
+                </button>
+                <button class="short-action-btn" onclick="skipShort(event)">
+                    <i class="bi bi-x-lg text-white-50"></i>
+                    <span class="small-text text-white-50">Skip</span>
+                </button>
+            </div>
+            
+            <i class="bi bi-heart-fill heart-anim" id="anim-${index}"></i>
+            
+            <div class="center-play-pause-anim" id="play-pause-anim-${index}">
+                <i class="bi bi-pause-fill"></i>
+            </div>
+        `;
+        
+        let lastTapTime = 0;
+        let singleTapTimeout = null;
+        let startX = 0, startY = 0;
+  
+        item.addEventListener('pointerdown', (e) => {
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+  
+        item.addEventListener('pointerup', (e) => {
+            if (e.target.closest('.short-action-btn')) return;
+  
+            let diffX = Math.abs(e.clientX - startX);
+            let diffY = Math.abs(e.clientY - startY);
+            if (diffX > 15 || diffY > 15) return;
+  
+            if (e.cancelable) e.preventDefault(); 
+  
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTapTime;
+  
+            if (tapLength > 0 && tapLength < 300) { 
+                clearTimeout(singleTapTimeout); 
+                handleDoubleTap(song.id, index); 
+                lastTapTime = 0; 
+            } else {
+                lastTapTime = currentTime;
+                
+                singleTapTimeout = setTimeout(() => {
+                    toggleShortPlayPause(index); 
+                }, 300); 
+            }
+        });
+  
+        container.appendChild(item);
+        if (shortsObserver) shortsObserver.observe(item);
+    });
+    
+    container.innerHTML += `
+        <div class="text-center text-muted w-100" id="discoveryLoader" style="scroll-snap-align: start; height: 100%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #050505;">
+            <div class="spinner-border text-light mb-2"></div>
+            <p class="text-light">Finding your vibe...</p>
+        </div>
+    `;
+  
+    if (!shortsObserver) setupShortsObserver();
+  }
+  
+  function toggleShortPlayPause(index) {
+      const animEl = document.getElementById(`play-pause-anim-${index}`);
+      if (!animEl) return;
+      const iconEl = animEl.querySelector('i');
+      
+      if (audioEl.paused) {
+          audioEl.play();
+          iconEl.className = 'bi bi-play-fill';
+          animEl.classList.add('show');
+          
+          setTimeout(() => {
+              animEl.classList.remove('show');
+          }, 600);
+      } else {
+          audioEl.pause();
+          iconEl.className = 'bi bi-pause-fill';
+          animEl.classList.add('show'); 
+      }
+  }
+  
+  function toggleShortLike(event, videoId, iconId) {
+    if(event) event.stopPropagation(); 
+    
+    let songs = getLikedSongs(); 
+    const icon = document.getElementById(iconId);
+    
+    if (isLiked(videoId)) {
+        songs = songs.filter(s => s.videoId !== videoId);
+        if (icon) icon.className = 'bi bi-heart';
+    } else {
+        const song = discoverySongs.find(s => s.id === videoId);
+        if (song) {
+            songs.push({
+                videoId: song.id,
+                title: song.name || song.title,
+                author: song.primaryArtists || song.subtitle,
+                thumbUrl: getHighResImage(song.image)
+            });
+            if (icon) icon.className = 'bi bi-heart-fill text-success';
+        }
+    }
+    localStorage.setItem('liked_songs', JSON.stringify(songs));
+    
+    if(currentPlayingSong && currentPlayingSong.videoId === videoId) {
+        if(document.getElementById('playerLikeIcon')) document.getElementById('playerLikeIcon').className = isLiked(videoId) ? 'bi bi-heart-fill liked text-success' : 'bi bi-heart'; 
+        if(document.getElementById('npLikeIcon')) document.getElementById('npLikeIcon').className = isLiked(videoId) ? 'bi bi-heart-fill liked text-success fs-2' : 'bi bi-heart fs-2'; 
+    }
+  }
+  
+  function handleDoubleTap(videoId, index) {
+    const iconId = `icon-${index}`;
+    const anim = document.getElementById(`anim-${index}`);
+    
+    if(!isLiked(videoId)) {
+        toggleShortLike(null, videoId, iconId);
+    }
+    
+    if (anim) {
+        anim.classList.add('show');
+        setTimeout(() => anim.classList.remove('show'), 800);
+    }
+  }
+  
+  function skipShort(event) {
+    if(event) event.stopPropagation();
+    const container = document.getElementById('shortsContainer');
+    
+    if (container) {
+        container.scrollBy({ top: container.clientHeight, behavior: 'smooth' });
+    }
+  }
+  
  </script>
 </body>
 
