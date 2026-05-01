@@ -20,7 +20,6 @@
   h1, h2, h3, h4, h5 { font-weight: 700; letter-spacing: -0.5px;} 
   .text-muted { color: var(--text-secondary) !important; } 
   
-  /* SKELETON LOADER CSS */
   .skeleton-card { flex: 0 0 145px; display: flex; flex-direction: column; gap: 8px; scroll-snap-align: start; }
   .skel-img { width: 145px; height: 145px; border-radius: 12px; background: #e2e4e9; animation: pulse 1.5s infinite ease-in-out; }
   .skel-text { width: 80%; height: 12px; border-radius: 4px; background: #e2e4e9; animation: pulse 1.5s infinite ease-in-out; margin-top: 2px; }
@@ -92,7 +91,6 @@
   .custom-range::-webkit-slider-runnable-track { background: rgba(0, 0, 0, 0.1); height: 4px; border-radius: 2px; } 
   .search-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; padding: 0 10px;} 
   
-  /* NOW PLAYING Scrollable Adjustments */
   #page-now-playing { position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; z-index: 1050; background-color: var(--bg-base); transition: background-color 0.8s ease; flex-direction: column; overflow-y: auto; overflow-x: hidden; display: none; padding-bottom: 40px; } 
   #page-now-playing.active { display: flex; } 
   .np-dynamic-bg { position: fixed; top: -10%; left: -10%; width: 120%; height: 120%; object-fit: cover; filter: blur(80px) brightness(1.1) saturate(1.2); z-index: 1; transition: 0.5s ease; opacity: 0.6; pointer-events: none;} 
@@ -181,7 +179,7 @@
   </div>
 
   <div id="page-playlist-details" class="app-view">
-   <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="history.back()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
+   <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="navigateToHomeOrBack()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
    <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
    <div class="cinematic-header" id="playlistHeaderBg" style="background-image: url('');">
     <div class="cinematic-header-vignette"></div>
@@ -199,7 +197,7 @@
   </div>
 
   <div id="page-artist-details" class="app-view">
-   <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="history.back()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
+   <button class="btn position-absolute" style="top: 15px; left: 10px; z-index: 100;" onclick="navigateToHomeOrBack()"><i class="bi bi-arrow-left text-dark fs-2" style="color: var(--text-primary) !important;"></i></button>
    <button class="btn position-absolute" style="top: 15px; right: 10px; z-index: 100;" onclick="shareCurrentDetail()"><i class="bi bi-share text-dark fs-3" style="color: var(--text-primary) !important;"></i></button>
    <div class="cinematic-header" id="artistHeaderBg" style="background-image: url(''); height: 40vh;">
     <div class="cinematic-header-vignette"></div>
@@ -323,6 +321,7 @@
   let currentDetailId = null; let currentDetailType = null; let currentDetailPage = 1;
   let sleepTimerInstance = null; let currentDetailView = null; 
   let parsedLyricsArr = []; let lyricsVisible = false;
+  let pendingDetailPreload = null; // Used for UI transitions
   
   const MOODS = [ 
       { name: 'Happy', query: 'happy', gradient: 'linear-gradient(135deg, #FFB75E, #ED8F03)' }, 
@@ -337,7 +336,6 @@
   let currentMoodQuery = ''; 
   let moodPageNum = 1; 
   
-  // UPDATED HOMEPAGE CATEGORIES
   const ALL_HOME_SECTIONS = [ 
       { id: 's1', title: "Latest Songs", query: "latest", endpoint: "/search/songs", type: "song" }, 
       { id: 's2', title: "Trending Songs", query: "trending", endpoint: "/search/songs", type: "song" }, 
@@ -394,12 +392,7 @@
       }
   
       loadSpotifyHome(); 
-      
-      if(!handleDeepLinks()) { 
-          const hash = window.location.hash || '#home'; 
-          history.replaceState(null, '', hash); 
-          window.dispatchEvent(new Event('hashchange')); 
-      } 
+      processHash(); // Run routing immediately
   }); 
   
   function setGreeting() { 
@@ -432,26 +425,93 @@
       shareContent(currentDetailView.title, `Check out this ${currentDetailView.type} on Streamify!`, `#view?type=${currentDetailView.type}&id=${currentDetailView.id}`); 
   } 
   
-  function handleDeepLinks() {
-      const hash = window.location.hash;
-      if (!hash.includes('?')) return false;
+  // UPDATED: CENTRALIZED HASH ROUTING (PERSISTENT LINKS)
+  window.addEventListener('hashchange', () => { 
+      processHash();
+  });
   
+  function processHash() {
+      const hash = window.location.hash || '#home'; 
+      
+      // 1. Shared Song Deep Link (#play?id=)
       if (hash.startsWith('#play?id=')) {
           const id = hash.split('=')[1];
-          window.history.replaceState(null, '', window.location.pathname); 
+          window.history.replaceState(null, '', window.location.pathname + '#now-playing'); 
           playSharedSong(id); 
-          return true;
+          return;
       }
+  
+      // 2. View Detail Links (#view?type=...)
       if (hash.startsWith('#view?type=')) {
           const params = new URLSearchParams(hash.split('?')[1]);
           const type = params.get('type');
           const id = params.get('id');
-          window.history.replaceState(null, '', window.location.pathname);
-          if (type === 'artist') openArtist(id, 'Shared Artist', null);
-          else openUniversalDetail(type, id, `Shared ${type}`, '', null);
-          return true;
+          
+          const isArtist = type === 'artist';
+          const pageId = isArtist ? 'artist-details' : 'playlist-details';
+          
+          document.querySelectorAll('.app-view').forEach(p => p.classList.remove('active')); 
+          const viewEl = document.getElementById('page-' + pageId);
+          if(viewEl) viewEl.classList.add('active');
+          
+          document.getElementById('globalHomeHeader').classList.add('d-none');
+          document.querySelector('.bottom-nav').style.display = 'flex';
+          if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
+          
+          if (currentDetailId !== id) {
+              const pre = pendingDetailPreload || { title: 'Loading...', subtitle: '', thumbUrl: FALLBACK_IMG };
+              pendingDetailPreload = null;
+              
+              if (type === 'local') {
+                  openUserPlaylist(id, true);
+              } else if (isArtist) {
+                  openArtist(id, pre.title, pre.thumbUrl, true);
+              } else {
+                  openUniversalDetail(type, id, pre.title, pre.subtitle, pre.thumbUrl, true);
+              }
+          }
+          window.scrollTo(0, 0);
+          return;
       }
-      return false;
+  
+      // 3. Normal Tab Navigation (#home, #search, etc)
+      const pageId = hash.substring(1).split('?')[0]; 
+      document.querySelectorAll('.app-view').forEach(p => p.classList.remove('active')); 
+      const targetView = document.getElementById('page-' + pageId); 
+      if(targetView) {
+          targetView.classList.add('active'); 
+      } else { 
+          document.getElementById('page-home').classList.add('active'); 
+      }
+      
+      const globalHeader = document.getElementById('globalHomeHeader'); 
+      if (['home', 'mood', 'radio'].includes(pageId)) { 
+          globalHeader.classList.remove('d-none'); 
+          document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active')); 
+          const chipMap = { 'home': 'chip-all', 'mood': 'chip-mood', 'radio': 'chip-radio' }; 
+          if(document.getElementById(chipMap[pageId])) document.getElementById(chipMap[pageId]).classList.add('active'); 
+          if (pageId === 'radio' && document.getElementById('radioFeedList').innerHTML === '') loadRadioFeed(); 
+      } else { 
+          globalHeader.classList.add('d-none'); 
+      } 
+      
+      if (pageId === 'library') loadLibrary(); 
+      if (pageId === 'now-playing') { 
+          document.getElementById('masterPlayer').classList.add('hidden'); 
+          document.querySelector('.bottom-nav').style.display = 'none'; 
+      } else { 
+          if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
+          document.querySelector('.bottom-nav').style.display = 'flex'; 
+          document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active')); 
+          const navId = `nav-${pageId}`; 
+          if(document.getElementById(navId)) document.getElementById(navId).classList.add('active'); 
+      } 
+      window.scrollTo(0, 0); 
+  }
+  
+  function handleDeepLinks() {
+      const hash = window.location.hash;
+      return hash.startsWith('#play?id=') || hash.startsWith('#view?type=');
   }
   
   async function playSharedSong(id) {
@@ -662,39 +722,6 @@
           window.location.hash = 'home';
       }
   }
-  
-  window.addEventListener('hashchange', () => { 
-      if(handleDeepLinks()) return; 
-      const hash = window.location.hash || '#home'; 
-      const pageId = hash.substring(1).split('?')[0]; 
-      document.querySelectorAll('.app-view').forEach(p => p.classList.remove('active')); 
-      const targetView = document.getElementById('page-' + pageId); 
-      if(targetView) targetView.classList.add('active'); 
-      else document.getElementById('page-home').classList.add('active'); 
-      
-      const globalHeader = document.getElementById('globalHomeHeader'); 
-      if (['home', 'mood', 'radio'].includes(pageId)) { 
-          globalHeader.classList.remove('d-none'); 
-          document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active')); 
-          const chipMap = { 'home': 'chip-all', 'mood': 'chip-mood', 'radio': 'chip-radio' }; 
-          if(document.getElementById(chipMap[pageId])) document.getElementById(chipMap[pageId]).classList.add('active'); 
-          if (pageId === 'radio' && document.getElementById('radioFeedList').innerHTML === '') loadRadioFeed(); 
-      } else { 
-          globalHeader.classList.add('d-none'); 
-      } 
-      if (pageId === 'library') loadLibrary(); 
-      if (pageId === 'now-playing') { 
-          document.getElementById('masterPlayer').classList.add('hidden'); 
-          document.querySelector('.bottom-nav').style.display = 'none'; 
-      } else { 
-          if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
-          document.querySelector('.bottom-nav').style.display = 'flex'; 
-          document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active')); 
-          const navId = `nav-${pageId}`; 
-          if(document.getElementById(navId)) document.getElementById(navId).classList.add('active'); 
-      } 
-      window.scrollTo(0, 0); 
-  }); 
   
   function navigateTo(pageId, event = null) { 
       if (event) event.preventDefault(); 
@@ -1086,11 +1113,20 @@
                   executePlay({ videoId: item.id, title: title, author: subtitle, thumbUrl: thumbUrl }, index); 
               }; 
           } else if (type === 'playlist') { 
-              onClickFn = () => openUniversalDetail('playlist', item.id, title, subtitle, thumbUrl); 
+              onClickFn = () => {
+                  pendingDetailPreload = { title, subtitle, thumbUrl };
+                  window.location.hash = `#view?type=playlist&id=${item.id}`;
+              };
           } else if (type === 'album') { 
-              onClickFn = () => openUniversalDetail('album', item.id, title, subtitle, thumbUrl); 
+              onClickFn = () => {
+                  pendingDetailPreload = { title, subtitle, thumbUrl };
+                  window.location.hash = `#view?type=album&id=${item.id}`;
+              };
           } else if (type === 'artist') { 
-              onClickFn = () => openArtist(item.id, title, thumbUrl); 
+              onClickFn = () => {
+                  pendingDetailPreload = { title, subtitle, thumbUrl };
+                  window.location.hash = `#view?type=artist&id=${item.id}`;
+              };
           } 
           card.onclick = onClickFn; 
           card.innerHTML = `<img src="${thumbUrl}" onerror="this.src='${FALLBACK_IMG}'"><p class="carousel-title">${title}</p><p class="carousel-subtitle">${subtitle}</p>`; 
@@ -1110,9 +1146,22 @@
           card.style.width = "100%"; 
           let title = item.title || item.name, subtitle = item.subtitle || item.description || (targetType === 'artist' ? 'Artist' : targetType === 'album' ? 'Album' : 'Playlist'); 
           let thumbUrl = getHighResImage(item.image); 
-          if (targetType === 'playlist') card.onclick = () => openUniversalDetail('playlist', item.id, title, subtitle, thumbUrl); 
-          else if (targetType === 'album') card.onclick = () => openUniversalDetail('album', item.id, title, subtitle, thumbUrl); 
-          else if (targetType === 'artist') card.onclick = () => openArtist(item.id, title, thumbUrl); 
+          if (targetType === 'playlist') {
+              card.onclick = () => {
+                  pendingDetailPreload = { title, subtitle, thumbUrl };
+                  window.location.hash = `#view?type=playlist&id=${item.id}`;
+              };
+          } else if (targetType === 'album') {
+              card.onclick = () => {
+                  pendingDetailPreload = { title, subtitle, thumbUrl };
+                  window.location.hash = `#view?type=album&id=${item.id}`;
+              };
+          } else if (targetType === 'artist') {
+              card.onclick = () => {
+                  pendingDetailPreload = { title, subtitle, thumbUrl };
+                  window.location.hash = `#view?type=artist&id=${item.id}`;
+              };
+          }
           card.innerHTML = `<img src="${thumbUrl}" onerror="this.src='${FALLBACK_IMG}'" style="width:100%; height:auto; aspect-ratio:1;"><p class="carousel-title">${title}</p><p class="carousel-subtitle">${subtitle}</p>`; 
           grid.appendChild(card); 
       }); 
@@ -1240,14 +1289,19 @@
       isSearching = false; 
   } 
   
-  async function openUniversalDetail(type, id, defaultTitle, defaultAuthor, defaultThumbUrl) { 
+  async function openUniversalDetail(type, id, defaultTitle, defaultAuthor, defaultThumbUrl, skipUrlUpdate = false) { 
+      if (!skipUrlUpdate) {
+          pendingDetailPreload = { title: defaultTitle, subtitle: defaultAuthor, thumbUrl: defaultThumbUrl };
+          window.location.hash = `#view?type=${type}&id=${id}`;
+          return;
+      }
+  
       currentDetailView = { type: type, id: id, title: defaultTitle }; 
       document.getElementById('detailTitle').innerText = defaultTitle; 
       document.getElementById('detailAuthor').innerText = defaultAuthor ? defaultAuthor : ''; 
       document.getElementById('playlistHeaderBg').style.backgroundImage = `url('${defaultThumbUrl || FALLBACK_IMG}')`; 
       document.getElementById('playlistSongsContainer').innerHTML = INLINE_LOADER; 
       document.getElementById('loadMorePlaylistBtn').classList.add('d-none'); 
-      navigateTo('playlist-details'); 
       
       try { 
           const response = await fetch(`${API_META}/${type}s?id=${id}`); 
@@ -1280,29 +1334,47 @@
       } catch (error) { document.getElementById('playlistSongsContainer').innerHTML = `<p class="text-danger text-center mt-4">Error loading ${type}.</p>`; } 
   } 
   
-  function openUserPlaylist(playlistId) { 
+  function openUserPlaylist(playlistId, skipUrlUpdate = false) { 
+      if (!skipUrlUpdate) {
+          window.location.hash = `#view?type=local&id=${playlistId}`;
+          return;
+      }
       const pl = getUserPlaylists().find(p => p.id === playlistId); 
       if (!pl) return; 
+      currentDetailId = playlistId;
       document.getElementById('detailTitle').innerText = pl.name; 
       document.getElementById('detailAuthor').innerText = "Your Playlist"; 
       document.getElementById('playlistHeaderBg').style.backgroundImage = `url('${pl.songs.length > 0 ? pl.songs[0].thumbUrl : FALLBACK_IMG}')`; 
       document.getElementById('playlistSongsContainer').innerHTML = ''; 
       document.getElementById('loadMorePlaylistBtn').classList.add('d-none'); 
-      navigateTo('playlist-details'); 
+      
       if (pl.songs.length > 0) renderSongsList(pl.songs, 'playlistSongsContainer', false); 
       else document.getElementById('playlistSongsContainer').innerHTML = '<p class="text-center text-muted mt-4">Playlist is empty.</p>'; 
   } 
   
-  async function openArtist(artistId, name, thumbUrl) { 
+  async function openArtist(artistId, name, thumbUrl, skipUrlUpdate = false) { 
+      if (!skipUrlUpdate) {
+          pendingDetailPreload = { title: name, subtitle: 'Artist', thumbUrl: thumbUrl };
+          window.location.hash = `#view?type=artist&id=${artistId}`;
+          return;
+      }
+  
       currentDetailView = { type: 'artist', id: artistId, title: name }; 
       document.getElementById('artistDetailName').innerText = name; 
       document.getElementById('artistHeaderBg').style.backgroundImage = `url('${thumbUrl || FALLBACK_IMG}')`; 
       document.getElementById('artistSongsContainer').innerHTML = INLINE_LOADER; 
       document.getElementById('loadMoreArtistBtn').classList.add('d-none'); 
-      navigateTo('artist-details'); 
       
       try { 
-          const data = (await (await fetch(`${API_META}/artists?id=${artistId}`)).json()).data || {}; 
+          const response = await fetch(`${API_META}/artists?id=${artistId}`);
+          const payload = await response.json();
+          const data = payload.data || {}; 
+          
+          const realName = data.name || data.title || name;
+          const realThumbUrl = getHighResImage(data.image) !== FALLBACK_IMG ? getHighResImage(data.image) : thumbUrl;
+          document.getElementById('artistDetailName').innerText = realName; 
+          document.getElementById('artistHeaderBg').style.backgroundImage = `url('${realThumbUrl}')`;
+  
           let songs = []; 
           if (Array.isArray(data.topSongs)) songs = data.topSongs; 
           else if (data.topSongs && Array.isArray(data.topSongs.results)) songs = data.topSongs.results; 
@@ -1310,6 +1382,15 @@
           else if (Array.isArray(data.songs)) songs = data.songs; 
           else if (data.songs && Array.isArray(data.songs.results)) songs = data.songs.results; 
           
+          // ARTIST SONGS FALLBACK
+          if (!songs || songs.length === 0) {
+              try {
+                  const songRes = await fetch(`${API_META}/artists/${artistId}/songs?page=1`);
+                  const songPayload = await songRes.json();
+                  songs = songPayload.data?.songs || songPayload.data?.results || songPayload.data || [];
+              } catch(e) {}
+          }
+  
           if (songs.length > 0) { 
               currentDetailSongs = songs; 
               currentDetailIndex = 0; 
@@ -1352,15 +1433,24 @@
       btn.disabled = true;
   
       try {
-          const endpoint = type === 'artist' ? 'artists' : (type === 'album' ? 'albums' : 'playlists');
-          const res = await fetch(`${API_META}/${endpoint}?id=${currentDetailId}&page=${currentDetailPage}`);
-          const data = (await res.json()).data || {};
+          let res;
+          if (type === 'artist') {
+              res = await fetch(`${API_META}/artists/${currentDetailId}/songs?page=${currentDetailPage}`);
+              if (!res.ok) res = await fetch(`${API_META}/artists?id=${currentDetailId}&page=${currentDetailPage}`);
+          } else {
+              const endpoint = type === 'album' ? 'albums' : 'playlists';
+              res = await fetch(`${API_META}/${endpoint}?id=${currentDetailId}&page=${currentDetailPage}`);
+          }
+          
+          const payload = await res.json();
+          const data = payload.data || {};
   
           let newSongs = [];
           if (Array.isArray(data.songs)) newSongs = data.songs;
           else if (data.songs && Array.isArray(data.songs.results)) newSongs = data.songs.results;
           else if (data.topSongs && Array.isArray(data.topSongs.results)) newSongs = data.topSongs.results;
           else if (Array.isArray(data.list)) newSongs = data.list;
+          else if (Array.isArray(data)) newSongs = data; 
   
           if (newSongs.length > 0) {
               renderSongsList(newSongs, containerId, true);
