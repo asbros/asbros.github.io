@@ -1134,14 +1134,62 @@
   }
   
   async function generateStoryVideo() {
-    if(!currentPlayingSong || currentPlayingSong.isRadio) return;
-    
-    // Ensure audio is playing for the visualizer
+    if(!currentPlayingSong || currentPlayingSong.isRadio || !audioEl.duration) {
+        Swal.fire({ icon: 'info', title: 'Cannot generate video', text: 'Please play a valid track first.', background: 'var(--bg-panel)', color: 'var(--text-primary)' });
+        return;
+    }
+  
+    let defaultStart = Math.floor(audioEl.currentTime);
+    let defaultEnd = Math.min(Math.floor(audioEl.duration), defaultStart + 30); // Default to 30s length
+  
+    // 1. Ask User for Custom Start & End Timeline
+    const { value: formValues } = await Swal.fire({
+        title: 'Customize Story Timeline',
+        html: `
+            <div class="mb-4 mt-2 text-start px-2">
+                <label class="form-label text-dark fw-bold mb-1">Start Time</label>
+                <input type="range" id="storyStartTime" class="form-range custom-range" min="0" max="${Math.floor(audioEl.duration)}" value="${defaultStart}" oninput="updateStoryTimeline()">
+                <div class="text-center text-muted small fw-bold mt-1" id="storyStartTimeVal">${formatTime(defaultStart)}</div>
+            </div>
+            <div class="mb-2 text-start px-2">
+                <label class="form-label text-dark fw-bold mb-1">End Time</label>
+                <input type="range" id="storyEndTime" class="form-range custom-range" min="0" max="${Math.floor(audioEl.duration)}" value="${defaultEnd}" oninput="updateStoryTimeline()">
+                <div class="text-center text-muted small fw-bold mt-1" id="storyEndTimeVal">${formatTime(defaultEnd)}</div>
+            </div>
+            <div class="text-center fw-bold mt-4" id="storyDurationVal" style="color: var(--accent-glow); font-size: 1.1rem; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 10px;">
+                Video Length: ${defaultEnd - defaultStart} Seconds
+            </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: '<i class="bi bi-camera-reels me-2"></i> Start Recording',
+        confirmButtonColor: '#121212',
+        background: 'var(--bg-panel)',
+        color: 'var(--text-primary)',
+        preConfirm: () => {
+            let start = parseInt(document.getElementById('storyStartTime').value);
+            let end = parseInt(document.getElementById('storyEndTime').value);
+            if (end <= start) {
+                Swal.showValidationMessage('End time must be greater than Start time!');
+                return false;
+            }
+            return {
+                startTime: start,
+                duration: (end - start) * 1000 // Convert to milliseconds
+            }
+        }
+    });
+  
+    if (!formValues) return; 
+    const { startTime, duration } = formValues;
+  
+    // Set Audio to chosen timeline and play
+    audioEl.currentTime = startTime;
     if (audioEl.paused) togglePlayPause();
   
     Swal.fire({ 
         title: 'Recording Story... 0%', 
-        html: 'Creating a 30-second dynamic video.<br><b class="text-danger">Please stay on this screen.</b>', 
+        html: `<p class="text-muted small">Recording a ${duration/1000}-second dynamic video.</p><b class="text-danger">Please stay on this screen and let the audio play.</b>`, 
         allowOutsideClick: false, 
         didOpen: () => Swal.showLoading(), 
         background: 'var(--bg-panel)', 
@@ -1186,29 +1234,28 @@
         recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
   
         let isRecording = true;
-        const duration = 30000; // 30 Seconds
-        const startTime = Date.now();
+        const recordingStartTime = Date.now();
   
         // Animation Loop
         function drawFrame() {
             if(!isRecording) return;
             
-            // 1. Draw Dark/Blurred Background
+            // Background Blur Effect
             ctx.fillStyle = '#121212';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.globalAlpha = 0.3;
-            ctx.drawImage(artImg, -500, -500, canvas.width + 1000, canvas.height + 1000); // Faux blur effect by scaling
+            ctx.drawImage(artImg, -500, -500, canvas.width + 1000, canvas.height + 1000); 
             ctx.globalAlpha = 1.0;
   
-            // 2. Draw Card Center
+            // Card Center
             ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
             ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
             ctx.shadowBlur = 50;
             ctx.roundRect(140, 360, 800, 1000, 50);
             ctx.fill();
-            ctx.shadowBlur = 0; // Reset shadow
+            ctx.shadowBlur = 0; 
   
-            // 3. Draw Album Art
+            // Album Art Image
             ctx.save();
             ctx.beginPath();
             ctx.roundRect(240, 460, 600, 600, 30);
@@ -1216,7 +1263,7 @@
             ctx.drawImage(artImg, 240, 460, 600, 600);
             ctx.restore();
   
-            // 4. Draw Text
+            // Track Details
             ctx.textAlign = 'center';
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 60px Outfit, sans-serif';
@@ -1226,14 +1273,35 @@
             ctx.font = '40px Outfit, sans-serif';
             ctx.fillText(currentPlayingSong.author, 540, 1220, 700);
   
-            // 5. Draw Active Visualizer
+            // SYNCED LYRICS
+            let activeLyric = "";
+            if (parsedLyricsArr && parsedLyricsArr.length > 0 && parsedLyricsArr[0].time !== null) {
+                for (let i = 0; i < parsedLyricsArr.length; i++) {
+                    if (audioEl.currentTime >= parsedLyricsArr[i].time) {
+                        activeLyric = parsedLyricsArr[i].text;
+                    } else {
+                        break;
+                    }
+                }
+            }
+  
+            if (activeLyric) {
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-glow').trim() || '#1ed760';
+                ctx.font = 'bold 45px Outfit, sans-serif';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                ctx.shadowBlur = 10;
+                ctx.fillText(activeLyric, 540, 1340, 850);
+                ctx.shadowBlur = 0;
+            }
+  
+            // Audio Visualizer
             if (analyser) {
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
                 analyser.getByteFrequencyData(dataArray);
   
                 const barWidth = 15;
-                let x = 140; // Start aligned with card
+                let x = 140; 
                 const maxBars = Math.floor(800 / (barWidth + 5));
                 const step = Math.floor(bufferLength / maxBars);
   
@@ -1241,7 +1309,6 @@
                 
                 for(let i = 0; i < maxBars; i++) {
                     const barHeight = dataArray[i * step] || 0;
-                    // Scale bar height
                     const h = (barHeight / 255) * 150;
                     ctx.fillRect(x, 1500 - h, barWidth, h + 10);
                     x += barWidth + 5;
@@ -1257,8 +1324,8 @@
             const url = URL.createObjectURL(blob);
   
             Swal.fire({
-                title: 'Video Ready!',
-                html: '<p class="text-muted small">Your 30-second story video is ready to share.</p>',
+                title: 'Story Video Ready!',
+                html: '<p class="text-muted small">Your custom timeline video with lyrics is ready.</p>',
                 showCancelButton: true,
                 confirmButtonText: '<i class="bi bi-download"></i> Save Video',
                 cancelButtonText: 'Close',
@@ -1278,13 +1345,13 @@
             });
         };
   
-        // Start Recording
+        // Start Recording Loop
         recorder.start();
         drawFrame();
   
-        // Update Progress UI
+        // Update Progress UI Real-time
         const progressInt = setInterval(() => {
-            const elapsed = Date.now() - startTime;
+            const elapsed = Date.now() - recordingStartTime;
             const percent = Math.min(100, Math.floor((elapsed / duration) * 100));
             Swal.update({ title: `Recording Story... ${percent}%` });
             
@@ -1299,6 +1366,21 @@
         Swal.fire({ icon: 'error', title: 'Error generating video', background: 'var(--bg-panel)', color: 'var(--text-primary)' });
     }
   }
+  
+  window.updateStoryTimeline = function() {
+    let start = parseInt(document.getElementById('storyStartTime').value);
+    let end = parseInt(document.getElementById('storyEndTime').value);
+    
+    // Ensure End Time is always greater than Start Time
+    if (start >= end) {
+        end = start + 1; 
+        document.getElementById('storyEndTime').value = end;
+    }
+    
+    document.getElementById('storyStartTimeVal').innerText = formatTime(start);
+    document.getElementById('storyEndTimeVal').innerText = formatTime(end);
+    document.getElementById('storyDurationVal').innerText = `Video Length: ${end - start} Seconds`;
+  };
   
   // Polyfill for Canvas roundRect (if needed on older mobile browsers)
   if (!CanvasRenderingContext2D.prototype.roundRect) {
