@@ -344,6 +344,9 @@
      </div>
 
      <div class="np-controls-wrapper w-100">
+      <div id="sleepTimerDisplay" class="badge rounded-pill bg-dark text-warning d-none align-self-start mb-3 border border-warning" style="font-size: 0.8rem; letter-spacing: 0.5px;">
+       <i class="bi bi-moon-stars-fill me-1"></i> <span id="sleepTimerCountdown"></span>
+      </div>
       <div class="np-info-row">
        <div style="overflow: hidden; padding-right: 15px; flex-grow: 1;">
         <h3 id="npTitle" class="np-title">Select a track</h3>
@@ -439,7 +442,11 @@
   const DETAIL_CHUNK_SIZE = 20; 
   
   let currentDetailId = null; let currentDetailType = null; let currentDetailPage = 1;
-  let sleepTimerInstance = null; let currentDetailView = null; 
+  let sleepTimerInstance = null;
+  let sleepTimerInterval = null;
+  let sleepAtEnd = false;
+  let sleepEndTime = null;
+  let currentDetailView = null; 
   let parsedLyricsArr = []; let lyricsVisible = false;
   let pendingDetailPreload = null; 
   
@@ -1046,7 +1053,7 @@
               <div class="list-group list-group-flush text-start fs-5">
                   <button class="list-group-item list-group-item-action py-3 border-0 bg-transparent text-dark fw-medium" onclick="Swal.close(); promptAddToPlaylist();"><i class="bi bi-plus-circle me-3"></i> Add to Playlist</button>
                   <button class="list-group-item list-group-item-action py-3 border-0 bg-transparent text-dark fw-medium" onclick="Swal.close(); promptDownloadOptions();"><i class="bi bi-download me-3"></i> Download</button>
-                  <button class="list-group-item list-group-item-action py-3 border-0 bg-transparent text-dark fw-medium" onclick="Swal.close(); generateStoryCard();"><i class="bi bi-instagram me-3" style="color: #E1306C;"></i> Create Story</button>
+                  <button class="list-group-item list-group-item-action py-3 border-0 bg-transparent text-dark fw-medium" onclick="Swal.close(); generateStoryVideo();"><i class="bi bi-camera-video me-3" style="color: #E1306C;"></i> Create Video Story</button>
                   <button class="list-group-item list-group-item-action py-3 border-0 bg-transparent text-dark fw-medium" onclick="Swal.close(); promptSleepTimer();"><i class="bi bi-moon me-3"></i> Sleep Timer</button>
               </div>
           `,
@@ -1058,19 +1065,61 @@
   }
   
   function promptSleepTimer() { 
-      if(!currentPlayingSong) return; 
-      const options = { '0': 'Off', '15': '15 Minutes', '30': '30 Minutes', '45': '45 Minutes', '60': '1 Hour' }; 
-      Swal.fire({ title: 'Sleep Timer', input: 'select', inputOptions: options, background: 'var(--bg-panel)', color: 'var(--text-primary)', confirmButtonColor: '#121212' }).then(res => { 
-          if(res.isConfirmed) { 
-              clearTimeout(sleepTimerInstance); 
-              const mins = parseInt(res.value); 
-              if(mins > 0) { 
-                  sleepTimerInstance = setTimeout(() => { audioEl.pause(); }, mins * 60000); 
-                  Swal.fire({ icon: 'success', title: `Timer set for ${mins}m`, timer: 1500, showConfirmButton: false}); 
-              } 
-          } 
-      }); 
+    if(!currentPlayingSong) return; 
+    
+    // Naya 'End of Track' option add kiya hai
+    const options = { '0': 'Off', 'end': 'End of Track', '15': '15 Minutes', '30': '30 Minutes', '45': '45 Minutes', '60': '1 Hour' }; 
+    
+    Swal.fire({ title: 'Sleep Timer', input: 'select', inputOptions: options, background: 'var(--bg-panel)', color: 'var(--text-primary)', confirmButtonColor: '#121212' }).then(res => { 
+        if(res.isConfirmed) { 
+            // Purane timers clear karein
+            clearTimeout(sleepTimerInstance); 
+            clearInterval(sleepTimerInterval);
+            sleepAtEnd = false;
+            document.getElementById('sleepTimerDisplay').classList.add('d-none');
+  
+            if (res.value === 'end') {
+                sleepAtEnd = true;
+                document.getElementById('sleepTimerDisplay').classList.remove('d-none');
+                document.getElementById('sleepTimerCountdown').innerText = "Ends after track";
+                Swal.fire({ icon: 'success', title: `Will stop after this track`, timer: 1500, showConfirmButton: false, background: 'var(--bg-panel)', color: 'var(--text-primary)'});
+            } else {
+                const mins = parseInt(res.value); 
+                if(mins > 0) { 
+                    sleepEndTime = Date.now() + (mins * 60000);
+                    
+                    // Main Timer timeout
+                    sleepTimerInstance = setTimeout(() => { 
+                        audioEl.pause(); 
+                        document.getElementById('sleepTimerDisplay').classList.add('d-none');
+                        clearInterval(sleepTimerInterval);
+                    }, mins * 60000); 
+  
+                    // Countdown UI update interval
+                    document.getElementById('sleepTimerDisplay').classList.remove('d-none');
+                    updateSleepTimerDisplay();
+                    sleepTimerInterval = setInterval(updateSleepTimerDisplay, 1000);
+  
+                    Swal.fire({ icon: 'success', title: `Timer set for ${mins}m`, timer: 1500, showConfirmButton: false, background: 'var(--bg-panel)', color: 'var(--text-primary)'}); 
+                } 
+            }
+        } 
+    }); 
   } 
+  
+  function updateSleepTimerDisplay() {
+    if (!sleepEndTime) return;
+    const remaining = Math.max(0, Math.floor((sleepEndTime - Date.now()) / 1000));
+    
+    if (remaining <= 0) {
+        clearInterval(sleepTimerInterval);
+        return;
+    }
+    
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    document.getElementById('sleepTimerCountdown').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+  }
   
   /* --- STORY CARD GENERATOR LOGIC --- */
   async function getBase64ImageFromUrl(imageUrl) {
@@ -1084,55 +1133,188 @@
       });
   }
   
-  async function generateStoryCard() {
-      if(!currentPlayingSong || currentPlayingSong.isRadio) return;
-      Swal.fire({ title: 'Creating Card...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: 'var(--bg-panel)', color: 'var(--text-primary)' });
-      
-      try {
-          const base64Img = await getBase64ImageFromUrl(currentPlayingSong.thumbUrl);
-          document.getElementById('storyArt').src = base64Img;
-          document.getElementById('storyTitle').innerText = currentPlayingSong.title;
-          document.getElementById('storyArtist').innerText = currentPlayingSong.author;
-          
-          let glow = getComputedStyle(document.documentElement).getPropertyValue('--accent-glow').trim() || '#1ed760';
-          document.getElementById('storyCardContainer').style.background = `linear-gradient(to bottom right, ${glow}, #121212)`;
-          
-          const canvas = await html2canvas(document.getElementById('storyCardContainer'), { 
-              scale: 1, 
-              useCORS: true, 
-              allowTaint: true 
-          });
-          
-          canvas.toBlob(blob => {
-              const url = URL.createObjectURL(blob);
-              Swal.fire({
-                  title: 'Ready to Share!',
-                  imageUrl: url,
-                  imageWidth: 250,
-                  imageAlt: 'Story Card',
-                  html: '<p class="text-muted small">Save this image to share on Instagram/WhatsApp.</p>',
-                  showCancelButton: true,
-                  confirmButtonText: '<i class="bi bi-download"></i> Download',
-                  cancelButtonText: 'Close',
-                  confirmButtonColor: '#121212',
-                  background: 'var(--bg-panel)',
-                  color: 'var(--text-primary)'
-              }).then((result) => {
-                  if(result.isConfirmed) {
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `streamify_story_${Date.now()}.png`;
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
-                  }
-              });
-          }, 'image/png', 1.0);
-      } catch(e) {
-          Swal.fire({ icon: 'error', title: 'Error generating card', background: 'var(--bg-panel)', color: 'var(--text-primary)' });
-      }
+  async function generateStoryVideo() {
+    if(!currentPlayingSong || currentPlayingSong.isRadio) return;
+    
+    // Ensure audio is playing for the visualizer
+    if (audioEl.paused) togglePlayPause();
+  
+    Swal.fire({ 
+        title: 'Recording Story... 0%', 
+        html: 'Creating a 30-second dynamic video.<br><b class="text-danger">Please stay on this screen.</b>', 
+        allowOutsideClick: false, 
+        didOpen: () => Swal.showLoading(), 
+        background: 'var(--bg-panel)', 
+        color: 'var(--text-primary)' 
+    });
+  
+    try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1920;
+        const ctx = canvas.getContext('2d');
+  
+        // Load Album Art
+        const artImg = new Image();
+        artImg.crossOrigin = "anonymous";
+        artImg.src = currentPlayingSong.thumbUrl;
+        await new Promise((resolve, reject) => {
+            artImg.onload = resolve;
+            artImg.onerror = reject;
+        });
+  
+        // Setup MediaRecorder
+        const videoStream = canvas.captureStream(30); // 30 FPS
+        let finalStream = videoStream;
+  
+        // Route Audio to Video Stream
+        if (audioCtx && analyser) {
+            try {
+                const dest = audioCtx.createMediaStreamDestination();
+                analyser.connect(dest);
+                const audioTrack = dest.stream.getAudioTracks()[0];
+                if (audioTrack) {
+                    finalStream = new MediaStream([videoStream.getVideoTracks()[0], audioTrack]);
+                }
+            } catch(e) {
+                console.warn("Could not merge audio:", e);
+            }
+        }
+  
+        const recorder = new MediaRecorder(finalStream, { mimeType: 'video/webm' });
+        const chunks = [];
+        recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  
+        let isRecording = true;
+        const duration = 30000; // 30 Seconds
+        const startTime = Date.now();
+  
+        // Animation Loop
+        function drawFrame() {
+            if(!isRecording) return;
+            
+            // 1. Draw Dark/Blurred Background
+            ctx.fillStyle = '#121212';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = 0.3;
+            ctx.drawImage(artImg, -500, -500, canvas.width + 1000, canvas.height + 1000); // Faux blur effect by scaling
+            ctx.globalAlpha = 1.0;
+  
+            // 2. Draw Card Center
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 50;
+            ctx.roundRect(140, 360, 800, 1000, 50);
+            ctx.fill();
+            ctx.shadowBlur = 0; // Reset shadow
+  
+            // 3. Draw Album Art
+            ctx.save();
+            ctx.beginPath();
+            ctx.roundRect(240, 460, 600, 600, 30);
+            ctx.clip();
+            ctx.drawImage(artImg, 240, 460, 600, 600);
+            ctx.restore();
+  
+            // 4. Draw Text
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 60px Outfit, sans-serif';
+            ctx.fillText(currentPlayingSong.title, 540, 1150, 700);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '40px Outfit, sans-serif';
+            ctx.fillText(currentPlayingSong.author, 540, 1220, 700);
+  
+            // 5. Draw Active Visualizer
+            if (analyser) {
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+  
+                const barWidth = 15;
+                let x = 140; // Start aligned with card
+                const maxBars = Math.floor(800 / (barWidth + 5));
+                const step = Math.floor(bufferLength / maxBars);
+  
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-glow').trim() || '#1ed760';
+                
+                for(let i = 0; i < maxBars; i++) {
+                    const barHeight = dataArray[i * step] || 0;
+                    // Scale bar height
+                    const h = (barHeight / 255) * 150;
+                    ctx.fillRect(x, 1500 - h, barWidth, h + 10);
+                    x += barWidth + 5;
+                }
+            }
+  
+            requestAnimationFrame(drawFrame);
+        }
+  
+        recorder.onstop = () => {
+            isRecording = false;
+            const blob = new Blob(chunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+  
+            Swal.fire({
+                title: 'Video Ready!',
+                html: '<p class="text-muted small">Your 30-second story video is ready to share.</p>',
+                showCancelButton: true,
+                confirmButtonText: '<i class="bi bi-download"></i> Save Video',
+                cancelButtonText: 'Close',
+                confirmButtonColor: '#121212',
+                background: 'var(--bg-panel)',
+                color: 'var(--text-primary)'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `Streamify_Story_${Date.now()}.webm`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            });
+        };
+  
+        // Start Recording
+        recorder.start();
+        drawFrame();
+  
+        // Update Progress UI
+        const progressInt = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const percent = Math.min(100, Math.floor((elapsed / duration) * 100));
+            Swal.update({ title: `Recording Story... ${percent}%` });
+            
+            if (elapsed >= duration) {
+                clearInterval(progressInt);
+                recorder.stop();
+            }
+        }, 1000);
+  
+    } catch(e) {
+        console.error(e);
+        Swal.fire({ icon: 'error', title: 'Error generating video', background: 'var(--bg-panel)', color: 'var(--text-primary)' });
+    }
   }
   
+  // Polyfill for Canvas roundRect (if needed on older mobile browsers)
+  if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+    if (w < 2 * r) r = w / 2;
+    if (h < 2 * r) r = h / 2;
+    this.beginPath();
+    this.moveTo(x + r, y);
+    this.arcTo(x + w, y, x + w, y + h, r);
+    this.arcTo(x + w, y + h, x, y + h, r);
+    this.arcTo(x, y + h, x, y, r);
+    this.arcTo(x, y, x + w, y, r);
+    this.closePath();
+    return this;
+  }
+  }
   function navigateToHomeOrBack() {
       if(window.history.length > 1) {
           history.back();
@@ -1175,9 +1357,19 @@
       }); 
       
       audioNode.addEventListener('ended', (e) => { 
-          if(e.target !== audioEl) return;
-          if(!nextAudioTriggered) playNextSong(); 
-      }); 
+    if(e.target !== audioEl) return;
+    
+    // Check if End of Track timer is active
+    if (sleepAtEnd) {
+        sleepAtEnd = false;
+        document.getElementById('sleepTimerDisplay').classList.add('d-none');
+        // Stop playback by not calling
+        playNextSong()
+        return;
+    }
+  
+    if(!nextAudioTriggered) playNextSong(); 
+  });
       
       audioNode.addEventListener('timeupdate', (e) => { 
           if(e.target !== audioEl) return;
@@ -1266,6 +1458,8 @@
       updateDownloadIcon();
       
       document.getElementById('page-now-playing').scrollTo({ top: 0, behavior: 'smooth' });
+  const contentArea = document.getElementById('mainContent');
+  if(contentArea) contentArea.scrollTo({ top: 0, behavior: 'smooth' });
   
       if (window.location.hash !== '#discovery') {
           window.location.hash = 'now-playing';
@@ -1316,44 +1510,22 @@
       audioEl = (audioEl === audio1) ? audio2 : audio1; 
       nextAudioTriggered = false;
   
-      const triggerPlayback = (url) => {
-          audioEl.src = url; 
-          audioEl.volume = 0; 
-          
-          const playPromise = audioEl.play(); 
-          if (playPromise !== undefined) {
-              playPromise.then(() => {
-                  clearFades(oldAudio);
-                  if (oldAudio && !oldAudio.paused && oldAudio.src) {
-                      let fadeOutVol = oldAudio.volume;
-                      oldAudio.fadeInterval = setInterval(() => {
-                          fadeOutVol -= 0.1;
-                          if (fadeOutVol <= 0) {
-                              clearInterval(oldAudio.fadeInterval);
-                              oldAudio.pause();
-                              oldAudio.volume = 1;
-                          } else {
-                              oldAudio.volume = Math.max(0, fadeOutVol);
-                          }
-                      }, 400); 
-                  }
-  
-                  clearFades(audioEl);
-                  let fadeInVol = 0.0;
-                  audioEl.fadeInterval = setInterval(() => {
-                      fadeInVol += 0.1;
-                      if (fadeInVol >= 1.0) {
-                          clearInterval(audioEl.fadeInterval);
-                          audioEl.volume = 1;
-                      } else {
-                          audioEl.volume = Math.min(1, fadeInVol);
-                      }
-                  }, 400); 
-  
-              }).catch(e => { throw new Error(); });
-          }
-      };
-  
+  const triggerPlayback = (url) => {
+    audioEl.src = url; 
+    audioEl.volume = 1; // Volume direct 100%
+    
+    const playPromise = audioEl.play(); 
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            clearFades(oldAudio);
+            if (oldAudio && !oldAudio.paused && oldAudio.src) {
+                oldAudio.pause(); // Puraana audio turant pause ho jayega
+                oldAudio.currentTime = 0;
+            }
+            clearFades(audioEl);
+        }).catch(e => { throw new Error(); });
+    }
+  };
       try { 
           if(idb && downloadedSongIds.has(songObj.videoId)) {
               const tx = idb.transaction("offline_songs", "readonly");
