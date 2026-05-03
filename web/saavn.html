@@ -129,66 +129,331 @@
   .heart-anim.show { opacity: 1; transform: translate(-50%, -50%) scale(1); color: var(--accent-glow); }
   .center-play-pause-anim { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; color: rgba(255, 255, 255, 0.9); background: rgba(0, 0, 0, 0.4); border-radius: 50%; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; z-index: 10; transition: opacity 0.2s, transform 0.2s; backdrop-filter: blur(5px); }
   .center-play-pause-anim.show { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-  /* --- KARAOKE MODE STYLES --- */
-  #page-now-playing.karaoke-active .np-dynamic-bg { filter: blur(100px) brightness(0.2) saturate(1.2); }
-  #page-now-playing.karaoke-active .np-overlay { background: rgba(0,0,0,0.8); }
-  #page-now-playing.karaoke-active .np-header,
+  /* =========================================
+     MOBILE & GLOBAL SING-ALONG (KARAOKE) REDESIGN
+     ========================================= */
+  
+  /* Fix for Options/Download Menu hiding behind Now Playing */
+  .swal2-container { z-index: 9999 !important; }
+  
+  #page-now-playing.karaoke-active { background-color: #050505 !important; }
+  #page-now-playing.karaoke-active .np-dynamic-bg { filter: blur(100px) brightness(0.2) saturate(1.2) !important; }
+  #page-now-playing.karaoke-active .np-overlay { background: rgba(0,0,0,0.85) !important; }
+  
+  /* Universal Karaoke Layout (Mobile & Desktop) */
+  #page-now-playing.karaoke-active .np-container { 
+      display: block !important; 
+      position: relative; 
+      width: 100%; 
+      height: 100dvh; 
+      padding: 0 !important; 
+      overflow: hidden;
+  }
+  
+  /* Hide Non-Essential Elements */
+  #page-now-playing.karaoke-active .np-header .flex-grow-1,
+  #page-now-playing.karaoke-active .np-art,
   #page-now-playing.karaoke-active #npQueueWrapper,
-  #page-now-playing.karaoke-active .visualizer-canvas { display: none !important; }
-  #page-now-playing.karaoke-active .np-art { display: none !important; }
-  #page-now-playing.karaoke-active .np-art-wrapper { margin: 8vh 0 2vh 0; flex-grow: 1; }
+  #page-now-playing.karaoke-active .mb-3.mt-4, /* Seekbar Slider Container */
+  #page-now-playing.karaoke-active #npLikeBtn,
+  #page-now-playing.karaoke-active #npPrevBtn,
+  #page-now-playing.karaoke-active #npNextBtn,
+  #page-now-playing.karaoke-active #npDownloadBtnInPlace,
+  #page-now-playing.karaoke-active #npOptionsMenuBtn,
+  #page-now-playing.karaoke-active #npShareBtnTop { display: none !important; }
   
-  /* Lyrics Box Full Screen Transformation */
-  #page-now-playing.karaoke-active .np-lyrics-box { position: relative; max-width: 100%; height: 60vh; background: transparent; backdrop-filter: none; padding: 10px 20px; display: block !important; }
-  #page-now-playing.karaoke-active .np-lyrics-box p { font-size: 32px; opacity: 0.3; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); text-align: left; margin-bottom: 25px; line-height: 1.3; font-weight: 600; }
-  #page-now-playing.karaoke-active .np-lyrics-box p.lyric-active { opacity: 1; font-size: 42px; color: #fff !important; text-shadow: 0 0 20px rgba(255,255,255,0.4); transform: scale(1); font-weight: 800; }
+  #page-now-playing.karaoke-active .np-header { position: absolute; top: 20px; left: 20px; z-index: 100; width: auto; padding: 0; }
+  #page-now-playing.karaoke-active .np-header .back-btn i { color: #fff; }
   
-  /* Shrink Controls */
-  #page-now-playing.karaoke-active .np-controls-wrapper { transform: scale(0.9); transform-origin: bottom; padding-bottom: 10px; }
-  .karaoke-btn { color: var(--text-secondary); transition: 0.3s; }
-  .karaoke-btn.active { color: var(--accent-glow) !important; filter: drop-shadow(0 0 8px var(--accent-glow)); transform: scale(1.1); }
+  #page-now-playing.karaoke-active .np-art-wrapper {
+      position: absolute !important;
+      top: 22dvh !important; /* 37.5dvh se 22dvh kar diya (Kafi upar shift ho gaya) */
+      left: 0 !important;
+      width: 100% !important;
+      height: 55dvh !important; /* Height badha di taaki niche controls tak jagah mile */
+      margin: 0 !important;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+  }
   
-  /* DESKTOP RESPONSIVENESS */
+  #page-now-playing.karaoke-active .np-lyrics-box {
+      position: relative !important; top: 0 !important; left: 0 !important; transform: none !important;
+      width: 100% !important; max-width: 100% !important; height: 100% !important;
+      display: block !important; text-align: center !important; background: transparent !important;
+      padding: 0 25px !important; border-radius: 0;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #fff 20%, #fff 80%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #fff 20%, #fff 80%, transparent 100%);
+  }
+  
+  /* Brighter Inactive Lyrics & Big Active Line */
+  #page-now-playing.karaoke-active .np-lyrics-box p { 
+      font-size: 1.8rem; /* Mobile size */
+      color: rgba(255, 255, 255, 0.45) !important; 
+      margin-bottom: 20px; 
+      font-weight: 700; 
+      transition: all 0.4s ease; 
+  }
+  #page-now-playing.karaoke-active .np-lyrics-box p.lyric-active { 
+      color: #fff !important; 
+      font-size: 2.6rem !important; 
+      text-shadow: 0 0 30px rgba(255,255,255,0.4); 
+      transform: scale(1.05); 
+  }
+  
+  /* 🎛️ CONTROLS AREA: (Exactly at 3.5 Part) */
+  #page-now-playing.karaoke-active .np-controls-wrapper {
+      position: absolute !important;
+      top: 88dvh !important; /* Lower Bottom */
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 92% !important;
+      max-width: 500px !important;
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      padding: 12px 25px !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(25px) !important;
+      -webkit-backdrop-filter: blur(25px) !important;
+      border-radius: 25px !important;
+      border: 1px solid rgba(255,255,255,0.15) !important;
+      z-index: 100;
+  }
+  
+  #page-now-playing.karaoke-active .np-info-row { 
+      margin: 0 !important; flex: 1; 
+      display: flex !important; 
+      flex-direction: row !important; 
+      align-items: center !important; 
+      gap: 15px !important;
+      min-width: 0;
+  }
+  #page-now-playing.karaoke-active .np-info-row > div:first-child { 
+      flex: 1; min-width: 0; display: flex; flex-direction: column; 
+  }
+  #page-now-playing.karaoke-active .np-title { 
+      font-size: 1.1rem; color: #fff; text-align: left; 
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+  }
+  #page-now-playing.karaoke-active .np-artist { 
+      font-size: 0.85rem; color: rgba(255,255,255,0.6); text-align: left; 
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+  }
+  
+  /* Glowing Mic Button in Karaoke Mode */
+  #page-now-playing.karaoke-active .karaoke-btn { 
+      color: #ffffff !important; 
+      font-size: 1.8rem !important; 
+      filter: drop-shadow(0 0 12px rgba(255,255,255,0.8)); 
+      padding: 0 !important; 
+      margin: 0 10px;
+  }
+  
+  /* Play/Pause Button */
+  #page-now-playing.karaoke-active .np-controls-main { margin: 0 !important; width: auto !important; }
+  #page-now-playing.karaoke-active .btn-play-pause { 
+      font-size: 3.5rem !important; color: #fff !important; 
+      filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+  }
+  
+  /* Responsive Text for Desktop Sing-Along (min-width check) */
+  @media (min-width: 768px) {
+      #page-now-playing.karaoke-active .np-lyrics-box p { font-size: 3.2rem; }
+      #page-now-playing.karaoke-active .np-lyrics-box p.lyric-active { font-size: 4.5rem !important; }
+      #page-now-playing.karaoke-active .np-title { font-size: 2.2rem; }
+      #page-now-playing.karaoke-active .np-artist { font-size: 1.1rem; }
+      #page-now-playing.karaoke-active .btn-play-pause { font-size: 4.8rem !important; }
+  }
+  /* =========================================
+     DESKTOP RESPONSIVENESS & PRO NOW PLAYING
+     ========================================= */
   .left-sidebar { display: none; }
   .main-content { width: 100%; position: relative; }
   
   @media (min-width: 768px) {
-      body { padding-bottom: 0; overflow: hidden; background: var(--bg-base); }
-      .app-container { display: flex; max-width: 100%; width: 100vw; height: 100vh; box-shadow: none; border: none; }
+      /* Base Desktop Layout */
+      body { background: var(--bg-base); height: 100vh; overflow: hidden; }
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--accent-glow); }
+  
+      .app-container { display: flex; width: 100vw; height: 100vh; overflow: hidden; box-shadow: none; border: none; }
       
-      .left-sidebar { display: flex; flex-direction: column; width: 280px; min-width: 280px; background: var(--bg-panel); border-right: 1px solid var(--glass-border); padding: 25px 20px; z-index: 100; }
-      .sidebar-brand { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; letter-spacing: -1px; }
-      .sidebar-brand i { color: var(--accent-glow); }
-      .sidebar-nav { display: flex; flex-direction: column; gap: 10px; }
-      .sidebar-nav .nav-item { display: flex; align-items: center; gap: 15px; font-size: 1.1rem; color: var(--text-secondary); text-decoration: none; padding: 12px 18px; border-radius: 12px; transition: 0.2s; font-weight: 500; }
+      .left-sidebar { display: flex; flex-direction: column; width: 260px; min-width: 260px; height: 100vh; background: var(--bg-panel); border-right: 1px solid var(--glass-border); padding: 30px 20px; z-index: 100; }
+      .sidebar-brand { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
+      .sidebar-brand i { color: var(--accent-glow); font-size: 1.8rem; }
+      .sidebar-nav { display: flex; flex-direction: column; gap: 8px; }
+      .sidebar-nav .nav-item { display: flex; align-items: center; gap: 15px; font-size: 1.05rem; color: var(--text-secondary); text-decoration: none; padding: 12px 18px; border-radius: 8px; font-weight: 600; transition: 0.2s; }
       .sidebar-nav .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-      .sidebar-nav .nav-item.active { color: var(--text-primary); font-weight: 700; background: rgba(0,0,0,0.05); }
-      .sidebar-nav .nav-item i { font-size: 1.4rem; }
+      .sidebar-nav .nav-item.active { background: rgba(0,0,0,0.05); color: var(--text-primary); border-left: 4px solid var(--accent-glow); border-radius: 4px 8px 8px 4px; }
       
-      .main-content { flex-grow: 1; height: 100vh; overflow-y: auto; padding-bottom: 100px; position: relative;}
+      .main-content { flex: 1; height: 100vh; overflow-y: auto; padding-bottom: 110px; position: relative; }
       .bottom-nav { display: none !important; }
       
-      .master-player { max-width: 100%; width: 100%; left: 0; transform: translateY(0); bottom: 0; height: 90px; border-radius: 0; border: none; border-top: 1px solid var(--glass-border); padding: 0 40px; z-index: 2000; justify-content: space-between; }
-      .master-player.hidden { transform: translateY(100%); }
-      .master-player .track-info { width: 300px; flex-grow: 0; }
-      .master-player .player-controls { flex-grow: 1; justify-content: center; gap: 30px; }
-      .master-player .progress-ring { bottom: auto; top: 0; height: 4px; }
-      
+      /* Mobile Style Floating Player */
+      .master-player { 
+          position: fixed; bottom: 30px; left: calc(260px + (100vw - 260px) / 2); transform: translateX(-50%); width: 60%; max-width: 750px; height: 75px; 
+          background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid var(--glass-border); 
+          padding: 0 30px; z-index: 2000; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+          transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s; 
+      }
+      .master-player.hidden { transform: translate(-50%, 150px); opacity: 0; pointer-events: none; }
+      .master-player .track-info { width: 30%; min-width: 200px; }
+      .master-player .player-controls { width: 40%; justify-content: center; gap: 30px; display: flex; }
+      .master-player .player-controls .ctrl-btn { font-size: 1.6rem; transition: 0.2s; }
+      .master-player .player-controls .ctrl-btn:hover { color: var(--accent-glow); transform: scale(1.1); }
+      .master-player .progress-ring { top: auto; bottom: -1px; left: 10%; right: 10%; width: 80%; height: 3px; border-radius: 4px; }
+  
+      .top-bar, .home-header-wrapper { padding: 30px 50px 15px; }
+      .section-header { margin: 30px 50px 15px; }
+      .carousel-container { padding: 0 50px 20px; gap: 20px; }
       .carousel-card { flex: 0 0 190px; }
-      .carousel-card img { width: 190px; height: 190px; }
-      .search-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
-      .skeleton-card { flex: 0 0 190px; }
-      .skel-img { width: 190px; height: 190px; }
+      .carousel-card img { width: 190px; height: 190px; transition: 0.2s ease; border-radius: 12px; }
+      .carousel-card:hover img { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+      .search-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); padding: 0 50px; gap: 25px; }
+  
+      /* =========================================
+         🌟 PRO "NOW PLAYING" (NORMAL VIEW)
+         ========================================= */
+      #page-now-playing { 
+          position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+          z-index: 3000; display: none; background-color: var(--bg-base); overflow: hidden; 
+      }
+      #page-now-playing.active { display: flex; }
+      .np-dynamic-bg { filter: blur(90px) brightness(1.1) saturate(1.2); }
+      .np-overlay { background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, var(--bg-base) 100%); }
+  
+      .np-container { 
+          display: grid; grid-template-columns: 450px 1fr; grid-template-rows: 60px auto 1fr; 
+          grid-template-areas: "header header" "art controls" "art queue";
+          gap: 30px 80px; width: 100%; max-width: 1400px; margin: 0 auto; padding: 40px 60px;
+      }
+  
+      .np-header { grid-area: header; align-items: center; }
+      .np-header .back-btn i { font-size: 2.5rem; color: var(--text-primary); transition: 0.3s; }
+      .np-header .back-btn:hover i { color: var(--accent-glow); transform: translateY(-3px); }
+      .np-header .flex-grow-1 { display: none; }
+  
+      .np-art-wrapper { grid-area: art; margin: 0; display: flex; flex-direction: column; justify-content: flex-start; position: relative; cursor: pointer; }
+      .np-art { width: 100%; max-width: 450px; aspect-ratio: 1; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); object-fit: cover; transition: opacity 0.3s; }
+      .np-lyrics-box { max-width: 450px; border-radius: 20px; } 
+  
+      .np-controls-wrapper { grid-area: controls; display: flex; flex-direction: column; gap: 10px; z-index: 5; min-width: 0; }
+      .np-info-row { display: flex; align-items: center; margin-bottom: 15px; width: 100%; gap: 15px; justify-content: space-between; }
+      .np-info-row > div:first-child { flex: 1; min-width: 0; padding-right: 0 !important; }
+      .np-info-row .d-flex { flex-shrink: 0; } 
       
-      .top-bar, .home-header-wrapper { max-width: 100%; padding: 20px 40px; }
-      .section-header { margin: 30px 40px 15px; }
-      .carousel-container { padding: 0 40px 20px; gap: 20px;}
-      .container { padding-left: 40px; padding-right: 40px; max-width: 1400px; }
+      .np-title { font-size: 3rem; color: var(--text-primary); font-weight: 800; line-height: 1.2; letter-spacing: -1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .np-artist { font-size: 1.3rem; color: var(--text-secondary); margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       
-      #page-now-playing { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 0; z-index: 1050; padding-bottom: 100px;}
-      .np-dynamic-bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0;}
-      .np-overlay { position: absolute; }
-      .np-controls-wrapper { max-width: 600px; margin: 0 auto;}
+      /* Normal Mode Mic Button (Dynamic Color & No Glow) */
+      .karaoke-btn { transition: 0.2s; color: var(--text-primary); }
+      .karaoke-btn:hover { color: var(--accent-glow) !important; transform: scale(1.15); }
+  
+      .np-controls-main { justify-content: flex-start; gap: 40px; margin-top: 25px; }
+      .btn-play-pause { font-size: 4.5rem !important; color: var(--accent-glow) !important; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1)); transition: 0.2s; }
+      .btn-play-pause:hover { transform: scale(1.1); }
+      .np-controls-main .ctrl-btn { font-size: 2rem; color: var(--text-primary); transition: 0.2s; }
+      .np-controls-main .ctrl-btn:hover { color: var(--accent-glow); transform: scale(1.15); }
+  
+      /* Up Next Section - No Scrolling Fix */
+      #npQueueWrapper { grid-area: queue; border-top: 1px solid var(--glass-border) !important; padding-top: 20px; display: flex !important; flex-direction: column; overflow: hidden; margin-top: 20px; z-index: 5; }
+      #npQueueWrapper h5 { color: var(--text-primary) !important; font-size: 1.2rem; }
+      #npQueueList { overflow: hidden; padding-right: 0; } /* Yahan se auto-scroll hata diya */
+      #npQueueList .song-list-item { padding: 12px 15px; border-radius: 12px; transition: 0.2s; }
+      #npQueueList .song-list-item:hover { background: var(--bg-hover); }
+      #npQueueList .song-title { color: var(--text-primary); font-size: 1.1rem; }
+      #npQueueList .song-artist { color: var(--text-secondary); }
+  
+      /* =========================================
+         🎤 KARAOKE / SING-ALONG (PERFECT FIX)
+         ========================================= */
+      #page-now-playing.karaoke-active { background-color: #050505; }
+      #page-now-playing.karaoke-active .np-dynamic-bg { filter: blur(100px) brightness(0.2) saturate(1.2); }
+      #page-now-playing.karaoke-active .np-overlay { background: rgba(0,0,0,0.85); }
+      
+      #page-now-playing.karaoke-active .np-container { display: block !important; position: relative; width: 100%; height: 100vh; padding: 0; }
+      
+      /* Hide Unnecessary Elements */
+      #page-now-playing.karaoke-active .np-art,
+      #page-now-playing.karaoke-active #npQueueWrapper,
+      #page-now-playing.karaoke-active .mb-3.mt-4, 
+      #page-now-playing.karaoke-active #npLikeBtn,
+      #page-now-playing.karaoke-active #npPrevBtn,
+      #page-now-playing.karaoke-active #npNextBtn,
+      #page-now-playing.karaoke-active #npDownloadBtnInPlace,
+      #page-now-playing.karaoke-active #npOptionsMenuBtn,
+      #page-now-playing.karaoke-active #npShareBtnTop { display: none !important; }
+  
+      #page-now-playing.karaoke-active .np-header { position: absolute; top: 4vh; left: 4vw; z-index: 50; width: auto; padding: 0;}
+      #page-now-playing.karaoke-active .np-header .back-btn i { color: #fff; }
+  /* 🎵 LYRICS: (Desktop - Pushed Higher) */
+      #page-now-playing.karaoke-active .np-art-wrapper {
+          position: absolute !important;
+          top: 20vh !important; /* 35vh se 20vh kar diya */
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          width: 100% !important;
+          height: 55vh !important; /* Height badha di */
+          margin: 0 !important;
+          max-width: 1200px !important;
+      }
+      #page-now-playing.karaoke-active .np-lyrics-box {
+          position: relative !important; top: 0 !important; left: 0 !important; transform: none !important;
+          width: 100% !important; max-width: 100% !important; height: 100% !important;
+          display: block !important; text-align: center !important; background: transparent !important;
+          padding: 0 40px !important; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #fff 20%, #fff 80%, transparent 100%);
+      }
+      #page-now-playing.karaoke-active .np-lyrics-box p { 
+          font-size: 3.2rem; 
+          color: rgba(255, 255, 255, 0.45) !important; 
+          margin-bottom: 25px; 
+          font-weight: 700; 
+          transition: all 0.4s ease; 
+          cursor: pointer; 
+      }
+      #page-now-playing.karaoke-active .np-lyrics-box p:hover { color: rgba(255,255,255,0.8) !important; }
+      #page-now-playing.karaoke-active .np-lyrics-box p.lyric-active { color: #fff !important; font-size: 4.5rem !important; text-shadow: 0 0 30px rgba(255,255,255,0.5); transform: scale(1.05); }
+  
+      /* 🎛️ CONTROLS: Unified Box Grouping */
+      #page-now-playing.karaoke-active .np-controls-wrapper {
+          position: absolute !important;
+          top: 85vh !important; 
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          width: 90% !important; 
+          max-width: 800px !important; 
+          display: flex !important; 
+          flex-direction: row !important;
+          justify-content: space-between !important; 
+          align-items: center !important;
+          padding: 15px 35px !important; 
+          background: rgba(255, 255, 255, 0.08) !important; 
+          backdrop-filter: blur(20px) !important;
+          border-radius: 30px !important;
+          border: 1px solid rgba(255,255,255,0.1) !important;
+      }
+  
+      /* Left Side: Title, Artist & Mic */
+      #page-now-playing.karaoke-active .np-info-row { margin: 0 !important; flex: 1; align-items: center !important; justify-content: flex-start !important; gap: 20px !important; }
+      #page-now-playing.karaoke-active .np-info-row > div:first-child { max-width: 65%; display: flex; flex-direction: column; }
+      #page-now-playing.karaoke-active .np-title { font-size: 2.2rem; color: #fff; text-align: left; }
+      #page-now-playing.karaoke-active .np-artist { font-size: 1.1rem; color: rgba(255,255,255,0.6); text-align: left; }
+      
+      /* 🔥 ACTIVE MIC BUTTON (KARAOKE) FIX: Sirf Karaoke screen me White glow karega */
+      #page-now-playing.karaoke-active .np-info-row .d-flex { margin-left: auto; justify-content: flex-end; align-items: center; }
+      #page-now-playing.karaoke-active .karaoke-btn { color: #ffffff !important; font-size: 2.5rem !important; filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)); padding: 0 !important; }
+  
+      /* Right Side: Play/Pause */
+      #page-now-playing.karaoke-active .np-controls-main { margin: 0 0 0 30px !important; width: auto !important; }
+      #page-now-playing.karaoke-active .btn-play-pause { font-size: 4.8rem !important; color: #fff !important; }
+  }
+  /* Fix for Options/Download Menu hiding behind Now Playing */
+  .swal2-container {
+      z-index: 9999 !important;
   }
  </style>
 </head>
