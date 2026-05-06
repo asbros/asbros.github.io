@@ -623,6 +623,22 @@
     </div>
    </div>
 
+   <div id="page-stats" class="app-view">
+    <div class="top-bar d-flex justify-content-between align-items-center">
+     <div class="d-flex align-items-center">
+      <i class="bi bi-arrow-left fs-4" onclick="window.history.back()"></i>
+      <h3 class="mb-0 fw-bold ms-3">Your Wrapped</h3>
+     </div>
+     <button class="btn btn-sm btn-dark rounded-pill px-3 fw-bold shadow-sm" onclick="downloadStatsPoster()"><i class="bi bi-camera me-1"></i> Share</button>
+    </div>
+
+    <div id="statsCaptureArea" class="container pt-3 pb-5 px-3" style="background: var(--bg-base);">
+     <div id="statsDynamicContent">
+      <p class="text-muted text-center py-5"><span class="spinner-border spinner-border-sm me-2"></span>Loading your vibe...</p>
+     </div>
+    </div>
+   </div>
+
    <div id="page-settings" class="app-view">
     <div class="top-bar">
      <h3 class="mb-0 fw-bold">Settings</h3>
@@ -631,7 +647,7 @@
      <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px; background: var(--bg-panel);" onclick="navigateTo('downloads')">
       <div class="card-body d-flex align-items-center justify-content-between py-3">
        <div class="d-flex align-items-center">
-        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+        <div class="p-2 bg-opacity-10 rounded-circle me-3">
          <i class="bi bi-cloud-arrow-down-fill text-primary fs-4"></i>
         </div>
         <div>
@@ -640,6 +656,18 @@
         </div>
        </div>
        <i class="bi bi-chevron-right text-muted"></i>
+      </div>
+     </div>
+     <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px; background: linear-gradient(45deg, #FF512F, #DD2476);" onclick="navigateTo('stats')">
+      <div class="card-body d-flex align-items-center justify-content-between py-3">
+       <div class="d-flex align-items-center text-white">
+        <i class="bi bi-bar-chart-fill fs-2 me-3"></i>
+        <div>
+         <h6 class="mb-0 fw-bold">Your Wrapped Stats</h6>
+         <small class="text-white-50">See your top artists and songs</small>
+        </div>
+       </div>
+       <i class="bi bi-chevron-right text-white"></i>
       </div>
      </div>
 
@@ -826,20 +854,21 @@
   
   const ALL_HOME_SECTIONS = [ 
       { id: 's1', title: "Latest Songs", query: "latest", endpoint: "/search/songs", type: "song" }, 
-      { id: 's2', title: "Trending Songs", query: "trending", endpoint: "/search/songs", type: "song" }, 
+      { id: 's2', title: "Trending Songs", query: "trending hindi", endpoint: "/search/songs", type: "song" }, 
       { id: 's3', title: "Latest Punjabi Songs", query: "latest punjabi", endpoint: "/search/songs", type: "song" }, 
       { id: 's4', title: "Latest Hindi Songs", query: "latest hindi", endpoint: "/search/songs", type: "song" }, 
       { id: 's5', title: "Latest Bhojpuri Songs", query: "latest bhojpuri", endpoint: "/search/songs", type: "song" }, 
       { id: 's6', title: "Trending Playlists", query: "trending hindi", endpoint: "/search/playlists", type: "playlist" }, 
       { id: 's7', title: "New Playlists", query: "new releases", endpoint: "/search/playlists", type: "playlist" }, 
-      { id: 's8', title: "Popular Artists", query: "top hindi", endpoint: "/search/artists", type: "artist" }, 
+      { id: 's8', title: "Popular Artists", query: "artists", endpoint: "/search/artists", type: "artist" }, 
       { id: 's9', title: "Top Albums", query: "top albums", endpoint: "/search/albums", type: "album" }, 
       { id: 's10', title: "Hindi Lo-Fi Drops", query: "hindi lofi", endpoint: "/search/songs", type: "song" }, 
       { id: 's11', title: "Global Top Charts", query: "global top 50", endpoint: "/search/playlists", type: "playlist" },
       { id: 's12', title: "90s Bollywood Classics", query: "90s bollywood", endpoint: "/search/playlists", type: "playlist" },
       { id: 's13', title: "Gym & Workout", query: "gym workout", endpoint: "/search/playlists", type: "playlist" },
       { id: 's14', title: "Devotional & Bhakti", query: "bhakti", endpoint: "/search/playlists", type: "playlist" },
-      { id: 's15', title: "Sufi & Ghazals", query: "sufi ghazal", endpoint: "/search/playlists", type: "playlist" }
+      { id: 's15', title: "Sufi & Ghazals", query: "sufi ghazal", endpoint: "/search/playlists", type: "playlist" },
+      { id: 's16', title: "Trending Hollywood", query: "hollywood", endpoint: "/search/playlists", type: "playlist" }
   ]; 
   
   /* --- INDEXEDDB SETUP FOR OFFLINE --- */
@@ -1101,7 +1130,9 @@
     document.getElementById('qualitySelect').value = settings.quality;
     document.getElementById('explicitToggle').checked = settings.filterExplicit;
   }
-      document.querySelectorAll('.app-view').forEach(p => p.classList.remove('active')); 
+      if (pageId === 'stats'){renderStatsPage();}
+      document.querySelectorAll('.app-view').forEach(p => p.classList.remove('active'));
+      
       const targetView = document.getElementById('page-' + pageId); 
       if(targetView) targetView.classList.add('active'); 
       else document.getElementById('page-home').classList.add('active'); 
@@ -1119,10 +1150,9 @@
       
       if (pageId === 'library') loadLibrary(); 
       if (pageId === 'downloads') loadDownloads(); 
-  
-          if (pageId === 'now-playing' || pageId === 'discovery') { 
+      if (pageId === 'now-playing' || pageId === 'discovery') { 
         document.getElementById('masterPlayer').classList.add('hidden'); 
-        if (pageId === 'discovery') startDiscovery(); 
+      if (pageId === 'discovery') startDiscovery(); 
     } else { 
         if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
     }
@@ -1973,8 +2003,8 @@
   
   async function executePlay(songObj, indexInQueue) { 
       currentQueueIndex = indexInQueue; 
-      currentPlayingSong = songObj; 
-      
+      currentPlayingSong = songObj;
+      trackSongStats(songObj);
       initVisualizer();
       if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
   
@@ -3347,6 +3377,252 @@
     // 2. Activate selected tab
     document.getElementById(`artist-tab-${tabName}`).classList.add('active');
     document.getElementById(`artist-content-${tabName}`).classList.remove('d-none');
+  }
+  
+    // Bulletproof Stats Tracking Engine
+  function trackSongStats(songObj) {
+    try {
+        if (!songObj || !songObj.videoId) return; // Agar song data nahi hai toh wapas jao
+  
+        let stats = JSON.parse(localStorage.getItem('streamify_stats')) || {
+            totalStreams: 0,
+            totalSeconds: 0,
+            timeOfDay: { morning: 0, afternoon: 0, evening: 0, night: 0 },
+            topSongs: {},    
+            topArtists: {}   
+        };
+      
+        stats.totalStreams += 1;
+      
+        const currentAudio = document.getElementById('audioElement');
+        if (currentAudio && currentAudio.duration && !isNaN(currentAudio.duration)) {
+            stats.totalSeconds += Math.floor(currentAudio.duration);
+        } else {
+            stats.totalSeconds += 180; // Fallback 3 minutes
+        }
+  
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) stats.timeOfDay.morning += 1;
+        else if (hour >= 12 && hour < 17) stats.timeOfDay.afternoon += 1;
+        else if (hour >= 17 && hour < 22) stats.timeOfDay.evening += 1;
+        else stats.timeOfDay.night += 1;
+      
+        if (!stats.topSongs[songObj.videoId]) {
+            stats.topSongs[songObj.videoId] = { 
+                title: songObj.title || 'Unknown', 
+                author: songObj.author || 'Unknown', 
+                thumbUrl: songObj.thumbUrl || '', 
+                count: 1 
+            };
+        } else {
+            stats.topSongs[songObj.videoId].count += 1;
+        }
+      
+        // Yahan crash ho sakta tha, ab safe hai:
+        let authorName = songObj.author ? songObj.author.toString() : 'Unknown';
+        let mainArtist = authorName.split(',')[0].trim();
+  
+        if (mainArtist && mainArtist.toLowerCase() !== 'unknown') {
+            if (!stats.topArtists[mainArtist]) stats.topArtists[mainArtist] = 1;
+            else stats.topArtists[mainArtist] += 1;
+        }
+      
+        localStorage.setItem('streamify_stats', JSON.stringify(stats));
+    } catch (error) {
+        console.error("Stats track karte waqt error aaya:", error);
+        // Error aane par bhi gaana play hona nahi rukega!
+    }
+  }
+  
+  //Stats page
+    // Premium Stats Page Rendering
+  function renderStatsPage() {
+    let stats = JSON.parse(localStorage.getItem('streamify_stats'));
+    const container = document.getElementById('statsDynamicContent');
+    
+    if (!stats || stats.totalStreams === 0) {
+        container.innerHTML = '<p class="text-muted text-center py-5">Not enough data yet. Go play some music!</p>';
+        return; 
+    }
+  
+    // 1. Calculate Total Minutes & Dominant Vibe
+    let totalMinutes = Math.floor((stats.totalSeconds || 0) / 60);
+    
+    let vibeText = "Music Lover";
+    let vibeIcon = "🎧";
+    if (stats.timeOfDay) {
+        const times = stats.timeOfDay;
+        // Find highest count in timeOfDay object
+        const maxTime = Object.keys(times).reduce((a, b) => times[a] > times[b] ? a : b);
+        
+        if (maxTime === 'morning') { vibeText = "Early Bird"; vibeIcon = "☀️"; }
+        else if (maxTime === 'afternoon') { vibeText = "Afternoon Chiller"; vibeIcon = "☕"; }
+        else if (maxTime === 'evening') { vibeText = "Sunset Cruiser"; vibeIcon = "🌇"; }
+        else if (maxTime === 'night') { vibeText = "Night Owl"; vibeIcon = "🌙"; }
+    }
+  
+    // 2. Sort Artists & Songs Arrays
+    let artistsArr = Object.entries(stats.topArtists).sort((a, b) => b[1] - a[1]);
+    let songsArr = Object.values(stats.topSongs).sort((a, b) => b.count - a.count);
+  
+    let topSong = songsArr.length > 0 ? songsArr[0] : null;
+  
+    // 3. Build UI HTML
+    let html = `
+        <div class="row g-2 mb-4">
+            <div class="col-6">
+                <div class="card border-0 shadow-sm text-white h-100" style="border-radius: 15px; background: linear-gradient(135deg, #1ed760, #121212);">
+                    <div class="card-body text-center py-3">
+                        <h6 class="text-uppercase fw-bold text-white-50 mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">Minutes Listened</h6>
+                        <h2 class="fw-bold mb-0">${totalMinutes}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-0 shadow-sm text-white h-100" style="border-radius: 15px; background: linear-gradient(135deg, #8E2DE2, #4A00E0);">
+                    <div class="card-body text-center py-3">
+                        <h6 class="text-uppercase fw-bold text-white-50 mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">Your Vibe</h6>
+                        <h2 class="fw-bold mb-0">${vibeIcon}</h2>
+                        <span class="small fw-bold">${vibeText}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+  
+    // 4. Cinematic Top #1 Song
+    if (topSong) {
+        html += `
+            <h5 class="fw-bold mb-3 text-dark">On Repeat</h5>
+            <div class="card border-0 shadow-lg mb-4 overflow-hidden" style="border-radius: 15px; background: #000; min-height: 140px;">
+                <img src="${topSong.thumbUrl}" class="card-img w-100 h-100" style="opacity: 0.5; object-fit: cover; position: absolute;">
+                <div class="card-img-overlay d-flex flex-column justify-content-end p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+                    <h6 class="text-white-50 mb-1 small text-uppercase fw-bold"><i class="bi bi-trophy-fill text-warning me-1"></i> #1 Track</h6>
+                    <h4 class="text-white fw-bold mb-0 text-truncate">${topSong.title}</h4>
+                    <p class="text-white-50 small mb-0 text-truncate">${topSong.author} • ${topSong.count} plays</p>
+                </div>
+            </div>
+        `;
+    }
+  
+    // 5. Top Artists with Visual Progress Bars
+    if (artistsArr.length > 0) {
+        html += `<h5 class="fw-bold mb-3 text-dark">Top Artists</h5>
+                 <div class="card border-0 shadow-sm mb-4 p-3" style="border-radius: 15px; background: var(--bg-panel);">`;
+        
+        let maxPlays = artistsArr[0][1]; // Highest play count for 100% width
+        
+        artistsArr.slice(0, 5).forEach((artist, idx) => {
+            let widthPercent = (artist[1] / maxPlays) * 100;
+            html += `
+                <div class="mb-3 ${idx === artistsArr.slice(0,5).length - 1 ? 'mb-0' : ''}">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="fw-bold text-dark text-truncate" style="max-width: 70%;">${idx + 1}. ${artist[0]}</span>
+                        <span class="text-muted small fw-bold">${artist[1]} plays</span>
+                    </div>
+                    <div class="progress" style="height: 6px; border-radius: 10px; background: rgba(0,0,0,0.05);">
+                        <div class="progress-bar" style="width: ${widthPercent}%; background: var(--accent-glow); border-radius: 10px;"></div>
+                    </div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+  
+    // 6. The Rest of the Top Tracks (Positions 2 to 10)
+    if (songsArr.length > 1) {
+        html += `<h5 class="fw-bold mb-3 text-dark">Top Tracks</h5><div class="mb-4">`;
+        songsArr.slice(1, 10).forEach((song, index) => {
+            html += `
+                <div class="song-list-item bg-transparent px-2 mb-2" style="border-radius: 10px; border: 1px solid var(--glass-border);">
+                    <span class="text-muted fw-bold me-3" style="min-width: 25px; font-size: 1.1rem;">#${index + 2}</span>
+                    <img src="${song.thumbUrl}" class="song-thumb" style="border-radius: 8px;">
+                    <div class="song-info">
+                        <p class="song-title">${song.title}</p>
+                        <p class="song-artist">${song.author} • ${song.count} plays</p>
+                    </div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+  
+    container.innerHTML = html;
+  }
+  
+  //share stats
+    // Step 3: Shareable Stats Poster Generator
+  async function downloadStatsPoster() {
+      const captureArea = document.getElementById('statsCaptureArea');
+      if (!captureArea) return;
+  
+      // Processing popup dikhayein
+      Swal.fire({ 
+          title: 'Generating Poster...', 
+          html: '<p class="text-muted small">Capturing your vibe...</p>',
+          allowOutsideClick: false, 
+          didOpen: () => Swal.showLoading(), 
+          background: 'var(--bg-panel)', 
+          color: 'var(--text-primary)' 
+      });
+  
+      try {
+          // html2canvas ka use karke div ko capture karein
+          const canvas = await html2canvas(captureArea, {
+              scale: 2, // High resolution ke liye scale 2
+              useCORS: true, // Album covers load karne ke liye zaroori hai
+              backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-base').trim() || '#f4f5f7'
+          });
+  
+          const imageUrl = canvas.toDataURL('image/png');
+          Swal.close();
+  
+          // Preview aur Download button show karein
+          Swal.fire({
+              title: 'Your Wrapped is Ready!',
+              imageUrl: imageUrl,
+              imageAlt: 'Stats Poster Preview',
+              imageWidth: '90%', // SweetAlert me preview properly fit ho
+              showCancelButton: true,
+              confirmButtonText: '<i class="bi bi-download me-2"></i> Save Image',
+              cancelButtonText: 'Close',
+              confirmButtonColor: '#121212',
+              background: 'var(--bg-panel)',
+              color: 'var(--text-primary)'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  // Direct download trigger karein
+                  const link = document.createElement('a');
+                  link.href = imageUrl;
+                  link.download = `Streamify_Wrapped_${new Date().getFullYear()}.png`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Saved to Device!',
+                      toast: true,
+                      position: 'top',
+                      timer: 2000,
+                      showConfirmButton: false,
+                      background: 'var(--bg-panel)',
+                      color: 'var(--text-primary)'
+                  });
+              }
+          });
+  
+      } catch (error) {
+          Swal.close();
+          console.error("Poster generation failed:", error);
+          Swal.fire({ 
+              icon: 'error', 
+              title: 'Oops!', 
+              text: 'Failed to generate your poster. Try again.',
+              background: 'var(--bg-panel)', 
+              color: 'var(--text-primary)' 
+          });
+      }
   }
   
  </script>
