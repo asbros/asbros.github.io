@@ -11,6 +11,7 @@
  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+ <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -469,9 +470,7 @@
     <a href="#discovery" class="nav-item" onclick="startDiscovery()"><i class="bi bi-compass-fill"></i><span>Discover</span></a>
     <a href="#library" class="nav-item"><i class="bi bi-collection-fill"></i><span>Library</span></a>
     <a href="#downloads" class="nav-item"><i class="bi bi-cloud-arrow-down-fill"></i><span>Downloads</span></a>
-    <hr class="border-secondary my-2">
-    <a href="#" class="nav-item text-danger" id="sidebarOfflineBtn" onclick="toggleOfflineMode(event)">
-     <i id="offlineModeIcon" class="bi bi-wifi"></i><span id="offlineModeText">Go Offline</span></a>
+    <a href="#settings" class="nav-item"><i class="bi bi-gear-fill"></i><span>Settings</span></a>
    </nav>
   </aside>
 
@@ -587,11 +586,30 @@
       <h1 id="artistDetailName" class="detail-title">Artist Name</h1>
      </div>
     </div>
-    <div class="container pt-4 pb-4 px-2">
-     <h4 class="mb-3 px-2 fw-bold" style="color: var(--text-primary);">Popular Tracks</h4>
-     <div id="artistSongsContainer" class="d-flex flex-column"></div>
-     <div class="text-center mt-4 mb-4 d-none" id="loadMoreArtistBtn">
-      <button class="btn btn-outline-dark rounded-pill px-4 py-2">Load More <i class="bi bi-chevron-down ms-1"></i></button>
+    <div class="container pt-3 pb-4 px-2">
+     <ul class="nav nav-pills px-2 mb-4" id="artistTabs">
+      <li class="nav-item-filter"><a class="nav-link active" id="artist-tab-songs" onclick="switchArtistTab('songs')">Top Songs</a></li>
+      <li class="nav-item-filter"><a class="nav-link" id="artist-tab-albums" onclick="switchArtistTab('albums')">Albums</a></li>
+      <li class="nav-item-filter"><a class="nav-link" id="artist-tab-about" onclick="switchArtistTab('about')">About</a></li>
+     </ul>
+
+     <div id="artist-content-songs" class="artist-tab-section active-tab">
+      <div id="artistSongsContainer" class="d-flex flex-column"></div>
+      <div class="text-center mt-4 mb-4 d-none" id="loadMoreArtistBtn">
+       <button class="btn btn-outline-dark rounded-pill px-4 py-2">Load More <i class="bi bi-chevron-down ms-1"></i></button>
+      </div>
+     </div>
+
+     <div id="artist-content-albums" class="artist-tab-section d-none">
+      <div id="artistAlbumsContainer"></div>
+     </div>
+
+     <div id="artist-content-about" class="artist-tab-section d-none px-2">
+      <h5 class="fw-bold text-dark mb-2">Biography</h5>
+      <p id="artistBioText" class="text-muted" style="font-size: 0.9rem; line-height: 1.6;">Biography not available.</p>
+
+      <h5 class="fw-bold text-dark mt-5 mb-3">Fans Also Like</h5>
+      <div class="carousel-container" id="similarArtistsContainer" style="padding: 0; margin-left: -5px;"></div>
      </div>
     </div>
    </div>
@@ -602,6 +620,49 @@
     </div>
     <div class="container pt-4 pb-4 px-2">
      <div id="libraryContainer" class="d-flex flex-column"></div>
+    </div>
+   </div>
+
+   <div id="page-settings" class="app-view">
+    <div class="top-bar">
+     <h3 class="mb-0 fw-bold">Settings</h3>
+    </div>
+    <div class="container pt-4 pb-5 px-3">
+     <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px; background: var(--bg-panel);" onclick="navigateTo('downloads')">
+      <div class="card-body d-flex align-items-center justify-content-between py-3">
+       <div class="d-flex align-items-center">
+        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+         <i class="bi bi-cloud-arrow-down-fill text-primary fs-4"></i>
+        </div>
+        <div>
+         <h6 class="mb-0 fw-bold text-dark">Offline Vault</h6>
+         <small class="text-muted">Manage your downloaded songs</small>
+        </div>
+       </div>
+       <i class="bi bi-chevron-right text-muted"></i>
+      </div>
+     </div>
+
+     <h5 class="fw-bold mb-3 mt-4 text-dark">Music Preferences</h5>
+
+     <div class="mb-4">
+      <label class="form-label small fw-bold text-secondary">STREAMING QUALITY</label>
+      <select id="qualitySelect" class="form-select border-0 shadow-sm py-2" style="border-radius: 10px; background: var(--bg-panel);" onchange="updateUserSetting('quality', this.value)">
+       <option value="96kbps">Data Saver (96 kbps)</option>
+       <option value="160kbps">Normal (160 kbps)</option>
+       <option value="320kbps" selected>High Quality (320 kbps)</option>
+      </select>
+     </div>
+
+     <div class="d-flex justify-content-between align-items-center py-2">
+      <div>
+       <h6 class="mb-0 fw-bold text-dark">Explicit Content</h6>
+       <small class="text-muted">Filter out songs with mature lyrics</small>
+      </div>
+      <div class="form-check form-switch">
+       <input class="form-check-input fs-4" type="checkbox" id="explicitToggle" onchange="updateUserSetting('filterExplicit', this.checked)">
+      </div>
+     </div>
     </div>
    </div>
 
@@ -707,6 +768,7 @@
    <a href="#discovery" class="nav-item" onclick="startDiscovery()"><i class="bi bi-compass-fill"></i><span>Discover</span></a>
    <a href="#library" class="nav-item"><i class="bi bi-collection-fill"></i><span>Library</span></a>
    <a href="#downloads" class="nav-item"><i class="bi bi-cloud-arrow-down-fill"></i><span>Downloads</span></a>
+   <a href="#settings" class="nav-item"><i class="bi bi-gear-fill"></i><span>Settings</span></a>
   </nav>
 
   <input type="file" id="restoreInput" accept=".json" class="d-none" onchange="restoreData(event)">
@@ -807,6 +869,16 @@
       };
   }
   
+  /* --- AUDIO QUALITY SETUP --- */
+  let userSettings = JSON.parse(localStorage.getItem('streamify_settings')) || {
+    quality: '320kbps', // Options: '96kbps', '160kbps', '320kbps'
+    filterExplicit: false
+  };
+  
+  function saveSettings() {
+    localStorage.setItem('streamify_settings', JSON.stringify(userSettings));
+  }
+  
   /* --- AUDIO VISUALIZER SETUP --- */
   let audioCtx, analyser;
   function initVisualizer() {
@@ -859,13 +931,20 @@
   }
   
   function extractData(payload) { 
-      if (!payload) return []; 
-      if (Array.isArray(payload)) return payload; 
-      if (payload.data && Array.isArray(payload.data.results)) return payload.data.results; 
-      if (payload.data && Array.isArray(payload.data)) return payload.data; 
-      if (payload.results && Array.isArray(payload.results)) return payload.results; 
-      if (payload.songs && Array.isArray(payload.songs)) return payload.songs; 
-      return []; 
+    let items = [];
+    if (!payload) return items; 
+    if (Array.isArray(payload)) items = payload; 
+    else if (payload.data && Array.isArray(payload.data.results)) items = payload.data.results; 
+    else if (payload.data && Array.isArray(payload.data)) items = payload.data; 
+    else if (payload.results && Array.isArray(payload.results)) items = payload.results; 
+    else if (payload.songs && Array.isArray(payload.songs)) items = payload.songs; 
+    
+    // Explicit Content Filter Logic
+    if (userSettings.filterExplicit) {
+        items = items.filter(item => item.explicitContent !== true && item.explicitContent !== "true");
+    }
+    
+    return items;
   } 
   
   function formatTime(seconds) { 
@@ -1016,6 +1095,12 @@
       }
   
       const pageId = hash.substring(1).split('?')[0]; 
+      if (pageId === 'settings') {
+    // Settings page open hone par settings load karein
+    const settings = JSON.parse(localStorage.getItem('streamify_settings')) || { quality: '320kbps', filterExplicit: false };
+    document.getElementById('qualitySelect').value = settings.quality;
+    document.getElementById('explicitToggle').checked = settings.filterExplicit;
+  }
       document.querySelectorAll('.app-view').forEach(p => p.classList.remove('active')); 
       const targetView = document.getElementById('page-' + pageId); 
       if(targetView) targetView.classList.add('active'); 
@@ -1035,14 +1120,17 @@
       if (pageId === 'library') loadLibrary(); 
       if (pageId === 'downloads') loadDownloads(); 
   
-      if (pageId === 'now-playing' || pageId === 'discovery') { 
-          document.getElementById('masterPlayer').classList.add('hidden'); 
-          if (pageId === 'discovery') startDiscovery(); 
-      } else { 
-          if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
-          document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
-          document.querySelectorAll(`.nav-item[href="#${pageId}"]`).forEach(n => n.classList.add('active'));
-      }
+          if (pageId === 'now-playing' || pageId === 'discovery') { 
+        document.getElementById('masterPlayer').classList.add('hidden'); 
+        if (pageId === 'discovery') startDiscovery(); 
+    } else { 
+        if(currentPlayingSong) document.getElementById('masterPlayer').classList.remove('hidden'); 
+    }
+    
+    // Highlight active navigation item for ALL pages
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
+    document.querySelectorAll(`.nav-item[href="#${pageId}"]`).forEach(n => n.classList.add('active'));
+  
       
       // AUTO-SCROLL TO TOP ON ANY PAGE OPEN
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1319,11 +1407,18 @@
           const response = await fetch(`${API_STREAM}/songs/${cleanId}`); 
           const payload = await response.json(); 
           const data = payload.data?.[0] || payload.data || {}; 
-          let finalAudioUrl = null; 
-          if (Array.isArray(data.downloadUrl) && data.downloadUrl.length > 0) 
-              finalAudioUrl = data.downloadUrl[data.downloadUrl.length - 1].url || data.downloadUrl[data.downloadUrl.length - 1].link; 
-          else if (typeof data.downloadUrl === 'string') finalAudioUrl = data.downloadUrl; 
-          
+            let finalAudioUrl = null; 
+        if (Array.isArray(data.downloadUrl) && data.downloadUrl.length > 0) {
+            // Find the closest quality match based on user settings
+            let targetObj = data.downloadUrl.find(q => q.quality === userSettings.quality);
+            // Fallback: If exact quality not found, get the highest available
+            if (!targetObj) targetObj = data.downloadUrl[data.downloadUrl.length - 1];
+            
+            finalAudioUrl = targetObj.url || targetObj.link;
+        } else if (typeof data.downloadUrl === 'string') {
+            finalAudioUrl = data.downloadUrl;
+        }
+  
           if(!finalAudioUrl) throw new Error();
   
           const audioRes = await fetch(finalAudioUrl.replace('http://', 'https://'));
@@ -1823,21 +1918,57 @@
   } 
   
   function renderQueueList() {
-      const qList = document.getElementById('npQueueList');
-      qList.innerHTML = '';
-      const upcoming = activePlaybackQueue.slice(currentQueueIndex + 1, currentQueueIndex + 21);
-      if(upcoming.length === 0) {
-          qList.innerHTML = '<p class="text-muted text-center py-3">No more upcoming tracks.</p>';
-          return;
-      }
-      upcoming.forEach((s, idx) => {
-          const globalIdx = currentQueueIndex + 1 + idx;
-          const item = document.createElement('div');
-          item.className = 'song-list-item bg-transparent';
-          item.onclick = () => executePlay(s, globalIdx);
-          item.innerHTML = `<img src="${s.thumbUrl}" class="song-thumb" onerror="this.src='${FALLBACK_IMG}'"><div class="song-info"><p class="song-title">${s.title}</p><p class="song-artist">${s.author}</p></div>`;
-          qList.appendChild(item);
-      });
+    const qList = document.getElementById('npQueueList');
+    qList.innerHTML = '';
+    const upcoming = activePlaybackQueue.slice(currentQueueIndex + 1, currentQueueIndex + 21);
+    
+    if(upcoming.length === 0) {
+        qList.innerHTML = '<p class="text-muted text-center py-3">No more upcoming tracks.</p>';
+        return;
+    }
+    
+    upcoming.forEach((s, idx) => {
+        const globalIdx = currentQueueIndex + 1 + idx;
+        const item = document.createElement('div');
+        item.className = 'song-list-item bg-transparent';
+        
+        item.innerHTML = `
+            <div class="drag-handle fs-4 text-secondary px-2" style="cursor: grab;"><i class="bi bi-grip-vertical"></i></div>
+            <img src="${s.thumbUrl}" class="song-thumb" onerror="this.src='${FALLBACK_IMG}'" onclick="executePlay(activePlaybackQueue[${globalIdx}], ${globalIdx})">
+            <div class="song-info" onclick="executePlay(activePlaybackQueue[${globalIdx}], ${globalIdx})">
+                <p class="song-title">${s.title}</p>
+                <p class="song-artist">${s.author}</p>
+            </div>
+        `;
+        qList.appendChild(item);
+    });
+  
+    // Puraana Sortable instance destroy karein taaki multiple events clash na ho
+    if (window.npQueueSortable) {
+        window.npQueueSortable.destroy();
+    }
+  
+    if (window.Sortable) {
+        window.npQueueSortable = new Sortable(qList, {
+            animation: 150, 
+            handle: '.drag-handle', 
+            ghostClass: 'bg-light', 
+            onEnd: function (evt) {
+                if (evt.oldIndex === evt.newIndex) return;
+  
+                const globalOld = currentQueueIndex + 1 + evt.oldIndex;
+                const globalNew = currentQueueIndex + 1 + evt.newIndex;
+                
+                const movedItem = activePlaybackQueue.splice(globalOld, 1)[0];
+                activePlaybackQueue.splice(globalNew, 0, movedItem);
+                
+                // setTimeout lagane se SortableJS ko apna DOM cleanup karne ka time mil jata hai
+                setTimeout(() => {
+                    renderQueueList();
+                }, 50);
+            }
+        });
+    }
   }
   
   async function executePlay(songObj, indexInQueue) { 
@@ -1921,7 +2052,7 @@
           }
       };
       
-      try { 
+    try { 
         if(idb && downloadedSongIds.has(songObj.videoId)) {
             const tx = idb.transaction("offline_songs", "readonly");
             const req = tx.objectStore("offline_songs").get(songObj.videoId);
@@ -1929,23 +2060,16 @@
                 if(req.result && req.result.blob) {
                     triggerPlayback(URL.createObjectURL(req.result.blob));
                 } else {
-                    if (isOfflineMode) throw new Error("OfflineMode");
                     fetchOnlineAndPlay(songObj, triggerPlayback);
                 }
             };
         } else {
-            if (isOfflineMode) throw new Error("OfflineMode");
             fetchOnlineAndPlay(songObj, triggerPlayback);
         }
-      } catch (error) { 
+    } catch (error) { 
         playPauseIcon.className = 'bi bi-play-fill'; 
         if(document.getElementById('npPlayPauseIcon')) document.getElementById('npPlayPauseIcon').className = 'bi bi-play-circle-fill'; 
-        
-        if (error.message === "OfflineMode") {
-            Swal.fire({ icon: 'warning', title: 'Not in Vault', text: 'This track is not downloaded. Turn off Offline Mode to stream.', background: 'var(--bg-panel)', color: 'var(--text-primary)' }); 
-        } else {
-            Swal.fire({ icon: 'error', title: 'Playback Failed', background: 'var(--bg-panel)', color: 'var(--text-primary)' }); 
-        }
+        Swal.fire({ icon: 'error', title: 'Playback Failed', background: 'var(--bg-panel)', color: 'var(--text-primary)' }); 
     }
   } 
   
@@ -2002,11 +2126,17 @@
           const response = await fetch(`${API_STREAM}/songs/${cleanId}`); 
           const payload = await response.json(); 
           const data = payload.data?.[0] || payload.data || {}; 
-          let finalAudioUrl = null; 
-          if (Array.isArray(data.downloadUrl) && data.downloadUrl.length > 0) 
-              finalAudioUrl = data.downloadUrl[data.downloadUrl.length - 1].url || data.downloadUrl[data.downloadUrl.length - 1].link; 
-          else if (typeof data.downloadUrl === 'string') finalAudioUrl = data.downloadUrl; 
-          
+                  let finalAudioUrl = null; 
+        if (Array.isArray(data.downloadUrl) && data.downloadUrl.length > 0) {
+            // Find the closest quality match based on user settings
+            let targetObj = data.downloadUrl.find(q => q.quality === userSettings.quality);
+            // Fallback: If exact quality not found, get the highest available
+            if (!targetObj) targetObj = data.downloadUrl[data.downloadUrl.length - 1];
+            
+            finalAudioUrl = targetObj.url || targetObj.link;
+        } else if (typeof data.downloadUrl === 'string') {
+            finalAudioUrl = data.downloadUrl;
+        }
           if (!finalAudioUrl) throw new Error(); 
           finalAudioUrl = finalAudioUrl.replace('http://', 'https://'); 
           currentPlayingSong.downloadUrl = finalAudioUrl; 
@@ -2205,7 +2335,7 @@
       if(!append) container.innerHTML = ''; 
       if(!items || items.length === 0) return; 
       
-      const viewContext = targetType === 'song' ? items.map(s => ({ videoId: s.id, title: s.title || s.name, author: s.subtitle || s.primaryArtists || 'Unknown', thumbUrl: getHighResImage(s.image) })) : []; 
+      const viewContext = targetType === 'song' ? items.map(s => ({ videoId: s.id, title: decodeHTMLEntities(s.title || s.name), author: getArtistName(s), thumbUrl: getHighResImage(s.image) })) : []; 
       
       items.forEach((item, index) => { 
           const card = document.createElement('div'); 
@@ -2466,7 +2596,44 @@
           const realThumbUrl = getHighResImage(data.image) !== FALLBACK_IMG ? getHighResImage(data.image) : thumbUrl;
           document.getElementById('artistDetailName').innerText = realName; 
           document.getElementById('artistHeaderBg').style.backgroundImage = `url('${realThumbUrl}')`;
+          // --- NAYA LOGIC: Bio, Albums aur Similar Artists Load Karna ---
+        
+        // 1. Biography Setup
+        let bioText = 'Biography not available.';
+        if (data.bio && data.bio.length > 0) {
+            bioText = decodeHTMLEntities(data.bio[0].text || data.bio[0]);
+        }
+        document.getElementById('artistBioText').innerHTML = bioText;
   
+        // 2. Albums Setup
+        let albums = [];
+        if (data.topAlbums && Array.isArray(data.topAlbums)) albums = data.topAlbums;
+        else if (data.topAlbums && Array.isArray(data.topAlbums.results)) albums = data.topAlbums.results;
+        
+        const albumsContainer = document.getElementById('artistAlbumsContainer');
+        albumsContainer.innerHTML = '';
+        if (albums.length > 0) {
+            renderSearchGrid(albums, 'artistAlbumsContainer', 'album', false);
+        } else {
+            albumsContainer.innerHTML = '<p class="text-muted px-2">No albums found.</p>';
+        }
+  
+        // 3. Similar Artists Setup
+        let similar = [];
+        if (data.similarArtists && Array.isArray(data.similarArtists)) similar = data.similarArtists;
+        else if (data.similarArtists && Array.isArray(data.similarArtists.results)) similar = data.similarArtists.results;
+        
+        const similarContainer = document.getElementById('similarArtistsContainer');
+        similarContainer.innerHTML = '';
+        if (similar.length > 0) {
+            renderCarousel(similar, 'similarArtistsContainer', 'artist', false);
+        } else {
+            similarContainer.innerHTML = '<p class="text-muted px-2">No similar artists found.</p>';
+        }
+  
+        // Default tab ko hamesha 'Top Songs' par set karein jab bhi naya artist khule
+        switchArtistTab('songs');
+        
           let songs = []; 
           if (Array.isArray(data.topSongs)) songs = data.topSongs; 
           else if (data.topSongs && Array.isArray(data.topSongs.results)) songs = data.topSongs.results; 
@@ -2563,11 +2730,12 @@
       if (!results || results.length === 0) return; 
       
       const viewContext = results.map(s => ({ 
-          videoId: s.id || s.videoId, 
-          title: s.title || s.name, 
-          author: getArtistName(s),
-          thumbUrl: s.thumbUrl ? s.thumbUrl : getHighResImage(s.image) 
-      })); 
+        videoId: s.id || s.videoId, 
+        title: decodeHTMLEntities(s.title || s.name), 
+        author: getArtistName(s), 
+        thumbUrl: s.thumbUrl ? s.thumbUrl : getHighResImage(s.image) 
+    })); 
+  
       
       if(append) activePlaybackQueue.push(...viewContext); 
       else activePlaybackQueue = [...viewContext]; 
@@ -2720,14 +2888,13 @@
                         thumbUrl: entry.target.dataset.thumbUrl
                     };
                     const index = parseInt(entry.target.dataset.index);
-                    
-                    activePlaybackQueue = discoverySongs.map(s => ({
-                        videoId: s.id, 
-                        title: s.name || s.title, 
-                        author: s.primaryArtists || s.subtitle, 
-                        thumbUrl: getHighResImage(s.image)
-                    }));
-                    
+                     activePlaybackQueue = discoverySongs.map(s => ({
+                      videoId: s.id, 
+                      title: decodeHTMLEntities(s.name || s.title), 
+                      author: getArtistName(s), 
+                      thumbUrl: getHighResImage(s.image)
+                  }));
+  
                     executePlay(songObj, index);
                     
                     document.getElementById('masterPlayer').classList.add('hidden');
@@ -3003,63 +3170,23 @@
     syncLyrics(audioEl.currentTime);
   }
   
-  let isOfflineMode = false;
-  
-  function toggleOfflineMode(e) {
-    if(e) e.preventDefault();
-    isOfflineMode = !isOfflineMode;
-    
-    const icon = document.getElementById('offlineModeIcon');
-    const text = document.getElementById('offlineModeText');
-  
-    if(isOfflineMode) {
-        // Vault Mode ON
-        icon.className = 'bi bi-wifi-off text-danger';
-        text.innerText = 'Exit Offline Vault';
-        text.classList.replace('text-danger', 'text-secondary');
-        
-        Swal.fire({ icon: 'info', title: 'Offline Vault Locked', text: 'Network disabled. You are now exclusively browsing local storage.', timer: 2000, showConfirmButton: false, background: '#121212', color: '#fff' });
-        
-        // Force Theme to Pitch Black (Battery Saving)
-        document.documentElement.style.setProperty('--bg-base', '#000000');
-        document.documentElement.style.setProperty('--bg-panel', '#121212');
-        document.documentElement.style.setProperty('--text-primary', '#ffffff');
-        
-        // Redirect to Downloads page automatically
-        window.location.hash = 'downloads';
-    } else {
-        // Online Mode ON
-        icon.className = 'bi bi-wifi';
-        text.innerText = 'Go Offline';
-        text.classList.replace('text-secondary', 'text-danger');
-        
-        Swal.fire({ icon: 'success', title: 'Network Restored', text: 'Connected to Streamify servers.', timer: 2000, showConfirmButton: false, background: 'var(--bg-panel)', color: 'var(--text-primary)' });
-        
-        // Reset Theme Logic
-        if (currentPlayingSong) {
-            updateAppTheme(currentPlayingSong.thumbUrl); // Restore dynamic theme
-        } else {
-            document.documentElement.style.setProperty('--bg-base', '#f4f5f7');
-            document.documentElement.style.setProperty('--bg-panel', '#ffffff');
-            document.documentElement.style.setProperty('--text-primary', '#121212');
-        }
-        
-        window.location.hash = 'home';
-    }
-  }
-  
   // Silent single song downloader
   async function downloadSingleSongSilently(song) {
     let cleanId = song.videoId.toString().split(',')[0].trim();
     const response = await fetch(`${API_STREAM}/songs/${cleanId}`);
     const payload = await response.json();
     const data = payload.data?.[0] || payload.data || {};
-    let finalAudioUrl = null;
-    
-    if (Array.isArray(data.downloadUrl) && data.downloadUrl.length > 0)
-        finalAudioUrl = data.downloadUrl[data.downloadUrl.length - 1].url || data.downloadUrl[data.downloadUrl.length - 1].link;
-    else if (typeof data.downloadUrl === 'string') finalAudioUrl = data.downloadUrl;
-  
+        let finalAudioUrl = null; 
+        if (Array.isArray(data.downloadUrl) && data.downloadUrl.length > 0) {
+            // Find the closest quality match based on user settings
+            let targetObj = data.downloadUrl.find(q => q.quality === userSettings.quality);
+            // Fallback: If exact quality not found, get the highest available
+            if (!targetObj) targetObj = data.downloadUrl[data.downloadUrl.length - 1];
+            
+            finalAudioUrl = targetObj.url || targetObj.link;
+        } else if (typeof data.downloadUrl === 'string') {
+            finalAudioUrl = data.downloadUrl;
+        }
     if(!finalAudioUrl) throw new Error();
   
     const audioRes = await fetch(finalAudioUrl.replace('http://', 'https://'));
@@ -3118,8 +3245,8 @@
         let song = songsToDownload[i];
         let songObj = {
             videoId: song.id || song.videoId,
-            title: song.title || song.name,
-            author: song.subtitle || song.primaryArtists || song.author || 'Unknown',
+            title: decodeHTMLEntities(song.title || song.name),
+            author: getArtistName(song),
             thumbUrl: song.thumbUrl ? song.thumbUrl : getHighResImage(song.image)
         };
         
@@ -3192,6 +3319,36 @@
         container.innerHTML = '<p class="text-danger text-center mt-5"><i class="bi bi-exclamation-triangle fs-1"></i><br>Failed to load radio stations.</p>';
     }
   }
+  
+  //Setting Page
+  function updateUserSetting(key, value) {
+    let settings = JSON.parse(localStorage.getItem('streamify_settings')) || { quality: '320kbps', filterExplicit: false };
+    settings[key] = value;
+    localStorage.setItem('streamify_settings', JSON.stringify(settings));
+    
+    Swal.fire({
+        icon: 'success',
+        title: 'Updated!',
+        toast: true,
+        position: 'top',
+        timer: 1000,
+        showConfirmButton: false
+    });
+  }
+  
+  //Tab switcher
+  function switchArtistTab(tabName) {
+    // 1. Reset all tabs and contents
+    ['songs', 'albums', 'about'].forEach(t => {
+        document.getElementById(`artist-tab-${t}`).classList.remove('active');
+        document.getElementById(`artist-content-${t}`).classList.add('d-none');
+    });
+  
+    // 2. Activate selected tab
+    document.getElementById(`artist-tab-${tabName}`).classList.add('active');
+    document.getElementById(`artist-content-${tabName}`).classList.remove('d-none');
+  }
+  
  </script>
 </body>
 
