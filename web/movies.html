@@ -1059,16 +1059,16 @@
   
   /* ---------- HERO CAROUSEL & AUTOPLAY VIDEO ---------- */
   .hero-carousel {
-  position: relative;
-  width: 100%;
-  height: 65vh;
-  min-height: 450px;
-  max-height: 600px;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 40px;
-  background: #000;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Perfect cinematic widescreen ratio */
+    min-height: 300px; /* Mobile me text aur buttons fit karne ke liye thodi safe height */
+    max-height: 700px; /* Badi (ultra-wide) screens par limit lagane ke liye */
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    background: #000;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
   }
   
   .hero-carousel .carousel-inner,
@@ -1300,7 +1300,191 @@
     }
   }
   
+  /* ---------- BOTTOM & SIDE NAVBAR RESPONSIVE ---------- */
   
+  /* Default Mobile Padding */
+  body {
+    padding-bottom: 75px; 
+    transition: padding 0.3s ease, background-color 0.8s ease, color 0.5s ease;
+  }
+  
+  /* Mobile Default Layout (Bottom Nav) */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0 15px 0;
+    z-index: 9999;
+    transition: background 0.8s ease, border 0.3s ease;
+  }
+  
+  .bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    width: 20%;
+  }
+  
+  .bottom-nav-item i {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+  }
+  
+  .bottom-nav-item:hover,
+  .bottom-nav-item.active {
+    color: var(--primary);
+    transform: translateY(-3px); /* Thoda sa upar bounce effect */
+  }
+  
+  body.dark-mode .bottom-nav {
+    background: rgba(0, 0, 0, 0.92);
+    border-top-color: var(--border);
+  }
+  
+  /* Desktop & Tablet Ke Liye (Side Navbar) */
+  @media (min-width: 768px) {
+    body {
+      padding-bottom: 0; /* Bottom padding hata di */
+      padding-left: 85px; /* Side navbar ke liye left me space de diya */
+    }
+  
+    .bottom-nav {
+      top: 0;
+      height: 100vh;
+      width: 85px;
+      flex-direction: column;
+      justify-content: center; /* Items ko vertical center karne ke liye */
+      border-top: none;
+      border-right: 1px solid var(--border);
+      padding: 0;
+    }
+    
+    body.dark-mode .bottom-nav {
+      border-right-color: var(--border);
+      border-top-color: transparent;
+    }
+  
+    .bottom-nav-item {
+      width: 100%;
+      padding: 20px 0;
+      margin: 5px 0;
+    }
+  
+    .bottom-nav-item i {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+  
+    .bottom-nav-item:hover,
+    .bottom-nav-item.active {
+      transform: translateX(3px); /* Side nav me hover par items aage (right) ki taraf badhenge */
+    }
+  }
+  /* ---------- LIVE SPORTS UI (Screenshot Style) ---------- */
+  .sports-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .sports-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sports-badge {
+    display: inline-block;
+    background: rgba(128, 128, 128, 0.15);
+    color: var(--text-main);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .sports-teams-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .team-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 0;
+  }
+  
+  .team-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  
+  .team-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .vs-col {
+    flex: 0.4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .vs-text {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  
+  .match-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  
+  .match-title {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
  </style>
 </head>
 
@@ -1310,51 +1494,26 @@
  </div>
 
  <nav class="navbar navbar-custom py-2">
-  <div class="container d-flex align-items-center justify-content-between">
-   <div class="d-flex align-items-center gap-4">
-    <a class="navbar-brand fs-4" href="#" onclick="goHome()">AS<span class="text-dark">CINEPLEX</span></a>
-    <div class="d-flex align-items-center gap-3 ms-2">
-     <a href="#wishlist" class="nav-link-custom"><i class="fa fa-bookmark"></i> Wishlist</a>
-     <a href="#settings" class="nav-link-custom"><i class="fa fa-cog"></i> Settings</a>
-    </div>
+  <!-- Default Navbar (Home Page Ke Liye) -->
+  <div class="container d-flex" id="defaultNavContent" style="margin-left: 7px;">
+   <a class="navbar-brand fs-4 m-0" href="#" onclick="goHome()">AS <span class="text-dark">CINEPLEX</span></a>
+   <div class="d-flex align-items-center gap-3" style="margin-right: 10px;">
+    <a href="#sports" class="nav-link-custom"><i class="fa fa-trophy"></i> Live Sports</a>
    </div>
-   <div id="navSearchContainer" class="search-container flex-grow-1 mx-4" style="max-width: 400px; position: relative;">
-    <i class="fa fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
-    <input type="text" id="searchInput" class="form-control search-input shadow-none" placeholder="Search movies, series, actors..." autocomplete="off">
-    <div id="searchSuggestions" class="list-group position-absolute w-100 shadow-sm d-none"></div>
+  </div>
+
+  <!-- Back Navbar (Other Pages Ke Liye) -->
+  <div class="container d-none py-2" id="backNavContent" style="min-height: 35px;">
+   <div class="d-flex align-items-center gap-3 w-100">
+    <button class="btn btn-link text-decoration-none p-1" style="color: var(--text-main); border: none; background: none; line-height: 1;" onclick="goBack()">
+     <i class="fa fa-arrow-left fs-4"></i>
+    </button>
+    <h5 class="mb-1 fw-bold text-truncate" id="backNavTitle" style="color: var(--text-main); max-width: 80vw;">Page Title</h5>
    </div>
   </div>
  </nav>
 
  <main class="container my-4">
-  <div id="vibe-container" class="container mt-4" style="display:none;">
-   <div id="vibe-picker" class="mb-5 text-center">
-    <h6 class="text-muted small fw-bold mb-3 text-uppercase">How are you feeling?</h6>
-    <div class="d-flex justify-content-center flex-wrap gap-2">
-     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('28,12', '🚀 Adrenaline')">🚀 Adrenaline</button>
-     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('35,10751', '🍿 Pure Chill')">🍿 Pure Chill</button>
-     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('27,53', '😱 Spooky')">😱 Spooky</button>
-     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('878,9648', '🕵️ Mind-Bending')">🕵️ Mind-Bending</button>
-     <button class="btn btn-white shadow-sm rounded-pill px-3 py-2 border vibe-btn" onclick="getVibe('18,10749', '🫠 Emotional')">🫠 Emotional</button>
-     <button class="btn-white shadow-sm rounded-pill px-3 border vibe-btn"><a href="#livetv" class="nav-link-custom"><i class="fa fa-tv"></i> Live TV</a></button>
-    </div>
-   </div>
-  </div>
-
-  <div class="modal fade" id="vibeModal" tabindex="-1" aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content border-0 rounded-4 shadow-lg">
-     <div class="modal-header border-0 pb-0">
-      <h5 class="modal-title fw-bold" id="vibeTitle">Found for you</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-     </div>
-     <div class="modal-body p-4">
-      <div id="vibeResults" class="grid-container"></div>
-     </div>
-    </div>
-   </div>
-  </div>
-
   <section id="settings-view" style="display:none;">
    <div class="row justify-content-center">
     <div class="col-md-9 col-lg-8">
@@ -1504,13 +1663,24 @@
    <div id="channelCategories" class="channel-categories mb-4"></div>
    <div id="livetvGrid" class="grid-container"></div>
   </section>
-
+  <section id="sports-view" style="display:none;">
+   <div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="section-header mb-0">LIVE SPORTS</h5>
+   </div>
+   <div id="sportsGrid" class="row g-3"></div>
+  </section>
   <section id="search-view" style="display:none;">
+   <!-- Search Input Yahan Shift Ho Gaya Hai -->
+   <div id="navSearchContainer" class="search-container mb-4" style="position: relative;">
+    <i class="fa fa-search position-absolute text-muted" style="left: 15px; top: 12px;"></i>
+    <input type="text" id="searchInput" class="form-control search-input shadow-none w-100" placeholder="Search movies, series, actors..." autocomplete="off">
+    <div id="searchSuggestions" class="list-group position-absolute w-100 shadow-sm d-none"></div>
+   </div>
+
    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-    <h5 class="section-header mb-0" style="flex:1;">SEARCH RESULTS</h5>
+    <h5 class="section-header mb-0" style="flex:1;">RESULTS</h5>
     <div class="btn-group btn-group-sm bg-white shadow-sm rounded-pill p-1">
-     <button id="filter-multi" class="btn btn-primary rounded-pill px-3 filter-btn active" onclick="filterSearch('multi',this)">All</button>
-     <button id="filter-movie" class="btn btn-light rounded-pill px-3 filter-btn" onclick="filterSearch('movie',this)">Movies</button>
+     <button id="filter-movie" class="btn btn-primary rounded-pill px-3 filter-btn active" onclick="filterSearch('movie',this)">Movies</button>
      <button id="filter-tv" class="btn btn-light rounded-pill px-3 filter-btn" onclick="filterSearch('tv',this)">Series</button>
      <button id="filter-person" class="btn btn-light rounded-pill px-3 filter-btn" onclick="filterSearch('person',this)">Actors</button>
     </div>
@@ -1534,8 +1704,8 @@
       <div id="ambient-glow"></div>
       <div id="playerContainer" class="video-container shadow"></div>
      </div>
-     <div id="resumeContainer"></div>
-     <div style="margin-top:15px" class="stream-controls shadow-sm">
+     <div id="upNextContainer"></div>
+     <div style="margin-top:25px" class="stream-controls shadow-sm">
       <div class="mb-4"><span class="fw-bold text-muted small d-block mb-2">STREAM OPTIONS</span>
        <div class="server-grid d-flex flex-wrap gap-2" id="serverGrid"></div>
       </div>
@@ -1543,7 +1713,7 @@
 
      <div id="tvSelectors" class="d-none mt-4"></div>
 
-     <div class="row mt-5 g-4">
+     <div class="row mt-2 g-4">
       <div class="col-12" id="metaContent"></div>
       <div class="col-12" id="sideContent"></div>
      </div>
@@ -1612,7 +1782,7 @@
   const FALLBACK_PROFILE = "https://ui-avatars.com/api/?name=Actor&background=random&color=fff";
   
   let currentType, currentId, currentS = 1, currentE = 1, trailerKey = null, searchTimer;
-  let homePage = 1, searchPage = 1, currentSearchQuery = '', currentSearchFilter = 'multi', activeServerIndex = 0;
+  let homePage = 1, searchPage = 1, currentSearchQuery = '', currentSearchFilter = 'movie', activeServerIndex = 0;
   let currentImdbId = null, currentPosterPath = null, currentTitle = '';
   
   let allChannels = [];
@@ -1695,6 +1865,23 @@
     window.location.hash = '';
   }
   
+  // goBack Function Definition
+  window.goBack = function() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    goHome();
+  }
+  };
+  
+  window.goBack = function() {
+  if (window.history.length > 1) {
+    window.history.back(); // Agar history hai, toh pichle page par le jao
+  } else {
+    goHome(); // Agar direct link khola gaya tha, toh home par bhej do
+  }
+  };
+  
   async function detectUserCountry() {
     try {
       const res = await fetch('https://ipapi.co/json/');
@@ -1708,122 +1895,190 @@
   window.isPlayerActive = false;
   
   async function router() {
-  toggleLoader(true);
-  const h = window.location.hash;
+    toggleLoader(true);
+    const h = window.location.hash;
   
-  const openModals = document.querySelectorAll('.modal.show');
-  openModals.forEach(m => {
-      const instance = bootstrap.Modal.getInstance(m);
-      if (instance) instance.hide();
-  });
-  document.body.classList.remove('modal-open');
-  document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+    // 1. Modal aur Overlays Clean-up
+    const openModals = document.querySelectorAll('.modal.show');
+    openModals.forEach(m => {
+        const instance = bootstrap.Modal.getInstance(m);
+        if (instance) instance.hide();
+    });
+    document.body.classList.remove('modal-open');
+    document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
   
-  document.querySelectorAll('.hero-video-container').forEach(c => c.innerHTML = '');
-  if (typeof heroVideoTimer !== 'undefined') clearTimeout(heroVideoTimer);
+    // 2. Hero Video Clean-up
+    document.querySelectorAll('.hero-video-container').forEach(c => c.innerHTML = '');
+    if (typeof heroVideoTimer !== 'undefined') clearTimeout(heroVideoTimer);
   
-  const isDetailsRoute = h.startsWith('#movie/') || h.startsWith('#tv/');
+    // 3. Player Auto-Close Check (Back aane par video band karne ke liye)
+    const isDetailsRoute = h.startsWith('#movie/') || h.startsWith('#tv/');
+    
+    if (!isDetailsRoute && window.isPlayerActive && h !== '#livetv') {
+      // Agar user movie/series page se bahar jata hai, toh player khali kar do
+      document.getElementById('playerContainer').innerHTML = '';
+      window.isPlayerActive = false;
+    }
+    
+    document.body.classList.remove('pip-mode'); // PiP hamesha ke liye disable
   
-  if (window.isPlayerActive && !isDetailsRoute && h !== '#livetv') {
-    document.body.classList.add('pip-mode');
-  } else {
-    document.body.classList.remove('pip-mode');
-  }
-  
+    // 4. Sabhi sections ko by default hide karein
     const sections = [
     '#home-view', '#search-view', '#details-view', 
-    '#person-view', '#list-view', '#settings-view', '#livetv-view', '#about-view'
+    '#person-view', '#list-view', '#settings-view', '#livetv-view', '#about-view', '#sports-view'
   ];
-  
-  sections.forEach(v => {
-    if (v === '#details-view' && document.body.classList.contains('pip-mode')) {
-      document.querySelector(v).style.display = 'block'; 
-    } else {
-      document.querySelector(v).style.display = 'none';
-    }
-  });
-  
-  const vibeContainer = document.getElementById('vibe-container');
-  if (vibeContainer) vibeContainer.style.display = (h === '' || h === '#') ? 'block' : 'none';
-  document.getElementById('searchSuggestions')?.classList.add('d-none');
-  
-  const searchContainer = document.getElementById('navSearchContainer');
-  if (searchContainer) {
-    if (h === '' || h === '#' || h.startsWith('#search/')) {
-      searchContainer.classList.remove('d-none');
-    } else {
-      searchContainer.classList.add('d-none');
-    }
-  }
-  
-  const dlContainer = document.getElementById('dlIframeContainer');
-  const dlIframe = document.getElementById('dlIframe');
-  if (dlContainer && !dlContainer.classList.contains('d-none')) {
-    dlContainer.classList.add('d-none');
-    if (dlIframe) dlIframe.src = ''; 
-  }
-  
-  try {
-    if (h === '#settings') {
-      document.getElementById('settings-view').style.display = 'block';
-      initSettingsUI();
-    } 
-    else if (h === '#wishlist' || h === '#history') {
-      document.getElementById('list-view').style.display = 'block';
-      renderListPage(h.slice(1));
-    } 
-    else if (h === '#livetv') {
-      document.getElementById('livetv-view').style.display = 'block';
-      if (window.isPlayerActive) closePip(); 
-      await loadLiveTv();
-    } 
-    else if (h === '#about') {
-      document.getElementById('about-view').style.display = 'block';
-      await loadAboutPage();
-    } 
-    
-    else if (isDetailsRoute) {
-      const [t, i] = h.slice(1).split('/');
-      
-      if (currentType !== t || currentId !== i || !window.isPlayerActive) {
-         currentType = t;
-         currentId = i;
-         document.getElementById('details-view').style.display = 'block';
-         await loadDetails(t, i);
+    sections.forEach(v => {
+      if (v === '#details-view' && document.body.classList.contains('pip-mode')) {
+        document.querySelector(v).style.display = 'block'; 
       } else {
-         document.getElementById('details-view').style.display = 'block';
+        document.querySelector(v).style.display = 'none';
       }
-    } 
-    else if (h.startsWith('#person/')) {
-      document.getElementById('person-view').style.display = 'block';
-      await loadPerson(h.split('/')[1]);
-    } 
-    else if (h.startsWith('#search/')) {
-      document.getElementById('search-view').style.display = 'block';
-      const query = decodeURIComponent(h.split('/')[1]);
-      if (query !== currentSearchQuery) {
-          document.querySelectorAll('.filter-btn').forEach(b => {
-              b.classList.remove('active', 'btn-primary');
-              b.classList.add('btn-light');
-          });
-          document.getElementById('filter-multi').classList.add('active', 'btn-primary');
-          document.getElementById('filter-multi').classList.remove('btn-light');
-          currentSearchFilter = 'multi';
-          await performSearch(query);
+    });
+  
+    // 5. TOP NAVBAR TOGGLE LOGIC (Search, Wishlist aur Settings se header bilkul hata diya hai)
+    const topNavbar = document.querySelector('.navbar-custom');
+    const defaultNav = document.getElementById('defaultNavContent');
+    const backNav = document.getElementById('backNavContent');
+    const backTitle = document.getElementById('backNavTitle');
+  
+    if (h.startsWith('#search') || h === '#wishlist' || h === '#settings' || h === '#livetv') {
+      if (topNavbar) topNavbar.classList.add('d-none');
+    } else {
+      if (topNavbar) topNavbar.classList.remove('d-none');
+  
+      if (h === '' || h === '#') {
+        // Homepage
+        if (defaultNav) defaultNav.classList.remove('d-none');
+        if (backNav) backNav.classList.add('d-none');
+      } else {
+        // Other Pages (History, LiveTV, Movie, Series, Actor etc.)
+        if (defaultNav) defaultNav.classList.add('d-none');
+        if (backNav) backNav.classList.remove('d-none');
+  
+        // Title Set Karein (Movie/Series/Actor ke dynamic naam unke functions me updates hote hain)
+        let title = "AS CINEPLEX";
+        if (h === '#history') title = "History";
+        else if (h === '#livetv') title = "Live TV";
+        else if (h === '#about') title = "Developer Profile";
+        else if (h.startsWith('#movie/') || h.startsWith('#tv/') || h.startsWith('#person/')) title = "Loading...";
+  
+        if (backTitle) backTitle.innerText = title;
       }
-    } 
-    else {
-      document.getElementById('home-view').style.display = 'block';
-      await loadHome();
     }
-  } catch (e) {
-    console.error("Routing error:", e);
-  } finally {
-    if (!document.body.classList.contains('pip-mode')) {
-      window.scrollTo(0, 0);
+  
+    // 6. BOTTOM NAV ACTIVE STATE LOGIC
+    document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
+    if (h === '' || h === '#') document.getElementById('nav-home')?.classList.add('active');
+    else if (h.startsWith('#search')) document.getElementById('nav-search')?.classList.add('active');
+    else if (h === '#livetv') document.getElementById('nav-livetv')?.classList.add('active'); // Naya Live TV ka logic
+    else if (h === '#wishlist') document.getElementById('nav-wishlist')?.classList.add('active');
+    else if (h === '#settings') document.getElementById('nav-settings')?.classList.add('active');
+  
+    // 7. Download Iframe Clean-up
+    const dlContainer = document.getElementById('dlIframeContainer');
+    const dlIframe = document.getElementById('dlIframe');
+    if (dlContainer && !dlContainer.classList.contains('d-none')) {
+      dlContainer.classList.add('d-none');
+      if (dlIframe) dlIframe.src = ''; 
     }
-    toggleLoader(false);
-  }
+  
+    // 8. MAIN ROUTING TRY-CATCH BLOCK
+    try {
+      if (h === '#settings') {
+        document.getElementById('settings-view').style.display = 'block';
+        initSettingsUI();
+      } 
+      else if (h === '#wishlist' || h === '#history') {
+        document.getElementById('list-view').style.display = 'block';
+        renderListPage(h.slice(1));
+      } 
+      else if (h === '#livetv') {
+        document.getElementById('livetv-view').style.display = 'block';
+        if (window.isPlayerActive) closePip(); 
+        await loadLiveTv();
+      } 
+      else if (h === '#sports') {
+      document.getElementById('sports-view').style.display = 'block';
+      if (window.isPlayerActive) closePip(); 
+      await loadSports();
+    }
+      else if (h === '#about') {
+        document.getElementById('about-view').style.display = 'block';
+        await loadAboutPage();
+      } 
+      else if (isDetailsRoute) {
+        const [t, i] = h.slice(1).split('/');
+        if (currentType !== t || currentId !== i || !window.isPlayerActive) {
+           currentType = t;
+           currentId = i;
+           document.getElementById('details-view').style.display = 'block';
+           await loadDetails(t, i);
+        } else {
+           document.getElementById('details-view').style.display = 'block';
+        }
+      } 
+      else if (h.startsWith('#person/')) {
+        document.getElementById('person-view').style.display = 'block';
+        await loadPerson(h.split('/')[1]);
+      } 
+      else if (h.startsWith('#search')) {
+        document.getElementById('search-view').style.display = 'block';
+        
+        let query = "";
+        if (h.startsWith('#search/')) {
+            query = decodeURIComponent(h.split('/')[1]);
+        }
+        
+        if (query) {
+            // Agar query naya hai toh filter default 'movie' par set karein
+            if (query !== currentSearchQuery) {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active', 'btn-primary');
+                    b.classList.add('btn-light');
+                });
+                const movieFilter = document.getElementById('filter-movie');
+                if (movieFilter) {
+                    movieFilter.classList.add('active', 'btn-primary');
+                    movieFilter.classList.remove('btn-light');
+                }
+                currentSearchFilter = 'movie';
+            }
+            // Trigger Unconditional Search
+            await performSearch(query);
+        } else {
+            // Empty Search State Reset aur Placeholder Alignment Fix (Strictly Centered)
+            currentSearchQuery = ''; 
+            document.getElementById('searchGrid').innerHTML = `
+              <div class="text-center text-muted" style="grid-column: 1 / -1; min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div>
+                  <i class="fa fa-search mb-3" style="font-size: 3rem;"></i>
+                  <h5 class="fw-bold">Search</h5>
+                  <p class="small mb-0">Type something to find movies, series, or actors...</p>
+                </div>
+              </div>
+            `;
+            document.getElementById('searchLoadMore').classList.add('d-none');
+            
+            // Input clear karke automatic keyboard/cursor focus dena
+            const searchBox = document.getElementById('searchInput');
+            if (searchBox) {
+              searchBox.value = '';
+              setTimeout(() => searchBox.focus(), 100);
+            }
+        }
+      } 
+      else {
+        document.getElementById('home-view').style.display = 'block';
+        await loadHome();
+      }
+    } catch (e) {
+      console.error("Routing error:", e);
+    } finally {
+      if (!document.body.classList.contains('pip-mode')) {
+        window.scrollTo(0, 0);
+      }
+      toggleLoader(false);
+    }
   }
   
   window.currentEpView = 'thumb'; 
@@ -1895,7 +2150,6 @@
   const dlIframe = document.getElementById('dlIframe');
   if(dlIframe) dlIframe.src = "";
   
-  document.getElementById('resumeContainer').innerHTML = '';
   updateDownloadLabel();
   }
   
@@ -1917,20 +2171,16 @@
        renderHeroCarousel(carouselItems, container);
     } catch(e) { console.error("Carousel load failed", e); }
     
-    if (vibeContainer) {
-        vibeContainer.style.display = 'block';
-        vibeContainer.classList.add('mb-5'); 
-        container.appendChild(vibeContainer);
-    }
-    
     const history = getStorage('watchHistory');
     if (history.length) {
       const historyHtml = history.map(item => `
   <div class="movie-card position-relative">
-    <button class="btn btn-danger position-absolute shadow-sm"
-            style="top: 8px; right: 8px; z-index: 10; width: 26px; height: 26px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
-            onclick="event.stopPropagation(); removeFromHistory('${item.id}')" title="Remove from history">
-        <i class="fa fa-times" style="font-size: 0.75rem;"></i>
+    <button class="position-absolute shadow-sm"
+            style="top: 8px; right: 8px; z-index: 10; width: 28px; height: 28px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); transition: all 0.2s ease; cursor: pointer;"
+            onmouseover="this.style.background='rgba(239, 68, 68, 0.9)'; this.style.borderColor='transparent';"
+            onmouseout="this.style.background='rgba(0, 0, 0, 0.6)'; this.style.borderColor='rgba(255,255,255,0.2)';"
+            onclick="event.stopPropagation(); removeFromHistory('${item.id}', this)" title="Remove from history">
+        <i class="fa fa-trash-can" style="font-size: 0.75rem;"></i>
     </button>
   
     <div class="poster-wrapper" onclick="directResume('${item.type}', '${item.id}', ${item.season || 1}, ${item.episode || 1})">
@@ -1957,11 +2207,48 @@
     window.location.hash = `${type}/${id}`;
   };
   
-  window.removeFromHistory = function(id) {
+      // ID (continueWatchingSection) add kiya gaya hai
+      container.insertAdjacentHTML('beforeend', `
+        <div class="mb-5 pt-2" id="continueWatchingSection">
+          <h5 class="section-header mb-4">CONTINUE WATCHING</h5>
+          <div class="horizontal-scroll">${historyHtml}</div>
+        </div>`);
+  
+  window.directResume = function(type, id, season, episode) {
+    window.autoResumeTrigger = { season, episode };
+    window.location.hash = `${type}/${id}`;
+  };
+  
+  window.removeFromHistory = function(id, btnElement) {
     let history = getStorage('watchHistory');
     history = history.filter(x => x.id != id);
     setStorage('watchHistory', history);
-    loadHome(); 
+    
+    // Bina page reload kiye sirf us element (card) ko remove karein
+    if (btnElement) {
+        const card = btnElement.closest('.movie-card');
+        if (card) card.remove();
+        
+        // Agar aakhri item delete ho gaya toh pura "Continue Watching" section hata do
+        if (history.length === 0) {
+            const section = document.getElementById('continueWatchingSection');
+            if (section) section.remove();
+        }
+    } else {
+        loadHome(); // Fallback
+    }
+  
+    // Success Toast Notification
+    Swal.fire({ 
+      toast: true, 
+      position: 'top-end', 
+      icon: 'success', 
+      title: 'Removed from history', 
+      showConfirmButton: false, 
+      timer: 1500,
+      background: 'var(--surface)',
+      color: 'var(--text-main)'
+    });
   };
   
       container.insertAdjacentHTML('beforeend', `
@@ -2050,18 +2337,22 @@
       
     </div>
   
-    <h6 class="fw-bold mb-3 mt-4">TOP CAST</h6>
-    <div class="d-flex overflow-auto gap-3 pb-3" style="scrollbar-width: none;">
-      ${(c.cast || []).slice(0, 10).map(a => `
-        <div onclick="handleCardClick('person', '${a.id}')" style="cursor:pointer; min-width:90px" class="text-center">
-          <img src="${a.profile_path ? CAST_IMG + a.profile_path : FALLBACK_PROFILE}" 
-               class="cast-img-large shadow-sm mb-2" 
-               style="width:90px; height:90px; border: 2px solid white;" 
-               onerror="this.src='${FALLBACK_PROFILE}'">
-          <div class="fw-bold small text-truncate" style="max-width:90px">${sanitize(a.name)}</div>
-        </div>
-      `).join('')}
-    </div>`;
+    <div class="card border-0 rounded-4 shadow-sm mt-5" style="background: var(--surface); border: 1px solid var(--border) !important;">
+    <div class="card-body p-4">
+      <h6 class="fw-bold mb-3 text-muted" style="letter-spacing: 0.5px; font-size: 0.95rem;"><i class="fa fa-users me-2"></i>TOP CAST</h6>
+      <div class="d-flex overflow-auto gap-3 pb-2" style="scrollbar-width: none;">
+        ${(c.cast || []).slice(0, 10).map(a => `
+          <div onclick="handleCardClick('person', '${a.id}')" style="cursor:pointer; min-width:90px" class="text-center">
+            <img src="${a.profile_path ? CAST_IMG + a.profile_path : FALLBACK_PROFILE}" 
+                 class="cast-img-large shadow-sm mb-2" 
+                 style="width:90px; height:90px; border: 2px solid white;" 
+                 onerror="this.src='${FALLBACK_PROFILE}'">
+            <div class="fw-bold small text-truncate" style="max-width:90px">${sanitize(a.name)}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>`;
     
   renderWatchlistBtn(m.id);
   }
@@ -2153,6 +2444,10 @@
     currentImdbId = ext.imdb_id;
     currentPosterPath = m.poster_path;
     currentTitle = m.title || m.name;
+    
+    // Niche wali do lines add karein taaki header me Movie/Series ka Real Name aa sake
+    const backTitle = document.getElementById('backNavTitle');
+    if (backTitle) backTitle.innerText = currentTitle;
     trailerKey = v.results.find(x => x.type === 'Trailer' && x.site === 'YouTube')?.key;
   
     const history = getStorage('watchHistory');
@@ -2160,12 +2455,13 @@
     currentS = existing?.season || 1;
     currentE = existing?.episode || 1;
     addToHistory(m.id, t, currentTitle, m.poster_path);
-    checkContinueWatching(i, t);
-    if(window.autoResumeTrigger) { resumePlayback(window.autoResumeTrigger.season, window.autoResumeTrigger.episode); window.autoResumeTrigger = null; }
+    // Resume Trigger form Homepage
+    if(window.autoResumeTrigger) { 
+        resumePlayback(window.autoResumeTrigger.season, window.autoResumeTrigger.episode); 
+        window.autoResumeTrigger = null; 
+    }
   
-    if(!document.getElementById('upNextContainer')) {
-       document.getElementById('resumeContainer').insertAdjacentHTML('afterend', '<div id="upNextContainer"></div>');
-    } else {
+    if(document.getElementById('upNextContainer')) {
        document.getElementById('upNextContainer').innerHTML = ''; 
     }
   
@@ -2286,10 +2582,15 @@
   async function loadPerson(id) {
     toggleLoader(true);
     try {
-      const [p, c] = await Promise.all([
-        fetch(`${BASE}/person/${id}?api_key=${KEY}`).then(r => r.json()),
-        fetch(`${BASE}/person/${id}/combined_credits?api_key=${KEY}`).then(r => r.json())
-      ]);
+    const [p, c] = await Promise.all([
+      fetch(`${BASE}/person/${id}?api_key=${KEY}`).then(r => r.json()),
+      fetch(`${BASE}/person/${id}/combined_credits?api_key=${KEY}`).then(r => r.json())
+    ]);
+    
+    // Niche wali do lines add karein taaki header me Actor ka Real Name aa sake
+    const backTitle = document.getElementById('backNavTitle');
+    if (backTitle) backTitle.innerText = p.name;
+    
       const movies = (c.cast || []).filter(x => x.media_type === 'movie').sort((a, b) => b.popularity - a.popularity);
       const tvShows = (c.cast || []).filter(x => x.media_type === 'tv').sort((a, b) => b.popularity - a.popularity);
       const bio = p.biography || 'No biography available.';
@@ -2476,15 +2777,6 @@
     setStorage('watchHistory', h.slice(0, 50));
   }
   
-  function checkContinueWatching(id, t) {
-    const e = getStorage('watchHistory').find(x => x.id == id);
-    const c = document.getElementById('resumeContainer');
-    c.innerHTML = '';
-    if (e && t === 'tv' && (e.season > 1 || e.episode > 1)) {
-      c.innerHTML = `<div class="resume-alert d-flex justify-content-between align-items-center mt-3 py-2 px-3 small shadow-sm"><span><i class="fa fa-history me-2"></i>Resume <b>S${e.season}:E${e.episode}</b>?</span><button class="btn btn-primary btn-sm fw-bold" onclick="resumePlayback(${e.season}, ${e.episode})">Resume</button></div>`;
-    }
-  }
-  
   window.resumePlayback = async function (s, e) {
     const seasonTab = Array.from(document.querySelectorAll('.season-tab')).find(tab => tab.innerText.includes(`Season ${s}`));
     if (seasonTab) seasonTab.click();
@@ -2518,8 +2810,11 @@
   function renderListPage(mode) {
     const key = mode === 'wishlist' ? 'watchlist' : 'watchHistory';
     const data = getStorage(key);
+    
     document.getElementById('listTitle').innerText = mode.toUpperCase() + ` (${data.length})`;
     document.getElementById('listActionBtn').innerHTML = `<i class="fa fa-trash-can me-2"></i>Clear All`;
+    
+    // Clear All button logic
     document.getElementById('listActionBtn').onclick = () => {
       if (data.length === 0) return;
       Swal.fire({ title: `Clear ${mode}?`, text: "You won't be able to revert this!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#4f46e5', cancelButtonColor: '#ef4444', confirmButtonText: 'Yes, clear it!' }).then((result) => {
@@ -2530,8 +2825,70 @@
         }
       });
     };
-    document.getElementById('listGrid').innerHTML = data.length ? data.map(i => createCard({ ...i, poster_path: i.poster, media_type: i.type })).join('') : `<div class="col-12 text-center py-5 text-muted">Empty list.</div>`;
+  
+    // Agar list khali hai toh
+    if (data.length === 0) {
+      document.getElementById('listGrid').innerHTML = `<div class="col-12 text-center py-5 text-muted"><i class="fa fa-folder-open fs-1 mb-3"></i><br>Empty list.</div>`;
+      return;
+    }
+  
+    // Custom Cards Render karna (Delete button ke sath)
+    const cardsHtml = data.map(item => {
+      const title = sanitize(item.title || item.name);
+      const img = item.poster ? (POSTER + item.poster) : FALLBACK_IMG;
+      
+      // Type tag for Movies/Series
+      const typeBadge = item.type === 'tv' 
+                        ? (item.season ? `S${item.season}:E${item.episode}` : 'Series') 
+                        : 'Movie';
+  
+      return `
+        <div class="movie-card position-relative" onclick="handleCardClick('${item.type}', '${item.id}')">
+          <button class="position-absolute shadow-sm"
+                  style="top: 8px; right: 8px; z-index: 10; width: 28px; height: 28px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.6); color: #fff; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); transition: all 0.2s ease; cursor: pointer;"
+                  onmouseover="this.style.background='rgba(239, 68, 68, 0.9)'; this.style.borderColor='transparent';"
+                  onmouseout="this.style.background='rgba(0, 0, 0, 0.6)'; this.style.borderColor='rgba(255,255,255,0.2)';"
+                  onclick="event.stopPropagation(); removeFromList('${key}', '${item.id}', '${mode}')" title="Remove from ${mode}">
+              <i class="fa fa-trash-can" style="font-size: 0.75rem;"></i>
+          </button>
+          
+          <div class="poster-wrapper">
+            <img src="${img}" class="poster-img" loading="lazy" onerror="this.src='${FALLBACK_IMG}'; this.onerror=null;">
+          </div>
+          
+          <div class="card-body-content">
+            <div class="card-title-text">${title}</div>
+            <div class="card-meta-text mt-1">
+              <span class="badge bg-primary text-white w-100">${typeBadge}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  
+    document.getElementById('listGrid').innerHTML = cardsHtml;
   }
+  
+  window.removeFromList = function(key, id, mode) {
+    let list = getStorage(key);
+    list = list.filter(x => x.id != id);
+    setStorage(key, list);
+    
+    // Page ko turant refresh karein jisse gaya hua item gayab ho jaye
+    renderListPage(mode);
+    
+    // Ek sweet notification user ko dikha dein
+    Swal.fire({ 
+      toast: true, 
+      position: 'top-end', 
+      icon: 'success', 
+      title: 'Item Removed', 
+      showConfirmButton: false, 
+      timer: 1500,
+      background: 'var(--surface)',
+      color: 'var(--text-main)'
+    });
+  };
   
   // ---------- SEARCH ----------
   async function filterSearch(type, btn) {
@@ -2556,8 +2913,34 @@
       const r = await fetch(`${BASE}/search/${endpoint}?api_key=${KEY}&query=${encodeURIComponent(q)}&page=${searchPage}${adultParam}`);
       if (!r.ok) throw new Error();
       const data = await r.json();
-      document.getElementById('searchGrid').insertAdjacentHTML('beforeend', (data.results || []).map(i => createCard(i)).join('')); attachPreviewListeners();
-      document.getElementById('searchLoadMore').classList.toggle('d-none', data.page >= data.total_pages);
+      
+      const loadMoreBtn = document.getElementById('searchLoadMore');
+      
+      // Agar results milein:
+      if (data.results && data.results.length > 0) {
+        document.getElementById('searchGrid').insertAdjacentHTML('beforeend', data.results.map(i => createCard(i)).join('')); 
+        attachPreviewListeners();
+        
+        // Explicit Display Logic for Load More Button
+        if (data.page < data.total_pages) {
+            loadMoreBtn.classList.remove('d-none'); // Aur pages bache hain, dikhao
+        } else {
+            loadMoreBtn.classList.add('d-none'); // Aakhri page hai, chhupa do
+        }
+      } 
+      // Agar results na milein:
+      else if (searchPage === 1) {
+        document.getElementById('searchGrid').innerHTML = `
+          <div class="text-center text-muted" style="grid-column: 1 / -1; min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div>
+              <i class="fa fa-ghost mb-3" style="font-size: 3rem;"></i>
+              <h5 class="fw-bold">No results found</h5>
+              <p class="small mb-0">We couldn't find anything for "${sanitize(q)}".<br>Try a different keyword.</p>
+            </div>
+          </div>
+        `;
+        loadMoreBtn.classList.add('d-none'); // Empty result pe chhupa do
+      }
     } catch (e) {
       document.getElementById('searchGrid').innerHTML = '<div class="error-msg">Search failed. Try again.</div>';
       showToast('Search failed. Please try again.', 'error'); 
@@ -2571,58 +2954,62 @@
     performSearch(currentSearchQuery, true);
   }
   
-  // ---------- VIBE ----------
-  window.getVibe = async function (genres, label, event) {
-    Swal.fire({ title: `Finding ${label} movies...`, allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-    try {
-      const country = localStorage.getItem('region') || window.userCountry || 'IN';
-      let r = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&with_origin_country=${country}&vote_average.gte=6&sort_by=popularity.desc`);
-      let data = await r.json();
-      if (!data.results || data.results.length < 3) {
-        const fallback = await fetch(`${BASE}/discover/movie?api_key=${KEY}&with_genres=${genres}&vote_average.gte=7&page=1`);
-        data = await fallback.json();
-      }
-      const picks = (data.results || []).sort(() => 0.5 - Math.random()).slice(0, 5);
-      document.getElementById('vibeTitle').innerText = `${label} in ${country}`;
-      document.getElementById('vibeResults').innerHTML = picks.map(m => createCard(m)).join('');
-      Swal.close();
-      new bootstrap.Modal(document.getElementById('vibeModal')).show();
-    } catch (e) {
-      Swal.fire('Error', 'Could not fetch movies', 'error');
-    }
-  };
-  
   // ---------- SEARCH SUGGESTIONS ----------
   window.selectSuggestion = (val) => {
     document.getElementById('searchInput').value = val;
     document.getElementById('searchSuggestions').classList.add('d-none');
-    window.location.hash = `search/${encodeURIComponent(val)}`;
+    
+    const newHash = `search/${encodeURIComponent(val)}`;
+    // Agar URL already wahi hai, toh hash change nahi hoga, isliye manual search trigger karein
+    if (window.location.hash === '#' + newHash) {
+        performSearch(val);
+    } else {
+        window.location.hash = newHash;
+    }
   };
   
-  document.getElementById('searchInput').addEventListener('input', async (e) => {
+  document.getElementById('searchInput').addEventListener('input', (e) => {
     clearTimeout(searchTimer);
     const q = e.target.value.trim();
+    
     if (q.length < 2) {
       document.getElementById('searchSuggestions').classList.add('d-none');
       return;
     }
-    try {
-      const r = await fetch(`${BASE}/search/multi?api_key=${KEY}&query=${encodeURIComponent(q)}`);
-      const data = await r.json();
-      if (data.results && data.results.length) {
-        document.getElementById('searchSuggestions').innerHTML = data.results.slice(0, 6).map(i => `<button class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-2" onclick="selectSuggestion('${(i.title || i.name).replace(/'/g, "\\'")}')"><i class="fa fa-search text-muted small"></i><span class="small fw-bold">${sanitize(i.title || i.name)}</span>${i.known_for_department === 'Acting' ? '<span class="badge bg-primary ms-2">Actor</span>' : ''}</button>`).join('');
-        document.getElementById('searchSuggestions').classList.remove('d-none');
-      }
-    } catch (err) { console.error(err); }
-    searchTimer = setTimeout(() => { if (q && q.length >= 3) window.location.replace(`#search/${encodeURIComponent(q)}`); }, 800);
+    
+    // Sirf suggestions fetch karega, auto-redirect nahi karega
+    searchTimer = setTimeout(async () => { 
+      try {
+        const r = await fetch(`${BASE}/search/multi?api_key=${KEY}&query=${encodeURIComponent(q)}`);
+        const data = await r.json();
+        if (data.results && data.results.length) {
+          document.getElementById('searchSuggestions').innerHTML = data.results.slice(0, 6).map(i => 
+            `<button class="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-2" onclick="selectSuggestion('${(i.title || i.name).replace(/'/g, "\\'")}')">
+              <i class="fa fa-search text-muted small"></i>
+              <span class="small fw-bold">${sanitize(i.title || i.name)}</span>
+              ${i.known_for_department === 'Acting' ? '<span class="badge bg-primary ms-2">Actor</span>' : ''}
+            </button>`
+          ).join('');
+          document.getElementById('searchSuggestions').classList.remove('d-none');
+        }
+      } catch (err) { console.error(err); }
+    }, 400); 
   });
   
+  // Search input par Enter dabane ka logic
   document.getElementById('searchInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       const q = e.target.value.trim();
       if (q) {
         document.getElementById('searchSuggestions').classList.add('d-none');
-        window.location.hash = `search/${encodeURIComponent(q)}`;
+        
+        const newHash = `search/${encodeURIComponent(q)}`;
+        // Agar URL already wahi hai, toh force search
+        if (window.location.hash === '#' + newHash) {
+            performSearch(q);
+        } else {
+            window.location.hash = newHash;
+        }
         e.target.blur();
       }
     }
@@ -2794,34 +3181,362 @@
   }
   
   async function loadLiveTv() {
-  toggleLoader(true);
-  const grid = document.getElementById('livetvGrid');
-  grid.innerHTML = '';
-  
-  const url = localStorage.getItem('iptvPlaylist') || 'https://raw.githubusercontent.com/iptv-org/iptv/refs/heads/master/streams/in.m3u';
-  
-  try {
-    const res = await fetch(url);
-    const text = await res.text();
-    allChannels = parseM3U(text);
+    toggleLoader(true);
+    const grid = document.getElementById('livetvGrid');
+    grid.innerHTML = '';
     
-    renderChannelCategories(); 
-    renderChannels(allChannels.slice(0, 100));
-  } catch (e) {
-    grid.innerHTML = '<div class="col-12 text-center text-danger mt-5"><i class="fa fa-warning fs-1 mb-3"></i><br>Failed to load playlist. Ensure the URL is correct and allows CORS.</div>';
-    console.error("IPTV Fetch Error:", e);
-    Swal.fire({
-      icon: 'error',
-      title: 'Live TV Error',
-      text: 'Failed to load the Live TV playlist. The URL might be broken or blocked by browser CORS security.',
-      confirmButtonColor: '#4f46e5',
-      background: 'var(--surface)',
-      color: 'var(--text-main)'
+    // Naya default URL jisme channel logos aur metadata dono hote hain
+    let url = localStorage.getItem('iptvPlaylist') || 'https://iptv-org.github.io/iptv/countries/in.m3u';
+    
+    // Agar kisi user ke local storage me purana bina-logo wala URL save hai, toh use auto-update kar do
+    if (url.includes('streams/in.m3u')) {
+        url = 'https://iptv-org.github.io/iptv/countries/in.m3u';
+        localStorage.setItem('iptvPlaylist', url);
+    }
+    
+    try {
+      const res = await fetch(url);
+      const text = await res.text();
+      allChannels = parseM3U(text);
+      
+      renderChannelCategories(); 
+      renderChannels(allChannels.slice(0, 100));
+    } catch (e) {
+      grid.innerHTML = '<div class="col-12 text-center text-danger mt-5"><i class="fa fa-warning fs-1 mb-3"></i><br>Failed to load playlist. Ensure the URL is correct and allows CORS.</div>';
+      console.error("IPTV Fetch Error:", e);
+      Swal.fire({
+        icon: 'error',
+        title: 'Live TV Error',
+        text: 'Failed to load the Live TV playlist. The URL might be broken or blocked by browser CORS security.',
+        confirmButtonColor: '#4f46e5',
+        background: 'var(--surface)',
+        color: 'var(--text-main)'
+      });
+    } finally {
+      toggleLoader(false);
+    }
+  }
+  
+  // ---------- LIVE SPORTS FETCH & RENDER (CORS SAFE + EXACT JSON HUNTER) ----------
+  async function loadSports() {
+    toggleLoader(true);
+    const container = document.getElementById('sportsGrid');
+    container.innerHTML = '';
+    
+    let matches = [];
+    
+    try {
+      const targetApi = 'https://streamex.sh/api/live/matches/live';
+      let data = null;
+  
+      // STEP 1: Pehle Direct Fetch try karna
+      try {
+          const res = await fetch(targetApi);
+          if (res.ok) data = await res.json();
+      } catch (err) {
+          console.log("Direct fetch blocked by CORS. Switching to Proxy...");
+      }
+  
+      // STEP 2: Agar direct block hua, toh clean Proxy use karna (bina kisi aage piche ke)
+      if (!data) {
+          const proxies = [
+              `https://api.allorigins.win/raw?url=${encodeURIComponent(targetApi)}`,
+              `https://corsproxy.io/?${encodeURIComponent(targetApi)}`
+          ];
+          for (let proxy of proxies) {
+              try {
+                  const pRes = await fetch(proxy);
+                  if (pRes.ok) {
+                      data = await pRes.json();
+                      break;
+                  }
+              } catch (e) {
+                  console.log("Proxy failed, trying next...");
+              }
+          }
+      }
+  
+      if (!data) throw new Error("API completely blocked.");
+  
+      // STEP 3: Aapke bheje gaye JSON ke hisaab se strict Match Hunter
+      function findMatches(node) {
+          if (!node) return;
+          if (Array.isArray(node)) {
+              node.forEach(findMatches);
+          } else if (typeof node === 'object') {
+              // Exact check: Agar object me 'id', 'teams' aur 'title' hai tabhi list me dalo
+              if (node.id && node.teams && node.title) {
+                  if (!node.category) node.category = 'Live Sports';
+                  matches.push(node);
+              } else {
+                  Object.values(node).forEach(findMatches);
+              }
+          }
+      }
+      
+      findMatches(data);
+      
+    } catch (e) {
+      console.warn("Fetch Error:", e.message);
+    } finally {
+      toggleLoader(false);
+    }
+  
+    if (matches.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center py-5 text-muted"><i class="fa fa-trophy fs-1 mb-3"></i><br>No live matches available right now.</div>';
+        return;
+    }
+    
+    let html = '';
+    
+    // Duplicate matches hatane ka logic (id ke basis par)
+    const uniqueMatches = [];
+    const seenIds = new Set();
+    matches.forEach(m => {
+        if (!seenIds.has(m.id)) {
+            seenIds.add(m.id);
+            uniqueMatches.push(m);
+        }
     });
-  } finally {
-    toggleLoader(false);
+  
+    // Time Format (1779747000000 -> 11:30 PM)
+    const formatTime = (timeData) => {
+        if (!timeData) return 'Live Now';
+        if (typeof timeData === 'number' || /^\d+$/.test(timeData)) {
+            const d = new Date(parseInt(timeData));
+            return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); 
+        }
+        return 'Live';
+    };
+  
+    // Aapki exact trick: Hash code to streamed.pk image
+    const fixImage = (hashStr) => {
+        if (!hashStr || typeof hashStr !== 'string') return FALLBACK_IMG;
+        if (hashStr.startsWith('http')) return hashStr;
+        return `https://streamed.pk/api/images/badge/${hashStr}.webp`;
+    };
+  
+    uniqueMatches.forEach(m => {
+        const title = m.title || 'Live Match';
+        const category = m.category || 'Live';
+        const time = formatTime(m.date || m.start_time);
+        
+        const t1 = (m.teams && m.teams.home) ? m.teams.home : {};
+        const t2 = (m.teams && m.teams.away) ? m.teams.away : {};
+        
+        const homeName = t1.name || 'Team 1';
+        const awayName = t2.name || 'Team 2';
+        
+        const homeLogo = fixImage(t1.badge);
+        const awayLogo = fixImage(t2.badge);
+        
+        let sourceStr = '';
+        let idStr = '';
+        if (m.sources && Array.isArray(m.sources) && m.sources.length > 0) {
+            sourceStr = m.sources[0].source;
+            idStr = m.sources[0].id;
+        }
+  
+        const safeTitle = sanitize(title).replace(/'/g, "\\'");
+        let clickAction = (sourceStr && idStr) 
+            ? `playLiveMatch('${sourceStr}', '${idStr}', '${safeTitle}')`
+            : `Swal.fire({toast: true, position: 'top-end', icon: 'info', title: 'Stream link not available', showConfirmButton: false, timer: 2000})`;
+        
+        html += `
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="sports-card" onclick="${clickAction}">
+             <div class="sports-badge">${sanitize(category).toUpperCase()}</div>
+             <div class="sports-teams-row">
+                 <div class="team-col">
+                     <img src="${homeLogo}" class="team-logo" onerror="this.src='${FALLBACK_IMG}'">
+                     <div class="team-name">${sanitize(homeName)}</div>
+                 </div>
+                 <div class="vs-col">
+                     <div class="vs-text">VS</div>
+                     <div class="match-time" style="font-size:0.65rem;">${time}</div>
+                 </div>
+                 <div class="team-col">
+                     <img src="${awayLogo}" class="team-logo" onerror="this.src='${FALLBACK_IMG}'">
+                     <div class="team-name">${sanitize(awayName)}</div>
+                 </div>
+             </div>
+             <div class="match-title" title="${sanitize(title)}">${sanitize(title)}</div>
+          </div>
+        </div>
+        `;
+    });
+    
+    container.innerHTML = html;
   }
-  }
+  
+  // ---------- POPUP MODAL STREAM PLAYER (CORS SAFE) ----------
+  window.playLiveMatch = async function(source, id, title) {
+      toggleLoader(true);
+      try {
+          const fetchUrl = `https://streamex.sh/api/live/stream/${source}/${id}`;
+          let data = null;
+  
+          // Pehle direct try
+          try {
+              const res = await fetch(fetchUrl);
+              if (res.ok) data = await res.json();
+          } catch(e) {
+              console.log("Direct embed blocked, switching to proxy...");
+          }
+  
+          // Phir Proxy try
+          if (!data) {
+              const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(fetchUrl)}`;
+              const pRes = await fetch(proxyUrl);
+              if (pRes.ok) data = await pRes.json();
+          }
+  
+          if (!data) throw new Error("Embed API Completely Blocked");
+          
+          const embedUrl = data.embed_url || data.url || data.stream_url || data.iframe;
+          
+          if (embedUrl) {
+              let existing = document.getElementById('sportsPlayerModal');
+              if (existing) existing.remove();
+              
+              const modalHtml = `
+              <div class="modal fade" id="sportsPlayerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                      <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg" style="background: var(--surface) !important;">
+                          <div class="modal-header border-0 pb-0 pt-3 px-4">
+                              <h6 class="modal-title text-white fw-bold text-truncate" style="color: var(--text-main) !important;">${title}</h6>
+                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('sportsIframe').src=''"></button>
+                          </div>
+                          <div class="modal-body p-0 mt-3">
+                              <div class="ratio ratio-16x9">
+                                  <iframe id="sportsIframe" src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media" style="border:none;"></iframe>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              `;
+              document.body.insertAdjacentHTML('beforeend', modalHtml);
+              const modal = new bootstrap.Modal(document.getElementById('sportsPlayerModal'));
+              modal.show();
+          } else {
+              Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'Stream offline right now', showConfirmButton: false, timer: 2000});
+          }
+      } catch (e) {
+          console.error(e);
+          Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'Match not started or blocked', showConfirmButton: false, timer: 2500});
+      } finally {
+          toggleLoader(false);
+      }
+  };
+  
+  // ---------- POPUP MODAL STREAM PLAYER ----------
+  window.playLiveMatch = async function(source, id, title) {
+      toggleLoader(true);
+      try {
+          // Aapki exact format request: https://streamex.sh/api/live/stream/[source]/[id]
+          const fetchUrl = `https://streamex.sh/api/live/stream/${source}/${id}`;
+          
+          const res = await fetch(fetchUrl);
+          if (!res.ok) throw new Error("Direct embed fetch failed");
+          
+          const data = await res.json();
+          const embedUrl = data.embed_url || data.url || data.stream_url;
+          
+          if (embedUrl) {
+              let existing = document.getElementById('sportsPlayerModal');
+              if (existing) existing.remove();
+              
+              const modalHtml = `
+              <div class="modal fade" id="sportsPlayerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                      <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg" style="background: var(--surface) !important;">
+                          <div class="modal-header border-0 pb-0 pt-3 px-4">
+                              <h6 class="modal-title text-white fw-bold text-truncate" style="color: var(--text-main) !important;">${title}</h6>
+                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('sportsIframe').src=''"></button>
+                          </div>
+                          <div class="modal-body p-0 mt-3">
+                              <div class="ratio ratio-16x9">
+                                  <iframe id="sportsIframe" src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media" style="border:none;"></iframe>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              `;
+              document.body.insertAdjacentHTML('beforeend', modalHtml);
+              const modal = new bootstrap.Modal(document.getElementById('sportsPlayerModal'));
+              modal.show();
+          } else {
+              Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'Stream offline right now', showConfirmButton: false, timer: 2000});
+          }
+      } catch (e) {
+          console.error(e);
+          Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'API is blocked or match ended', showConfirmButton: false, timer: 2500});
+      } finally {
+          toggleLoader(false);
+      }
+  };
+  
+  // ---------- POPUP MODAL & STREAM FETCH LOGIC (DIRECT FETCH) ----------
+  window.playLiveMatch = async function(source, id, title) {
+      toggleLoader(true);
+      try {
+          // 🚀 AAPKI TRICK: Bina kisi proxy ke direct fetch karo jaise matches fetch kiye the
+          const url = `https://streamex.sh/api/live/stream/${source}/${id}`;
+          
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("Direct stream fetch failed");
+          
+          const data = await res.json();
+          
+          // JSON me se actual iframe embed link nikalna
+          const embedUrl = data.embed_url || data.url || data.stream_url || data.link || data.iframe;
+          
+          if (embedUrl) {
+              // Pehle se khula modal delete karein (taaki bugs na aayein)
+              let existing = document.getElementById('sportsPlayerModal');
+              if (existing) existing.remove();
+              
+              // Naya Bootstrap Modal Generate Karna
+              const modalHtml = `
+              <div class="modal fade" id="sportsPlayerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                      <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg" style="background: var(--surface) !important;">
+                          <div class="modal-header border-0 pb-0 pt-3 px-4">
+                              <h6 class="modal-title text-white fw-bold text-truncate" style="color: var(--text-main) !important;">${title}</h6>
+                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('sportsIframe').src=''"></button>
+                          </div>
+                          <div class="modal-body p-0 mt-3">
+                              <div class="ratio ratio-16x9">
+                                  <iframe id="sportsIframe" src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media" style="border:none;"></iframe>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              `;
+              document.body.insertAdjacentHTML('beforeend', modalHtml);
+              
+              // Modal dikhao
+              const modal = new bootstrap.Modal(document.getElementById('sportsPlayerModal'));
+              modal.show();
+          } else {
+              Swal.fire({
+                  toast: true, position: 'top-end', icon: 'error', 
+                  title: 'Stream link not available yet', showConfirmButton: false, timer: 2000
+              });
+          }
+      } catch (e) {
+          console.error(e);
+          Swal.fire({
+              toast: true, position: 'top-end', icon: 'error', 
+              title: 'API is blocked or match has ended', showConfirmButton: false, timer: 2500
+          });
+      } finally {
+          toggleLoader(false);
+      }
+  };
   
   function renderChannelCategories() {
   const catContainer = document.getElementById('channelCategories');
@@ -2992,7 +3707,7 @@
       historyCountEl.innerText = `${count} title${count === 1 ? '' : 's'} recorded`;
     }
     
-    if (iptvInput) iptvInput.value = localStorage.getItem('iptvPlaylist') || 'https://raw.githubusercontent.com/iptv-org/iptv/refs/heads/master/streams/in.m3u';
+    if (iptvInput) iptvInput.value = localStorage.getItem('iptvPlaylist') || 'https://iptv-org.github.io/iptv/countries/in.m3u';
     const safeSearchToggle = document.getElementById('safeSearchToggle');
     const regionSelect = document.getElementById('regionSelect');
     const liveTvAutoplayToggle = document.getElementById('liveTvAutoplayToggle');
@@ -3444,6 +4159,28 @@
   }
   
  </script>
+ <nav class="bottom-nav shadow-lg">
+  <a href="#" class="bottom-nav-item active" id="nav-home">
+   <i class="fa fa-home"></i>
+   <span>Home</span>
+  </a>
+  <a href="#search" class="bottom-nav-item" id="nav-search">
+   <i class="fa fa-search"></i>
+   <span>Search</span>
+  </a>
+  <a href="#livetv" class="bottom-nav-item" id="nav-livetv">
+   <i class="fa fa-tv"></i>
+   <span>Live TV</span>
+  </a>
+  <a href="#wishlist" class="bottom-nav-item" id="nav-wishlist">
+   <i class="fa fa-bookmark"></i>
+   <span>Wishlist</span>
+  </a>
+  <a href="#settings" class="bottom-nav-item" id="nav-settings">
+   <i class="fa fa-cog"></i>
+   <span>Settings</span>
+  </a>
+ </nav>
 </body>
 
 </html>
