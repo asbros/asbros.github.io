@@ -2251,11 +2251,6 @@
     });
   };
   
-      container.insertAdjacentHTML('beforeend', `
-        <div class="mb-5 pt-2">
-          <h5 class="section-header mb-4">CONTINUE WATCHING</h5>
-          <div class="horizontal-scroll">${historyHtml}</div>
-        </div>`);
     }
   }
   
@@ -3217,7 +3212,7 @@
     }
   }
   
-  // ---------- LIVE SPORTS FETCH & RENDER (CORS SAFE + EXACT JSON HUNTER) ----------
+  // ---------- LIVE SPORTS FETCH & RENDER (STRICT BADGE LOGIC) ----------
   async function loadSports() {
     toggleLoader(true);
     const container = document.getElementById('sportsGrid');
@@ -3226,126 +3221,119 @@
     let matches = [];
     
     try {
-      const targetApi = 'https://streamex.sh/api/live/matches/live';
+      const targetApi = 'https://streamex.sh/api/live/matches/live?_=' + Date.now();
+      
+      // Multi-Proxy System taaki block na ho
+      const proxies = [
+          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetApi)}`,
+          `https://corsproxy.io/?${encodeURIComponent(targetApi)}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(targetApi)}`
+      ];
+      
       let data = null;
-  
-      // STEP 1: Pehle Direct Fetch try karna
-      try {
-          const res = await fetch(targetApi);
-          if (res.ok) data = await res.json();
-      } catch (err) {
-          console.log("Direct fetch blocked by CORS. Switching to Proxy...");
-      }
-  
-      // STEP 2: Agar direct block hua, toh clean Proxy use karna (bina kisi aage piche ke)
-      if (!data) {
-          const proxies = [
-              `https://api.allorigins.win/raw?url=${encodeURIComponent(targetApi)}`,
-              `https://corsproxy.io/?${encodeURIComponent(targetApi)}`
-          ];
-          for (let proxy of proxies) {
-              try {
-                  const pRes = await fetch(proxy);
-                  if (pRes.ok) {
-                      data = await pRes.json();
-                      break;
-                  }
-              } catch (e) {
-                  console.log("Proxy failed, trying next...");
+      let fetchSuccess = false;
+
+      for (let proxy of proxies) {
+          try {
+              const res = await fetch(proxy);
+              if (res.ok) {
+                  data = await res.json();
+                  fetchSuccess = true;
+                  break; 
               }
+          } catch (e) {
+              console.log("Proxy attempt failed, trying next...");
           }
       }
-  
-      if (!data) throw new Error("API completely blocked.");
-  
-      // STEP 3: Aapke bheje gaye JSON ke hisaab se strict Match Hunter
-      function findMatches(node) {
-          if (!node) return;
+      
+      if (!fetchSuccess || !data) throw new Error("CORS blocked all requests");
+      
+      function extractMatches(node, fallbackCategory = 'Live Sports') {
+          if (!node || typeof node !== 'object') return;
+
           if (Array.isArray(node)) {
-              node.forEach(findMatches);
-          } else if (typeof node === 'object') {
-              // Exact check: Agar object me 'id', 'teams' aur 'title' hai tabhi list me dalo
-              if (node.id && node.teams && node.title) {
-                  if (!node.category) node.category = 'Live Sports';
+              node.forEach(item => extractMatches(item, fallbackCategory));
+          } else {
+              const hasTeams = node.team1 || node.team2 || node.home || node.away || node.home_team;
+              const hasLink = node.url || node.link || node.stream_url || node.embed_url;
+              const hasTitle = node.title || node.name || node.match_name || node.event;
+
+              if (hasTeams || hasLink || hasTitle) {
+                  if (!node.category) node.category = fallbackCategory;
                   matches.push(node);
               } else {
-                  Object.values(node).forEach(findMatches);
+                  Object.keys(node).forEach(key => {
+                      let nextCat = (key.length > 2 && key !== 'data' && key !== 'matches' && key !== 'response') ? key : fallbackCategory;
+                      extractMatches(node[key], nextCat);
+                  });
               }
           }
       }
       
-      findMatches(data);
+      extractMatches(data);
       
     } catch (e) {
       console.warn("Fetch Error:", e.message);
     } finally {
       toggleLoader(false);
     }
-  
+
     if (matches.length === 0) {
         container.innerHTML = '<div class="col-12 text-center py-5 text-muted"><i class="fa fa-trophy fs-1 mb-3"></i><br>No live matches available right now.</div>';
         return;
     }
     
     let html = '';
-    
-    // Duplicate matches hatane ka logic (id ke basis par)
     const uniqueMatches = [];
-    const seenIds = new Set();
+    const seenTitles = new Set();
+    
     matches.forEach(m => {
-        if (!seenIds.has(m.id)) {
-            seenIds.add(m.id);
+        const title = m.title || m.name || m.match_name || m.event || 'Live Event';
+        if (!seenTitles.has(title)) {
+            seenTitles.add(title);
             uniqueMatches.push(m);
         }
     });
-  
-    // Time Format (1779747000000 -> 11:30 PM)
-    const formatTime = (timeData) => {
-        if (!timeData) return 'Live Now';
-        if (typeof timeData === 'number' || /^\d+$/.test(timeData)) {
-            const d = new Date(parseInt(timeData));
-            return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); 
+
+    // 🚀 MAIN TRICK: Image fix karna (sirf streamed.pk use karega)
+    const fixImage = (imgUrl) => {
+        if (!imgUrl || typeof imgUrl !== 'string' || imgUrl.trim() === '') return FALLBACK_IMG;
+        
+        // Agar pehle se complete URL hai, toh chhed-chhad nahi karni
+        if (imgUrl.startsWith('http://') || imgUrl.startsWith('https://') || imgUrl.startsWith('data:')) {
+            return imgUrl; 
         }
-        return 'Live';
+        
+        // Aadhe URL ke aage 'streamed.pk' domain fix kar diya hai
+        return imgUrl.startsWith('/') ? 'https://streamed.pk/api/images/badge/' + imgUrl + '.webp': 'https://streamed.pk/api/images/badge/' + imgUrl + '.webp';
     };
-  
-    // Aapki exact trick: Hash code to streamed.pk image
-    const fixImage = (hashStr) => {
-        if (!hashStr || typeof hashStr !== 'string') return FALLBACK_IMG;
-        if (hashStr.startsWith('http')) return hashStr;
-        return `https://streamed.pk/api/images/badge/${hashStr}.webp`;
-    };
-  
+
     uniqueMatches.forEach(m => {
-        const title = m.title || 'Live Match';
-        const category = m.category || 'Live';
-        const time = formatTime(m.date || m.start_time);
+        const category = m.category || m.sport || m.tournament || 'Live';
+        const title = m.title || m.name || m.match_name || m.event || 'Live Match';
+        const time = m.time || m.start_time || m.status || m.date || 'Live';
+        const streamLink = m.url || m.stream_url || m.link || m.embed_url || '#';
         
-        const t1 = (m.teams && m.teams.home) ? m.teams.home : {};
-        const t2 = (m.teams && m.teams.away) ? m.teams.away : {};
+        let t1 = m.team1 || m.home || m.home_team || m.team_a || (m.teams && m.teams.home) || {};
+        let t2 = m.team2 || m.away || m.away_team || m.team_b || (m.teams && m.teams.away) || {};
         
-        const homeName = t1.name || 'Team 1';
-        const awayName = t2.name || 'Team 2';
+        if (typeof t1 === 'string') t1 = { name: t1 };
+        if (typeof t2 === 'string') t2 = { name: t2 };
         
-        const homeLogo = fixImage(t1.badge);
-        const awayLogo = fixImage(t2.badge);
+        const homeName = t1.name || t1.title || (typeof m.home_team === 'string' ? m.home_team : null) || (typeof m.home === 'string' ? m.home : null) || 'Team 1';
+        const awayName = t2.name || t2.title || (typeof m.away_team === 'string' ? m.away_team : null) || (typeof m.away === 'string' ? m.away : null) || 'Team 2';
         
-        let sourceStr = '';
-        let idStr = '';
-        if (m.sources && Array.isArray(m.sources) && m.sources.length > 0) {
-            sourceStr = m.sources[0].source;
-            idStr = m.sources[0].id;
-        }
-  
-        const safeTitle = sanitize(title).replace(/'/g, "\\'");
-        let clickAction = (sourceStr && idStr) 
-            ? `playLiveMatch('${sourceStr}', '${idStr}', '${safeTitle}')`
-            : `Swal.fire({toast: true, position: 'top-end', icon: 'info', title: 'Stream link not available', showConfirmButton: false, timer: 2000})`;
+        // 🚀 PURE BADGE HUNTING: Poster ya logo ko chhodkar directly 'badge' dhoondhna
+        const homeBadgeUrl = t1.badge || m.home_badge || m.team1_badge || t1.logo || m.home_logo;
+        const awayBadgeUrl = t2.badge || m.away_badge || m.team2_badge || t2.logo || m.away_logo;
+        
+        const homeLogo = fixImage(homeBadgeUrl);
+        const awayLogo = fixImage(awayBadgeUrl);
         
         html += `
         <div class="col-12 col-md-6 col-lg-4">
-          <div class="sports-card" onclick="${clickAction}">
-             <div class="sports-badge">${sanitize(category).toUpperCase()}</div>
+          <div class="sports-card" onclick="if('${streamLink}' !== '#') window.open('${streamLink}', '_blank')">
+             <div class="sports-badge">${sanitize(category)}</div>
              <div class="sports-teams-row">
                  <div class="team-col">
                      <img src="${homeLogo}" class="team-logo" onerror="this.src='${FALLBACK_IMG}'">
@@ -3353,7 +3341,7 @@
                  </div>
                  <div class="vs-col">
                      <div class="vs-text">VS</div>
-                     <div class="match-time" style="font-size:0.65rem;">${time}</div>
+                     <div class="match-time" style="font-size:0.65rem;">${sanitize(time)}</div>
                  </div>
                  <div class="team-col">
                      <img src="${awayLogo}" class="team-logo" onerror="this.src='${FALLBACK_IMG}'">
@@ -3368,175 +3356,6 @@
     
     container.innerHTML = html;
   }
-  
-  // ---------- POPUP MODAL STREAM PLAYER (CORS SAFE) ----------
-  window.playLiveMatch = async function(source, id, title) {
-      toggleLoader(true);
-      try {
-          const fetchUrl = `https://streamex.sh/api/live/stream/${source}/${id}`;
-          let data = null;
-  
-          // Pehle direct try
-          try {
-              const res = await fetch(fetchUrl);
-              if (res.ok) data = await res.json();
-          } catch(e) {
-              console.log("Direct embed blocked, switching to proxy...");
-          }
-  
-          // Phir Proxy try
-          if (!data) {
-              const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(fetchUrl)}`;
-              const pRes = await fetch(proxyUrl);
-              if (pRes.ok) data = await pRes.json();
-          }
-  
-          if (!data) throw new Error("Embed API Completely Blocked");
-          
-          const embedUrl = data.embed_url || data.url || data.stream_url || data.iframe;
-          
-          if (embedUrl) {
-              let existing = document.getElementById('sportsPlayerModal');
-              if (existing) existing.remove();
-              
-              const modalHtml = `
-              <div class="modal fade" id="sportsPlayerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-                  <div class="modal-dialog modal-dialog-centered modal-lg">
-                      <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg" style="background: var(--surface) !important;">
-                          <div class="modal-header border-0 pb-0 pt-3 px-4">
-                              <h6 class="modal-title text-white fw-bold text-truncate" style="color: var(--text-main) !important;">${title}</h6>
-                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('sportsIframe').src=''"></button>
-                          </div>
-                          <div class="modal-body p-0 mt-3">
-                              <div class="ratio ratio-16x9">
-                                  <iframe id="sportsIframe" src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media" style="border:none;"></iframe>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              `;
-              document.body.insertAdjacentHTML('beforeend', modalHtml);
-              const modal = new bootstrap.Modal(document.getElementById('sportsPlayerModal'));
-              modal.show();
-          } else {
-              Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'Stream offline right now', showConfirmButton: false, timer: 2000});
-          }
-      } catch (e) {
-          console.error(e);
-          Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'Match not started or blocked', showConfirmButton: false, timer: 2500});
-      } finally {
-          toggleLoader(false);
-      }
-  };
-  
-  // ---------- POPUP MODAL STREAM PLAYER ----------
-  window.playLiveMatch = async function(source, id, title) {
-      toggleLoader(true);
-      try {
-          // Aapki exact format request: https://streamex.sh/api/live/stream/[source]/[id]
-          const fetchUrl = `https://streamex.sh/api/live/stream/${source}/${id}`;
-          
-          const res = await fetch(fetchUrl);
-          if (!res.ok) throw new Error("Direct embed fetch failed");
-          
-          const data = await res.json();
-          const embedUrl = data.embed_url || data.url || data.stream_url;
-          
-          if (embedUrl) {
-              let existing = document.getElementById('sportsPlayerModal');
-              if (existing) existing.remove();
-              
-              const modalHtml = `
-              <div class="modal fade" id="sportsPlayerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-                  <div class="modal-dialog modal-dialog-centered modal-lg">
-                      <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg" style="background: var(--surface) !important;">
-                          <div class="modal-header border-0 pb-0 pt-3 px-4">
-                              <h6 class="modal-title text-white fw-bold text-truncate" style="color: var(--text-main) !important;">${title}</h6>
-                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('sportsIframe').src=''"></button>
-                          </div>
-                          <div class="modal-body p-0 mt-3">
-                              <div class="ratio ratio-16x9">
-                                  <iframe id="sportsIframe" src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media" style="border:none;"></iframe>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              `;
-              document.body.insertAdjacentHTML('beforeend', modalHtml);
-              const modal = new bootstrap.Modal(document.getElementById('sportsPlayerModal'));
-              modal.show();
-          } else {
-              Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'Stream offline right now', showConfirmButton: false, timer: 2000});
-          }
-      } catch (e) {
-          console.error(e);
-          Swal.fire({toast: true, position: 'top-end', icon: 'error', title: 'API is blocked or match ended', showConfirmButton: false, timer: 2500});
-      } finally {
-          toggleLoader(false);
-      }
-  };
-  
-  // ---------- POPUP MODAL & STREAM FETCH LOGIC (DIRECT FETCH) ----------
-  window.playLiveMatch = async function(source, id, title) {
-      toggleLoader(true);
-      try {
-          // 🚀 AAPKI TRICK: Bina kisi proxy ke direct fetch karo jaise matches fetch kiye the
-          const url = `https://streamex.sh/api/live/stream/${source}/${id}`;
-          
-          const res = await fetch(url);
-          if (!res.ok) throw new Error("Direct stream fetch failed");
-          
-          const data = await res.json();
-          
-          // JSON me se actual iframe embed link nikalna
-          const embedUrl = data.embed_url || data.url || data.stream_url || data.link || data.iframe;
-          
-          if (embedUrl) {
-              // Pehle se khula modal delete karein (taaki bugs na aayein)
-              let existing = document.getElementById('sportsPlayerModal');
-              if (existing) existing.remove();
-              
-              // Naya Bootstrap Modal Generate Karna
-              const modalHtml = `
-              <div class="modal fade" id="sportsPlayerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-                  <div class="modal-dialog modal-dialog-centered modal-lg">
-                      <div class="modal-content bg-dark border-0 rounded-4 overflow-hidden shadow-lg" style="background: var(--surface) !important;">
-                          <div class="modal-header border-0 pb-0 pt-3 px-4">
-                              <h6 class="modal-title text-white fw-bold text-truncate" style="color: var(--text-main) !important;">${title}</h6>
-                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('sportsIframe').src=''"></button>
-                          </div>
-                          <div class="modal-body p-0 mt-3">
-                              <div class="ratio ratio-16x9">
-                                  <iframe id="sportsIframe" src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media" style="border:none;"></iframe>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              `;
-              document.body.insertAdjacentHTML('beforeend', modalHtml);
-              
-              // Modal dikhao
-              const modal = new bootstrap.Modal(document.getElementById('sportsPlayerModal'));
-              modal.show();
-          } else {
-              Swal.fire({
-                  toast: true, position: 'top-end', icon: 'error', 
-                  title: 'Stream link not available yet', showConfirmButton: false, timer: 2000
-              });
-          }
-      } catch (e) {
-          console.error(e);
-          Swal.fire({
-              toast: true, position: 'top-end', icon: 'error', 
-              title: 'API is blocked or match has ended', showConfirmButton: false, timer: 2500
-          });
-      } finally {
-          toggleLoader(false);
-      }
-  };
   
   function renderChannelCategories() {
   const catContainer = document.getElementById('channelCategories');
