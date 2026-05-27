@@ -63,7 +63,7 @@
   
   /* ---------- NAVBAR ---------- */
   .navbar-custom {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 1);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -1181,8 +1181,8 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 1);
+    backdrop-filter: blur(15px) ;
     border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-around;
@@ -1887,7 +1887,7 @@
   window.addEventListener('hashchange', router);
   window.onload = () => {
     router();
-    detectUserCountry();
+  //  detectUserCountry();
     applySavedTheme();
   };
   
@@ -2197,7 +2197,7 @@
   if (!append) {
     homePage = 1;
     
-    if (vibeContainer) vibeContainer.remove(); 
+    if (typeof vibeContainer !== 'undefined' && vibeContainer) vibeContainer.remove();
     
     container.innerHTML = '';
     
