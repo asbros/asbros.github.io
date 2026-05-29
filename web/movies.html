@@ -1553,15 +1553,16 @@
         </div>
        </div>
        <p class="text-muted small mt-3 mb-0">Choosing a default will bypass the Trailer/Server 1 auto-load and jump straight to your preferred source.</p>
+       <p class="text-muted small mt-3 mb-0">If you are using with_ads server then only it will bypass the servers to your selected ones.</p>
        <br>
        <div class="mb-3 border-bottom pb-3">
         <label class="small fw-bold text-muted mb-2">PLAYBACK MODE</label>
         <select id="playbackModeSelect" class="form-select rounded-3 shadow-none border" onchange="updatePref('playbackMode', this.value)">
          <option value="with_ads">With Ads (Default Servers)</option>
-         <option value="without_ads">Without Ads (Premium Server)</option>
+         <option value="without_ads" selected>Without Ads (Premium Server)</option>
         </select>
        </div>
-       <p class="text-muted small mt-3 mb-0">If you are using Premium server some of the movies and series may not be available.</p>
+       <p class="text-muted small mt-3 mb-0">If you are using Premium server some of the movies and series may not be available in hindi dubbed.</p>
       </div>
      </div>
 
@@ -2256,7 +2257,7 @@
     updateDownloadLabel();
   
     // --- THE FIX: RELOAD PLAYER BASED ON ACTIVE MODE ---
-    const playbackMode = localStorage.getItem('playbackMode') || 'with_ads';
+    const playbackMode = localStorage.getItem('playbackMode') || 'without_ads';
   
     if (playbackMode === 'without_ads') {
         // Agar Premium mode me hai, toh active server button dhundo
@@ -2838,7 +2839,7 @@
   ];
   
   function buildServerButtons(init = false) {
-    const playbackMode = localStorage.getItem('playbackMode') || 'with_ads';
+  const playbackMode = localStorage.getItem('playbackMode') || 'without_ads';
     const qualityGrid = document.getElementById('qualityGrid');
     
     if (playbackMode === 'without_ads') {
@@ -4099,7 +4100,7 @@
     }
   
     // --- SETUP SELECT DROPDOWNS ---
-    if (playbackSelect) playbackSelect.value = localStorage.getItem('playbackMode') || 'with_ads';
+    if (playbackSelect) playbackSelect.value = localStorage.getItem('playbackMode') || 'without_ads';
     if (themeSelect) themeSelect.value = localStorage.getItem('appTheme') || 'light';
     if (regionSelect) regionSelect.value = localStorage.getItem('region') || 'IN';
     if (languageSelect) languageSelect.value = localStorage.getItem('contentLanguage') || 'en-US';
@@ -4847,7 +4848,7 @@
   
   //Handle download 
   window.handleDownloadClick = function() {
-    const playbackMode = localStorage.getItem('playbackMode') || 'with_ads';
+  const playbackMode = localStorage.getItem('playbackMode') || 'without_ads';
     
     if (playbackMode === 'without_ads') {
         // --- PREMIUM MODE DIRECT DOWNLOAD ---
