@@ -4706,6 +4706,42 @@
     if (firstQualityBtn) firstQualityBtn.click();
   }
    
+  // --- VIDEO.JS DOUBLE TAP TO SEEK LOGIC ---
+  window.setupDoubleTapSeek = function(player) {
+    let lastTap = 0;
+  
+    // Video.js ka default double-click to fullscreen band karna
+    player.on('dblclick', function(e) {
+        e.preventDefault();
+    });
+  
+    // Mouse aur Touch dono ke liye unified tap tracker
+    player.el().addEventListener('pointerup', function(e) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+  
+        // Agar 300ms ke andar do baar tap hua, toh usko double-tap manenge
+        if (tapLength > 0 && tapLength < 300) {
+            const rect = player.el().getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const vidTime = player.currentTime();
+  
+            // Agar click screen ke left side me (50% se kam) hua
+            if (clickX < rect.width / 2) {
+                player.currentTime(Math.max(0, vidTime - 10)); // Rewind 10s
+                showToast('⏪ -10s', 'info');
+            } 
+            // Agar click screen ke right side me (50% se zyada) hua
+            else {
+                player.currentTime(vidTime + 10); // Forward 10s
+                showToast('⏩ +10s', 'info');
+            }
+            e.preventDefault();
+        }
+        lastTap = currentTime;
+    });
+  };
+   
   function initJwPlayer(index) {
     window.isPlayerActive = true;
     const stream = window.adFreeSources[index];
@@ -4734,9 +4770,12 @@
     const sourceType = isHls ? 'application/x-mpegURL' : 'video/mp4';
   
     window.premiumVjsPlayer = videojs('premium-vjs-player', {
-        autoplay: true,
-        sources: [{ src: finalProxyUrl, type: sourceType }]
-    });
+    autoplay: true,
+    sources: [{ src: finalProxyUrl, type: sourceType }]
+  });
+  
+  // NAYI LINE: Premium player pe double tap seek lagane ke liye
+  setupDoubleTapSeek(window.premiumVjsPlayer);
   
     // ROBUST AUTO-SWITCH LOGIC
     window.premiumVjsPlayer.on('error', function() {
