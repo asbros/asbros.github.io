@@ -16,12 +16,6 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-youtube/3.0.1/Youtube.min.js"></script>
 
  <style>
-  /* Video.js ko custom design ke hisaab se fit karne ke liye */
-  .video-js .vjs-tech { object-fit: cover; }
-  .vjs-poster { background-size: cover; }
- </style>
-
- <style>
   /* ---------- GLOBAL VARIABLES ---------- */
   :root {
     --bg-light: #f8fafc;
@@ -1503,6 +1497,62 @@
   .lightbox-nav { font-size: 2rem; padding: 10px; }
   .lightbox-prev { left: 5px; }
   .lightbox-next { right: 5px; }
+  }
+  
+  /* ---------- NEXT EPISODE OVERLAY (FROSTED PILL STYLE) ---------- */
+  .next-ep-overlay {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    z-index: 100;
+    
+    /* Same Glassmorphism logic as visual feedback */
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    
+    cursor: pointer;
+    transform: translateX(150%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .next-ep-overlay.show {
+    transform: translateX(0);
+  }
+  
+  .next-ep-overlay:hover {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: scale(1.05);
+  }
+  
+  .next-ep-overlay .next-text {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+  }
+  
+  .next-ep-overlay .next-label {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .next-ep-overlay .next-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    white-space: nowrap;
   }
  </style>
 </head>
@@ -4707,42 +4757,186 @@
     if (firstQualityBtn) firstQualityBtn.click();
   }
    
-  // --- VIDEO.JS DOUBLE TAP TO SEEK LOGIC ---
-  window.setupDoubleTapSeek = function(player) {
-    let lastTap = 0;
+  // --- MASTER GESTURE CONTROLS (FULLSCREEN SWIPE 500% BOOST + SMART TAPS FIX) ---
+  window.setupPlayerGestures = function(player) {
+    const playerEl = player.el();
+    const videoEl = playerEl.querySelector('video');
   
-    // Video.js ka default double-click to fullscreen band karna
-    player.on('dblclick', function(e) {
-        e.preventDefault();
+    // 1. VLC-Style Native Feedback Overlay
+    let feedbackOverlay = document.getElementById('player-feedback-overlay');
+    if (!feedbackOverlay) {
+        feedbackOverlay = document.createElement('div');
+        feedbackOverlay.id = 'player-feedback-overlay';
+        feedbackOverlay.style.cssText = 'position: absolute; top: 15%; left: 50%; transform: translate(-50%, -10px); background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 8px 20px; border-radius: 50px; display: flex; align-items: center; gap: 10px; pointer-events: none; z-index: 100; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3);';
+        playerEl.appendChild(feedbackOverlay);
+    }
+  
+    let feedbackTimeout;
+    function showFeedback(iconClass, text) {
+        feedbackOverlay.innerHTML = `<i class="fa ${iconClass}" style="font-size: 1.1rem;"></i><span style="font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px;">${text}</span>`;
+        feedbackOverlay.style.opacity = '1';
+        feedbackOverlay.style.transform = 'translate(-50%, 0)';
+        
+        clearTimeout(feedbackTimeout);
+        feedbackTimeout = setTimeout(() => {
+            feedbackOverlay.style.opacity = '0';
+            feedbackOverlay.style.transform = 'translate(-50%, -10px)';
+        }, 800);
+    }
+  
+    // Boost Variables (Max 500%)
+    let currentBrightness = 1.0; 
+    let audioCtx, gainNode, sourceNode;
+    let isAudioBoostReady = false;
+  
+    function initAudioBoost() {
+        if (isAudioBoostReady) return;
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            sourceNode = audioCtx.createMediaElementSource(videoEl);
+            gainNode = audioCtx.createGain();
+            sourceNode.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            isAudioBoostReady = true;
+        } catch(e) {
+            console.log("Audio boost CORS limited", e);
+        }
+    }
+  
+    // Swipe Tracking Variables
+    let startY = 0, startX = 0, isSwiping = false, isLeftHalf = false;
+    let startVal = 1.0;
+    
+    // Naya Variable: Controls hide hone ka state track karne ke liye
+    let wasControlsHidden = false; 
+  
+    // Touch start par hum check kar lenge ki controls dikh rahe the ya nahi
+    playerEl.addEventListener('touchstart', function(e) {
+        wasControlsHidden = playerEl.classList.contains('vjs-user-inactive');
+  
+        if (e.touches.length > 1) return;
+        if (!player.isFullscreen()) return;
+  
+        startY = e.touches[0].clientY;
+        startX = e.touches[0].clientX;
+        isSwiping = false;
+  
+        const rect = playerEl.getBoundingClientRect();
+        isLeftHalf = (startX - rect.left) < (rect.width / 2);
+        
+        if (isLeftHalf) {
+            startVal = currentBrightness;
+        } else {
+            startVal = (isAudioBoostReady && gainNode) ? gainNode.gain.value : player.volume();
+        }
+    }, { passive: true });
+  
+    // PC users ke liye mouse event track
+    playerEl.addEventListener('mousedown', function() {
+        wasControlsHidden = playerEl.classList.contains('vjs-user-inactive');
     });
   
-    // Mouse aur Touch dono ke liye unified tap tracker
-    player.el().addEventListener('pointerup', function(e) {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTap;
+    playerEl.addEventListener('touchmove', function(e) {
+        if (e.touches.length > 1) return;
+        if (!player.isFullscreen()) return;
   
-        // Agar 300ms ke andar do baar tap hua, toh usko double-tap manenge
-        if (tapLength > 0 && tapLength < 300) {
-            const rect = player.el().getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const vidTime = player.currentTime();
+        const currentY = e.touches[0].clientY;
+        const currentX = e.touches[0].clientX;
+        const diffY = startY - currentY; 
+        const diffX = Math.abs(currentX - startX);
   
-            // Agar click screen ke left side me (50% se kam) hua
-            if (clickX < rect.width / 2) {
-                player.currentTime(Math.max(0, vidTime - 10)); // Rewind 10s
-                showToast('⏪ -10s', 'info');
-            } 
-            // Agar click screen ke right side me (50% se zyada) hua
-            else {
-                player.currentTime(vidTime + 10); // Forward 10s
-                showToast('⏩ +10s', 'info');
-            }
-            e.preventDefault();
+        if (!isSwiping && (Math.abs(diffY) > 15 || diffX > 15)) {
+            isSwiping = true;
         }
-        lastTap = currentTime;
+  
+        if (isSwiping && Math.abs(diffY) > diffX) {
+            e.preventDefault(); 
+            const sensitivity = 80; // Swipe speed badha di taaki 500% tak jaldi pahunch sake
+            const change = diffY / sensitivity;
+  
+            if (isLeftHalf) {
+                // BRIGHTNESS (10% to 500%)
+                currentBrightness = Math.max(0.1, Math.min(5.0, startVal + change));
+                videoEl.style.filter = `brightness(${currentBrightness})`;
+                showFeedback('fa-sun', Math.round(currentBrightness * 100) + '%');
+            } else {
+                // VOLUME (0% to 500%)
+                let newVol = Math.max(0.0, Math.min(5.0, startVal + change));
+                
+                if (newVol > 1.0) {
+                    initAudioBoost();
+                    player.volume(1.0); 
+                    if (gainNode) gainNode.gain.value = newVol; 
+                } else {
+                    if (gainNode) gainNode.gain.value = newVol; 
+                    player.volume(newVol); 
+                }
+                
+                let volIcon = newVol === 0 ? 'fa-volume-xmark' : (newVol <= 1.0 ? 'fa-volume-down' : 'fa-volume-high');
+                let isBoosted = newVol > 1.0 ? ` style="color: var(--primary); text-shadow: 0 0 10px var(--primary);"` : '';
+                
+                feedbackOverlay.innerHTML = `<i class="fa ${volIcon}"${isBoosted} style="font-size: 1.1rem;"></i><span style="font-size: 0.95rem; font-weight: 700;">${Math.round(newVol * 100)}%</span>`;
+                feedbackOverlay.style.opacity = '1';
+                feedbackOverlay.style.transform = 'translate(-50%, 0)';
+                
+                clearTimeout(feedbackTimeout);
+                feedbackTimeout = setTimeout(() => {
+                    feedbackOverlay.style.opacity = '0';
+                    feedbackOverlay.style.transform = 'translate(-50%, -10px)';
+                }, 800);
+            }
+        }
+    }, { passive: false });
+  
+    // 2. TAP LOGIC (Smart Play/Pause & Double Tap Seek)
+    let tapCount = 0;
+    let tapTimeout;
+  
+    player.on('dblclick', function(e) { e.preventDefault(); });
+  
+    playerEl.addEventListener('pointerup', function(e) {
+        if (isSwiping) { isSwiping = false; return; }
+        if (e.target.closest('.vjs-control-bar') || e.target.closest('.next-ep-overlay')) return;
+  
+        tapCount++;
+        const rect = playerEl.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const isClickLeftHalf = clickX < (rect.width / 2);
+  
+        if (tapCount === 1) {
+            tapTimeout = setTimeout(() => {
+                // RULE 2 FIXED: Hum 'wasControlsHidden' check karenge jo tap shuru hone se PEEHLE capture hua tha
+                if (wasControlsHidden) {
+                    player.userActive(true); // Sirf controls wapas layega, pause nahi karega
+                } else {
+                    if (player.paused()) {
+                        player.play();
+                        showFeedback('fa-play', 'Play');
+                    } else {
+                        player.pause();
+                        showFeedback('fa-pause', 'Pause');
+                    }
+                }
+                tapCount = 0;
+            }, 250);
+        } else if (tapCount === 2) {
+            clearTimeout(tapTimeout); 
+            player.userActive(true);
+            
+            const vidTime = player.currentTime();
+            if (isClickLeftHalf) {
+                player.currentTime(Math.max(0, vidTime - 10));
+                showFeedback('fa-backward-step', '-10s');
+            } else {
+                player.currentTime(vidTime + 10);
+                showFeedback('fa-forward-step', '+10s');
+            }
+            tapCount = 0;
+        }
     });
   };
-   
+  
   function initJwPlayer(index) {
     window.isPlayerActive = true;
     const stream = window.adFreeSources[index];
@@ -4761,11 +4955,11 @@
         window.premiumVjsPlayer = null;
     }
   
-    document.getElementById('playerContainer').innerHTML = `
-        <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-            <video id="premium-vjs-player" class="video-js vjs-default-skin vjs-big-play-centered" controls style="width: 100%; height: 100%;"></video>
-        </div>
-    `;
+  document.getElementById('playerContainer').innerHTML = `
+      <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+          <video id="premium-vjs-player" class="video-js vjs-default-skin vjs-big-play-centered" controls crossorigin="anonymous" style="width: 100%; height: 100%;"></video>
+      </div>
+  `;
     
     const isHls = (stream.type === 'hls' || finalProxyUrl.includes('.m3u8'));
     const sourceType = isHls ? 'application/x-mpegURL' : 'video/mp4';
@@ -4775,8 +4969,57 @@
     sources: [{ src: finalProxyUrl, type: sourceType }]
   });
   
-  // NAYI LINE: Premium player pe double tap seek lagane ke liye
-  setupDoubleTapSeek(window.premiumVjsPlayer);
+  // NAYI LINE
+  setupPlayerGestures(window.premiumVjsPlayer);
+  
+  // Feature Trigger
+  setupXRayFeature(window.premiumVjsPlayer);
+  
+  // --- NEXT EPISODE POPUP LOGIC (FULLSCREEN FIXED) ---
+  if (currentType === 'tv') {
+    // 1. Button banakar direct player ke andar append karna (Taaki Fullscreen me bhi dikhe)
+    let nextBtn = document.createElement('div');
+    nextBtn.id = 'nextEpBtn';
+    nextBtn.className = 'next-ep-overlay';
+    nextBtn.onclick = playNextEpisode;
+    nextBtn.innerHTML = `
+          <div class="next-text">
+              <span class="next-label">Up Next</span>
+              <span class="next-title">Next Episode</span>
+          </div>
+          <i class="fa fa-step-forward" style="font-size: 1.5rem;"></i>
+      `;
+    window.premiumVjsPlayer.el().appendChild(nextBtn);
+    
+    // 2. Time tracker lagana
+    window.premiumVjsPlayer.on('timeupdate', function() {
+        const duration = this.duration();
+        const currentTime = this.currentTime();
+        const btn = document.getElementById('nextEpBtn');
+        
+        if (!duration || !btn) return;
+        
+        // Check karte hain kya agla episode list me exist karta hai
+        const nextEpExists = window.episodesData && window.episodesData.some(e => e.episode_number == (currentE + 1));
+        const nextSeasonExists = document.querySelector(`.season-dropdown option[value="${currentS + 1}"]`);
+        
+        if (nextEpExists || nextSeasonExists) {
+            // Aakhri 60 seconds bache hone par button show karo
+            if (duration - currentTime <= 60) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+            
+            // Agar video end ho jaye aur Binge Mode ON ho, toh auto-play
+            const bingeMode = localStorage.getItem('bingeMode') !== 'false';
+            if (duration - currentTime <= 1 && bingeMode) {
+                this.off('timeupdate');
+                playNextEpisode();
+            }
+        }
+    });
+  }
   
     // ROBUST AUTO-SWITCH LOGIC
     window.premiumVjsPlayer.on('error', function() {
@@ -4848,7 +5091,7 @@
   
   //Handle download 
   window.handleDownloadClick = function() {
-  const playbackMode = localStorage.getItem('playbackMode') || 'without_ads';
+    const playbackMode = localStorage.getItem('playbackMode') || 'without_ads';
     
     if (playbackMode === 'without_ads') {
         // --- PREMIUM MODE DIRECT DOWNLOAD ---
@@ -4863,8 +5106,8 @@
             return;
         }
         
-        // 1. Generate the exact Proxy URL used for playing
-        const proxyBase = "https://ascineplex.anshukumar72210.workers.dev/";
+        // FIX: Changed proxyBase to match initJwPlayer exactly
+        const proxyBase = "https://movieboxproxy.veltrix620.workers.dev/";
         const encodedUrl = encodeURIComponent(currentStream.url);
         const encodedOrigin = encodeURIComponent(currentStream.origin || "");
         const encodedReferer = encodeURIComponent(currentStream.referer || "");
@@ -4889,7 +5132,7 @@
                 // 3. Open in New Tab Logic
                 const a = document.createElement('a');
                 a.href = finalProxyUrl;
-                a.target = '_blank'; // Wapas add kar diya
+                a.target = '_blank';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -4902,6 +5145,7 @@
         dlModal.show();
     }
   };
+  
   window.playNextEpisode = function() {
       if (currentType !== 'tv' || !window.episodesData) return;
       
