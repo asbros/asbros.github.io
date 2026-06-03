@@ -12,10 +12,10 @@
      "url": "https://asbros.github.io/streamify/"
   },
   {
-     "name": "UTUBE",
-     "image": "https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-512.png",
+     "name": "CODE EDITOR",
+     "image": "https://i.imgur.com/bS64QVE.png",
      "about": "",
-     "url": "https://asbros.github.io/web/utube"
+     "url": "https://asbros.github.io/aseditor/"
   },
   {
      "name": "GAMES",
@@ -24,40 +24,16 @@
      "url": "https://rtugames.blogspot.com/"
   },
   {
-     "name": "CODE EDITOR",
-     "image": "https://i.imgur.com/bS64QVE.png",
-     "about": "",
-     "url": "https://asbros.github.io/aseditor/"
-  },
-  {
-     "name": "LIVE TV",
-     "image": "https://i.imgur.com/aFOM5pg.png",
-     "about": "",
-     "url": "https://asbros.github.io/web/livetv"
-  },
-  {
      "name": "CHAT",
      "image": "https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-chat-notifications-justicon-lineal-color-justicon.png",
      "about": "",
      "url": "https://as-chat.blogspot.com/"
   },
   {
-     "name": "VDOWNLOADER",
-     "image": "https://i.imgur.com/rMShNq0.png",
-     "about": "",
-     "url": "https://asbros.github.io/web/aiovd"
-  },
-  {
      "name": "TOOLS",
      "image": "https://i.imgur.com/CNN3dBf.png",
      "about": "",
      "url": "https://rtutools.blogspot.com/"
-  },
-  {
-     "name": "STORE",
-     "image": "https://i.imgur.com/L8VvDPy.png",
-     "about": "",
-     "url": "https://asbros.github.io/web/store"
   },
   {
      "name": "PAINT",
