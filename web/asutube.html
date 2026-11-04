@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>YouTube Mobile Web App</title>
+ <!-- Tailwind CSS for styling -->
+ <script src="https://cdn.tailwindcss.com"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+ <!-- Google Sans Font Import -->
+ <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+ <!-- Vidstack Player Styles -->
+ <link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
+ <link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
+
+ <script>
+  tailwind.config = {
+      darkMode: 'class',
+      theme: {
+          extend: {
+              fontFamily: {
+                  sans: ['"Google Sans"', 'Roboto', 'Arial', 'sans-serif'],
+              }
+          }
+      }
+  }
+ </script>
+ <style>
+  body {
+      font-family: 'Google Sans', Roboto, Arial, sans-serif;
+      transition: background-color 0.4s ease, color 0.3s ease;
+      padding-bottom: 70px;
+  }
+  body.dark { background-color: #0f0f0f; color: #f1f1f1; }
+  body.dark .nav-bar { background-color: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px); border-color: #27272a; }
+  body.dark .card-bg { background-color: #181818; }
+  body.dark .search-bg { background-color: #121212; border-color: #3f3f46; }
+  body.dark .meta-box { background-color: rgba(45, 45, 50, 0.85); border-color: rgba(80, 80, 90, 0.6); backdrop-filter: blur(12px); color: #ffffff; }
+  body.dark .shimmer { background: linear-gradient(90deg, #181818 25%, #2a2a2a 50%, #181818 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+  
+  body.light { background-color: #f9f9f9; color: #0f0f0f; }
+  body.light .nav-bar { background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-color: #e5e5e5; }
+  body.light .card-bg { background-color: #ffffff; border: 1px solid #e5e5e5; }
+  body.light .search-bg { background-color: #f1f1f1; border-color: #d4d4d8; }
+  body.light .meta-box { background-color: rgba(240, 240, 245, 0.95); border-color: rgba(210, 210, 220, 0.8); backdrop-filter: blur(12px); color: #0f0f0f; }
+  body.light .shimmer { background: linear-gradient(90deg, #e4e4e7 25%, #f4f4f5 50%, #e4e4e7 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+  
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  .page-transition {
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+  
+  #expanded-desc {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease-out, opacity 0.25s ease-out;
+      opacity: 0;
+  }
+  #expanded-desc.open {
+      max-height: 500px;
+      opacity: 1;
+  }
+  
+  @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+  }
+  
+  #page-loader {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+  }
+  #page-loader.active {
+      opacity: 1;
+      pointer-events: auto;
+  }
+ </style>
+</head>
+
+<body id="app-body" class="min-h-screen flex flex-col justify-between">
+
+ <div id="page-loader">
+  <div class="flex flex-col items-center space-y-3">
+   <i class="fa-solid fa-circle-notch fa-spin text-red-600 text-3xl"></i>
+   <span class="text-xs font-medium text-white tracking-wide">Loading...</span>
+  </div>
+ </div>
+
+ <div>
+  <!-- Top Header / Navbar -->
+  <header class="sticky top-0 z-50 nav-bar px-5 py-3.5 flex items-center justify-between border-b transition-colors duration-300">
+   <div class="flex items-center space-x-2.5 cursor-pointer group" onclick="goHome()">
+    <i class="fa-brands fa-youtube text-red-600 text-2xl group-hover:scale-110 transition-transform"></i>
+    <span class="text-xl font-bold tracking-tight">YouTube</span>
+   </div>
+   <div class="flex items-center space-x-3">
+    <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-zinc-700/30 flex items-center justify-center hover:opacity-80 transition cursor-pointer" title="Toggle Theme">
+     <i id="theme-icon" class="fa-solid fa-sun text-sm text-amber-400"></i>
+    </button>
+   </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-2.5 sm:p-4 mb-16">
+   <!-- Home View -->
+   <div id="home-view" class="space-y-5 page-transition">
+    <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+     <div class="flex flex-col card-bg rounded-xl overflow-hidden shadow">
+      <div class="w-full aspect-video shimmer"></div>
+      <div class="p-2.5 flex space-x-2.5">
+       <div class="w-8 h-8 rounded-full shimmer flex-shrink-0"></div>
+       <div class="flex-1 space-y-1.5">
+        <div class="w-full h-4 shimmer rounded"></div>
+        <div class="w-2/3 h-3 shimmer rounded"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="loading-more" class="text-center py-4 hidden">
+     <i class="fa-solid fa-circle-notch fa-spin text-2xl text-red-600"></i>
+     <span class="text-xs font-bold opacity-80">Loading more music videos...</span>
+    </div>
+   </div>
+
+   <!-- Search Page View -->
+   <div id="search-view" class="hidden space-y-5 page-transition max-w-4xl mx-auto">
+    <div class="relative">
+     <div class="flex items-center space-x-3">
+      <form id="search-page-form" onsubmit="handlePageSearch(event)" class="flex-1 flex items-center relative">
+       <div class="flex items-center w-full search-bg border rounded-l-full px-4 py-2.5">
+        <input type="text" id="page-search-input" placeholder="Search videos, channels, playlists..." autocomplete="off" oninput="fetchSearchSuggestions(this.value)" class="w-full bg-transparent outline-none text-sm placeholder-zinc-500">
+       </div>
+       <button type="submit" class="bg-red-600 text-white px-6 py-2.5 rounded-r-full hover:bg-red-700 transition">
+        <i class="fa-solid fa-magnifying-glass"></i>
+       </button>
+      </form>
+      <button onclick="openFilterModal()" class="meta-box border px-4 py-2.5 rounded-full text-xs font-bold shadow-sm flex items-center space-x-1.5 cursor-pointer">
+       <i class="fa-solid fa-sliders"></i>
+       <span>Filters</span>
+      </button>
+     </div>
+     <div id="search-suggestions-box" class="absolute left-0 right-16 top-full mt-1 card-bg border rounded-xl shadow-2xl z-50 hidden max-h-60 overflow-y-auto"></div>
+    </div>
+    <div id="search-results-container" class="space-y-4"></div>
+   </div>
+
+   <!-- Settings Page View (#settings) -->
+   <div id="settings-view" class="hidden space-y-6 page-transition max-w-2xl mx-auto py-4">
+    <h1 class="text-2xl font-bold border-b pb-3">Settings</h1>
+    <div class="space-y-4 text-sm">
+     <div class="meta-box border p-4 rounded-xl flex items-center justify-between">
+      <div>
+       <h4 class="font-bold">Dark Mode</h4>
+       <p class="text-xs opacity-70">Adjust app appearance</p>
+      </div>
+      <button onclick="toggleTheme()" class="bg-red-600 text-white px-4 py-2 rounded-full font-bold text-xs">Toggle</button>
+     </div>
+     <div class="meta-box border p-4 rounded-xl flex items-center justify-between">
+      <div>
+       <h4 class="font-bold">Autoplay</h4>
+       <p class="text-xs opacity-70">Autoplay next video automatically</p>
+      </div>
+      <span class="text-xs font-bold text-green-500">Enabled</span>
+     </div>
+     <div class="meta-box border p-4 rounded-xl flex items-center justify-between">
+      <div>
+       <h4 class="font-bold">Region & Country</h4>
+       <p class="text-xs opacity-70">Current region: <span id="settings-region">IN</span></p>
+      </div>
+     </div>
+    </div>
+   </div>
+
+   <!-- Profile Page View (#profile) -->
+   <div id="profile-view" class="hidden space-y-6 page-transition max-w-2xl mx-auto py-4 text-center">
+    <div class="meta-box border p-8 rounded-3xl shadow-xl space-y-4">
+     <div class="w-24 h-24 mx-auto bg-red-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+      AK
+     </div>
+     <div>
+      <h1 class="text-xl font-bold">Anshul Kumar</h1>
+      <p class="text-xs opacity-70 mt-1">@asbros • Developer & Creator</p>
+     </div>
+     <div class="pt-4 flex justify-center space-x-4">
+      <button onclick="goHome()" class="bg-red-600 text-white font-bold text-xs px-6 py-2.5 rounded-full shadow">My Feed</button>
+      <button onclick="window.location.hash='#settings'" class="meta-box border font-bold text-xs px-6 py-2.5 rounded-full shadow">Settings</button>
+     </div>
+    </div>
+   </div>
+
+   <!-- Subscription View -->
+   <div id="subscription-view" class="hidden space-y-4 page-transition max-w-4xl mx-auto py-4 text-center">
+    <div class="meta-box border p-12 rounded-2xl shadow space-y-3">
+     <i class="fa-solid fa-square-rss text-4xl text-red-600"></i>
+     <h2 class="text-lg font-bold">Subscriptions Feed</h2>
+     <p class="text-xs opacity-70 max-w-md mx-auto">Connect your subscribed channels or explore trending creators to populate your custom subscription feed.</p>
+     <button onclick="goHome()" class="bg-red-600 text-white font-bold text-xs px-6 py-2.5 rounded-full shadow mt-2">Explore Trending</button>
+    </div>
+   </div>
+
+   <!-- Playlist View -->
+   <div id="playlist-view" class="hidden space-y-5 page-transition max-w-4xl mx-auto">
+    <div id="playlist-banner" class="w-full h-56 sm:h-72 bg-gradient-to-br from-red-900 to-black rounded-2xl overflow-hidden shadow-2xl relative flex flex-col justify-end p-6">
+     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm z-0"></div>
+     <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-end gap-5">
+      <img id="playlist-thumb" src="" alt="Thumbnail" class="w-36 h-36 sm:w-44 sm:h-44 object-cover rounded-xl shadow-2xl border-2 border-white/20 flex-shrink-0">
+      <div class="space-y-2 text-white">
+       <h1 id="playlist-title" class="text-xl sm:text-2xl font-bold leading-snug"></h1>
+       <p id="playlist-author" class="text-xs sm:text-sm opacity-90 font-medium"></p>
+       <p id="playlist-stats" class="text-xs opacity-75"></p>
+      </div>
+     </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-3 px-1">
+     <button onclick="playAllPlaylist()" class="bg-white text-black hover:bg-zinc-200 font-bold text-sm px-6 py-2.5 rounded-full transition shadow flex items-center space-x-2 cursor-pointer">
+      <i class="fa-solid fa-play"></i>
+      <span>Play all</span>
+     </button>
+     <button class="meta-box border px-4 py-2.5 rounded-full text-sm font-bold shadow-sm flex items-center space-x-2 cursor-pointer">
+      <i class="fa-regular fa-bookmark"></i>
+      <span>Save</span>
+     </button>
+     <button onclick="shareVideo()" class="meta-box border px-4 py-2.5 rounded-full text-sm font-bold shadow-sm flex items-center space-x-2 cursor-pointer">
+      <i class="fa-solid fa-share"></i>
+      <span>Share</span>
+     </button>
+    </div>
+
+    <div id="playlist-videos-container" class="space-y-3 px-1"></div>
+   </div>
+
+   <!-- Channel View -->
+   <div id="channel-view" class="hidden space-y-4 page-transition max-w-4xl mx-auto">
+    <div id="channel-banner-container" class="w-full h-36 sm:h-48 bg-zinc-800 rounded-xl overflow-hidden shadow-md">
+     <img id="channel-banner" src="" alt="Banner" class="w-full h-full object-cover">
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2">
+     <div class="flex items-center space-x-4">
+      <img id="channel-profile-avatar" src="" alt="Avatar" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover shadow-lg border-2 border-zinc-700">
+      <div>
+       <div class="flex items-center space-x-2">
+        <h1 id="channel-profile-name" class="text-xl sm:text-2xl font-bold"></h1>
+        <i class="fa-solid fa-circle-check text-zinc-400 text-sm"></i>
+       </div>
+       <p id="channel-profile-handle" class="text-xs sm:text-sm opacity-70 mt-0.5"></p>
+       <p id="channel-profile-subs" class="text-xs sm:text-sm opacity-70 mt-0.5 font-medium"></p>
+       <p id="channel-profile-desc" class="text-xs opacity-60 mt-1 line-clamp-1 max-w-md"></p>
+      </div>
+     </div>
+     <button class="bg-white text-black hover:bg-zinc-200 font-bold text-sm px-6 py-2.5 rounded-full transition shadow flex items-center space-x-2">
+      <i class="fa-regular fa-bell"></i>
+      <span>Subscribed</span>
+     </button>
+    </div>
+
+    <div class="flex space-x-8 border-b border-zinc-700/50 px-2 text-sm font-semibold overflow-x-auto hide-scrollbar">
+     <button onclick="switchChannelTab('videos')" id="tab-videos" class="pb-2 border-b-2 border-red-600 transition font-bold">Videos</button>
+     <button onclick="switchChannelTab('shorts')" id="tab-shorts" class="pb-2 opacity-60 hover:opacity-100 transition font-medium">Shorts</button>
+     <button onclick="switchChannelTab('playlists')" id="tab-playlists" class="pb-2 opacity-60 hover:opacity-100 transition font-medium">Playlists</button>
+     <button onclick="switchChannelTab('live')" id="tab-live" class="pb-2 opacity-60 hover:opacity-100 transition font-medium">Live</button>
+    </div>
+
+    <div class="space-y-3 px-1">
+     <div id="channel-videos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+     <div id="channel-loading-more" class="text-center py-4 hidden">
+      <i class="fa-solid fa-circle-notch fa-spin text-2xl text-red-600"></i>
+     </div>
+    </div>
+   </div>
+
+   <!-- Watch View -->
+   <div id="watch-view" class="hidden flex flex-col lg:flex-row gap-5 page-transition">
+    <div class="flex-1">
+     <div id="player-wrapper-container" class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-xl">
+      <media-player id="vidstack-player" class="w-full h-full" crossorigin playsinline autoplay>
+       <media-provider></media-provider>
+       <media-video-layout></media-video-layout>
+      </media-player>
+     </div>
+
+     <div class="mt-3 space-y-3">
+      <div id="desc-box" onclick="toggleDescription()" class="meta-box border p-3 rounded-xl text-sm cursor-pointer transition hover:opacity-90 shadow-sm">
+       <div class="flex items-start justify-between gap-2">
+        <h1 id="watch-title" class="text-base sm:text-lg font-bold leading-snug"></h1>
+        <i id="desc-chevron" class="fa-solid fa-chevron-down mt-1.5 text-xs opacity-70 transition-transform"></i>
+       </div>
+
+       <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-xs opacity-80">
+        <span id="watch-views" class="font-medium"></span>
+        <span id="watch-likes-inline" class="font-medium"></span>
+        <span id="watch-time"></span>
+        <span id="more-label" class="font-bold text-blue-500">...more</span>
+       </div>
+
+       <div id="expanded-desc" class="pt-2.5 border-t border-zinc-700/30 text-xs sm:text-sm whitespace-pre-line opacity-95 leading-relaxed">
+        <p id="watch-description"></p>
+       </div>
+      </div>
+
+      <!-- Play Next Section -->
+      <div id="play-next-section" class="hidden meta-box border p-3 rounded-xl shadow-sm bg-red-600/10 border-red-600/30 flex items-center justify-between">
+       <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-forward-step text-red-600 animate-pulse"></i>
+        <span class="text-xs font-bold">Video finished. Play Next available!</span>
+       </div>
+       <button onclick="playNextVideo()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow transition">Play Next</button>
+      </div>
+
+      <div class="flex items-center justify-between meta-box border p-3 rounded-xl shadow-sm">
+       <div id="watch-channel-trigger" class="flex items-center space-x-2.5 overflow-hidden cursor-pointer group">
+        <img id="watch-channel-avatar" src="" alt="Avatar" class="w-9 h-9 rounded-full object-cover flex-shrink-0 shadow group-hover:scale-105 transition">
+        <div class="overflow-hidden">
+         <h3 id="watch-channel-name" class="font-bold text-sm truncate group-hover:underline"></h3>
+         <p id="watch-subscribers" class="text-xs opacity-70 font-medium"></p>
+        </div>
+       </div>
+       <button class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-full transition shadow flex-shrink-0 ml-3">Subscribe</button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-2 overflow-x-auto hide-scrollbar py-1">
+       <div class="flex items-center meta-box border rounded-full text-xs sm:text-sm shadow-sm flex-shrink-0">
+        <button class="flex items-center space-x-1.5 px-3.5 py-2 hover:opacity-80 rounded-l-full border-r border-zinc-500/30 font-medium">
+         <i class="fa-regular fa-thumbs-up text-base"></i>
+         <span id="watch-likes">Like</span>
+        </button>
+        <button class="px-3.5 py-2 hover:opacity-80 rounded-r-full">
+         <i class="fa-regular fa-thumbs-down text-base"></i>
+        </button>
+       </div>
+       <button onclick="shareVideo()" class="flex items-center space-x-1.5 meta-box border hover:opacity-80 px-3.5 py-2 rounded-full text-xs sm:text-sm shadow-sm flex-shrink-0 font-medium cursor-pointer">
+        <i class="fa-solid fa-share text-base"></i>
+        <span>Share</span>
+       </button>
+       <button onclick="toggleAudioMode()" id="audio-toggle-btn" class="flex items-center space-x-1.5 meta-box border hover:opacity-80 px-3.5 py-2 rounded-full text-xs sm:text-sm shadow-sm flex-shrink-0 font-medium cursor-pointer">
+        <i class="fa-solid fa-headphones text-base"></i>
+        <span id="audio-btn-text">Audio</span>
+       </button>
+       <button onclick="downloadVideo()" class="flex items-center space-x-1.5 meta-box border hover:opacity-80 px-3.5 py-2 rounded-full text-xs sm:text-sm shadow-sm flex-shrink-0 font-medium cursor-pointer">
+        <i class="fa-solid fa-download text-base"></i>
+        <span>Download</span>
+       </button>
+       <button onclick="watchOnYouTube()" class="flex items-center space-x-1.5 meta-box border hover:opacity-80 px-3.5 py-2 rounded-full text-xs sm:text-sm shadow-sm flex-shrink-0 font-medium cursor-pointer text-red-500">
+        <i class="fa-brands fa-youtube text-base"></i>
+        <span>Watch on YouTube</span>
+       </button>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="meta-box border p-4 rounded-xl shadow-sm space-y-4">
+       <div class="flex items-center justify-between border-b border-zinc-500/30 pb-3">
+        <div class="flex items-center space-x-2">
+         <h3 class="font-bold text-sm">Comments</h3>
+         <span id="comment-total-count" class="text-xs opacity-80 font-medium"></span>
+        </div>
+        <div class="flex items-center space-x-2">
+         <button class="search-bg border px-3 py-1 rounded-full text-xs font-bold">Top</button>
+         <button class="search-bg border px-3 py-1 rounded-full text-xs opacity-75">Newest</button>
+        </div>
+       </div>
+
+       <div id="comments-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+        <p class="text-xs opacity-70">Loading comments...</p>
+       </div>
+       <div id="comments-loading-more" class="text-center py-3 hidden">
+        <i class="fa-solid fa-circle-notch fa-spin text-lg text-red-600"></i>
+       </div>
+      </div>
+
+      <!-- Quality Selector Tabs -->
+      <div class="meta-box border p-4 rounded-xl shadow-sm space-y-3">
+       <div class="flex items-center space-x-4 border-b border-zinc-700/30 pb-2 text-sm font-bold">
+        <button onclick="switchQualityTab('video')" id="qtab-video" class="text-red-600 border-b-2 border-red-600 pb-1 transition">Video Streams</button>
+        <button onclick="switchQualityTab('audio')" id="qtab-audio" class="opacity-60 hover:opacity-100 pb-1 transition">Audio Streams</button>
+       </div>
+       <div id="quality-streams-container" class="flex flex-wrap gap-2 pt-1">
+        <span class="text-xs opacity-60">Loading available qualities...</span>
+       </div>
+      </div>
+     </div>
+    </div>
+
+    <!-- Up Next Sidebar -->
+    <div class="lg:w-80 space-y-2.5" id="watch-sidebar">
+     <div class="flex items-center justify-between pb-1 border-b border-zinc-700/30 mb-2">
+      <h3 class="font-bold text-sm tracking-wide text-red-600 uppercase flex items-center space-x-1.5">
+       <i class="fa-solid fa-list-ul"></i>
+       <span>Up Next</span>
+      </h3>
+      <span class="text-[10px] opacity-70 font-medium">Autoplay On</span>
+     </div>
+    </div>
+   </div>
+  </main>
+ </div>
+
+ <!-- Popup Player Modal for Stream Qualities -->
+ <div id="stream-popup-modal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+  <div class="card-bg w-full max-w-2xl p-4 rounded-2xl shadow-2xl space-y-3 page-transition relative">
+   <div class="flex items-center justify-between border-b pb-2">
+    <h3 id="popup-stream-title" class="font-bold text-sm">Streaming Quality</h3>
+    <button onclick="closeStreamPopup()" class="text-base opacity-70 hover:opacity-100 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+   </div>
+   <div id="popup-player-wrapper" class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-lg flex items-center justify-center"></div>
+  </div>
+ </div>
+
+ <!-- Bottom Navigation Bar -->
+ <nav class="fixed bottom-0 left-0 right-0 z-50 nav-bar border-t px-6 py-2 flex items-center justify-around shadow-lg">
+  <button onclick="goHome()" class="flex flex-col items-center space-y-0.5 opacity-80 hover:opacity-100 transition">
+   <i class="fa-solid fa-house text-lg text-red-600"></i>
+   <span class="text-[10px] font-bold">Home</span>
+  </button>
+  <button onclick="openSearchPage()" class="flex flex-col items-center space-y-0.5 opacity-80 hover:opacity-100 transition">
+   <i class="fa-solid fa-magnifying-glass text-lg"></i>
+   <span class="text-[10px] font-bold">Search</span>
+  </button>
+  <button onclick="openSubscriptionPage()" class="flex flex-col items-center space-y-0.5 opacity-80 hover:opacity-100 transition">
+   <i class="fa-solid fa-square-rss text-lg"></i>
+   <span class="text-[10px] font-bold">Subscription</span>
+  </button>
+  <button onclick="openSettingsPage()" class="flex flex-col items-center space-y-0.5 opacity-80 hover:opacity-100 transition">
+   <i class="fa-solid fa-gear text-lg"></i>
+   <span class="text-[10px] font-bold">Setting</span>
+  </button>
+  <button onclick="openProfilePage()" class="flex flex-col items-center space-y-0.5 opacity-80 hover:opacity-100 transition">
+   <i class="fa-solid fa-user text-lg"></i>
+   <span class="text-[10px] font-bold">Profile</span>
+  </button>
+ </nav>
+
+ <!-- Advanced Invidious Filter Modal -->
+ <div id="filter-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center hidden">
+  <div class="card-bg w-full max-w-md p-6 rounded-t-2xl sm:rounded-2xl shadow-2xl space-y-4 page-transition max-h-[90vh] overflow-y-auto">
+   <div class="flex items-center justify-between border-b pb-3">
+    <h3 class="font-bold text-lg">Invidious Search Filters</h3>
+    <button onclick="closeFilterModal()" class="text-lg opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+   </div>
+
+   <div class="space-y-3 text-sm">
+    <div>
+     <label class="font-bold block mb-1 opacity-80">Sort</label>
+     <select id="filter-sort" class="w-full search-bg border p-2.5 rounded-xl outline-none">
+      <option value="relevance">Relevance</option>
+      <option value="views">Views</option>
+     </select>
+    </div>
+    <div>
+     <label class="font-bold block mb-1 opacity-80">Upload Date</label>
+     <select id="filter-date" class="w-full search-bg border p-2.5 rounded-xl outline-none">
+      <option value="">Any</option>
+      <option value="hour">Past Hour</option>
+      <option value="today">Today</option>
+      <option value="week">This Week</option>
+      <option value="month">This Month</option>
+      <option value="year">This Year</option>
+     </select>
+    </div>
+    <div>
+     <label class="font-bold block mb-1 opacity-80">Duration</label>
+     <select id="filter-duration" class="w-full search-bg border p-2.5 rounded-xl outline-none">
+      <option value="">Any</option>
+      <option value="short">Short (&lt; 4 mins)</option>
+      <option value="medium">Medium (4 - 20 mins)</option>
+      <option value="long">Long (&gt; 20 mins)</option>
+     </select>
+    </div>
+    <div>
+     <label class="font-bold block mb-1 opacity-80">Type</label>
+     <select id="filter-type" class="w-full search-bg border p-2.5 rounded-xl outline-none">
+      <option value="all">All</option>
+      <option value="video">Video</option>
+      <option value="playlist">Playlist</option>
+      <option value="channel">Channel</option>
+      <option value="movie">Movie</option>
+      <option value="show">Show</option>
+     </select>
+    </div>
+    <div>
+     <label class="font-bold block mb-1 opacity-80">Features (Comma separated)</label>
+     <input type="text" id="filter-features" placeholder="hd, subtitles, live, 4k..." class="w-full search-bg border p-2.5 rounded-xl outline-none text-sm">
+    </div>
+    <div>
+     <label class="font-bold block mb-1 opacity-80">Region Code</label>
+     <input type="text" id="filter-region" placeholder="US, IN, GB..." class="w-full search-bg border p-2.5 rounded-xl outline-none text-sm" value="IN">
+    </div>
+   </div>
+
+   <button onclick="applyFilters()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition shadow">Apply Filters</button>
+  </div>
+ </div>
+
+ <footer class="w-full nav-bar border-t py-4 px-4 text-center text-xs opacity-80 mt-10 transition-colors mb-12">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+   <div class="flex items-center space-x-2">
+    <i class="fa-brands fa-youtube text-red-600 text-lg"></i>
+    <span class="font-bold text-sm">YouTube Web App</span>
+   </div>
+   <p>© 2026 Built with Invidious API & Vidstack</p>
+   <div class="flex space-x-3 text-xs">
+    <a href="#" onclick="goHome(); return false;" class="hover:underline font-medium">Home</a>
+    <a href="https://vidstack.io" target="_blank" class="hover:underline font-medium">Vidstack Docs</a>
+   </div>
+  </div>
+ </footer>
+
+ <canvas id="color-canvas" class="hidden"></canvas>
+ <script type="module" src="https://cdn.vidstack.io/player"></script>
+
+ <script>
+  let invidiousInstances = [];
+  let userCountry = 'IN';
+  let currentQuery = '';
+  let pageToken = 1;
+  let isLoadingMore = false;
+  let hasMorePages = true;
+  let isDescExpanded = false;
+  let activeVideoUrl = '';
+  let currentVideoId = '';
+  let isAudioOnly = false;
+  
+  let filterSort = 'relevance';
+  let filterDate = '';
+  let filterDuration = '';
+  let filterType = 'all';
+  let filterFeatures = '';
+  let filterRegion = 'IN';
+  
+  let currentChannelId = '';
+  let currentChannelTab = 'videos';
+  let channelPageToken = 1;
+  let channelHasMore = true;
+  let cachedChannelData = null;
+  
+  let cachedVideoStreams = [];
+  let cachedAudioStreams = [];
+  let currentQualityTab = 'video';
+  let nextVideoQueueItem = null;
+  
+  let commentPageToken = 1;
+  let commentHasMore = true;
+  let isLoadingMoreComments = false;
+  
+  window.addEventListener('load', async () => {
+      initSystemTheme();
+      detectUserCountry();
+      await fetchInvidiousInstances();
+      checkRoute();
+      setupInfiniteScroll();
+      setupPlayerEndedListener();
+  });
+  window.addEventListener('hashchange', checkRoute);
+  
+  function initSystemTheme() {
+      const body = document.getElementById('app-body');
+      const icon = document.getElementById('theme-icon');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+          body.classList.add('dark');
+          icon.className = "fa-solid fa-sun text-sm text-amber-400";
+      } else {
+          body.classList.add('light');
+          icon.className = "fa-solid fa-moon text-sm text-zinc-700";
+      }
+      document.getElementById('settings-region').textContent = userCountry;
+  }
+  
+  function toggleTheme() {
+      const body = document.getElementById('app-body');
+      const icon = document.getElementById('theme-icon');
+      if (body.classList.contains('dark')) {
+          body.classList.replace('dark', 'light');
+          icon.className = "fa-solid fa-moon text-sm text-zinc-700";
+      } else {
+          body.classList.replace('light', 'dark');
+          icon.className = "fa-solid fa-sun text-sm text-amber-400";
+      }
+  }
+  
+  function detectUserCountry() {
+      try {
+          const lang = navigator.language || navigator.userLanguage;
+          if (lang && lang.includes('-')) {
+              userCountry = lang.split('-')[1].toUpperCase();
+              filterRegion = userCountry;
+          }
+      } catch(e) {
+          userCountry = 'IN';
+      }
+  }
+  
+  async function fetchInvidiousInstances() {
+      try {
+          const res = await fetch("https://api.invidious.io/instances.json?pretty=1&sort_by=type,users");
+          const data = await res.json();
+          invidiousInstances = data
+              .filter(item => item[1].type === 'https' && item[1].api === true)
+              .map(item => item[1].uri.replace(/\/$/, ""));
+      } catch (err) {
+          invidiousInstances = [
+              "https://iv.ggtyler.dev",
+              "https://invidious.privacyredirect.com",
+              "https://vid.puffyan.us"
+          ];
+      }
+  }
+  
+  async function fetchWithFailover(apiPathBuilder) {
+      if (invidiousInstances.length === 0) {
+          await fetchInvidiousInstances();
+      }
+  
+      const maxTries = Math.min(5, invidiousInstances.length);
+      for (let i = 0; i < maxTries; i++) {
+          const randomIdx = Math.floor(Math.random() * invidiousInstances.length);
+          const instance = invidiousInstances[randomIdx];
+          const targetUrl = apiPathBuilder(instance);
+  
+          try {
+              const response = await fetch(targetUrl);
+              if (response.ok) {
+                  return await response.json();
+              }
+          } catch (e) {
+              console.warn(`Instance failed, trying alternate...`);
+          }
+      }
+      throw new Error("All instances failed.");
+  }
+  
+  async function checkRoute() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const hash = window.location.hash;
+  
+      // Stop main player when leaving watch view
+      const player = document.getElementById('vidstack-player');
+      if (!hash.startsWith('#id=') && player && player.pause) {
+          player.pause();
+          player.src = '';
+      }
+  
+      if (hash.startsWith('#settings')) {
+          showSettingsView();
+      } else if (hash.startsWith('#profile')) {
+          showProfileView();
+      } else if (hash.startsWith('#subscription')) {
+          showSubscriptionView();
+      } else if (hash.startsWith('#playlistid=')) {
+          const playlistId = hash.replace('#playlistid=', '');
+          await loadPlaylistDetails(playlistId);
+      } else if (hash.startsWith('#search')) {
+          showSearchView();
+      } else if (hash.startsWith('#channelid=')) {
+          const channelId = hash.replace('#channelid=', '');
+          await loadChannelDetails(channelId, 'videos');
+      } else if (hash.startsWith('#id=')) {
+          const videoId = hash.replace('#id=', '');
+          await loadVideoDetails(videoId);
+      } else {
+          resetDynamicBackground();
+          showHomeView();
+          if (!currentQuery && document.getElementById('results-container').children.length <= 3) {
+              loadMusicFeed();
+          }
+      }
+  }
+  
+  function showHomeView() {
+      document.getElementById('home-view').classList.remove('hidden');
+      document.getElementById('watch-view').classList.add('hidden');
+      document.getElementById('channel-view').classList.add('hidden');
+      document.getElementById('search-view').classList.add('hidden');
+      document.getElementById('playlist-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.add('hidden');
+      document.getElementById('profile-view').classList.add('hidden');
+      document.getElementById('subscription-view').classList.add('hidden');
+  }
+  
+  function showSearchView() {
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('watch-view').classList.add('hidden');
+      document.getElementById('channel-view').classList.add('hidden');
+      document.getElementById('playlist-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.add('hidden');
+      document.getElementById('profile-view').classList.add('hidden');
+      document.getElementById('subscription-view').classList.add('hidden');
+      document.getElementById('search-view').classList.remove('hidden');
+  }
+  
+  function showSettingsView() {
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('watch-view').classList.add('hidden');
+      document.getElementById('channel-view').classList.add('hidden');
+      document.getElementById('search-view').classList.add('hidden');
+      document.getElementById('playlist-view').classList.add('hidden');
+      document.getElementById('profile-view').classList.add('hidden');
+      document.getElementById('subscription-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.remove('hidden');
+  }
+  
+  function showProfileView() {
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('watch-view').classList.add('hidden');
+      document.getElementById('channel-view').classList.add('hidden');
+      document.getElementById('search-view').classList.add('hidden');
+      document.getElementById('playlist-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.add('hidden');
+      document.getElementById('subscription-view').classList.add('hidden');
+      document.getElementById('profile-view').classList.remove('hidden');
+  }
+  
+  function showSubscriptionView() {
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('watch-view').classList.add('hidden');
+      document.getElementById('channel-view').classList.add('hidden');
+      document.getElementById('search-view').classList.add('hidden');
+      document.getElementById('playlist-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.add('hidden');
+      document.getElementById('profile-view').classList.add('hidden');
+      document.getElementById('subscription-view').classList.remove('hidden');
+  }
+  
+  function goHome() {
+      window.location.hash = '';
+      loadMusicFeed();
+  }
+  
+  function openSearchPage() {
+      window.location.hash = '#search';
+      document.getElementById('page-search-input').focus();
+  }
+  
+  function openSubscriptionPage() {
+      window.location.hash = '#subscription';
+  }
+  
+  function openSettingsPage() {
+      window.location.hash = '#settings';
+  }
+  
+  function openProfilePage() {
+      window.location.hash = '#profile';
+  }
+  
+  function openShortsFeed() {
+      currentQuery = 'shorts';
+      window.location.hash = '#search';
+      document.getElementById('page-search-input').value = 'shorts';
+      filterType = 'video';
+      handlePageSearch({ preventDefault: () => {} });
+  }
+  
+  function openSettings() {
+      window.location.hash = '#settings';
+  }
+  
+  function openProfile() {
+      window.location.hash = '#profile';
+  }
+  
+  async function fetchSearchSuggestions(query) {
+      const box = document.getElementById('search-suggestions-box');
+      if (!query || query.trim().length < 2) {
+          box.classList.add('hidden');
+          box.innerHTML = '';
+          return;
+      }
+  
+      try {
+          const data = await fetchWithFailover(instance => `${instance}/api/v1/search/suggestions?q=${encodeURIComponent(query)}`);
+          const suggestions = data.suggestions || [];
+          
+          if (suggestions.length === 0) {
+              box.classList.add('hidden');
+              return;
+          }
+  
+          box.innerHTML = '';
+          suggestions.forEach(sug => {
+              const div = document.createElement('div');
+              div.className = "px-4 py-2.5 text-sm cursor-pointer hover:bg-zinc-700/20 transition flex items-center space-x-2.5 border-b border-zinc-700/10";
+              div.innerHTML = `<i class="fa-solid fa-magnifying-glass opacity-60 text-xs"></i><span>${sug}</span>`;
+              div.onclick = () => {
+                  document.getElementById('page-search-input').value = sug;
+                  box.classList.add('hidden');
+                  handlePageSearch(new Event('submit'));
+              };
+              box.appendChild(div);
+          });
+          box.classList.remove('hidden');
+      } catch(e) {
+          box.classList.add('hidden');
+      }
+  }
+  
+  async function loadMusicFeed(isAppend = false) {
+      const container = document.getElementById('results-container');
+      if (!isAppend) {
+          container.innerHTML = getSkeletonHTML();
+          pageToken = 1;
+      }
+  
+      try {
+          const data = await fetchWithFailover(instance => `${instance}/api/v1/search?q=music&region=${userCountry}&page=${pageToken}`);
+          renderFeedResults(data, isAppend, container);
+          hasMorePages = true;
+      } catch (error) {
+          if (!isAppend) {
+              container.innerHTML = `<div class="col-span-full text-center py-20 opacity-60 text-base">Failed to load music videos.</div>`;
+          }
+      }
+  }
+  
+  async function handlePageSearch(e) {
+      e.preventDefault();
+      const query = document.getElementById('page-search-input').value.trim();
+      if (!query) return;
+  
+      currentQuery = query;
+      pageToken = 1;
+      hasMorePages = true;
+      document.getElementById('search-suggestions-box').classList.add('hidden');
+  
+      const container = document.getElementById('search-results-container');
+      container.innerHTML = getSkeletonHTML();
+  
+      try {
+          const data = await fetchWithFailover(instance => `${instance}/api/v1/search?q=${encodeURIComponent(query)}&page=${pageToken}&sort=${filterSort}&type=${filterType}&region=${filterRegion}${filterDate ? '&date='+filterDate : ''}${filterDuration ? '&duration='+filterDuration : ''}${filterFeatures ? '&features='+filterFeatures : ''}`);
+          renderFeedResults(data, false, container);
+      } catch (error) {
+          container.innerHTML = `<div class="col-span-full text-center py-20 opacity-60 text-base">No search results found.</div>`;
+      }
+  }
+  
+  function openFilterModal() {
+      document.getElementById('filter-modal').classList.remove('hidden');
+  }
+  
+  function closeFilterModal() {
+      document.getElementById('filter-modal').classList.add('hidden');
+  }
+  
+  async function applyFilters() {
+      filterSort = document.getElementById('filter-sort').value;
+      filterDate = document.getElementById('filter-date').value;
+      filterDuration = document.getElementById('filter-duration').value;
+      filterType = document.getElementById('filter-type').value;
+      filterFeatures = document.getElementById('filter-features').value.trim();
+      filterRegion = document.getElementById('filter-region').value.trim() || userCountry;
+      
+      closeFilterModal();
+  
+      if (currentQuery) {
+          pageToken = 1;
+          hasMorePages = true;
+          const container = document.getElementById('search-results-container');
+          container.innerHTML = getSkeletonHTML();
+  
+          try {
+              const data = await fetchWithFailover(instance => `${instance}/api/v1/search?q=${encodeURIComponent(currentQuery)}&page=${pageToken}&sort=${filterSort}&type=${filterType}&region=${filterRegion}${filterDate ? '&date='+filterDate : ''}${filterDuration ? '&duration='+filterDuration : ''}${filterFeatures ? '&features='+filterFeatures : ''}`);
+              renderFeedResults(data, false, container);
+          } catch (error) {
+              container.innerHTML = `<div class="col-span-full text-center py-20 opacity-60 text-base">No results found with filters.</div>`;
+          }
+      }
+  }
+  
+  async function loadMoreResults() {
+      if (isLoadingMore || !hasMorePages) return;
+      isLoadingMore = true;
+      document.getElementById('loading-more').classList.remove('hidden');
+  
+      try {
+          pageToken++;
+          const searchQuery = currentQuery || 'music';
+          let data = await fetchWithFailover(instance => `${instance}/api/v1/search?q=${encodeURIComponent(searchQuery)}&page=${pageToken}&sort=${filterSort}&type=${filterType}&region=${filterRegion}${filterDate ? '&date='+filterDate : ''}${filterDuration ? '&duration='+filterDuration : ''}${filterFeatures ? '&features='+filterFeatures : ''}`);
+          
+          if (Array.isArray(data) && data.length > 0) {
+              const targetContainer = window.location.hash.startsWith('#search') ? document.getElementById('search-results-container') : document.getElementById('results-container');
+              renderFeedResults(data, true, targetContainer);
+          } else {
+              hasMorePages = false;
+          }
+      } catch (e) {
+          hasMorePages = false;
+      } finally {
+          isLoadingMore = false;
+          document.getElementById('loading-more').classList.add('hidden');
+      }
+  }
+  
+  function setupInfiniteScroll() {
+      window.addEventListener('scroll', () => {
+          if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+              if (window.location.hash.startsWith('#channelid=')) {
+                  loadMoreChannelContent();
+              } else if (window.location.hash.startsWith('#search')) {
+                  loadMoreResults();
+              } else if (window.location.hash.startsWith('#id=')) {
+                  const commentsBox = document.getElementById('comments-container');
+                  if (commentsBox && (commentsBox.scrollTop + commentsBox.clientHeight >= commentsBox.scrollHeight - 50)) {
+                      loadMoreComments();
+                  }
+              } else {
+                  loadMoreResults();
+              }
+          }
+      });
+  }
+  
+  async function switchChannelTab(tabName) {
+      currentChannelTab = tabName;
+      channelPageToken = 1;
+      channelHasMore = true;
+  
+      ['videos', 'shorts', 'playlists', 'live'].forEach(t => {
+          const btn = document.getElementById(`tab-${t}`);
+          if (t === tabName) {
+              btn.className = "pb-2 border-b-2 border-red-600 transition font-bold";
+          } else {
+              btn.className = "pb-2 opacity-60 hover:opacity-100 transition font-medium";
+          }
+      });
+  
+      await loadChannelDetails(currentChannelId, tabName, false);
+  }
+  
+  async function loadChannelDetails(channelId, tab = 'videos', isAppend = false) {
+      currentChannelId = channelId;
+      if (!isAppend) {
+          const loader = document.getElementById('page-loader');
+          loader.classList.add('active');
+  
+          document.getElementById('home-view').classList.add('hidden');
+          document.getElementById('watch-view').classList.add('hidden');
+          document.getElementById('search-view').classList.add('hidden');
+          document.getElementById('playlist-view').classList.add('hidden');
+          document.getElementById('settings-view').classList.add('hidden');
+          document.getElementById('profile-view').classList.add('hidden');
+          document.getElementById('subscription-view').classList.add('hidden');
+          const channelView = document.getElementById('channel-view');
+          channelView.classList.remove('hidden');
+          channelView.classList.add('page-transition');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+  
+      try {
+          let data = cachedChannelData;
+          if (!isAppend || !data) {
+              data = await fetchWithFailover(instance => `${instance}/api/v1/channels/${channelId}`);
+              cachedChannelData = data;
+          }
+          
+          if (!isAppend) {
+              document.getElementById('channel-profile-name').textContent = data.author || 'Channel Name';
+              document.getElementById('channel-profile-handle').textContent = data.authorId ? `@${data.authorId}` : '';
+              document.getElementById('channel-profile-subs').textContent = data.subCountText ? `${data.subCountText} subscribers` : '';
+              document.getElementById('channel-profile-desc').textContent = data.description || '';
+              document.getElementById('channel-profile-avatar').src = data.authorThumbnails?.[data.authorThumbnails.length - 1]?.url || 'https://via.placeholder.com/96';
+              
+              if (data.authorBanners && data.authorBanners.length > 0) {
+                  document.getElementById('channel-banner').src = data.authorBanners[data.authorBanners.length - 1].url;
+              } else {
+                  document.getElementById('channel-banner').src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop";
+              }
+          }
+  
+          const container = document.getElementById('channel-videos-container');
+          if (!isAppend) container.innerHTML = '';
+  
+          let items = [];
+          if (tab === 'videos') items = data.latestVideos || [];
+          else if (tab === 'shorts') items = data.shorts || data.latestVideos || [];
+          else if (tab === 'playlists') items = data.playlists || [];
+          else if (tab === 'live') items = data.liveStreams || data.latestVideos || [];
+  
+          if (items.length === 0 && !isAppend) {
+              container.innerHTML = `<div class="col-span-full text-center py-20 opacity-60 text-base">No content available in this tab.</div>`;
+              return;
+          }
+  
+          items.forEach(vid => {
+              const vId = vid.videoId || vid.playlistId;
+              const card = document.createElement('div');
+              card.className = "flex flex-col cursor-pointer group card-bg rounded-xl overflow-hidden shadow";
+              card.onclick = () => { 
+                  if (tab === 'playlists' && vid.playlistId) {
+                      openPlaylist(vid.playlistId);
+                  } else {
+                      openVideo(vId); 
+                  }
+              };
+              card.innerHTML = `
+                  <div class="relative w-full aspect-video bg-zinc-900 overflow-hidden">
+                      <img src="${vid.videoThumbnails?.[0]?.url || vid.thumbnail || `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`}" class="w-full h-full object-cover group-hover:scale-105 transition">
+                      ${vid.lengthSeconds ? `<span class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-[11px] px-1.5 py-0.5 rounded font-bold">${formatDuration(vid.lengthSeconds)}</span>` : ''}
+                  </div>
+                  <div class="p-3">
+                      <h4 class="font-bold text-sm line-clamp-2 leading-snug">${vid.title}</h4>
+                      <p class="text-xs opacity-75 mt-1 font-medium">${vid.viewCount ? formatViews(vid.viewCount) + ' views' : ''}</p>
+                  </div>
+              `;
+              container.appendChild(card);
+          });
+  
+      } catch (error) {
+          console.error("Error loading channel:", error);
+      } finally {
+          setTimeout(() => { document.getElementById('page-loader').classList.remove('active'); }, 200);
+      }
+  }
+  
+  async function loadMoreChannelContent() {
+      if (isLoadingMore || !channelHasMore || !currentChannelId) return;
+      isLoadingMore = true;
+      document.getElementById('channel-loading-more').classList.remove('hidden');
+  
+      try {
+          channelPageToken++;
+          const data = await fetchWithFailover(instance => `${instance}/api/v1/channels/${currentChannelId}?page=${channelPageToken}`);
+          let items = data.latestVideos || [];
+          if (items.length > 0) {
+              const container = document.getElementById('channel-videos-container');
+              items.forEach(vid => {
+                  const vId = vid.videoId;
+                  const card = document.createElement('div');
+                  card.className = "flex flex-col cursor-pointer group card-bg rounded-xl overflow-hidden shadow";
+                  card.onclick = () => { openVideo(vId); };
+                  card.innerHTML = `
+                      <div class="relative w-full aspect-video bg-zinc-900 overflow-hidden">
+                          <img src="${vid.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`}" class="w-full h-full object-cover group-hover:scale-105 transition">
+                          ${vid.lengthSeconds ? `<span class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-[11px] px-1.5 py-0.5 rounded font-bold">${formatDuration(vid.lengthSeconds)}</span>` : ''}
+                      </div>
+                      <div class="p-3">
+                          <h4 class="font-bold text-sm line-clamp-2 leading-snug">${vid.title}</h4>
+                          <p class="text-xs opacity-75 mt-1 font-medium">${vid.viewCount ? formatViews(vid.viewCount) + ' views' : ''}</p>
+                      </div>
+                  `;
+                  container.appendChild(card);
+              });
+          } else {
+              channelHasMore = false;
+          }
+      } catch(e) {
+          channelHasMore = false;
+      } finally {
+          isLoadingMore = false;
+          document.getElementById('channel-loading-more').classList.add('hidden');
+      }
+  }
+  
+  async function loadPlaylistDetails(playlistId) {
+      const loader = document.getElementById('page-loader');
+      loader.classList.add('active');
+  
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('watch-view').classList.add('hidden');
+      document.getElementById('channel-view').classList.add('hidden');
+      document.getElementById('search-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.add('hidden');
+      document.getElementById('profile-view').classList.add('hidden');
+      document.getElementById('subscription-view').classList.add('hidden');
+      const playlistView = document.getElementById('playlist-view');
+      playlistView.classList.remove('hidden');
+      playlistView.classList.add('page-transition');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+      try {
+          const data = await fetchWithFailover(instance => `${instance}/api/v1/playlists/${playlistId}`);
+          
+          document.getElementById('playlist-title').textContent = data.title || 'Playlist';
+          document.getElementById('playlist-author').textContent = `by ${data.author || 'Creator'}`;
+          document.getElementById('playlist-stats').textContent = `Playlist • ${data.videoCount || 0} videos • ${formatViews(data.viewCount || 0)} views`;
+          
+          const thumbUrl = data.videos?.[0]?.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${data.videos?.[0]?.videoId}/hqdefault.jpg`;
+          document.getElementById('playlist-thumb').src = thumbUrl;
+          document.getElementById('playlist-banner').style.backgroundImage = `url(${thumbUrl})`;
+          document.getElementById('playlist-banner').style.backgroundSize = 'cover';
+          document.getElementById('playlist-banner').style.backgroundPosition = 'center';
+  
+          const container = document.getElementById('playlist-videos-container');
+          container.innerHTML = '';
+  
+          const videos = data.videos || [];
+          if (videos.length === 0) {
+              container.innerHTML = `<div class="text-center py-20 opacity-60">No videos in this playlist.</div>`;
+              return;
+          }
+  
+          videos.forEach(vid => {
+              const vId = vid.videoId;
+              const item = document.createElement('div');
+              item.className = "flex items-center space-x-3 card-bg p-2.5 rounded-xl shadow cursor-pointer group hover:opacity-90 transition";
+              item.onclick = () => { openVideo(vId); };
+              item.innerHTML = `
+                  <div class="relative w-36 aspect-video bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0 shadow">
+                      <img src="${vid.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`}" class="w-full h-full object-cover group-hover:scale-105 transition">
+                      ${vid.lengthSeconds ? `<span class="absolute bottom-1 right-1 bg-black/85 text-white text-[10px] px-1.5 py-0.5 rounded font-bold">${formatDuration(vid.lengthSeconds)}</span>` : ''}
+                  </div>
+                  <div class="flex-1 overflow-hidden">
+                      <h4 class="font-bold text-sm line-clamp-2 leading-snug">${vid.title}</h4>
+                      <p class="text-xs opacity-75 mt-1 font-medium">${vid.author || ''}</p>
+                      <p class="text-xs opacity-75">${vid.viewCount ? formatViews(vid.viewCount) + ' views' : ''}</p>
+                  </div>
+                  <button class="text-zinc-400 hover:text-white px-2"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              `;
+              container.appendChild(item);
+          });
+  
+      } catch (error) {
+          console.error("Error loading playlist:", error);
+      } finally {
+          setTimeout(() => { loader.classList.remove('active'); }, 200);
+      }
+  }
+  
+  function playAllPlaylist() {
+      const container = document.getElementById('playlist-videos-container');
+      const firstCard = container.querySelector('div');
+      if (firstCard) firstCard.click();
+  }
+  
+  function toggleDescription() {
+      const expandedDesc = document.getElementById('expanded-desc');
+      const moreLabel = document.getElementById('more-label');
+      const chevron = document.getElementById('desc-chevron');
+  
+      isDescExpanded = !isDescExpanded;
+      if (isDescExpanded) {
+          expandedDesc.classList.add('open');
+          moreLabel.classList.add('hidden');
+          chevron.style.transform = 'rotate(180deg)';
+      } else {
+          expandedDesc.classList.remove('open');
+          moreLabel.classList.remove('hidden');
+          chevron.style.transform = 'rotate(0deg)';
+      }
+  }
+  
+  function shareVideo() {
+      if (navigator.share) {
+          navigator.share({
+              title: document.getElementById('watch-title').textContent || document.getElementById('playlist-title')?.textContent,
+              url: window.location.href
+          }).catch(console.warn);
+      } else {
+          navigator.clipboard.writeText(window.location.href);
+          alert("Link copied to clipboard!");
+      }
+  }
+  
+  function downloadVideo() {
+      if (activeVideoUrl) {
+          window.open(activeVideoUrl, '_blank');
+      } else {
+          alert("Download link is being prepared, please try again.");
+      }
+  }
+  
+  function watchOnYouTube() {
+      if (currentVideoId) {
+          window.open(`https://www.youtube.com/watch?v=${currentVideoId}`, '_blank');
+      }
+  }
+  
+  function toggleAudioMode() {
+      const player = document.getElementById('vidstack-player');
+      const audioBtnText = document.getElementById('audio-btn-text');
+      const audioBtn = document.getElementById('audio-toggle-btn');
+  
+      isAudioOnly = !isAudioOnly;
+      if (isAudioOnly) {
+          audioBtnText.textContent = "Video";
+          audioBtn.classList.add('bg-red-600', 'text-white');
+          if (currentVideoId) player.src = `https://www.youtube.com/watch?v=${currentVideoId}`;
+      } else {
+          audioBtnText.textContent = "Audio";
+          audioBtn.classList.remove('bg-red-600', 'text-white');
+          if (currentVideoId) player.src = `https://www.youtube.com/watch?v=${currentVideoId}`;
+      }
+  }
+  
+  function getSkeletonHTML() {
+      return `
+          <div class="flex flex-col card-bg rounded-xl overflow-hidden shadow"><div class="w-full aspect-video shimmer"></div><div class="p-2.5 flex space-x-2.5"><div class="w-8 h-8 rounded-full shimmer"></div><div class="flex-1 space-y-1.5"><div class="w-full h-4 shimmer rounded"></div><div class="w-2/3 h-3 shimmer rounded"></div></div></div></div>
+          <div class="flex flex-col card-bg rounded-xl overflow-hidden shadow hidden md:flex"><div class="w-full aspect-video shimmer"></div><div class="p-2.5 flex space-x-2.5"><div class="w-8 h-8 rounded-full shimmer"></div><div class="flex-1 space-y-1.5"><div class="w-full h-4 shimmer rounded"></div><div class="w-2/3 h-3 shimmer rounded"></div></div></div></div>
+          <div class="flex flex-col card-bg rounded-xl overflow-hidden shadow hidden lg:flex"><div class="w-full aspect-video shimmer"></div><div class="p-2.5 flex space-x-2.5"><div class="w-8 h-8 rounded-full shimmer"></div><div class="flex-1 space-y-1.5"><div class="w-full h-4 shimmer rounded"></div><div class="w-2/3 h-3 shimmer rounded"></div></div></div></div>
+      `;
+  }
+  
+  function renderFeedResults(items, isAppend, container) {
+      if (!isAppend) container.innerHTML = '';
+  
+      if (!items || items.length === 0) {
+          if (!isAppend) container.innerHTML = `<div class="col-span-full text-center py-20 opacity-60 text-base">No results found.</div>`;
+          return;
+      }
+  
+      items.forEach(item => {
+          const type = item.type;
+          const videoId = item.videoId || item.channelId || item.playlistId;
+          const title = item.title || item.author || 'Untitled';
+          const thumbnail = (item.videoThumbnails && item.videoThumbnails.find(t => t.quality === 'medium')?.url) || item.videoThumbnails?.[0]?.url || item.authorThumbnails?.[item.authorThumbnails.length - 1]?.url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+          const channelTitle = item.author || '';
+          const channelId = item.authorId || item.channelId;
+          const channelAvatar = item.authorThumbnails?.[0]?.url || 'https://via.placeholder.com/36';
+          const views = item.viewCount ? formatViews(item.viewCount) : '';
+          const uploadedTime = item.publishedText || '';
+          const duration = formatDuration(item.lengthSeconds);
+  
+          const card = document.createElement('div');
+          card.className = "w-full page-transition";
+  
+          if (type === 'channel') {
+              card.className += " card-bg p-4 rounded-2xl shadow flex flex-col sm:flex-row items-center justify-between gap-4";
+              card.innerHTML = `
+                  <div class="flex items-center space-x-4 cursor-pointer w-full sm:w-auto" onclick="openChannel('${channelId}')">
+                      <img src="${thumbnail}" alt="${title}" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shadow border border-zinc-600/30 flex-shrink-0">
+                      <div class="overflow-hidden">
+                          <h3 class="font-bold text-base sm:text-lg truncate">${title}</h3>
+                          <p class="text-xs opacity-75 font-medium">@${item.authorId || channelId || 'channel'}</p>
+                          <p class="text-xs opacity-60 mt-0.5">${item.subCountText || 'Subscribers'} • ${item.videoCount || 0} videos</p>
+                      </div>
+                  </div>
+                  <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+                      <button class="bg-white text-black hover:bg-zinc-200 font-bold text-xs px-5 py-2 rounded-full transition shadow">Subscribe</button>
+                      <button onclick="openChannel('${channelId}')" class="meta-box border hover:opacity-80 font-bold text-xs px-4 py-2 rounded-full transition shadow">View Channel</button>
+                  </div>
+              `;
+          } else if (type === 'playlist') {
+              card.className += " card-bg p-3 rounded-2xl shadow cursor-pointer group";
+              card.onclick = () => { openPlaylist(videoId); };
+              card.innerHTML = `
+                  <div class="relative w-full aspect-video bg-zinc-900 rounded-xl overflow-hidden shadow">
+                      <img src="${thumbnail}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                      <div class="absolute bottom-2 right-2 bg-black/85 text-white text-xs px-2 py-1 rounded-lg font-bold flex items-center space-x-1.5 shadow">
+                          <i class="fa-solid fa-list"></i>
+                          <span>${item.videoCount || 0} videos</span>
+                      </div>
+                  </div>
+                  <div class="mt-3 flex items-start justify-between">
+                      <div class="flex-1 overflow-hidden pr-2">
+                          <h3 class="font-bold text-sm sm:text-base line-clamp-1 leading-snug">${title}</h3>
+                          <p class="text-xs opacity-75 mt-1 font-medium">${channelTitle} • Playlist</p>
+                      </div>
+                      <button class="text-zinc-400 hover:text-white px-2"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                  </div>
+              `;
+          } else {
+              card.className += " card-bg rounded-xl overflow-hidden shadow hover:scale-[1.01] transition duration-200 flex flex-col";
+              card.innerHTML = `
+                  <div class="relative w-full aspect-video bg-zinc-900 overflow-hidden cursor-pointer" onclick="openVideo('${videoId}')">
+                      <img src="${thumbnail}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                      ${duration ? `<span class="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-[11px] px-1.5 py-0.5 rounded font-bold">${duration}</span>` : ''}
+                  </div>
+                  <div class="p-3 flex space-x-2.5">
+                      <img src="${channelAvatar}" alt="${channelTitle}" class="w-9 h-9 rounded-full object-cover flex-shrink-0 shadow cursor-pointer" onclick="openChannel('${channelId}')">
+                      <div class="flex-1 overflow-hidden">
+                          <h3 class="font-bold text-sm line-clamp-2 leading-snug cursor-pointer" onclick="openVideo('${videoId}')">${title}</h3>
+                          <p class="text-xs opacity-75 mt-1 font-medium cursor-pointer hover:underline" onclick="openChannel('${channelId}')">${channelTitle}</p>
+                          <p class="text-xs opacity-75 font-medium">${views} ${views && uploadedTime ? '•' : ''} ${uploadedTime}</p>
+                      </div>
+                  </div>
+              `;
+          }
+          container.appendChild(card);
+      });
+  }
+  
+  function openVideo(videoId) {
+      const loader = document.getElementById('page-loader');
+      loader.classList.add('active');
+      window.location.hash = `#id=${videoId}`;
+  }
+  
+  function openChannel(channelId) {
+      if (!channelId) return;
+      const loader = document.getElementById('page-loader');
+      loader.classList.add('active');
+      window.location.hash = `#channelid=${channelId}`;
+  }
+  
+  function openPlaylist(playlistId) {
+      if (!playlistId) return;
+      const loader = document.getElementById('page-loader');
+      loader.classList.add('active');
+      window.location.hash = `#playlistid=${playlistId}`;
+  }
+  
+  async function loadVideoDetails(videoId) {
+      currentVideoId = videoId;
+      const loader = document.getElementById('page-loader');
+      loader.classList.add('active');
+  
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('channel-view').classList.add('hidden');
+      document.getElementById('search-view').classList.add('hidden');
+      document.getElementById('playlist-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.add('hidden');
+      document.getElementById('profile-view').classList.add('hidden');
+      document.getElementById('subscription-view').classList.add('hidden');
+      const watchView = document.getElementById('watch-view');
+      watchView.classList.remove('hidden');
+      watchView.classList.add('page-transition');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+      isDescExpanded = false;
+      document.getElementById('expanded-desc').classList.remove('open');
+      document.getElementById('more-label').classList.remove('hidden');
+      document.getElementById('desc-chevron').style.transform = 'rotate(0deg)';
+      document.getElementById('play-next-section').classList.add('hidden');
+  
+      try {
+          const data = await fetchWithFailover(instance => `${instance}/api/v1/videos/${videoId}`);
+          
+          if (data.adaptiveFormats && data.adaptiveFormats.length > 0) {
+              activeVideoUrl = data.adaptiveFormats[0].url;
+          } else if (data.formatStreams && data.formatStreams.length > 0) {
+              activeVideoUrl = data.formatStreams[0].url;
+          } else {
+              activeVideoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+          }
+  
+          const player = document.getElementById('vidstack-player');
+          document.getElementById('player-wrapper-container').appendChild(player);
+  
+          if (player) {
+              player.src = `https://www.youtube.com/watch?v=${videoId}`;
+          }
+  
+          document.getElementById('watch-title').textContent = data.title || 'Video Title';
+          document.getElementById('watch-channel-name').textContent = data.author || 'Channel Name';
+          document.getElementById('watch-channel-avatar').src = data.authorThumbnails?.[0]?.url || 'https://via.placeholder.com/40';
+          document.getElementById('watch-subscribers').textContent = data.subCountText ? `${data.subCountText} subscribers` : '';
+          document.getElementById('watch-views').textContent = data.viewCount ? `${formatViews(data.viewCount)} views` : '';
+          document.getElementById('watch-likes-inline').textContent = data.likeCount ? `${formatViews(data.likeCount)} likes` : '';
+          document.getElementById('watch-time').textContent = data.publishedText || '';
+          
+          const channelTrigger = document.getElementById('watch-channel-trigger');
+          channelTrigger.onclick = () => { openChannel(data.authorId); };
+  
+          const rawDesc = data.description || data.descriptionHtml || 'No description available.';
+          document.getElementById('watch-description').innerHTML = rawDesc;
+          
+          document.getElementById('watch-likes').textContent = data.likeCount ? formatViews(data.likeCount) : 'Like';
+  
+          commentPageToken = 1;
+          commentHasMore = true;
+          loadVideoComments(videoId, false);
+  
+          categorizeStreams(data);
+          switchQualityTab('video');
+  
+          const thumbUrl = data.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+          extractThumbnailColor(thumbUrl);
+  
+          if (data.recommendedVideos && Array.isArray(data.recommendedVideos) && data.recommendedVideos.length > 0) {
+              nextVideoQueueItem = data.recommendedVideos[0];
+              renderSidebar(data.recommendedVideos);
+          }
+      } catch (error) {
+          console.error("Error loading video details:", error);
+      } finally {
+          setTimeout(() => {
+              loader.classList.remove('active');
+          }, 200);
+      }
+  }
+  
+  async function loadVideoComments(videoId, isAppend = false) {
+      const container = document.getElementById('comments-container');
+      if (!isAppend) {
+          container.innerHTML = `<p class="text-xs opacity-70 font-medium">Loading comments...</p>`;
+      }
+  
+      try {
+          const commentData = await fetchWithFailover(instance => `${instance}/api/v1/comments/${videoId}?page=${commentPageToken}`);
+          const comments = commentData.comments || [];
+          
+          document.getElementById('comment-total-count').textContent = commentData.commentCount ? `(${commentData.commentCount})` : '';
+          if (!isAppend) container.innerHTML = '';
+  
+          if (comments.length === 0) {
+              if (!isAppend) container.innerHTML = `<p class="text-xs opacity-70 font-medium">No comments found.</p>`;
+              commentHasMore = false;
+              return;
+          }
+  
+          comments.forEach((comm, idx) => {
+              const globalIdx = `${commentPageToken}-${idx}`;
+              const author = comm.author || 'User';
+              const avatar = comm.authorThumbnails?.[comm.authorThumbnails.length - 1]?.url || comm.authorThumbnails?.[0]?.url || 'https://via.placeholder.com/32';
+              const text = comm.content || comm.text || '';
+              const time = comm.publishedText || '';
+              const likes = comm.likeCount ? formatViews(comm.likeCount) : '';
+              const replies = comm.replies && comm.replies.comments ? comm.replies.comments : [];
+              const replyCount = comm.replyCount || replies.length;
+  
+              const item = document.createElement('div');
+              item.className = "flex space-x-3 text-xs sm:text-sm border-b border-zinc-500/20 pb-3 font-medium";
+              
+              let repliesHtml = '';
+              if (replyCount > 0 && replies.length > 0) {
+                  repliesHtml = `
+                      <div id="replies-box-${globalIdx}" class="hidden pl-8 mt-3 space-y-3 border-l-2 border-red-600/40">
+                          ${replies.map(rep => `
+                              <div class="flex space-x-2.5">
+                                  <img src="${rep.authorThumbnails?.[rep.authorThumbnails.length - 1]?.url || rep.authorThumbnails?.[0]?.url || 'https://via.placeholder.com/28'}" class="w-6 h-6 rounded-full object-cover mt-0.5 shadow">
+                                  <div class="flex-1 space-y-1">
+                                      <div class="flex items-center space-x-2">
+                                          <span class="font-bold opacity-95">${rep.author}</span>
+                                          <span class="text-[10px] opacity-70">${rep.publishedText || ''}</span>
+                                      </div>
+                                      <p class="opacity-90 leading-relaxed">${rep.content || rep.text || ''}</p>
+                                  </div>
+                              </div>
+                          `).join('')}
+                      </div>
+                  `;
+              }
+  
+              item.innerHTML = `
+                  <img src="${avatar}" alt="${author}" class="w-8 h-8 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                  <div class="flex-1 overflow-hidden space-y-1.5">
+                      <div class="flex items-center space-x-2">
+                          <span class="font-bold opacity-95 text-sm">${author}</span>
+                          <span class="text-[11px] opacity-75 font-normal">${time}</span>
+                      </div>
+                      <p class="opacity-90 leading-relaxed">${text}</p>
+                      <div class="flex items-center space-x-4 pt-1 text-xs opacity-85">
+                          <button class="flex items-center space-x-1 hover:text-red-500"><i class="fa-regular fa-thumbs-up"></i><span>${likes}</span></button>
+                          <button class="hover:text-red-500"><i class="fa-regular fa-thumbs-down"></i></button>
+                          <button class="hover:text-blue-500"><i class="fa-regular fa-comment"></i></button>
+                      </div>
+                      ${replyCount > 0 ? `
+                          <button onclick="toggleReplies('${globalIdx}')" id="reply-btn-${globalIdx}" class="text-blue-500 hover:underline font-bold text-xs pt-1.5 flex items-center space-x-1 cursor-pointer">
+                              <i class="fa-solid fa-caret-down"></i>
+                              <span>${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}</span>
+                          </button>
+                          ${repliesHtml}
+                      ` : ''}
+                  </div>
+              `;
+              container.appendChild(item);
+          });
+      } catch(e) {
+          if (!isAppend) container.innerHTML = `<p class="text-xs opacity-80 text-red-500 font-medium">Failed to load comments.</p>`;
+      }
+  }
+  
+  async function loadMoreComments() {
+      if (isLoadingMoreComments || !commentHasMore || !currentVideoId) return;
+      isLoadingMoreComments = true;
+      document.getElementById('comments-loading-more').classList.remove('hidden');
+  
+      try {
+          commentPageToken++;
+          await loadVideoComments(currentVideoId, true);
+      } catch(e) {
+          commentHasMore = false;
+      } finally {
+          isLoadingMoreComments = false;
+          document.getElementById('comments-loading-more').classList.add('hidden');
+      }
+  }
+  
+  function toggleReplies(idx) {
+      const box = document.getElementById(`replies-box-${idx}`);
+      const btn = document.getElementById(`reply-btn-${idx}`);
+      if (box) {
+          if (box.classList.contains('hidden')) {
+              box.classList.remove('hidden');
+              btn.innerHTML = `<i class="fa-solid fa-caret-up"></i><span>Hide replies</span>`;
+          } else {
+              box.classList.add('hidden');
+              btn.innerHTML = `<i class="fa-solid fa-caret-down"></i><span>View replies</span>`;
+          }
+      }
+  }
+  
+  function setupPlayerEndedListener() {
+      const player = document.getElementById('vidstack-player');
+      if (player) {
+          player.addEventListener('ended', () => {
+              if (nextVideoQueueItem) {
+                  document.getElementById('play-next-section').classList.remove('hidden');
+              }
+          });
+      }
+  }
+  
+  function playNextVideo() {
+      if (nextVideoQueueItem && nextVideoQueueItem.videoId) {
+          openVideo(nextVideoQueueItem.videoId);
+      }
+  }
+  
+  function categorizeStreams(data) {
+      cachedVideoStreams = [];
+      cachedAudioStreams = [];
+  
+      let formats = [];
+      if (data.formatStreams) formats = formats.concat(data.formatStreams);
+      if (data.adaptiveFormats) formats = formats.concat(data.adaptiveFormats);
+  
+      formats.forEach(fmt => {
+          const type = fmt.type ? fmt.type.toLowerCase() : '';
+          if (type.includes('audio')) {
+              cachedAudioStreams.push(fmt);
+          } else {
+              cachedVideoStreams.push(fmt);
+          }
+      });
+  }
+  
+  function switchQualityTab(tab) {
+      currentQualityTab = tab;
+      const vBtn = document.getElementById('qtab-video');
+      const aBtn = document.getElementById('qtab-audio');
+  
+      if (tab === 'video') {
+          vBtn.className = "text-red-600 border-b-2 border-red-600 pb-1 transition font-bold";
+          aBtn.className = "opacity-60 hover:opacity-100 pb-1 transition font-medium";
+          renderQualityList(cachedVideoStreams, 'video');
+      } else {
+          aBtn.className = "text-red-600 border-b-2 border-red-600 pb-1 transition font-bold";
+          vBtn.className = "opacity-60 hover:opacity-100 pb-1 transition font-medium";
+          renderQualityList(cachedAudioStreams, 'audio');
+      }
+  }
+  
+  function renderQualityList(streams, mode) {
+      const container = document.getElementById('quality-streams-container');
+      container.innerHTML = '';
+  
+      if (streams.length === 0) {
+          container.innerHTML = `<span class="text-xs opacity-60">No ${mode} streams available.</span>`;
+          return;
+      }
+  
+      streams.forEach(fmt => {
+          const qualityLabel = fmt.qualityLabel || fmt.quality || fmt.itag || 'Stream';
+          const codec = fmt.container || '';
+  
+          const btn = document.createElement('button');
+          btn.className = "px-3 py-1.5 rounded-lg search-bg border text-xs font-bold hover:border-red-600 transition flex items-center space-x-1.5 cursor-pointer";
+          btn.innerHTML = `<i class="fa-solid ${mode === 'audio' ? 'fa-music text-blue-400' : 'fa-video text-red-500'}"></i><span>${qualityLabel} (${codec})</span>`;
+          
+          btn.onclick = () => {
+              openStreamPopup(fmt.url, mode, qualityLabel);
+          };
+          container.appendChild(btn);
+      });
+  }
+  
+  function openStreamPopup(streamUrl, mode, label) {
+      const modal = document.getElementById('stream-popup-modal');
+      const wrapper = document.getElementById('popup-player-wrapper');
+      document.getElementById('popup-stream-title').textContent = `Playing Stream: ${label} (${mode})`;
+      wrapper.innerHTML = '';
+  
+      if (mode === 'audio') {
+          const audio = document.createElement('audio');
+          audio.src = streamUrl;
+          audio.controls = true;
+          audio.autoplay = true;
+          audio.className = "w-full my-auto px-4";
+          wrapper.appendChild(audio);
+      } else {
+          const video = document.createElement('video');
+          video.src = streamUrl;
+          video.controls = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.className = "w-full h-full object-contain bg-black";
+          wrapper.appendChild(video);
+      }
+  
+      modal.classList.remove('hidden');
+  }
+  
+  function closeStreamPopup() {
+      const modal = document.getElementById('stream-popup-modal');
+      const wrapper = document.getElementById('popup-player-wrapper');
+      wrapper.innerHTML = '';
+      modal.classList.add('hidden');
+  }
+  
+  function extractThumbnailColor(imgUrl) {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = imgUrl;
+      img.onload = () => {
+          const canvas = document.getElementById('color-canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = 50;
+          canvas.height = 50;
+          ctx.drawImage(img, 0, 0, 50, 50);
+  
+          try {
+              const p = ctx.getImageData(10, 10, 30, 30).data;
+              let r = 0, g = 0, b = 0, count = 0;
+              for (let i = 0; i < p.length; i += 16) {
+                  r += p[i];
+                  g += p[i+1];
+                  b += p[i+2];
+                  count++;
+              }
+              r = Math.floor(r / count);
+              g = Math.floor(g / count);
+              b = Math.floor(b / count);
+  
+              const body = document.getElementById('app-body');
+              const isDark = body.classList.contains('dark');
+              if (isDark) {
+                  body.style.background = `linear-gradient(135deg, rgba(${r}, ${g}, ${b}, 0.35) 0%, #0f0f0f 70%)`;
+              } else {
+                  body.style.background = `linear-gradient(135deg, rgba(${r}, ${g}, ${b}, 0.2) 0%, #f9f9f9 70%)`;
+              }
+          } catch(e) {
+              console.error("Color extraction error", e);
+          }
+      };
+  }
+  
+  function resetDynamicBackground() {
+      const body = document.getElementById('app-body');
+      body.style.background = '';
+  }
+  
+  function renderSidebar(videos) {
+      const sidebar = document.getElementById('watch-sidebar');
+      sidebar.innerHTML = `
+          <div class="flex items-center justify-between pb-1 border-b border-zinc-700/30 mb-2">
+              <h3 class="font-bold text-sm tracking-wide text-red-600 uppercase flex items-center space-x-1.5">
+                  <i class="fa-solid fa-list-ul"></i>
+                  <span>Up Next</span>
+              </h3>
+              <span class="text-[10px] opacity-70 font-medium">Autoplay On</span>
+          </div>
+      `;
+  
+      videos.forEach((vid, index) => {
+          const vId = vid.videoId;
+          if (!vId) return;
+          const item = document.createElement('div');
+          item.className = `flex space-x-2.5 cursor-pointer group hover:opacity-85 transition pb-3 ${index < videos.length - 1 ? 'border-b border-zinc-700/30 mb-3' : ''}`;
+          item.onclick = async () => {
+              const loader = document.getElementById('page-loader');
+              loader.classList.add('active');
+              window.location.hash = `#id=${vId}`;
+          };
+          item.innerHTML = `
+              <div class="relative w-36 aspect-video bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0 shadow">
+                  <img src="${vid.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${vId}/hqdefault.jpg`}" class="w-full h-full object-cover">
+                  ${vid.lengthSeconds ? `<span class="absolute bottom-1 right-1 bg-black/85 text-white text-[10px] px-1 rounded font-bold">${formatDuration(vid.lengthSeconds)}</span>` : ''}
+              </div>
+              <div class="flex-1 overflow-hidden">
+                  <h4 class="text-xs font-bold line-clamp-2 leading-snug">${vid.title}</h4>
+                  <p class="text-[11px] opacity-75 mt-1 font-medium">${vid.author || ''}</p>
+                  <p class="text-[11px] opacity-75 font-medium">${vid.viewCount ? formatViews(vid.viewCount) + ' views' : ''}</p>
+              </div>
+          `;
+          sidebar.appendChild(item);
+      });
+  }
+  
+  function formatDuration(seconds) {
+      if (!seconds) return '';
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      const hrs = Math.floor(mins / 60);
+      if (hrs > 0) {
+          return `${hrs}:${(mins % 60).toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+  
+  function formatViews(views) {
+      if (!views) return '';
+      if (typeof views === 'string') return views;
+      if (views >= 10000000) return (views / 10000000).toFixed(1) + ' crore';
+      if (views >= 100000) return (views / 100000).toFixed(1) + ' lakh';
+      if (views >= 1000) return (views / 1000).toFixed(1) + 'K';
+      return views.toString();
+  }
+ </script>
+</body>
+
+</html>
